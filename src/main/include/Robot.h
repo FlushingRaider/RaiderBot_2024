@@ -7,7 +7,20 @@
 #include <string>
 
 #include <frc/TimedRobot.h>
-#include <frc/smartdashboard/SendableChooser.h>
+
+#include "Shuffleboard.hpp"
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/AnalogInput.h>
+#include <frc/DigitalInput.h>
+#include <frc/DigitalOutput.h>
+#include <frc/Joystick.h>
+#include <frc/PowerDistribution.h>
+#include "ctre/Phoenix.h"
+#include "rev/CANSparkMax.h"
+#include <frc/motorcontrol/Spark.h>
+#include <photonlib/PhotonCamera.h>
+
+#include "Const.hpp"
 
 class Robot : public frc::TimedRobot {
  public:
