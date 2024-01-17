@@ -1,17 +1,42 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*
+ * Team 5561 2024 Code
+ *
+ *  This code will run our 2024 robot
+ * 
+ */
 
 #include "Robot.h"
 
 #include <fmt/core.h>
-#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/DriverStation.h>
 
-void Robot::RobotInit() {
+#include "Encoders.hpp"
+
+// void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
+
+/******************************************************************************
+ * Function:     RobotInit
+ *
+ * Description:  Called during initialization of the robot.
+ ******************************************************************************/
+void Robot::RobotInit()
+{
+  
+  EncodersInitCommon(m_encoderFrontRightSteer,
+                     m_encoderFrontLeftSteer,
+                     m_encoderRearRightSteer,
+                     m_encoderRearLeftSteer,
+                     m_encoderFrontRightDrive,
+                     m_encoderFrontLeftDrive,
+                     m_encoderRearRightDrive,
+                     m_encoderRearLeftDrive);
+
+}
+
 
 /**
  * This function is called every 20 ms, no matter the mode. Use

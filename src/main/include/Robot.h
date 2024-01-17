@@ -8,6 +8,7 @@
 
 #include <frc/TimedRobot.h>
 
+//NOTE gonna need to go through and add some of these libraries 
 #include "Shuffleboard.hpp"
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/AnalogInput.h>
