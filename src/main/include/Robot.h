@@ -1,6 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+#ifndef ROBOT
+#define ROBOT
+#define PID_Calibrate
 
 #pragma once
 
@@ -11,7 +11,7 @@
 //NOTE gonna need to go through and add some of these libraries 
 #include "Shuffleboard.hpp"
 #include <frc/shuffleboard/Shuffleboard.h>
-#include <frc/AnalogInput.h>
+// #include <frc/AnalogInput.h>
 #include <frc/DigitalInput.h>
 #include <frc/DigitalOutput.h>
 #include <frc/Joystick.h>
@@ -19,7 +19,6 @@
 #include "ctre/Phoenix.h"
 #include "rev/CANSparkMax.h"
 #include <frc/motorcontrol/Spark.h>
-#include <photonlib/PhotonCamera.h>
 
 #include "Const.hpp"
 
@@ -44,3 +43,8 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 };
+
+  frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
+  frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
+  frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
+  frc::ShuffleboardTab& BackRight = frc::Shuffleboard::GetTab("Back Right");

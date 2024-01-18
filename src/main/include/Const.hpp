@@ -3,6 +3,9 @@
 #include <units/angle.h>
 #include <units/length.h>
 
+// Define the desired test state here: COMP (no test), DriveMotorTest, WheelAngleTest, ADAS_DM_Test
+#define COMP
+
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
 const double C_Deg2Rad = 0.017453292519943295;
