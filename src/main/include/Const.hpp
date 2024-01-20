@@ -17,7 +17,7 @@ const double C_Tau = 6.28318530717958647;
 static const int C_PDP_ID = 21;
 static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 3, frontRightDriveDeviceID = 4;
 static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
-
+static const int KeGRY_i_Gyro = 16;
 
 /******************************************************************************
  * Section: Swerve_Constants
@@ -335,3 +335,8 @@ const double K_DesiredAutoRotateSpeed[10] = {-0.15,  //  -4.0
                                               0.008, //   2.0
                                               0.02,  //   3.0
                                               0.15}; //   4.0
+
+
+// Gyro cals
+/* KeGRY_ms_GyroTimeoutMs: Set to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails. */
+const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS if fails
