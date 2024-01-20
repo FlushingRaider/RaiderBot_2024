@@ -21,7 +21,7 @@
 void Robot::RobotInit()
 {
   
-  EncodersInitCommon(m_encoderFrontRightSteer,
+  EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
                      m_encoderRearLeftSteer,

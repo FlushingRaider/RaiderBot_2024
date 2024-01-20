@@ -66,6 +66,10 @@ const double KeDRC_k_SD_MinGain = 0.2;
 /* K_SD_MaxGain: Max gain allowed for swerve drive control. */
 const double K_SD_MaxGain = 0.7;
 
+/* KeDRC_k_SD_AutonGain: Gain applied to the auton commands coming in for swerve drive. */
+const double KeDRC_k_SD_AutonGain = 0.9;
+
+
 /* K_SD_WheelMaxSpeed: Max RPM speed of the swerve drive wheel motor.*/
 const double K_SD_WheelMaxSpeed = 6000;
 
@@ -239,27 +243,27 @@ const double K_SD_DesiredRotate[20] = {-1.00,  //-1
                                         0.50,  // 0.85
                                         1.00}; // 0.95                                                                                                                                        
 
-/* K_SD_DesiredRotate: Joystick scaled output for swerve drive control.  Used as debouncing and to help limit speeds at lower joystick inputs values.  */
-const double K_SD_DesiredRotate[20] = {-1.00,  //-1
-                                       -0.50,  //-0.88
-                                       -0.20,  //-0.6
-                                       -0.11,  //-0.4
-                                       -0.09,  //-0.25
-                                       -0.07,  //-0.2
-                                       -0.05,  //-0.15
-                                       -0.03,  //-0.1
-                                       -0.01,  //-0.05
-                                        0.00,  //-0.0
-                                        0.00,  // 0.0
-                                        0.01,  // 0.15
-                                        0.03,  // 0.25
-                                        0.05,  // 0.35
-                                        0.07,  // 0.45
-                                        0.09,  // 0.55
-                                        0.11,  // 0.65
-                                        0.20,  // 0.75
-                                        0.50,  // 0.85
-                                        1.00}; // 0.95
+/* KnLU_k_SD_DesiredAccelAxis: Joystick scale axis for KtLU_k_SD_DesiredAccel.  */
+const double KnLU_k_SD_DesiredAccelAxis[20] = {-0.95,
+                                               -0.85,
+                                               -0.75,
+                                               -0.65,
+                                               -0.55,
+                                               -0.45,
+                                               -0.35,
+                                               -0.25,
+                                               -0.15,
+                                               -0.10,
+                                                0.10,
+                                                0.15,
+                                                0.25,
+                                                0.35,
+                                                0.45,
+                                                0.55,
+                                                0.65,
+                                                0.75,
+                                                0.85,
+                                                0.95};
 
 /* KtLU_k_SD_DesiredAccel: Joystick scaled output for swerve drive control.  Used as debouncing and to help limit speeds at lower joystick inputs values.  */
 const double KtLU_k_SD_DesiredAccel[20] = {-1.00,  //-1
@@ -283,3 +287,51 @@ const double KtLU_k_SD_DesiredAccel[20] = {-1.00,  //-1
                                             0.88,  // 0.85
                                             1.00}; // 0.95
 
+/*  Auto Rotation calibrations */
+/* K_DesiredRotateSpeedAxis - This is the effective command axis, function of error calculation, in degrees */
+const double K_DesiredRotateSpeedAxis[10] = {-20.0,
+                                              -4.0,
+                                              -2.0,
+                                              -1.0,
+                                              -0.2,
+                                               0.2,
+                                               1.0,
+                                               2.0,
+                                               4.0,
+                                              20.0};
+
+/* K_DesiredRotateSpeed - This is the effective command, equivalent to the rotate joystick */
+const double K_DesiredRotateSpeed[10] = {-0.60,  // -20.0
+                                         -0.12,  //  -4.0
+                                         -0.035, //  -2.0
+                                         -0.018, //  -1.0
+                                          0.02,  //  -0.2
+                                          0.02,  //   0.2
+                                          0.018, //   1.0
+                                          0.035, //   2.0
+                                          0.012, //   4.0
+                                          0.60}; //  20.0
+
+/* K_DesiredAutoRotateSpeedAxis - This is the effective command axis, function of error calculation, in degrees */
+const double K_DesiredAutoRotateSpeedAxis[10] = {-4.0,
+                                                 -3.0,
+                                                 -2.0,
+                                                 -1.0,
+                                                 -0.2,
+                                                  0.2,
+                                                  1.0,
+                                                  2.0,
+                                                  3.0,
+                                                  4.0};
+
+/* K_DesiredRotateSpeed - This is the effective command, equivalent to the rotate joystick */
+const double K_DesiredAutoRotateSpeed[10] = {-0.15,  //  -4.0
+                                             -0.02,  //  -3.0
+                                             -0.008, //  -2.0
+                                             -0.005, //  -1.0
+                                              0.00,  //  -0.2
+                                              0.00,  //   0.2
+                                             -0.005, //   1.0
+                                              0.008, //   2.0
+                                              0.02,  //   3.0
+                                              0.15}; //   4.0

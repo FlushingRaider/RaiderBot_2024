@@ -53,4 +53,60 @@ typedef enum T_PID_SparkMaxCal
   E_PID_SparkMaxCalSz
 } T_PID_SparkMaxCal;
 
+typedef enum T_ADAS_ActiveFeature // These are the sub features in ADAS.  These can be called in teleop and/or auton
+{
+  E_ADAS_Disabled,
+  E_ADAS_DM_DriveStraight,
+  E_ADAS_DM_DriveStraightFar,
+  E_ADAS_DM_DriveRevStraight,
+  E_ADAS_DM_PathFollower1,
+  E_ADAS_DM_PathFollower2,
+  E_ADAS_DM_PathFollower3,
+  E_ADAS_DM_PathFollower4,
+  E_ADAS_DM_PathFollowerFWD,
+
+  
+  E_ADAS_MoveOffsetTag,
+  E_ADAS_MoveGlobalTag,
+} T_ADAS_ActiveFeature;
+
+struct RobotUserInput
+{
+  bool                  b_ZeroGyro;
+  double                pct_SwerveForwardBack;
+  double                pct_SwerveStrafe;
+  double                deg_SwerveRotate;
+  double                v_SwerveSpeed;
+  bool                  b_SwerveGoalAutoCenter;
+  bool                  b_SwerveRotateTo0;
+  bool                  b_SwerveRotateTo180;
+  bool                  b_CameraLight;
+  bool                  b_JoystickActive;
+  bool                  b_VisionDriverModeOverride;
+  bool                  b_IntakeRollersTest; //21
+  bool                  b_ResetManipulatorEnocders; // 21
+  bool                  b_IntakeArmIn;  // 21
+  bool                  b_IntakeArmOutTest;
+  double                Pct_WristTest;
+  double                Pct_ArmPivotTest;
+  double                Pct_LinearSlideTest;
+  double                pct_IntakeRollerTest;
+  bool                  b_MainIntakeOut;
+  bool                  b_MidIntakeOut;
+  bool                  b_FloorConeDrop;
+  bool                  b_InitState;
+  bool                  b_DrivingPosition;
+  bool                  b_FrontHighCube;
+  bool                  b_FrontLowCube;
+  bool                  b_FrontHighCone;
+  bool                  b_FrontLowCone;
+  bool                  b_DropGamePieceSlow;
+  bool                  b_DropGamePieceFast;
+  bool                  b_AutoBalance;
+  bool                  b_CubeAlign;
+  bool                  b_ConeAlign;
+  bool                  b_VisionButton;
+  bool                  b_X_Mode;
+};
+
 #endif
