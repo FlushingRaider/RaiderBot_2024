@@ -255,7 +255,7 @@ void DriveControlInit()
 /******************************************************************************
  * Function:     DtrmnEncoderRelativeToCmnd
  *
- * Description:  tbd //NOTE - soooo what exactly is this doing?
+ * Description:  Account for the roll over of the enocoders
  ******************************************************************************/
 double DtrmnEncoderRelativeToCmnd(double          L_JoystickCmnd,
                                   double          L_EncoderReading)

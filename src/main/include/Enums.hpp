@@ -12,6 +12,8 @@
 
 //TODO Add Comments to explain all these?
 
+
+// enum of each swerve corner, used for motor control indexing (see DriveControl.cpp or Encoders.cpp)
 typedef enum T_RobotCorner
 {
   E_FrontLeft,
@@ -21,6 +23,8 @@ typedef enum T_RobotCorner
   E_RobotCornerSz
 } T_RobotCorner;
 
+
+//enum for different PID values, mostly used to index the variable KV_SD_WheelAnglePID_Gx
 typedef enum T_PID_Cal
 {
   E_P_Gx,
@@ -37,6 +41,7 @@ typedef enum T_PID_Cal
   E_PID_CalSz
 } T_PID_Cal;
 
+//used in conjunction with T_PID_Cal
 typedef enum T_PID_SparkMaxCal
 {
   E_kP,
@@ -53,7 +58,8 @@ typedef enum T_PID_SparkMaxCal
   E_PID_SparkMaxCalSz
 } T_PID_SparkMaxCal;
 
-typedef enum T_ADAS_ActiveFeature // These are the sub features in ADAS.  These can be called in teleop and/or auton
+// These are the sub features in ADAS.  These can be called in teleop and/or auton
+typedef enum T_ADAS_ActiveFeature 
 {
   E_ADAS_Disabled,
   E_ADAS_DM_DriveStraight,
@@ -70,6 +76,8 @@ typedef enum T_ADAS_ActiveFeature // These are the sub features in ADAS.  These 
   E_ADAS_MoveGlobalTag,
 } T_ADAS_ActiveFeature;
 
+
+//a big ol' object ti carry the various inputs from the driver in one place
 struct RobotUserInput
 {
   bool                  b_ZeroGyro;

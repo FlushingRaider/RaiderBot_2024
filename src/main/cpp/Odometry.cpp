@@ -30,7 +30,7 @@ int V_PrevTagID;
  ******************************************************************************/
 void OdometryInitToArgs(double VeODO_In_ArgX, double VeODO_In_ArgY)
 {
-  VeODO_In_RobotDisplacementX = VeODO_In_ArgX;  // Disabled to allow for testing of path follower.
+  VeODO_In_RobotDisplacementX = VeODO_In_ArgX;
   VeODO_In_RobotDisplacementY = VeODO_In_ArgY;
 }
 
@@ -64,27 +64,34 @@ void DtrmnSwerveBotLocation(double  LeODO_Rad_Gyro,
   double LeODO_In_TotalDeltaX = 0;
   double LeODO_In_TotalDeltaY = 0;
 
+
+  // this variable is fed in externally, if true we reset all our calculations
   if (LeODO_b_ResetButton == true)
   {
     VeODO_In_RobotDisplacementX = 0;
     VeODO_In_RobotDisplacementY = 0;
   }
 
+// a fancy way of defining a for loop that will begin at the front left and index through each swerve module
   for (LnODO_Cnt_Index = E_FrontLeft;
        LnODO_Cnt_Index < E_RobotCornerSz;
        LnODO_Cnt_Index = T_RobotCorner(int(LnODO_Cnt_Index) + 1))
   {
+    // get the relative angle we're traveling in using the gyro
     LeODO_Rad_RelativeAngle[LnODO_Cnt_Index] = LeODO_Rad_Gyro - LeODO_Rad_WheelAngleArb[LnODO_Cnt_Index];
+    // do some trigonometry to find our x and y displacement
     LeODO_In_DeltaCornerDisplacementX[LnODO_Cnt_Index] = sin(LeODO_Rad_RelativeAngle[LnODO_Cnt_Index]) * LeODO_In_DeltaWheelDistance[LnODO_Cnt_Index];
     LeODO_In_DeltaCornerDisplacementY[LnODO_Cnt_Index] = cos(LeODO_Rad_RelativeAngle[LnODO_Cnt_Index]) * LeODO_In_DeltaWheelDistance[LnODO_Cnt_Index];
-
+    // apply to our running counter
     LeODO_In_TotalDeltaX += LeODO_In_DeltaCornerDisplacementX[LnODO_Cnt_Index];
     LeODO_In_TotalDeltaY -= LeODO_In_DeltaCornerDisplacementY[LnODO_Cnt_Index]; // Negative to have movement to the left as negative
   }
 
+  // LeODO_In_TotalDeltaX is a total of all 4 corners, get the average between them
   LeODO_In_TotalDeltaX = LeODO_In_TotalDeltaX / 4;
   LeODO_In_TotalDeltaY = LeODO_In_TotalDeltaY / 4;
 
+  // apply to our running counter (global), these are the numbers every other fxn will use
   VeODO_In_RobotDisplacementX += LeODO_In_TotalDeltaX;
   VeODO_In_RobotDisplacementY += LeODO_In_TotalDeltaY;
 }
