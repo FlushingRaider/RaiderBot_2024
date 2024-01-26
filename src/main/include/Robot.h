@@ -35,6 +35,13 @@ class Robot : public frc::TimedRobot {
   void SimulationInit() override;
   void SimulationPeriodic() override;
 
+  frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
+  frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
+  frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
+  frc::ShuffleboardTab& BackRight = frc::Shuffleboard::GetTab("Back Right");
+ 
+  
+
   // CAN Motor Controllers
   rev::CANSparkMax                           m_frontLeftSteerMotor {frontLeftSteerDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_frontLeftDriveMotor {frontLeftDriveDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
