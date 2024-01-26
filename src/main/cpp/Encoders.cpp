@@ -22,17 +22,17 @@ double VaENC_Cnt_WheelDeltaDistancePrev[E_RobotCornerSz]; // Prev distance wheel
 
 /******************************************************************************
  * Function:     EncodersInitSwerve
- * //NOTE - Changed from "EncodersInitCommon" Make sure that gets changed when doing Robot.cpp
+ * 
  * Description:  Initialize all of the applicable encoders for our Swerve drive.
  ******************************************************************************/
-void EncodersInitSwerve(rev::SparkMaxRelativeEncoder m_encoderFrontRightSteer,
-                        rev::SparkMaxRelativeEncoder m_encoderFrontLeftSteer,
-                        rev::SparkMaxRelativeEncoder m_encoderRearRightSteer,
-                        rev::SparkMaxRelativeEncoder m_encoderRearLeftSteer,
-                        rev::SparkMaxRelativeEncoder m_encoderFrontRightDrive,
-                        rev::SparkMaxRelativeEncoder m_encoderFrontLeftDrive,
-                        rev::SparkMaxRelativeEncoder m_encoderRearRightDrive,
-                        rev::SparkMaxRelativeEncoder m_encoderRearLeftDrive)
+void EncodersInitSwerve(rev::SparkRelativeEncoder m_encoderFrontRightSteer,
+                        rev::SparkRelativeEncoder m_encoderFrontLeftSteer,
+                        rev::SparkRelativeEncoder m_encoderRearRightSteer,
+                        rev::SparkRelativeEncoder m_encoderRearLeftSteer,
+                        rev::SparkRelativeEncoder m_encoderFrontRightDrive,
+                        rev::SparkRelativeEncoder m_encoderFrontLeftDrive,
+                        rev::SparkRelativeEncoder m_encoderRearRightDrive,
+                        rev::SparkRelativeEncoder m_encoderRearLeftDrive)
   {
     T_RobotCorner LeENC_e_Index;
 
@@ -69,10 +69,10 @@ void Encoders_Drive_CompBot(double                       LeENC_Cnt_EncoderWheelA
                             double                       LeENC_Cnt_EncoderWheelAngleFrontRightRaw,
                             double                       LeENC_Cnt_EncoderWheelAngleRearLeftRaw,
                             double                       LeENC_Cnt_EncoderWheelAngleRearRightRaw,
-                            rev::SparkMaxRelativeEncoder m_encoderFrontLeftDrive,
-                            rev::SparkMaxRelativeEncoder m_encoderFrontRightDrive,
-                            rev::SparkMaxRelativeEncoder m_encoderRearLeftDrive,
-                            rev::SparkMaxRelativeEncoder m_encoderRearRightDrive)
+                            rev::SparkRelativeEncoder m_encoderFrontLeftDrive,
+                            rev::SparkRelativeEncoder m_encoderFrontRightDrive,
+                            rev::SparkRelativeEncoder m_encoderRearLeftDrive,
+                            rev::SparkRelativeEncoder m_encoderRearRightDrive)
   {
   T_RobotCorner LeENC_e_Index;
 
@@ -81,10 +81,10 @@ void Encoders_Drive_CompBot(double                       LeENC_Cnt_EncoderWheelA
   VaENC_Deg_WheelAngleConverted[E_RearLeft]   = std::fmod((LeENC_Cnt_EncoderWheelAngleRearLeftRaw), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearLeft];
   VaENC_Deg_WheelAngleConverted[E_RearRight]  = std::fmod((LeENC_Cnt_EncoderWheelAngleRearRightRaw), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearRight];
 
-  frc::SmartDashboard::PutNumber("WA FL", VaENC_Deg_WheelAngleConverted[E_FrontLeft]);
-  frc::SmartDashboard::PutNumber("WA FR", VaENC_Deg_WheelAngleConverted[E_FrontRight]);
-  frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
-  frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
+  // frc::SmartDashboard::PutNumber("WA FL", VaENC_Deg_WheelAngleConverted[E_FrontLeft]);
+  // frc::SmartDashboard::PutNumber("WA FR", VaENC_Deg_WheelAngleConverted[E_FrontRight]);
+  // frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
+  // frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
 
   VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontLeft]  = m_encoderFrontLeftDrive.GetPosition();
   VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontRight] = m_encoderFrontRightDrive.GetPosition();

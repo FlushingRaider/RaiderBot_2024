@@ -255,7 +255,7 @@ void DriveControlInit()
 /******************************************************************************
  * Function:     DtrmnEncoderRelativeToCmnd
  *
- * Description:  tbd //NOTE - soooo what exactly is this doing?
+ * Description:  Account for the roll over of the enocoders
  ******************************************************************************/
 double DtrmnEncoderRelativeToCmnd(double          L_JoystickCmnd,
                                   double          L_EncoderReading)
@@ -310,8 +310,6 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
                       bool                     L_ADAS_SD_RobotOriented, 
                       double                   L_Deg_GyroAngle,
                       double                   L_Rad_GyroAngle,
-                      TeMAN_ManipulatorStates  LeMAN_e_CmndState,
-                      TeMAN_ManipulatorStates  LeMAN_e_AttndState,
                       double                  *L_Deg_WheelAngleFwd,
                       double                  *L_Deg_WheelAngleRev,
                       double                  *Le_RPM_SD_WheelSpeedCmnd,
@@ -366,11 +364,7 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
   else
     {
     /* ADAS is disabled, use the driver joysticks */
-    if ((LeMAN_e_CmndState == LeMAN_e_AttndState) &&
-        ((LeMAN_e_CmndState == E_MAN_MidConeIntake)  || (LeMAN_e_CmndState == E_MAN_HighCubeDrop)  || (LeMAN_e_CmndState == E_MAN_LowConeDrop)))
-      {
-        LeDRC_k_ArmExtendScaler = KeDRC_k_SD_ArmExtendedGx;
-      }
+
     L_FWD = -L_JoyStick1Axis1Y * LeDRC_k_ArmExtendScaler;
     L_STR = L_JoyStick1Axis1X * LeDRC_k_ArmExtendScaler;
     L_RCW = L_JoyStick1Axis2X * LeDRC_k_ArmExtendScaler;
