@@ -1,0 +1,5 @@
+X,Y,Tangent X,Tangent Y,Fixed Theta,Reversed,Name
+2.344,-5.223827216960382,0.0,0.0,true,false,Starting Position
+1.8866726511799894,-4.036848390231348,0.2145142457944036,0.35752374299067347,true,false,Curve Vertex - Avoiding Friendly Collision
+2.2584973438902893,-3.05008285957709,0.0,0.5629055477737137,true,false,Counter-Rotation - Prep for Final Position
+2.258,-2.377679679999999,-1.3013864244860502,0.014300949719626477,true,false,Shooting Position - End
