@@ -17,14 +17,16 @@
 #include "ADAS.hpp"
 #include "Odometry.hpp"
 
+#include <units/angle.h>
 
 T_RobotState VeROBO_e_RobotState = E_Init;
 std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
 
+units::angle::degree_t val1 = 65_deg;
 
-
+units::angle::turn_t val2 = val1;
 
 
 /******************************************************************************
@@ -80,6 +82,9 @@ void Robot::RobotMotorCommands()
 void Robot::RobotInit()
 {
   
+
+
+
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
@@ -158,10 +163,10 @@ void Robot::RobotPeriodic() {
                           c_joyStick2.GetRawAxis(3));
   #endif
 
-  Encoders_Drive_CompBot(m_encoderWheelAngleCAN_FL.GetAbsolutePosition().GetValueAsDouble(),
-                         m_encoderWheelAngleCAN_FR.GetAbsolutePosition().GetValueAsDouble(),
-                         m_encoderWheelAngleCAN_RL.GetAbsolutePosition().GetValueAsDouble(),
-                         m_encoderWheelAngleCAN_RR.GetAbsolutePosition().GetValueAsDouble(),
+  Encoders_Drive_CompBot(m_encoderWheelAngleCAN_FL.GetAbsolutePosition().GetValue(),
+                         m_encoderWheelAngleCAN_FR.GetAbsolutePosition().GetValue(),
+                         m_encoderWheelAngleCAN_RL.GetAbsolutePosition().GetValue(),
+                         m_encoderWheelAngleCAN_RR.GetAbsolutePosition().GetValue(),
                          m_encoderFrontLeftDrive,
                          m_encoderFrontRightDrive,
                          m_encoderRearLeftDrive,

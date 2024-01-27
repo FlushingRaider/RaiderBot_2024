@@ -17,10 +17,10 @@ extern double VaENC_Deg_WheelAngleRev[E_RobotCornerSz];
 extern double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz];
 extern double VaENC_In_WheelDeltaDistance[E_RobotCornerSz];
 
-void Encoders_Drive_CompBot(double                       LeENC_Cnt_EncoderWheelAngleFrontLeftRaw,
-                             double                       LeENC_Cnt_EncoderWheelAngleFrontRightRaw,
-                             double                       LeENC_Cnt_EncoderWheelAngleRearLeftRaw,
-                             double                       LeENC_Cnt_EncoderWheelAngleRearRightRaw,
+void Encoders_Drive_CompBot(units::degree_t                 LeENC_Cnt_EncoderWheelAngleFrontLeftRaw,
+                             units::degree_t                LeENC_Cnt_EncoderWheelAngleFrontRightRaw,
+                             units::degree_t                LeENC_Cnt_EncoderWheelAngleRearLeftRaw,
+                             units::degree_t                LeENC_Cnt_EncoderWheelAngleRearRightRaw,
                              rev::SparkRelativeEncoder m_encoderFrontLeftDrive,
                              rev::SparkRelativeEncoder m_encoderFrontRightDrive,
                              rev::SparkRelativeEncoder m_encoderRearLeftDrive,

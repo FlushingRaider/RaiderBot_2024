@@ -54,7 +54,7 @@ class Robot : public frc::TimedRobot {
   
 
 
-  ctre::phoenix6::hardware::CANcoder         m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
+  ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FR     {KeEnc_i_WheelAngleFR, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RL     {KeEnc_i_WheelAngleRL, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RR     {KeEnc_i_WheelAngleRR, "rio"};
@@ -109,8 +109,6 @@ class Robot : public frc::TimedRobot {
   frc::Solenoid                              m_PCM_Valve              {KeINT_i_PCM, frc::PneumaticsModuleType::CTREPCM, 0};
   
 
-
-  // CANCoderConfiguration config = new CANCoderConfiguration();
 
 
 

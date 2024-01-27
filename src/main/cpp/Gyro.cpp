@@ -12,6 +12,8 @@
 #include <ctre/phoenix6/Pigeon2.hpp>
 #include "Const.hpp"
 #include <units/angle.h>
+
+#include <frc/smartdashboard/SmartDashboard.h>
 //TODO - bingus
 ctre::phoenix6::hardware::Pigeon2 bingus = ctre::phoenix6::hardware::Pigeon2(KeGRY_i_Gyro);
 
@@ -61,6 +63,12 @@ void ReadGyro2(bool LeGRY_b_Cmd_DriverZeroGyroCmnd)
   LeGRY_Deg_GyroYawAngleRawDegrees = -bingus.GetYaw().GetValueAsDouble();
   LeGRY_Deg_GyroPitchAngleDegrees = bingus.GetPitch().GetValueAsDouble();
   LeGRY_Deg_GyroRollAngleDegrees = bingus.GetRoll().GetValueAsDouble();
+
+  frc::SmartDashboard::PutNumber("bingus Yaw", LeGRY_Deg_GyroYawAngleRawDegrees);
+  frc::SmartDashboard::PutNumber("bingus Pitch", LeGRY_Deg_GyroPitchAngleDegrees);
+  frc::SmartDashboard::PutNumber("bingus Roll", LeGRY_Deg_GyroPitchAngleDegrees);
+
+
 
   LeGRY_Deg_GyroYawAngleLimited  = std::fmod((LeGRY_Deg_GyroYawAngleRawDegrees), 360);
 
