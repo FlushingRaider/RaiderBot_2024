@@ -15,9 +15,62 @@
 #include "DriveControl.hpp"
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
+#include "Odometry.hpp"
+
+
+T_RobotState VeROBO_e_RobotState = E_Init;
+std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
+double VeROBO_t_MatchTimeRemaining = 0;
+bool VeROBO_b_TestState = false;
 
 
 
+
+
+/******************************************************************************
+ * Function:     RobotMotorCommands
+ *
+ * Description:  Contains the outputs for the motors.
+ *               Run at the end of periodic functions to load calculated data in
+ ******************************************************************************/
+void Robot::RobotMotorCommands()
+{
+  bool LeROBO_b_IntakeArmExtend = false;
+  // Motor output commands:
+  // Swerve drive motors
+  // Swerve stear motors
+  if (VeDRC_b_DriveWheelsInPID == true)
+  {
+    m_frontLeftDrivePID.SetReference(VaDRC_RPM_WheelSpeedCmnd[E_FrontLeft], rev::CANSparkMax::ControlType::kVelocity); // rev::ControlType::kVelocity
+    m_frontRightDrivePID.SetReference(VaDRC_RPM_WheelSpeedCmnd[E_FrontRight], rev::CANSparkMax::ControlType::kVelocity);
+    m_rearLeftDrivePID.SetReference(VaDRC_RPM_WheelSpeedCmnd[E_RearLeft], rev::CANSparkMax::ControlType::kVelocity);
+    m_rearRightDrivePID.SetReference(VaDRC_RPM_WheelSpeedCmnd[E_RearRight], rev::CANSparkMax::ControlType::kVelocity);
+    m_frontLeftSteerMotor.Set(VaDRC_Pct_WheelAngleCmnd[E_FrontLeft]);
+    m_frontRightSteerMotor.Set(VaDRC_Pct_WheelAngleCmnd[E_FrontRight]);
+    m_rearLeftSteerMotor.Set(VaDRC_Pct_WheelAngleCmnd[E_RearLeft]);
+    m_rearRightSteerMotor.Set(VaDRC_Pct_WheelAngleCmnd[E_RearRight]);
+  }
+  else
+  {
+    m_frontLeftDriveMotor.Set(0);
+    m_frontRightDriveMotor.Set(0);
+    m_rearLeftDriveMotor.Set(0);
+    m_rearRightDriveMotor.Set(0);
+    m_frontLeftSteerMotor.Set(0);
+    m_frontRightSteerMotor.Set(0);
+    m_rearLeftSteerMotor.Set(0);
+    m_rearRightSteerMotor.Set(0);
+  }
+
+  m_ArmPivot.Set(0.0);
+  m_Wrist.Set(0.0);
+  m_Gripper.Set(0.0); 
+  m_LinearSlide.Set(0.0);
+
+
+
+
+}
 
 /******************************************************************************
  * Function:     RobotInit
@@ -38,7 +91,26 @@ void Robot::RobotInit()
 
   GyroInit();
 
+  m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
+  m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
+  m_rearLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
+  m_rearRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
+
+  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   
+
+    SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
+                              m_frontRightDrivePID,
+                              m_rearLeftDrivePID,
+                              m_rearRightDrivePID);
+
 
 }
 
@@ -53,8 +125,50 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() {
 
+  VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
 
-  
+
+  Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
+                          c_joyStick.GetRawButton(8),
+                          c_joyStick.GetRawAxis(1),
+                          c_joyStick.GetRawAxis(0),
+                          c_joyStick.GetRawAxis(4),
+                          c_joyStick.GetRawAxis(3),
+                          c_joyStick.GetRawButton(1),
+                          c_joyStick.GetRawButton(3),
+                          c_joyStick.GetRawButton(4),
+                          c_joyStick.GetRawButton(6),
+                          c_joyStick.GetRawButton(2),
+                          c_joyStick.GetRawButton(5),
+                          c_joyStick.GetPOV());
+
+#ifdef CompBot
+  Joystick2_robot_mapping(c_joyStick2.GetRawButton(1),
+                          c_joyStick2.GetRawButton(2),
+                          c_joyStick2.GetRawButton(6),
+                          c_joyStick2.GetRawButton(5),
+                          c_joyStick2.GetRawButton(8),
+                          c_joyStick2.GetRawButton(3),
+                          c_joyStick2.GetRawButton(4),
+                          c_joyStick2.GetRawAxis(1),
+                          c_joyStick2.GetRawAxis(4),
+                          c_joyStick2.GetPOV(),
+                          c_joyStick2.GetRawButton(7),
+                          c_joyStick2.GetRawAxis(2),
+                          c_joyStick2.GetRawAxis(3));
+  #endif
+
+  Encoders_Drive_CompBot(m_encoderWheelAngleCAN_FL.GetAbsolutePosition().GetValueAsDouble(),
+                         m_encoderWheelAngleCAN_FR.GetAbsolutePosition().GetValueAsDouble(),
+                         m_encoderWheelAngleCAN_RL.GetAbsolutePosition().GetValueAsDouble(),
+                         m_encoderWheelAngleCAN_RR.GetAbsolutePosition().GetValueAsDouble(),
+                         m_encoderFrontLeftDrive,
+                         m_encoderFrontRightDrive,
+                         m_encoderRearLeftDrive,
+                         m_encoderRearRightDrive);
+
+  ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
+
   DriveControlMain(VsCONT_s_DriverInput.pct_SwerveForwardBack, // swerve control forward/back
                    VsCONT_s_DriverInput.pct_SwerveStrafe,      // swerve control strafe
                    VsCONT_s_DriverInput.deg_SwerveRotate,      // rotate the robot joystick
@@ -90,12 +204,21 @@ void Robot::RobotPeriodic() {
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
+
+  VeROBO_e_RobotState = E_Auton;
+  VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
+  VeROBO_b_TestState = false;
+
+
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
   
+  GyroInit();
+  
   DriveControlInit();
 
+  OdometryInit();
 
   fmt::print("Auto selected: {}\n", m_autoSelected);
 
@@ -112,11 +235,27 @@ void Robot::AutonomousPeriodic() {
   } else {
     // Default Auto goes here
   }
+
+  RobotMotorCommands();
+
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
 
-void Robot::TeleopPeriodic() {}
+  VeROBO_e_RobotState = E_Teleop;
+  VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
+  VeROBO_b_TestState = false;
+
+  DriveControlInit();
+
+  OdometryInit();
+}
+
+void Robot::TeleopPeriodic() {
+
+  RobotMotorCommands();
+
+}
 
 void Robot::DisabledInit() {}
 

@@ -14,11 +14,22 @@
 #include <frc/DigitalOutput.h>
 #include <frc/Joystick.h>
 #include <frc/PowerDistribution.h>
-//NOTE - phoenix isn't currently used but when it is needed phoenix6 is gonna be imported different
+#include <ctre/phoenix6/CANcoder.hpp>
 #include "rev/CANSparkMax.h"
 #include <frc/motorcontrol/Spark.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include "Const.hpp"
+
+#include <ctre/phoenix6/core/CoreCANcoder.hpp>
+
+
+// needed for 2023 bot compatibility
+#include <ctre/Phoenix.h>
+#include <frc/Compressor.h>
+#include <frc/DoubleSolenoid.h>
+#include <frc/Solenoid.h>
+
+
 
 class Robot : public frc::TimedRobot {
  public:
@@ -34,13 +45,24 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
   void SimulationInit() override;
   void SimulationPeriodic() override;
+  void RobotMotorCommands();
 
   frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
   frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
   frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
   frc::ShuffleboardTab& BackRight = frc::Shuffleboard::GetTab("Back Right");
- 
   
+
+
+  ctre::phoenix6::hardware::CANcoder         m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
+  ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FR     {KeEnc_i_WheelAngleFR, "rio"};
+  ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RL     {KeEnc_i_WheelAngleRL, "rio"};
+  ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RR     {KeEnc_i_WheelAngleRR, "rio"};
+
+
+  // PDP - Power Distribution Panel - CAN
+  frc::PowerDistribution                     PDP                   {C_PDP_ID,               frc::PowerDistribution::ModuleType::kRev};
+
 
   // CAN Motor Controllers
   rev::CANSparkMax                           m_frontLeftSteerMotor {frontLeftSteerDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
@@ -63,6 +85,40 @@ class Robot : public frc::TimedRobot {
   rev::SparkRelativeEncoder               m_encoderRearLeftDrive   = m_rearLeftDriveMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_encoderRearRightSteer  = m_rearRightSteerMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_encoderRearRightDrive  = m_rearRightDriveMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+
+
+  rev::SparkMaxPIDController                 m_frontLeftDrivePID    = m_frontLeftDriveMotor.GetPIDController();
+  rev::SparkMaxPIDController                 m_frontRightDrivePID   = m_frontRightDriveMotor.GetPIDController();
+  rev::SparkMaxPIDController                 m_rearLeftDrivePID     = m_rearLeftDriveMotor.GetPIDController();
+  rev::SparkMaxPIDController                 m_rearRightDrivePID    = m_rearRightDriveMotor.GetPIDController();
+
+
+  rev::CANSparkMax                           m_ArmPivot            {KeMAN_i_ArmPivot,        rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_Wrist               {KeMAN_i_Wrist,           rev::CANSparkMax::MotorType::kBrushless};        
+  rev::CANSparkMax                           m_Gripper             {KeMAN_i_Gripper,         rev::CANSparkMax::MotorType::kBrushless};
+ // rev::CANSparkMax                           m_IntakeRollers       {KeINT_i_IntakeRollers,   rev::CANSparkMax::MotorType::kBrushless};
+
+  rev::SparkMaxPIDController                 m_ArmPivotPID         = m_ArmPivot.GetPIDController();
+  rev::SparkMaxPIDController                 m_WristPID            = m_Wrist.GetPIDController();
+  rev::SparkMaxPIDController                 m_GripperPID          = m_Gripper.GetPIDController();
+  // rev::SparkMaxLimitSwitch                   m_WristforwardLimit   = m_Wrist.GetForwardLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  rev::SparkMaxLimitSwitch                   m_WristreverseLimit   = m_Wrist.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  WPI_TalonSRX                               m_LinearSlide          {KeMAN_i_LinearSlide};
+
+  frc::Compressor                            m_pcmCompressor          {KeINT_i_PCM, frc::PneumaticsModuleType::CTREPCM};
+  frc::Solenoid                              m_PCM_Valve              {KeINT_i_PCM, frc::PneumaticsModuleType::CTREPCM, 0};
+  
+
+
+  // CANCoderConfiguration config = new CANCoderConfiguration();
+
+
+
+    // Driver Inputs
+  frc::Joystick c_joyStick{0};
+  #ifdef CompBot
+  frc::Joystick c_joyStick2{1};
+  #endif
 
 
  private:

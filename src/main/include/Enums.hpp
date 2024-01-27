@@ -13,6 +13,15 @@
 //TODO Add Comments to explain all these?
 
 
+// enum for each state of the robot
+typedef enum T_RobotState
+{
+  E_Init,
+  E_Auton,
+  E_Teleop
+} T_RobotState;
+
+
 // enum of each swerve corner, used for motor control indexing (see DriveControl.cpp or Encoders.cpp)
 typedef enum T_RobotCorner
 {
@@ -123,5 +132,18 @@ struct RobotUserInput
   bool                  b_VisionButton;
   bool                  b_X_Mode;
 };
+
+
+typedef enum TeMAN_e_ManipulatorActuator
+{
+  E_MAN_ArmPivot,
+  E_MAN_LinearSlide,
+  E_MAN_Wrist,
+  E_MAN_Gripper,
+  E_MAN_IntakeRollers,
+  E_MAN_IntakeArm,
+  E_MAN_Sz
+} TeMAN_e_ManipulatorActuator;
+
 
 #endif

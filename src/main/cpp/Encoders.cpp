@@ -9,6 +9,7 @@
 
 #include "rev/CANSparkMax.h"
 #include "Const.hpp"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz]; // This is the wheel angle coming from the angle Encoder and processed to only be from 0 - 180
 double VaENC_Deg_WheelAngleFwd[E_RobotCornerSz]; // This is the wheel angle as if the wheel were going to be driven in a forward direction, in degrees
@@ -58,6 +59,9 @@ void EncodersInitSwerve(rev::SparkRelativeEncoder m_encoderFrontRightSteer,
     m_encoderRearRightDrive.SetPosition(0);
     m_encoderRearLeftDrive.SetPosition(0);
 
+
+
+
   }
 
 /******************************************************************************
@@ -77,14 +81,26 @@ void Encoders_Drive_CompBot(double                       LeENC_Cnt_EncoderWheelA
   T_RobotCorner LeENC_e_Index;
 
   VaENC_Deg_WheelAngleConverted[E_FrontLeft]  = std::fmod((LeENC_Cnt_EncoderWheelAngleFrontLeftRaw), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_FrontLeft];
-  VaENC_Deg_WheelAngleConverted[E_FrontRight] = std::fmod((LeENC_Cnt_EncoderWheelAngleFrontRightRaw), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_FrontRight];
+  VaENC_Deg_WheelAngleConverted[E_FrontRight] = std::fmod((LeENC_Cnt_EncoderWheelAngleFrontRightRaw * 240.0), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_FrontRight];
   VaENC_Deg_WheelAngleConverted[E_RearLeft]   = std::fmod((LeENC_Cnt_EncoderWheelAngleRearLeftRaw), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearLeft];
   VaENC_Deg_WheelAngleConverted[E_RearRight]  = std::fmod((LeENC_Cnt_EncoderWheelAngleRearRightRaw), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearRight];
 
-  // frc::SmartDashboard::PutNumber("WA FL", VaENC_Deg_WheelAngleConverted[E_FrontLeft]);
-  // frc::SmartDashboard::PutNumber("WA FR", VaENC_Deg_WheelAngleConverted[E_FrontRight]);
-  // frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
-  // frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
+  frc::SmartDashboard::PutNumber("WA FL", VaENC_Deg_WheelAngleConverted[E_FrontLeft]);
+  frc::SmartDashboard::PutNumber("WA FR", VaENC_Deg_WheelAngleConverted[E_FrontRight]);
+  frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
+  frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
+
+
+  frc::SmartDashboard::PutNumber("WS FL", m_encoderFrontLeftDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS FR", m_encoderFrontRightDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS RL", m_encoderRearLeftDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
+
+  frc::SmartDashboard::PutNumber("raw WA FL", LeENC_Cnt_EncoderWheelAngleFrontLeftRaw);
+  frc::SmartDashboard::PutNumber("Raw WA FR", LeENC_Cnt_EncoderWheelAngleFrontRightRaw);
+  frc::SmartDashboard::PutNumber("Raw WA RL", LeENC_Cnt_EncoderWheelAngleRearLeftRaw);
+  frc::SmartDashboard::PutNumber("raw WA RR", LeENC_Cnt_EncoderWheelAngleRearRightRaw);
+
 
   VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontLeft]  = m_encoderFrontLeftDrive.GetPosition();
   VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontRight] = m_encoderFrontRightDrive.GetPosition();

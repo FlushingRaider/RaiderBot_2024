@@ -15,10 +15,13 @@ const double C_Tau = 6.28318530717958647;
 
 // CAN Device IDs:
 static const int C_PDP_ID = 21;
-static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 3, frontRightDriveDeviceID = 4;
+static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 4, frontRightDriveDeviceID = 3;
 static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
 static const int KeGRY_i_Gyro = 16;
-
+static const int KeEnc_i_WheelAngleFL = 17;
+static const int KeEnc_i_WheelAngleFR = 18;
+static const int KeEnc_i_WheelAngleRL = 19;
+static const int KeEnc_i_WheelAngleRR = 20;
 /******************************************************************************
  * Section: Swerve_Constants
  *
@@ -340,3 +343,13 @@ const double K_DesiredAutoRotateSpeed[10] = {-0.15,  //  -4.0
 // Gyro cals
 /* KeGRY_ms_GyroTimeoutMs: Set to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails. */
 const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS if fails
+
+
+
+
+// 2023 bot
+static const int KeMAN_i_LinearSlide = 10;
+static const int KeMAN_i_ArmPivot = 11;
+static const int KeMAN_i_Wrist = 12;
+static const int KeMAN_i_Gripper = 13;
+static const int KeINT_i_PCM = 22;
