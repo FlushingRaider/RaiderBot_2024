@@ -53,6 +53,7 @@ void Robot::RobotInit()
  */
 void Robot::RobotPeriodic() {
 
+
   
   DriveControlMain(VsCONT_s_DriverInput.pct_SwerveForwardBack, // swerve control forward/back
                    VsCONT_s_DriverInput.pct_SwerveStrafe,      // swerve control strafe
@@ -64,7 +65,7 @@ void Robot::RobotPeriodic() {
                    VeADAS_b_X_Mode, // X mode req from ADAS
                    VsCONT_s_DriverInput.b_X_Mode,
                    VeADAS_e_ActiveFeature,
-                   VeADAS_Pct_SD_FwdRev,
+                   VeADAS_Pct_SD_FwdRev, // similar to driver input but used for auton
                    VeADAS_Pct_SD_Strafe,
                    VeADAS_Pct_SD_Rotate,
                    VeADAS_Deg_SD_DesiredPose,
