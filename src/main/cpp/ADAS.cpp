@@ -41,7 +41,6 @@ bool VeADAS_b_State1Complete = false;
 bool VeADAS_b_State2Complete = false;
 bool VeADAS_b_AutonOncePerTrigger = false;
 
-
 /* ADAS output control variables */
 double VeADAS_Pct_SD_FwdRev = 0;
 double VeADAS_Pct_SD_Strafe = 0;
@@ -58,3 +57,115 @@ double VeADAS_in_OffsetRequestY;
 double VeADAS_in_GlobalRequestX;
 double VeADAS_in_GlobalRequestY;
 
+/******************************************************************************
+ * Function:     ADAS_Main_Init
+ *
+ * Description:  Initialize all applicable ADAS variables at robot init.
+ ******************************************************************************/
+void ADAS_Main_Init(void)
+{
+  std::string_view LeADAS_Str_AutonSelectorName = "Auton";
+  VeADAS_e_AutonChooser.AddOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
+}
+
+/******************************************************************************
+ * Function:     ADAS_DetermineMode
+ *
+ * Description:  Ping the driver station to see what the desired auton routine
+ *               should be.
+ ******************************************************************************/
+void ADAS_DetermineMode(void)
+{
+  VeADAS_e_DriverRequestedAutonFeature = VeADAS_e_AutonChooser.GetSelected();
+  frc::SmartDashboard::PutNumber("Requested Auton", float(VeADAS_e_DriverRequestedAutonFeature));
+}
+
+/******************************************************************************
+ * Function:     ADAS_Main_Reset
+ *
+ * Description:  Reset all applicable ADAS variables.
+ ******************************************************************************/
+void ADAS_Main_Reset(void)
+{
+  VeADAS_e_ActiveFeature = E_ADAS_Disabled;
+  VeADAS_Pct_SD_FwdRev = 0;
+  VeADAS_Pct_SD_Strafe = 0;
+  VeADAS_Pct_SD_Rotate = 0;
+
+  VeADAS_b_SD_RobotOriented = false;
+  VeADAS_e_DriverRequestedAutonFeature = E_ADAS_AutonDisabled;
+  VeADAS_b_StateComplete = false;
+  VeADAS_b_State1Complete = false;
+  VeADAS_b_State2Complete = false;
+  VeADAS_b_AutonOncePerTrigger = false;
+
+  /* Trigger the resets for all of the sub tasks/functions as well: */
+
+  // NOTE - don't forgor to add functions, always rember
+}
+
+void AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
+                   T_ADAS_ActiveFeature LeADAS_e_ActiveFeature)
+{
+  if ((LeADAS_b_Driver1_JoystickActive == true) || (VeADAS_b_StateComplete == true))
+  {
+    /* Abort criteria goes here. */
+
+    LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+    VeADAS_b_StateComplete = false;
+    VeADAS_b_State1Complete = false;
+    VeADAS_b_State2Complete = false;
+  }
+}
+
+/******************************************************************************
+ * Function:     ADAS_ControlMain
+ *
+ * Description:  Main calling function for the ADAS (advanced driver assistance
+ *               system)control when robot is active. This will call and manage
+ *               the various ADAS features.
+ ******************************************************************************/
+T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
+                                      double *L_Pct_Strafe,
+                                      double *L_Pct_Rotate,
+                                      double *LeADAS_Deg_DesiredPose,
+                                      bool *LeADAS_b_SD_RobotOriented,
+                                      bool *LeADAS_b_X_Mode,
+                                      bool LeADAS_b_Driver1_JoystickActive,
+                                      bool L_Driver_SwerveGoalAutoCenter,
+                                      double L_Deg_GyroAngleDeg,
+                                      double L_L_X_FieldPos,
+                                      double L_L_Y_FieldPos,
+                                      T_RobotState LeADAS_e_RobotState,
+                                      T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
+                                      bool L_OdomCentered,
+                                      frc::DriverStation::Alliance LeLC_e_AllianceColor,
+                                      double L_OdomOffsetX,
+                                      double L_OdomOffsetY,
+                                      double L_OdomGlobalRequestX,
+                                      double L_OdomGlobalRequestY,
+                                      double L_OdomOffsetRequestX,
+                                      double L_OdomOffsetRequestY)
+{
+  bool LeADAS_b_State1Complete = false;
+  bool LeADAS_b_State2Complete = false;
+
+  if (LeADAS_e_RobotState == E_Teleop)
+  {
+    AbortCriteria(LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);
+  }
+  else if (LeADAS_e_RobotState == E_Auton)
+  {
+
+    // NOTE - select auton is a switch now because faaassssttttt
+    // switch (VeADAS_e_DriverRequestedAutonFeature)
+    // {
+    // case E_ADAS_AutonDisabled:
+    //   /* code */
+    //   break;
+
+    // default:
+    //   break;
+    // }
+  }
+}
