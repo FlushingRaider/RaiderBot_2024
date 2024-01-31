@@ -31,6 +31,7 @@
 #include "Driver_inputs.hpp"
 #include "Gyro.hpp"
 
+#include "ADAS_DM.hpp"
 #include "Odometry.hpp"
 /* ADAS control state variables */
 T_ADAS_ActiveFeature VeADAS_e_ActiveFeature = E_ADAS_Disabled;
@@ -66,6 +67,8 @@ void ADAS_Main_Init(void)
 {
   std::string_view LeADAS_Str_AutonSelectorName = "Auton";
   VeADAS_e_AutonChooser.AddOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
+  VeADAS_e_AutonChooser.AddOption("Pathfollower1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath1);
+
 }
 
 /******************************************************************************
@@ -158,14 +161,25 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   {
 
     // NOTE - select auton is a switch now because faaassssttttt
-    // switch (VeADAS_e_DriverRequestedAutonFeature)
-    // {
-    // case E_ADAS_AutonDisabled:
-    //   /* code */
-    //   break;
-
-    // default:
-    //   break;
-    // }
+    switch (VeADAS_e_DriverRequestedAutonFeature)
+    {
+    case E_ADAS_AutonDisabled:
+      /* code */
+      break;
+    case E_ADAS_DM_PathFollower1:
+        VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
+                                                     L_Pct_Strafe,
+                                                     L_Pct_Rotate,
+                                                     LeADAS_Deg_DesiredPose,
+                                                     LeADAS_b_SD_RobotOriented,
+                                                     L_L_X_FieldPos,
+                                                     L_L_Y_FieldPos,
+                                                     L_Deg_GyroAngleDeg,
+                                                     LeADAS_e_ActiveFeature,
+                                                     LeLC_e_AllianceColor);
+      break;
+    default:
+      break;
+    }
   }
 }
