@@ -2,10 +2,10 @@ import json, os
 
 #open our file
 
-working_path = "C:/Users/sdbig/Documents/Source/C_Source/RaiderBot_2023/RaiderBot_2023/src/main/deploy/paths/output/"
-working_name = "BlueP1"
+working_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/pathing/Output_Directory/"
+working_name = "L_Preload"
 
-output_path = "C:/Users/sdbig/Documents/Source/C_Source/RaiderBot_2023/RaiderBot_2023/src/main/include/MotionProfiles/"
+output_path = input("input output path: ")
 output_name = working_name + ".hpp"
 
 json_file = working_path + working_name + ".wpilib.json"
