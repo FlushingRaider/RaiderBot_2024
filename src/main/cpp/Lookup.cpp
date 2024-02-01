@@ -332,7 +332,7 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
   switch (LeADAS_e_ActiveFeature)
     {
 
-      case E_ADAS_DM_PathFollower2:
+      case E_ADAS_DM_PathFollower1:
         LeLU_Int_X_AxisSize = (int)(sizeof(L_Preload_T) / sizeof(L_Preload_X[0]));
         LeLU_Int_X_CalArraySize = (int)(sizeof(L_Preload_X) / sizeof(L_Preload_X[0]));
     
