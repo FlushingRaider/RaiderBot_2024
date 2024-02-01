@@ -133,17 +133,24 @@ struct RobotUserInput
   bool                  b_X_Mode;
 };
 
-
-typedef enum TeMAN_e_ManipulatorActuator
+typedef enum T_DJ_Motors
 {
-  E_MAN_ArmPivot,
-  E_MAN_LinearSlide,
-  E_MAN_Wrist,
-  E_MAN_Gripper,
-  E_MAN_IntakeRollers,
-  E_MAN_IntakeArm,
-  E_MAN_Sz
-} TeMAN_e_ManipulatorActuator;
+  E_DJ_m_Elevator,
+  E_DJ_m_Wrist,
+  E_DJ_m_WristIntake,
+  E_DJ_m_Underbelly,
+  E_DJ_m_Shooter1,
+  E_DJ_m_Shooter2
+} T_DJ_Motors;
 
+typedef enum T_DJ_States
+{
+  E_DJ_Init,
+  E_DJ_AmpIntake,
+  E_DJ_AmpScore,
+  E_DJ_Underbelly,
+  E_DJ_Shooting,
+  E_DJ_ClimberExtended
+} T_DJ_States;
 
 #endif
