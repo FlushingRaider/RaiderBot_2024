@@ -342,8 +342,8 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
         LeLU_Int_Ang_AxisSize = (int)(sizeof(L_Preload_T) / sizeof(L_Preload_ROT[0]));
         LeLU_Int_Ang_CalArraySize = (int)(sizeof(L_Preload_ROT) / sizeof(L_Preload_ROT[0]));
     
-        LeLU_Int_t_AxisSize = (int)(sizeof(L_Preload_T) / sizeof(L_Preload_ROT_T[0]));
-        LeLU_Int_t_CalArraySize = (int)(sizeof(L_Preload_ROT_T) / sizeof(L_Preload_ROT_T[0]));
+        LeLU_Int_t_AxisSize = (int)(sizeof(L_Preload_T) / sizeof(L_Preload_T_REM[0]));
+        LeLU_Int_t_CalArraySize = (int)(sizeof(L_Preload_T_REM) / sizeof(L_Preload_T_REM[0]));
     
         LeLU_l_X_Loc = LookUp1D_Table(&L_Preload_T[0],
                                       &L_Preload_X[0],
@@ -364,7 +364,7 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
                                       LeLU_s_AutonTime);
     
         LeLU_t_TimeRemaining = LookUp1D_Table(&L_Preload_T[0],
-                                              &L_Preload_ROT_T[0],
+                                              &L_Preload_T_REM[0],
                                               LeLU_Int_t_AxisSize,
                                               LeLU_Int_t_CalArraySize,
                                               LeLU_s_AutonTime);

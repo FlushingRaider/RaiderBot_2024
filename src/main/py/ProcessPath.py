@@ -5,7 +5,7 @@ import json, os
 working_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/pathing/Output_Directory/"
 working_name = "L_Preload"
 
-output_path = input("input output path: ")
+output_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/include/MotionProfiles/"
 output_name = working_name + ".hpp"
 
 json_file = working_path + working_name + ".wpilib.json"
@@ -33,24 +33,26 @@ time_output = time_head + time_data + time_foot
 
 #rot
 rot_data = ""
-rot_time_data = ""
-rot_size = 2
+time_remain_data = ""
+rot_size = 0
 
-#for elm in data:
-#    rot_data += str(elm["pose"]["rotation"]["radians"]) + ","
-#    rot_size += 1
+for elm in data:
+   rot_data += str(elm["pose"]["rotation"]["radians"]) + ","
+   rot_size += 1
 
-rot_data = str(rotation_start) + "," + str(rotation_end)
-rot_time_data = str(0) + "," + time_final
+# rot_data = str(rotation_start) + "," + str(rotation_end)
+for elm in data:
+    time_remain_data += str(float(time_final) - float(elm["time"])) + ","
+    
+
 
 rot_head = "const double " + working_name + "_ROT" + "[" + str(rot_size) + "] = {"
 rot_foot = "};"
 
 rot_output = rot_head + rot_data + rot_foot
 
-rot_time_head = "const double " + working_name + "_ROT_T" + "[" + str(rot_size) + "] = {"
-rot_foot = "};"
-rot_time_output = rot_time_head + rot_time_data + rot_foot
+time_remain_head = "const double " + working_name + "_T_REM" + "[" + str(rot_size) + "] = {"
+rot_time_output = time_remain_head + time_remain_data + rot_foot
 
 #x
 x_data = ""
