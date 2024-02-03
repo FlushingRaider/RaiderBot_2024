@@ -24,9 +24,6 @@ std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
 
-units::angle::degree_t val1 = 65_deg;
-
-units::angle::turn_t val2 = val1;
 
 
 /******************************************************************************
@@ -82,9 +79,6 @@ void Robot::RobotMotorCommands()
 void Robot::RobotInit()
 {
   
-
-
-
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
@@ -116,6 +110,9 @@ void Robot::RobotInit()
                               m_rearLeftDrivePID,
                               m_rearRightDrivePID);
 
+
+  ADAS_Main_Init();
+  ADAS_Main_Reset();
 
 }
 
@@ -173,6 +170,39 @@ void Robot::RobotPeriodic() {
                          m_encoderRearRightDrive);
 
   ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
+
+
+  DtrmnSwerveBotLocation(VeGRY_Rad_GyroYawAngleRad,
+                         &VaENC_Rad_WheelAngleFwd[0],
+                         &VaENC_In_WheelDeltaDistance[0],
+                         VsCONT_s_DriverInput.b_ZeroGyro);
+
+
+  ADAS_DetermineMode();
+
+  VeADAS_e_ActiveFeature = ADAS_ControlMain(&VeADAS_Pct_SD_FwdRev,
+                                            &VeADAS_Pct_SD_Strafe,
+                                            &VeADAS_Pct_SD_Rotate,
+                                            &VeADAS_Deg_SD_DesiredPose,
+                                            &VeADAS_b_SD_RobotOriented,
+                                            &VeADAS_b_X_Mode,
+                                            VsCONT_s_DriverInput.b_JoystickActive,
+                                            VsCONT_s_DriverInput.b_SwerveGoalAutoCenter,
+                                            VeGRY_Deg_GyroYawAngleDegrees,
+                                            VeODO_In_RobotDisplacementX,
+                                            VeODO_In_RobotDisplacementY,
+                                            VeROBO_e_RobotState,
+                                            VeADAS_e_ActiveFeature,
+                                            V_OdomCentered,
+                                            VeROBO_e_AllianceColor,
+                                            V_OffsetXOut,
+                                            V_OffsetYOut,
+                                            VeADAS_in_GlobalRequestX,
+                                            VeADAS_in_GlobalRequestY,
+                                            VeADAS_in_OffsetRequestX,
+                                            VeADAS_in_OffsetRequestY);
+
+
 
   DriveControlMain(VsCONT_s_DriverInput.pct_SwerveForwardBack, // swerve control forward/back
                    VsCONT_s_DriverInput.pct_SwerveStrafe,      // swerve control strafe
@@ -235,11 +265,11 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
+  // if (m_autoSelected == kAutoNameCustom) {
+  //   // Custom Auto goes here
+  // } else {
+  //   // Default Auto goes here
+  // }
 
   RobotMotorCommands();
 

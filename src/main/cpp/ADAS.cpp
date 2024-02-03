@@ -68,7 +68,8 @@ void ADAS_Main_Init(void)
   std::string_view LeADAS_Str_AutonSelectorName = "Auton";
   VeADAS_e_AutonChooser.AddOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   VeADAS_e_AutonChooser.AddOption("Pathfollower1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath1);
-
+  VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
+  frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
 }
 
 /******************************************************************************
@@ -142,7 +143,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                       T_RobotState LeADAS_e_RobotState,
                                       T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
                                       bool L_OdomCentered,
-                                      frc::DriverStation::Alliance LeLC_e_AllianceColor,
+                                      std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor,
                                       double L_OdomOffsetX,
                                       double L_OdomOffsetY,
                                       double L_OdomGlobalRequestX,
@@ -166,7 +167,8 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     case E_ADAS_AutonDisabled:
       /* code */
       break;
-    case E_ADAS_DM_PathFollower1:
+    case E_ADAS_AutonDrivePath1:
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower1;
         VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                      L_Pct_Strafe,
                                                      L_Pct_Rotate,
@@ -182,4 +184,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       break;
     }
   }
+
+return (LeADAS_e_ActiveFeature);
+
 }
