@@ -3,8 +3,8 @@
 #include <units/angle.h>
 #include <units/length.h>
 
-// Define the desired test state here: COMP (no test), DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-#define COMP
+// Define the desired test state here: Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
+#define Bot2024
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
@@ -18,11 +18,26 @@ const units::second_t C_ExeTime_t = 0.02_s; // Set to match the the default cont
 static const int C_PDP_ID = 21;
 static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 4, frontRightDriveDeviceID = 3;
 static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
+
+static const int KeDJ_Amp_i_Intake = 11;
+static const int KeDJ_Amp_i_Wrist = 12; //NOTE: these are temporary mechinism ids they have not been flashed 10 - 15
+static const int KeDJ_Spk_i_Underbelly = 13;
+static const int KeDJ_Spk_i_Shooter1 = 14; 
+static const int KeDJ_Spk_i_Shooter2 = 15;
 static const int KeGRY_i_Gyro = 16;
 static const int KeEnc_i_WheelAngleFL = 17;
 static const int KeEnc_i_WheelAngleFR = 18;
 static const int KeEnc_i_WheelAngleRL = 19;
 static const int KeEnc_i_WheelAngleRR = 20;
+
+#ifdef Bot2023
+static const int KeMAN_i_LinearSlide = 10;
+#endif
+
+#ifdef Bot2024
+static const int KeDJ_Amp_i_Elevator = 10;
+#endif
+
 /******************************************************************************
  * Section: Swerve_Constants
  *
@@ -99,11 +114,11 @@ const double Ke_k_SD_SignY[E_RobotCornerSz] = {1.0,   // E_FrontLeft
                                                1.0,   // E_RearLeft
                                                -1.0}; // E_RearRight
 
-/**********
+/*****************************
  *
  * Wheel PIDs
  *
- ***********/
+ *****************************/
 /* K_SD_WheelSpeedPID_V2_Gx: PID gains for the driven wheels that is within the motor controllers. */
 const double K_SD_WheelSpeedPID_V2_Gx[E_PID_SparkMaxCalSz] = {0.000350, // kP
                                                               0.000001, // kI
@@ -378,9 +393,49 @@ const double K_DesiredAutoRotateSpeed[10] = {-0.15,  //  -4.0
 /* KeGRY_ms_GyroTimeoutMs: Set to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails. */
 const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS if fails
 
-// 2023 bot
-static const int KeMAN_i_LinearSlide = 10;
-static const int KeMAN_i_ArmPivot = 11;
-static const int KeMAN_i_Wrist = 12;
-static const int KeMAN_i_Gripper = 13;
-static const int KeINT_i_PCM = 22;
+/******************************************************************************
+ * Section: DJ_Const
+ *
+ * Description:  Any calculations, PIDs, and anything else needed to the run Amp and Spk mechanisms
+ *
+ * Author: 5561
+ ******************************************************************************/
+
+/* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
+const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                                0.000001, // kI
+                                                                0.002000, // kD
+                                                                0.0,      // kIz
+                                                                0.0,      // kFF
+                                                                1.0,      // kMaxOut
+                                                                -1.0,      // kMinOut
+                                                                1.05,     // kMaxVel
+                                                                0.5,      // kMinVel
+                                                                0.0,      // kMaxAcc
+                                                                0.0};     // kAllErr
+
+/* KaDJ_Amp_k_WristPID_Gx: PID gains for the Wrist control. */
+const double KaDJ_Amp_k_WristPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                              0.000001, // kI
+                                                              0.002000, // kD
+                                                              0.0,      // kIz
+                                                              0.0,      // kFF
+                                                              1.0,      // kMaxOut
+                                                             -1.0,      // kMinOut
+                                                              1.05,     // kMaxVel
+                                                              0.5,      // kMinVel
+                                                              0.0,      // kMaxAcc
+                                                              0.0};     // kAllErr                                                               
+
+/* KaDJ_Amp_k_IntakePID_Gx: PID gains for the Gripper control. */
+const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                              0.000001, // kI
+                                                              0.002000, // kD
+                                                              0.0,      // kIz
+                                                              0.0,      // kFF
+                                                              1.0,      // kMaxOut
+                                                             -1.0,      // kMinOut
+                                                              1.05,     // kMaxVel
+                                                              0.5,      // kMinVel
+                                                              0.0,      // kMaxAcc
+                                                              0.0};     // kAllErr
