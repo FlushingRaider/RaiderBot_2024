@@ -257,7 +257,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
         *LeADAS_Deg_DesiredPose = LeADAS_Deg_TargetAngle;
     }
-    else
+    else    
     {
         /* We have been at the correct location for the set amount of time. */
         *LeADAS_Pct_FwdRev = 0;
@@ -289,6 +289,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     // frc::SmartDashboard::PutNumber("Rot Cmnd", LeADAS_Deg_TargetAngle);
     // frc::SmartDashboard::PutNumber("Rot Act",  LeADAS_Deg_RelativeAng);
     frc::SmartDashboard::PutNumber("Rot Err", LeADAS_Deg_RotateError);
+
+    frc::SmartDashboard::PutBoolean("path complete", LeADAS_b_DM_StateComplete);
 
     return (LeADAS_b_DM_StateComplete);
 }

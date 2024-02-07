@@ -17,6 +17,8 @@
 #include "ADAS.hpp"
 #include "Odometry.hpp"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 #include <units/angle.h>
 
 T_RobotState VeROBO_e_RobotState = E_Init;
@@ -178,7 +180,12 @@ void Robot::RobotPeriodic() {
                          VsCONT_s_DriverInput.b_ZeroGyro);
 
 
+  frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
+  frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
+
   ADAS_DetermineMode();
+
+  frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
 
   VeADAS_e_ActiveFeature = ADAS_ControlMain(&VeADAS_Pct_SD_FwdRev,
                                             &VeADAS_Pct_SD_Strafe,

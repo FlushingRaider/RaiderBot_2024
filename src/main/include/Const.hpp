@@ -74,7 +74,7 @@ const double K_SD_MaxGain = 0.7;
 const double KeDRC_k_SD_AutonGain = 0.9;
 
 /* K_SD_WheelMaxSpeed: Max RPM speed of the swerve drive wheel motor.*/
-const double K_SD_WheelMaxSpeed = 6000;
+const double K_SD_WheelMaxSpeed = 4500;
 
 /* Ke_RPM_SD_WheelMinCmndSpeed: Min RPM speed of the swerve drive wheel to keep it under PID control.
   If the absolute value of the command, wheels will transition to 0 power (but still in brake
