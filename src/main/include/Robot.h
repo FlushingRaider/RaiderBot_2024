@@ -99,15 +99,17 @@ class Robot : public frc::TimedRobot {
   rev::SparkMaxPIDController                 m_rearLeftDrivePID     = m_rearLeftDriveMotor.GetPIDController();
   rev::SparkMaxPIDController                 m_rearRightDrivePID    = m_rearRightDriveMotor.GetPIDController();
 
-
+#ifdef Bot2024
   rev::CANSparkMax                           m_Elevator            {KeDJ_Amp_i_Elevator,        rev::CANSparkMax::MotorType::kBrushless};
+#endif  
   rev::CANSparkMax                           m_Wrist               {KeDJ_Amp_i_Wrist,           rev::CANSparkMax::MotorType::kBrushless};        
   rev::CANSparkMax                           m_Intake              {KeDJ_Amp_i_Intake,         rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Underbelly          {KeDJ_Spk_i_Underbelly,           rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Shooter1            {KeDJ_Spk_i_Shooter1,           rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Shooter2            {KeDJ_Spk_i_Shooter2,           rev::CANSparkMax::MotorType::kBrushless};
-
+#ifdef Bot2024
   rev::SparkMaxPIDController                 m_ElevatorPID         = m_Elevator.GetPIDController();
+#endif
   rev::SparkMaxPIDController                 m_WristPID            = m_Wrist.GetPIDController();
   rev::SparkMaxPIDController                 m_IntakePID           = m_Intake.GetPIDController();
   rev::SparkMaxPIDController                 m_UnderbellyPID       = m_Underbelly.GetPIDController();

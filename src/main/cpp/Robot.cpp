@@ -243,10 +243,11 @@ void Robot::RobotPeriodic() {
                    &VaENC_Deg_WheelAngleRev[0],
                    &VaDRC_RPM_WheelSpeedCmnd[0],
                    &VaDRC_Pct_WheelAngleCmnd[0]);
-
+  #ifdef Bot2024
   Amp_MotorConfigsCal(m_ElevatorPID,
                              m_WristPID,
                              m_IntakePID);
+  #endif
 }
 
 /**

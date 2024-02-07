@@ -4,7 +4,7 @@
 #include <units/length.h>
 
 // Define the desired test state here: Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-#define Bot2024
+#define Bot2023
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
