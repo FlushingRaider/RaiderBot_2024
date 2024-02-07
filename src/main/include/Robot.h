@@ -47,6 +47,14 @@ class Robot : public frc::TimedRobot {
   void SimulationPeriodic() override;
   void RobotMotorCommands();
 
+// Practice Bot Encoders
+  #ifdef PracticeBot
+  frc::AnalogInput a_encoderFrontLeftSteer{2};
+  frc::AnalogInput a_encoderFrontRightSteer{1};
+  frc::AnalogInput a_encoderRearLeftSteer{3};
+  frc::AnalogInput a_encoderRearRightSteer{0};
+  #endif
+
   frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
   frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
   frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
