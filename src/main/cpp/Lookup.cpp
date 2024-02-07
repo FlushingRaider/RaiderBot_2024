@@ -15,7 +15,7 @@
 #include "MotionProfiles/L_Preload.hpp"
 #include "MotionProfiles/LR_Preload.hpp"
 #include "MotionProfiles/BlueP2.hpp"
-
+#include "MotionProfiles/Recall.hpp"
 
 
 
@@ -461,6 +461,49 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
         {
           LeLU_b_timeTableDONE = true;
         }
+      case E_ADAS_DM_PathFollower4:
+        LeLU_Int_X_AxisSize = (int)(sizeof(Recall_T) / sizeof(Recall_X[0]));
+        LeLU_Int_X_CalArraySize = (int)(sizeof(Recall_X) / sizeof(Recall_X[0]));
+    
+        LeLU_Int_Y_AxisSize = (int)(sizeof(Recall_T) / sizeof(Recall_Y[0]));
+        LeLU_Int_Y_CalArraySize = (int)(sizeof(Recall_Y) / sizeof(Recall_Y[0]));
+        
+        LeLU_Int_Ang_AxisSize = (int)(sizeof(Recall_T) / sizeof(Recall_ROT[0]));
+        LeLU_Int_Ang_CalArraySize = (int)(sizeof(Recall_ROT) / sizeof(Recall_ROT[0]));
+    
+        LeLU_Int_t_AxisSize = (int)(sizeof(Recall_T) / sizeof(Recall_T_REM[0]));
+        LeLU_Int_t_CalArraySize = (int)(sizeof(Recall_T_REM) / sizeof(Recall_T_REM[0]));
+    
+        LeLU_l_X_Loc = LookUp1D_Table(&Recall_T[0],
+                                      &Recall_X[0],
+                                      LeLU_Int_X_AxisSize,
+                                      LeLU_Int_X_CalArraySize,
+                                      LeLU_s_AutonTime);
+    
+        LeLU_l_Y_Loc = LookUp1D_Table(&Recall_T[0],
+                                      &Recall_Y[0],
+                                      LeLU_Int_Y_AxisSize,
+                                      LeLU_Int_Y_CalArraySize,
+                                      LeLU_s_AutonTime);
+    
+        LeLU_Deg_Ang = LookUp1D_Table(&Recall_T[0],
+                                      &Recall_ROT[0],
+                                      LeLU_Int_Ang_AxisSize,
+                                      LeLU_Int_Ang_CalArraySize,
+                                      LeLU_s_AutonTime);
+    
+        LeLU_t_TimeRemaining = LookUp1D_Table(&Recall_T[0],
+                                              &Recall_T_REM[0],
+                                              LeLU_Int_t_AxisSize,
+                                              LeLU_Int_t_CalArraySize,
+                                              LeLU_s_AutonTime);
+    
+        if (LeLU_s_AutonTime >= Recall_T[LeLU_Int_X_AxisSize - 1])
+        {
+          LeLU_b_timeTableDONE = true;
+        }
+
+
     }
 
   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)

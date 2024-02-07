@@ -3,7 +3,7 @@ import json, os
 #open our file
 
 working_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/pathing/Output_Directory/"
-working_name = "LR_Preload"
+working_name = "Recall"
 
 output_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/include/MotionProfiles/"
 output_name = working_name + ".hpp"
