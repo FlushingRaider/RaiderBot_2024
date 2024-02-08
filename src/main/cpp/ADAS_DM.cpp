@@ -85,7 +85,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                           double LeADAS_l_Y_FieldPos,
                           double LeADAS_Deg_GyroAngle,
                           T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
-                          frc::DriverStation::Alliance LeLC_e_AllianceColor)
+                          std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor)
 {
     bool LeADAS_b_DM_StateComplete = false;
     double LeADAS_l_TargetPositionX = 0.0;
@@ -243,9 +243,9 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                                          LeADAS_Deg_RelativeAng,
                                          &VeADAS_Deg_DM_AngleErrorPrev,
                                          &VeADAS_Deg_DM_AngleIntegral,
-                                         VaADAS_k_AutonRotatePID_Gx[E_P_Gx],
-                                         VaADAS_k_AutonRotatePID_Gx[E_I_Gx],
-                                         VaADAS_k_AutonRotatePID_Gx[E_D_Gx],
+                                         KaADAS_k_AutonRotatePID_Gx[E_P_Gx],
+                                         KaADAS_k_AutonRotatePID_Gx[E_I_Gx],
+                                         KaADAS_k_AutonRotatePID_Gx[E_D_Gx],
                                          KaADAS_k_AutonRotatePID_Gx[E_P_Ul],
                                          KaADAS_k_AutonRotatePID_Gx[E_P_Ll],
                                          KaADAS_k_AutonRotatePID_Gx[E_I_Ul],
@@ -257,7 +257,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
         *LeADAS_Deg_DesiredPose = LeADAS_Deg_TargetAngle;
     }
-    else
+    else    
     {
         /* We have been at the correct location for the set amount of time. */
         *LeADAS_Pct_FwdRev = 0;
@@ -289,6 +289,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     // frc::SmartDashboard::PutNumber("Rot Cmnd", LeADAS_Deg_TargetAngle);
     // frc::SmartDashboard::PutNumber("Rot Act",  LeADAS_Deg_RelativeAng);
     frc::SmartDashboard::PutNumber("Rot Err", LeADAS_Deg_RotateError);
+
+    frc::SmartDashboard::PutBoolean("path complete", LeADAS_b_DM_StateComplete);
 
     return (LeADAS_b_DM_StateComplete);
 }

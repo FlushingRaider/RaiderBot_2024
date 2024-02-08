@@ -18,6 +18,8 @@
 #include "Odometry.hpp"
 #include "DJ.hpp"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 #include <units/angle.h>
 
 T_RobotState VeROBO_e_RobotState = E_Init;
@@ -25,9 +27,6 @@ std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
 
-units::angle::degree_t val1 = 65_deg;
-
-units::angle::turn_t val2 = val1;
 
 
 /******************************************************************************
@@ -93,9 +92,6 @@ m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]); // This puts the gripper
 void Robot::RobotInit()
 {
   
-
-
-
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
@@ -127,6 +123,9 @@ void Robot::RobotInit()
                               m_rearLeftDrivePID,
                               m_rearRightDrivePID);
 
+
+  ADAS_Main_Init();
+  ADAS_Main_Reset();
 
 }
 
@@ -185,6 +184,44 @@ void Robot::RobotPeriodic() {
 
   ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
 
+
+  DtrmnSwerveBotLocation(VeGRY_Rad_GyroYawAngleRad,
+                         &VaENC_Rad_WheelAngleFwd[0],
+                         &VaENC_In_WheelDeltaDistance[0],
+                         VsCONT_s_DriverInput.b_ZeroGyro);
+
+
+  frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
+  frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
+
+  ADAS_DetermineMode();
+
+  frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
+
+  VeADAS_e_ActiveFeature = ADAS_ControlMain(&VeADAS_Pct_SD_FwdRev,
+                                            &VeADAS_Pct_SD_Strafe,
+                                            &VeADAS_Pct_SD_Rotate,
+                                            &VeADAS_Deg_SD_DesiredPose,
+                                            &VeADAS_b_SD_RobotOriented,
+                                            &VeADAS_b_X_Mode,
+                                            VsCONT_s_DriverInput.b_JoystickActive,
+                                            VsCONT_s_DriverInput.b_SwerveGoalAutoCenter,
+                                            VeGRY_Deg_GyroYawAngleDegrees,
+                                            VeODO_In_RobotDisplacementX,
+                                            VeODO_In_RobotDisplacementY,
+                                            VeROBO_e_RobotState,
+                                            VeADAS_e_ActiveFeature,
+                                            V_OdomCentered,
+                                            VeROBO_e_AllianceColor,
+                                            V_OffsetXOut,
+                                            V_OffsetYOut,
+                                            VeADAS_in_GlobalRequestX,
+                                            VeADAS_in_GlobalRequestY,
+                                            VeADAS_in_OffsetRequestX,
+                                            VeADAS_in_OffsetRequestY);
+
+
+
   DriveControlMain(VsCONT_s_DriverInput.pct_SwerveForwardBack, // swerve control forward/back
                    VsCONT_s_DriverInput.pct_SwerveStrafe,      // swerve control strafe
                    VsCONT_s_DriverInput.deg_SwerveRotate,      // rotate the robot joystick
@@ -240,6 +277,8 @@ void Robot::AutonomousInit() {
 
   OdometryInit();
 
+  ADAS_Main_Reset();
+
   fmt::print("Auto selected: {}\n", m_autoSelected);
 
   if (m_autoSelected == kAutoNameCustom) {
@@ -250,11 +289,11 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
+  // if (m_autoSelected == kAutoNameCustom) {
+  //   // Custom Auto goes here
+  // } else {
+  //   // Default Auto goes here
+  // }
 
   RobotMotorCommands();
 
@@ -262,6 +301,8 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
 
+  ADAS_Main_Reset();
+  
   VeROBO_e_RobotState = E_Teleop;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
   VeROBO_b_TestState = false;
