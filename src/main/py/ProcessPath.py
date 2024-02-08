@@ -3,7 +3,7 @@ import json, os
 #open our file
 
 working_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/pathing/Output_Directory/"
-working_name = "L_Preload"
+working_name = "LR_Preload"
 
 output_path = "C:/Users/alpha/Documents/GitHub/2024/RaiderBot_2024/src/main/include/MotionProfiles/"
 output_name = working_name + ".hpp"
@@ -37,7 +37,8 @@ time_remain_data = ""
 rot_size = 0
 
 for elm in data:
-   rot_data += str(elm["pose"]["rotation"]["radians"]) + ","
+   data_deg = (elm["pose"]["rotation"]["radians"] * (180/3.14159265))
+   rot_data += str(data_deg) + ","
    rot_size += 1
 
 # rot_data = str(rotation_start) + "," + str(rotation_end)
@@ -59,7 +60,8 @@ x_data = ""
 x_size = 0
 
 for elm in data:
-    x_data += str(elm["pose"]["translation"]["x"]) + ","
+    data_in = (elm["pose"]["translation"]["x"] * (39.37008))
+    x_data += str(data_in) + ","
     x_size += 1
 
 x_head = "const double " + working_name + "_X" + "[" + str(x_size) + "] = {"
@@ -72,7 +74,8 @@ y_data = ""
 y_size = 0
 
 for elm in data:
-    y_data += str(elm["pose"]["translation"]["y"]) + ","
+    data_in = (elm["pose"]["translation"]["y"] * (39.37008))
+    y_data += str(data_in) + ","
     y_size += 1
 
 y_head = "const double " + working_name + "_Y" + "[" + str(y_size) + "] = {"

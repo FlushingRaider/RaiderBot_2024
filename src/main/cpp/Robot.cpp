@@ -17,6 +17,8 @@
 #include "ADAS.hpp"
 #include "Odometry.hpp"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 #include <units/angle.h>
 
 T_RobotState VeROBO_e_RobotState = E_Init;
@@ -178,7 +180,12 @@ void Robot::RobotPeriodic() {
                          VsCONT_s_DriverInput.b_ZeroGyro);
 
 
+  frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
+  frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
+
   ADAS_DetermineMode();
+
+  frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
 
   VeADAS_e_ActiveFeature = ADAS_ControlMain(&VeADAS_Pct_SD_FwdRev,
                                             &VeADAS_Pct_SD_Strafe,
@@ -255,6 +262,8 @@ void Robot::AutonomousInit() {
 
   OdometryInit();
 
+  ADAS_Main_Reset();
+
   fmt::print("Auto selected: {}\n", m_autoSelected);
 
   if (m_autoSelected == kAutoNameCustom) {
@@ -277,6 +286,8 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
 
+  ADAS_Main_Reset();
+  
   VeROBO_e_RobotState = E_Teleop;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
   VeROBO_b_TestState = false;
