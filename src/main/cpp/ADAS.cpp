@@ -109,7 +109,7 @@ void ADAS_Main_Reset(void)
   // NOTE - don't forgor to add functions, always rember
 }
 
-void AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
+T_ADAS_ActiveFeature AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
                    T_ADAS_ActiveFeature LeADAS_e_ActiveFeature)
 {
   if ((LeADAS_b_Driver1_JoystickActive == true) || (VeADAS_b_StateComplete == true))
@@ -121,6 +121,7 @@ void AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
     VeADAS_b_State1Complete = false;
     VeADAS_b_State2Complete = false;
   }
+  return(LeADAS_e_ActiveFeature);
 }
 
 /******************************************************************************
@@ -157,7 +158,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 
   if (LeADAS_e_RobotState == E_Teleop)
   {
-    AbortCriteria(LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);
+    LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);
   }
   else if (LeADAS_e_RobotState == E_Auton)
   {
@@ -187,6 +188,10 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 // our active feature table, autons set which one they want
   switch (LeADAS_e_ActiveFeature)
   {
+    // all 4 path follower features will just flow down to the function since theres no breaks
+    case E_ADAS_DM_PathFollower1:
+    case E_ADAS_DM_PathFollower2:
+    case E_ADAS_DM_PathFollower3:
     case E_ADAS_DM_PathFollower4:
       VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                       L_Pct_Strafe,
