@@ -133,24 +133,61 @@ struct RobotUserInput
   bool                  b_X_Mode;
 };
 
-typedef enum T_DJ_Motors
+typedef enum T_MotorControlType
 {
-  E_DJ_m_Elevator,
-  E_DJ_m_Wrist,
-  E_DJ_m_WristIntake,
+  E_MotorControlDisabled,
+  E_MotorControlPctCmnd,
+  E_MotorControlPosition,
+  E_MotorControlSpeed,
+  E_MotorExtend,
+  E_MotorRetract
+} T_MotorControlType;
+
+typedef enum TeDJ_Amp_e_AmpActuator
+{
+  E_Amp_Elevator,
+  E_Amp_Wrist,
+  E_Amp_Intake,
+  E_Amp_Sz
+} TeDJ_Amp_e_AmpActuator;
+
+typedef enum T_DJ_Amp_Motors
+{
+  E_DJ_Amp_m_Elevator,
+  E_DJ_Amp_m_Wrist,
+  E_DJ_Amp_m_Intake,
+  E_DJ_Ampz
+} T_DJ_Amp_Motors;
+
+typedef enum T_DJ_Spk_Motors
+{
   E_DJ_m_Underbelly,
   E_DJ_m_Shooter1,
   E_DJ_m_Shooter2
-} T_DJ_Motors;
+} T_DJ_Spk_Motors;
 
-typedef enum T_DJ_States
+typedef enum T_DJ_Amp_States
 {
-  E_DJ_Init,
-  E_DJ_AmpIntake,
-  E_DJ_AmpScore,
-  E_DJ_Underbelly,
-  E_DJ_Shooting,
-  E_DJ_ClimberExtended
-} T_DJ_States;
+  E_DJ_Amp_Init,
+  E_DJ_Amp_Intake,
+  E_DJ_Amp_Driving,
+  E_DJ_Amp_Score
+} T_DJ_Amp_States;
 
+typedef enum T_DJ_Spk_States
+{
+  E_DJ_Spk_Init,
+  E_DJ_Spk_Driving,
+  E_DJ_Underbelly,
+  E_DJ_Shooting
+} T_DJ_Spk_States;
+
+struct TeAmp_MotorControl
+{
+  T_MotorControlType    e_MotorControlType[E_DJ_Ampz];
+  double                k_MotorCmnd[E_DJ_Ampz];
+  double                k_MotorRampRate[E_DJ_Ampz];
+  double                k_MotorTestValue[E_DJ_Ampz];
+  double                k_MotorTestPower[E_DJ_Ampz];
+};
 #endif

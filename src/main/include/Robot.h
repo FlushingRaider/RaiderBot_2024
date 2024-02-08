@@ -9,7 +9,6 @@
 #include <frc/TimedRobot.h>
 
 #include <frc/shuffleboard/Shuffleboard.h>
-// #include <frc/AnalogInput.h>
 #include <frc/DigitalInput.h>
 #include <frc/DigitalOutput.h>
 #include <frc/Joystick.h>
@@ -93,20 +92,25 @@ class Robot : public frc::TimedRobot {
   rev::SparkMaxPIDController                 m_rearRightDrivePID    = m_rearRightDriveMotor.GetPIDController();
 
 
-  rev::CANSparkMax                           m_ArmPivot            {KeMAN_i_ArmPivot,        rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANSparkMax                           m_Wrist               {KeMAN_i_Wrist,           rev::CANSparkMax::MotorType::kBrushless};        
-  rev::CANSparkMax                           m_Gripper             {KeMAN_i_Gripper,         rev::CANSparkMax::MotorType::kBrushless};
- // rev::CANSparkMax                           m_IntakeRollers       {KeINT_i_IntakeRollers,   rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_Elevator            {KeDJ_Amp_i_Elevator,        rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_Wrist               {KeDJ_Amp_i_Wrist,           rev::CANSparkMax::MotorType::kBrushless};        
+  rev::CANSparkMax                           m_Intake              {KeDJ_Amp_i_Intake,         rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_Underbelly          {KeDJ_Spk_i_Underbelly,           rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_Shooter1            {KeDJ_Spk_i_Shooter1,           rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_Shooter2            {KeDJ_Spk_i_Shooter2,           rev::CANSparkMax::MotorType::kBrushless};
 
-  rev::SparkMaxPIDController                 m_ArmPivotPID         = m_ArmPivot.GetPIDController();
+  rev::SparkMaxPIDController                 m_ElevatorPID         = m_Elevator.GetPIDController();
   rev::SparkMaxPIDController                 m_WristPID            = m_Wrist.GetPIDController();
-  rev::SparkMaxPIDController                 m_GripperPID          = m_Gripper.GetPIDController();
+  rev::SparkMaxPIDController                 m_IntakePID           = m_Intake.GetPIDController();
+  rev::SparkMaxPIDController                 m_UnderbellyPID       = m_Underbelly.GetPIDController();
+  rev::SparkMaxPIDController                 m_Shooter1PID         = m_Shooter1.GetPIDController();
+  rev::SparkMaxPIDController                 m_Shooter2PID         = m_Shooter2.GetPIDController();
   // rev::SparkMaxLimitSwitch                   m_WristforwardLimit   = m_Wrist.GetForwardLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
-  rev::SparkMaxLimitSwitch                   m_WristreverseLimit   = m_Wrist.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  //rev::SparkMaxLimitSwitch                   m_WristreverseLimit   = m_Wrist.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  #ifdef Bot2023
   WPI_TalonSRX                               m_LinearSlide          {KeMAN_i_LinearSlide};
+  #endif
 
-  frc::Compressor                            m_pcmCompressor          {KeINT_i_PCM, frc::PneumaticsModuleType::CTREPCM};
-  frc::Solenoid                              m_PCM_Valve              {KeINT_i_PCM, frc::PneumaticsModuleType::CTREPCM, 0};
   
 
 
@@ -114,7 +118,7 @@ class Robot : public frc::TimedRobot {
 
     // Driver Inputs
   frc::Joystick c_joyStick{0};
-  #ifdef CompBot
+  #ifdef Bot2024
   frc::Joystick c_joyStick2{1};
   #endif
 

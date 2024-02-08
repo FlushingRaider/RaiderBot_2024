@@ -16,6 +16,7 @@
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
 #include "Odometry.hpp"
+#include "DJ.hpp"
 
 #include <units/angle.h>
 
@@ -64,11 +65,21 @@ void Robot::RobotMotorCommands()
     m_rearRightSteerMotor.Set(0);
   }
 
-  m_ArmPivot.Set(0.0);
+#ifdef Bot2023
+  m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
-  m_Gripper.Set(0.0); 
+  m_Underbelly.Set(0.0); 
   m_LinearSlide.Set(0.0);
+#endif
 
+#ifdef Bot2024
+m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
+m_Elevator.Set(0.0);
+m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
+m_IntakePID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake], rev::ControlType::kVelocity);
+m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]); // This puts the gripper into a power control setup, not speed/postion
+
+#endif
 
 
 
@@ -147,7 +158,7 @@ void Robot::RobotPeriodic() {
                           c_joyStick.GetRawButton(5),
                           c_joyStick.GetPOV());
 
-#ifdef CompBot
+#ifdef Bot2024
   Joystick2_robot_mapping(c_joyStick2.GetRawButton(1),
                           c_joyStick2.GetRawButton(2),
                           c_joyStick2.GetRawButton(6),
@@ -195,6 +206,10 @@ void Robot::RobotPeriodic() {
                    &VaENC_Deg_WheelAngleRev[0],
                    &VaDRC_RPM_WheelSpeedCmnd[0],
                    &VaDRC_Pct_WheelAngleCmnd[0]);
+
+  Amp_MotorConfigsCal(m_ElevatorPID,
+                             m_WristPID,
+                             m_IntakePID);
 }
 
 /**
