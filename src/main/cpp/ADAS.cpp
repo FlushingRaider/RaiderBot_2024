@@ -171,9 +171,9 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       break;
     case E_ADAS_AutonDrivePath1:
       if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false)){
-        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower3;
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower1;
       }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower3) && (VeADAS_b_StateComplete == true))
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower1) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
@@ -187,7 +187,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 // our active feature table, autons set which one they want
   switch (LeADAS_e_ActiveFeature)
   {
-    case E_ADAS_DM_PathFollower3:
+    case E_ADAS_DM_PathFollower1:
       VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                       L_Pct_Strafe,
                                                       L_Pct_Rotate,
