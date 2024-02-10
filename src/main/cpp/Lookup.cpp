@@ -9,8 +9,10 @@
   Imported to 2024: January 18, 2024
  */
 #include "Const.hpp"
+#include "Enums.hpp"
 // #include "Pathloader.hpp"
 #include <frc/DriverStation.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <math.h>
 #include "MotionProfiles/L_Preload.hpp"
 #include "MotionProfiles/LR_Preload.hpp"
@@ -303,7 +305,7 @@ double LookUp2D_Table(double const *LKeLU_Cmd_XAxis,
   return (LeLU_Int_Output);
 }
 
-std::array<double, 4> LoadPathHeader(double LeLU_s_AutonTime,
+CalcedPathVals LoadPathHeader(double LeLU_s_AutonTime,
                                      const double L_PathTime[],
                                      const double L_PathTimeRemaining[],
                                      const double L_PathX[],
@@ -323,7 +325,10 @@ std::array<double, 4> LoadPathHeader(double LeLU_s_AutonTime,
   int LeLU_Int_Ang_CalArraySize = 0;
   int LeLU_Int_t_AxisSize = 0;
   int LeLU_Int_t_CalArraySize = 0;
-  double LeLU_k_RedMirrorDirectionFlip = 1;
+
+  
+  CalcedPathVals L_PathCalcedVals;
+  // double LeLU_k_RedMirrorDirectionFlip = 1;
 
   LeLU_Int_X_AxisSize = (int)(sizeof(L_PathTime) / sizeof(L_PathX[0]));
   LeLU_Int_X_CalArraySize = (int)(sizeof(L_PathX) / sizeof(L_PathX[0]));
@@ -361,16 +366,16 @@ std::array<double, 4> LoadPathHeader(double LeLU_s_AutonTime,
                                         LeLU_Int_t_CalArraySize,
                                         LeLU_s_AutonTime);
 
-  /* return all these values bundled togther in an array
-   * 1 - X val
-   * 2 - Y val
-   * 3 - Angle val
-   * time remaining val
-   */
-  std::array<double, 4> L_PathCalcedVals = {LeLU_l_X_Loc, LeLU_l_Y_Loc, LeLU_Deg_Ang, LeLU_t_TimeRemaining};
+
+  L_PathCalcedVals.L_valX = LeLU_l_X_Loc;
+  L_PathCalcedVals.L_valY = LeLU_l_Y_Loc;
+  L_PathCalcedVals.L_valDeg = LeLU_Deg_Ang;
+  L_PathCalcedVals.L_timRem = LeLU_t_TimeRemaining;
+
 
   return (L_PathCalcedVals);
 }
+
 
 /******************************************************************************
  * Function:     DesiredAutonLocation2
@@ -386,18 +391,13 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
                            double *LeLU_Cmd_TimeRemaining)
 {
 
-  /* all these values bundled togther in an array
-   * 1 - X val
-   * 2 - Y val
-   * 3 - Angle val
-   * time remaining val
-   */
-  std::array<double, 4> LaLU_d_CalcedVals;
+
+  CalcedPathVals LaLU_d_CalcedVals;
 
   int LeLU_Int_X_AxisSize = 0;
   int LeLU_Int_t_CalArraySize = 0;
   bool LeLU_b_timeTableDONE = false;
-  double LeLU_k_RedMirrorDirectionFlip = 1;
+  // double LeLU_k_RedMirrorDirectionFlip = 1; doesn't seem to do anything
 
   switch (LeADAS_e_ActiveFeature)
   {
@@ -418,7 +418,7 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
     }
     break;
   case E_ADAS_DM_PathFollower2:
-    LoadPathHeader(LeLU_s_AutonTime,
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                    LR_Preload_T,
                    LR_Preload_T_REM,
                    LR_Preload_X,
@@ -432,7 +432,7 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
       LeLU_b_timeTableDONE = true;
     }
   case E_ADAS_DM_PathFollower3:
-    LoadPathHeader(LeLU_s_AutonTime,
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                    KnADAS_t_BlueP2,
                    KaADAS_t_BlueP2Remaining,
                    KaADAS_l_BlueP2_X,
@@ -446,7 +446,7 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
       LeLU_b_timeTableDONE = true;
     }
   case E_ADAS_DM_PathFollower4:
-    LoadPathHeader(LeLU_s_AutonTime,
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                    Recall_T,
                    Recall_T_REM,
                    Recall_X,
@@ -464,14 +464,20 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
   {
     // Need to flip X and Angle for Red side:
-    LaLU_d_CalcedVals[1] *= -1;
-    LaLU_d_CalcedVals[3] *= -1;
+    LaLU_d_CalcedVals.L_valX *= -1;
+    LaLU_d_CalcedVals.L_valDeg *= -1;
   }
 
-  *LeLU_Cmd_L_X_Location = LaLU_d_CalcedVals[1];
-  *LeLU_Cmd_L_Y_Location = LaLU_d_CalcedVals[2];
-  *LeLU_Cmd_Deg_Angle = LaLU_d_CalcedVals[3];
-  *LeLU_Cmd_TimeRemaining = LaLU_d_CalcedVals[4];
+
+  frc::SmartDashboard::PutNumber("Path X", LaLU_d_CalcedVals.L_valX);
+  frc::SmartDashboard::PutNumber("Path Y", LaLU_d_CalcedVals.L_valY);
+  frc::SmartDashboard::PutNumber("Path Deg", LaLU_d_CalcedVals.L_valDeg);
+  frc::SmartDashboard::PutNumber("Path time Rem", LaLU_d_CalcedVals.L_timRem);
+
+  *LeLU_Cmd_L_X_Location = LaLU_d_CalcedVals.L_valX;
+  *LeLU_Cmd_L_Y_Location = LaLU_d_CalcedVals.L_valY;
+  *LeLU_Cmd_Deg_Angle = LaLU_d_CalcedVals.L_valDeg;
+  *LeLU_Cmd_TimeRemaining = LaLU_d_CalcedVals.L_timRem;
 
   return (LeLU_b_timeTableDONE);
 }
