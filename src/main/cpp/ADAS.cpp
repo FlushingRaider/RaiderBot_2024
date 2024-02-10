@@ -158,7 +158,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 
   if (LeADAS_e_RobotState == E_Teleop)
   {
-    LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);
+  // LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);  // What is this voodoo??
   }
   else if (LeADAS_e_RobotState == E_Auton)
   {
