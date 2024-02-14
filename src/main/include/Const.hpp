@@ -29,6 +29,8 @@ static const int KeEnc_i_WheelAngleFL = 17;
 static const int KeEnc_i_WheelAngleFR = 18;
 static const int KeEnc_i_WheelAngleRL = 19;
 static const int KeEnc_i_WheelAngleRR = 20;
+static const int KeDJ_Clmb_i_ClimberArm1 = 21;
+static const int KeDJ_Clmb_i_ClimberArm2 = 22;
 
 #ifdef Bot2023
 static const int KeMAN_i_LinearSlide = 10;
