@@ -1,9 +1,11 @@
 #include <frc/apriltag/AprilTagFieldLayout.h>
+#include <frc/apriltag/AprilTagFields.h>
 #include <photon/PhotonUtils.h>
 #include <photon/PhotonCamera.h>
+#include <photon/PhotonPoseEstimator.h>
 #include <frc/geometry/Pose3d.h>
 
-frc::AprilTagFieldLayout L_Vis_Layout = frc::AprilTagFieldLayout("src/main/deploy/2024-crescendo.json");
+frc::AprilTagFieldLayout L_Vis_Layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
 
 // cameras is a vector of pairs of (camera obj, camera position)
 std::vector<std::pair<std::shared_ptr<photon::PhotonCamera>, frc::Transform3d>> cameras;
@@ -30,8 +32,32 @@ frc::Transform3d L_robotToRightCam =
 
 void VisionInit()
 {
+    // order is front, left, right (0, 1, 2)
     cameras.push_back(std::make_pair(L_FrontCam, L_robotToFrontCam));
     cameras.push_back(std::make_pair(L_LeftCam, L_robotToLeftCam));
     cameras.push_back(std::make_pair(L_RightCam, L_robotToRightCam));
 
+    /*TODO - ask photon devs the difference between estimator that requires
+    * frc::AprilTagFieldLayout aprilTags,
+                               PoseStrategy strategy, PhotonCamera&& camera,
+                               frc::Transform3d robotToCamera)
+
+    * and estimator that requires:
+    *
+    * frc::AprilTagFieldLayout aprilTags,
+                               PoseStrategy strategy,
+                               frc::Transform3d robotToCamera
+    */
+    photon::PhotonPoseEstimator FrontPoseEstimator{
+        L_Vis_Layout,
+        photon::LOWEST_AMBIGUITY,
+        cameras[0].second};
+    photon::PhotonPoseEstimator LeftPoseEstimator{
+        L_Vis_Layout,
+        photon::LOWEST_AMBIGUITY,
+        cameras[1].second};
+    photon::PhotonPoseEstimator RightPoseEstimator{
+        L_Vis_Layout,
+        photon::LOWEST_AMBIGUITY,
+        cameras[2].second};
 }
