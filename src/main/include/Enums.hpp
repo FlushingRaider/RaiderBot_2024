@@ -78,6 +78,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower2,
   E_ADAS_DM_PathFollower3,
   E_ADAS_DM_PathFollower4,
+  E_ADAS_DM_PathFollower5,
   E_ADAS_DM_PathFollowerFWD,
 
   

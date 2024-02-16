@@ -4,10 +4,10 @@ import pdb
 #open our file
 
 #pdb.set_trace()
-working_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/pathing/Output_Directory/"
-working_name = "TestPath1"
+working_path = "C:/Users/gnich/Documents/RaiderBot_2024/src/main/pathing/Output_Directory/"
+working_name = "Precision_Test"
 
-output_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/MotionProfiles/"
+output_path = "C:/Users/gnich/Documents/RaiderBot_2024/src/main/include/MotionProfiles/"
 output_name = working_name + ".hpp"
 
 json_file = working_path + working_name + ".wpilib.json"

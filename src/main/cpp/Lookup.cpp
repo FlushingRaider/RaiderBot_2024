@@ -16,6 +16,7 @@
 #include "MotionProfiles/LR_Preload.hpp"
 #include "MotionProfiles/BlueP2.hpp"
 #include "MotionProfiles/Recall.hpp"
+#include "MotionProfiles/Precision_Test.hpp"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
