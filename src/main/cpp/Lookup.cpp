@@ -16,6 +16,7 @@
 #include "MotionProfiles/LR_Preload.hpp"
 #include "MotionProfiles/BlueP2.hpp"
 #include "MotionProfiles/Recall.hpp"
+#include "MotionProfiles/Precision_Test.hpp"
 
 
 
@@ -499,6 +500,47 @@ bool DesiredAutonLocation2(double LeLU_s_AutonTime,
                                               LeLU_s_AutonTime);
     
         if (LeLU_s_AutonTime >= Recall_T[LeLU_Int_X_AxisSize - 1])
+        {
+          LeLU_b_timeTableDONE = true;
+        }
+      case E_ADAS_DM_PathFollower5:
+        LeLU_Int_X_AxisSize = (int)(sizeof(KaADAS_t_Precision_TestRemaining) / sizeof(KaADAS_l_Precision_Test_X[0]));
+        LeLU_Int_X_CalArraySize = (int)(sizeof(KaADAS_l_Precision_Test_X) / sizeof(KaADAS_l_Precision_Test_X[0]));
+    
+        LeLU_Int_Y_AxisSize = (int)(sizeof(KaADAS_t_Precision_TestRemaining) / sizeof(KaADAS_l_Precision_Test_Y));
+        LeLU_Int_Y_CalArraySize = (int)(sizeof(KaADAS_l_Precision_Test_Y) / sizeof(KaADAS_l_Precision_Test_Y[0]));
+        
+        LeLU_Int_Ang_AxisSize = (int)(sizeof(KaADAS_t_Precision_TestRemaining) / sizeof(KaADAS_Deg_Precision_Test[0]));
+        LeLU_Int_Ang_CalArraySize = (int)(sizeof(KaADAS_Deg_Precision_Test) / sizeof(KaADAS_Deg_Precision_Test[0]));
+    
+        LeLU_Int_t_AxisSize = (int)(sizeof(KnADAS_t_Precision_Test) / sizeof(KaADAS_t_Precision_TestRemaining[0]));
+        LeLU_Int_t_CalArraySize = (int)(sizeof(KaADAS_t_Precision_TestRemaining) / sizeof(KaADAS_t_Precision_TestRemaining[0]));
+    
+        LeLU_l_X_Loc = LookUp1D_Table(&KnADAS_t_Precision_Test[0],
+                                      &KaADAS_l_Precision_Test_X[0],
+                                      LeLU_Int_X_AxisSize,
+                                      LeLU_Int_X_CalArraySize,
+                                      LeLU_s_AutonTime);
+    
+        LeLU_l_Y_Loc = LookUp1D_Table(&KnADAS_t_Precision_Test[0],
+                                      &KaADAS_l_Precision_Test_Y[0],
+                                      LeLU_Int_Y_AxisSize,
+                                      LeLU_Int_Y_CalArraySize,
+                                      LeLU_s_AutonTime);
+    
+        LeLU_Deg_Ang = LookUp1D_Table(&KnADAS_t_Precision_Test[0],
+                                      &KaADAS_Deg_Precision_Test[0],
+                                      LeLU_Int_Ang_AxisSize,
+                                      LeLU_Int_Ang_CalArraySize,
+                                      LeLU_s_AutonTime);
+    
+        LeLU_t_TimeRemaining = LookUp1D_Table(&KnADAS_t_Precision_Test[0],
+                                              &KaADAS_t_Precision_TestRemaining[0],
+                                              LeLU_Int_t_AxisSize,
+                                              LeLU_Int_t_CalArraySize,
+                                              LeLU_s_AutonTime);
+    
+        if (LeLU_s_AutonTime >= KnADAS_t_Precision_Test[LeLU_Int_X_AxisSize - 1])
         {
           LeLU_b_timeTableDONE = true;
         }
