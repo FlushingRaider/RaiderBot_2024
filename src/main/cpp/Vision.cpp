@@ -48,16 +48,20 @@ void VisionInit()
                                PoseStrategy strategy,
                                frc::Transform3d robotToCamera
     */
-    photon::PhotonPoseEstimator FrontPoseEstimator{
-        L_Vis_Layout,
-        photon::LOWEST_AMBIGUITY,
-        cameras[0].second};
-    photon::PhotonPoseEstimator LeftPoseEstimator{
-        L_Vis_Layout,
-        photon::LOWEST_AMBIGUITY,
-        cameras[1].second};
-    photon::PhotonPoseEstimator RightPoseEstimator{
-        L_Vis_Layout,
-        photon::LOWEST_AMBIGUITY,
-        cameras[2].second};
+
+
+
+    // photon::PhotonPoseEstimator FrontPoseEstimator{
+    //     L_Vis_Layout,
+    //     photon::LOWEST_AMBIGUITY,
+    //     std::move(cameras[0].first.get()),
+    //     cameras[0].second};
+    // photon::PhotonPoseEstimator LeftPoseEstimator{
+    //     L_Vis_Layout,
+    //     photon::LOWEST_AMBIGUITY,
+    //     cameras[1].second};
+    // photon::PhotonPoseEstimator RightPoseEstimator{
+    //     L_Vis_Layout,
+    //     photon::LOWEST_AMBIGUITY,
+    //     cameras[2].second};
 }

@@ -191,4 +191,30 @@ struct TeAmp_MotorControl
   double                k_MotorTestValue[E_DJ_Ampz];
   double                k_MotorTestPower[E_DJ_Ampz];
 };
+
+
+struct CalcedPathVals
+{
+  double L_valX;
+  double L_valY;
+
+  double L_valDeg;
+  double L_timRem;
+
+
+};
+
+struct DtrmnSwerveBotLocationOut{
+  
+  double L_valX;
+  double L_valY;
+
+  double L_valDeg;
+  double L_timRem;
+  bool L_timeEndReached;
+
+
+};
+
+
 #endif
