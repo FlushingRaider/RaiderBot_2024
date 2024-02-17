@@ -76,6 +76,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower3,
   E_ADAS_DM_PathFollower4,
   E_ADAS_DM_PathFollower5,
+  E_ADAS_DM_PathFollower6,
   E_ADAS_DM_PathFollowerFWD,
 
   E_ADAS_MoveOffsetTag,
@@ -89,6 +90,8 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDeliverCubeDriveOnRampAutoBal,
   E_ADAS_AutonDrivePath1,
   E_ADAS_AutonDrivePath2,
+  E_ADAS_AutonDrivePath3,
+  E_ADAS_AutonDrivePath4,  
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place
@@ -204,23 +207,25 @@ struct TeAmp_MotorControl
   double k_MotorTestPower[E_DJ_Ampz];
 };
 
+// the output struct after a path is loaded
 struct CalcedPathVals
 {
-  double L_valX;
-  double L_valY;
+  double L_valX = 0.0;
+  double L_valY = 0.0;
 
-  double L_valDeg;
-  double L_timRem;
+  double L_valDeg = 0.0;
+  double L_timRem = 0.0;
 };
 
+// the struct of data passed from lookup to ADAS_DM
 struct DtrmnSwerveBotLocationOut
 {
 
-  double L_valX;
-  double L_valY;
+  double L_valX = 0.0;
+  double L_valY = 0.0;
 
-  double L_valDeg;
-  double L_timRem;
+  double L_valDeg = 0.0;
+  double L_timRem = 0.0;
   bool L_timeEndReached = false;
 };
 

@@ -199,14 +199,7 @@ void Robot::RobotPeriodic()
                                             VeODO_In_RobotDisplacementY,
                                             VeROBO_e_RobotState,
                                             VeADAS_e_ActiveFeature,
-                                            V_OdomCentered,
-                                            VeROBO_e_AllianceColor,
-                                            V_OffsetXOut,
-                                            V_OffsetYOut,
-                                            VeADAS_in_GlobalRequestX,
-                                            VeADAS_in_GlobalRequestY,
-                                            VeADAS_in_OffsetRequestX,
-                                            VeADAS_in_OffsetRequestY);
+                                            VeROBO_e_AllianceColor);
 
   DriveControlMain(VsCONT_s_DriverInput.pct_SwerveForwardBack, // swerve control forward/back
                    VsCONT_s_DriverInput.pct_SwerveStrafe,      // swerve control strafe
