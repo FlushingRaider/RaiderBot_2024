@@ -12,6 +12,7 @@
 // #include "Pathloader.hpp"
 #include <frc/DriverStation.h>
 #include <math.h>
+#include "MotionProfiles/L_PR_load.hpp"
 #include "MotionProfiles/L_Preload.hpp"
 #include "MotionProfiles/BlueP2.hpp"
 #include "MotionProfiles/Recall.hpp"
@@ -574,6 +575,20 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
 
 
       if (LeLU_s_AutonTime >= KnADAS_t_Recall[KnADAS_t_Recall.size() - 1])
+      {
+        L_output.L_timeEndReached = true;
+      }
+    break;
+    case E_ADAS_DM_PathFollower6:
+      LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                     KnADAS_t_L_PR_load,
+                     KaADAS_t_L_PR_loadRemaining,
+                     KaADAS_l_L_PR_load_X,
+                     KaADAS_l_L_PR_load_Y,
+                     KaADAS_Deg_L_PR_load);
+
+
+      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }

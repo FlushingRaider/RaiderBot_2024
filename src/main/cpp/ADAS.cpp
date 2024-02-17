@@ -74,6 +74,8 @@ void ADAS_Main_Init(void)
 
     VeADAS_e_AutonChooser.AddOption("Recall", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath3);
 
+    VeADAS_e_AutonChooser.AddOption("L_PR_load", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath4);
+
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
@@ -226,7 +228,17 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
         VeADAS_b_AutonOncePerTrigger = true;
       }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+case E_ADAS_AutonDrivePath4:// L_PR_load
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower6;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower6) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
+      }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       break;
     default:
@@ -236,12 +248,13 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 // our active feature table, autons set which one they want
   switch (LeADAS_e_ActiveFeature)
   {
-    // all 5 path follower features will just flow down to the function since theres no breaks
+    // all 6 path follower features will just flow down to the function since theres no breaks
     case E_ADAS_DM_PathFollower1:
     case E_ADAS_DM_PathFollower2:
     case E_ADAS_DM_PathFollower3:
     case E_ADAS_DM_PathFollower4:
     case E_ADAS_DM_PathFollower5:
+    case E_ADAS_DM_PathFollower6:
       VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                       L_Pct_Strafe,
                                                       L_Pct_Rotate,
