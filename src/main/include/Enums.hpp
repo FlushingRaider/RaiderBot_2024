@@ -130,6 +130,9 @@ struct RobotUserInput
   bool b_VisionButton;
   bool b_X_Mode;
   bool b_Amp_Intake;
+  bool b_Amp_DrivingPosition;
+  bool b_Amp_PreScore;
+  bool b_Amp_Score;
 };
 
 struct TsDJ_Sensor
@@ -178,6 +181,7 @@ typedef enum T_DJ_Amp_States
   E_DJ_Amp_Init,
   E_DJ_Amp_Driving,
   E_DJ_Amp_Intake,
+  E_DJ_Amp_PreScore,
   E_DJ_Amp_Score,
   E_DJ_Amp_State_Sz
 } T_DJ_Amp_States;
