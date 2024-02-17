@@ -37,7 +37,6 @@ bool VeROBO_b_TestState = false;
  ******************************************************************************/
 void Robot::RobotMotorCommands()
 {
-  bool LeROBO_b_IntakeArmExtend = false;
   // Motor output commands:
   // Swerve drive motors
   // Swerve stear motors

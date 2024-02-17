@@ -3,8 +3,8 @@
 #include <units/angle.h>
 #include <units/length.h>
 
-// Define the desired test state here: Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-#define Bot2023
+// Define the desired test state here: Bot_Testing, Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
+#define Bot_Testing
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
@@ -401,6 +401,14 @@ const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS 
  * Author: 5561
  ******************************************************************************/
 
+/* KaMAN_e_ControllingTable: Table that contains the commanded state of the manipulator and intake based on the current attained state and schedueld state. */
+const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] =  // [Sched][Attnd]
+  { {E_DJ_Amp_Init, E_DJ_Amp_Init, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+    {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving,E_DJ_Amp_Driving},
+    {E_DJ_Amp_Driving, E_DJ_Amp_Intake, E_DJ_Amp_Intake, E_DJ_Amp_Driving},
+    {E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Driving, E_DJ_Amp_Score}
+  };
+
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                                 0.000001, // kI
@@ -439,3 +447,69 @@ const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                               0.5,      // kMinVel
                                                               0.0,      // kMaxAcc
                                                               0.0};     // kAllErr
+
+/* KaMAN_k_ManipulatorTestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
+const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {         0.00, // E_Amp_Elevator     //NOTE set to zero so there is no breaking needs to be changed tho
+                                                        0.00, // E_Amp_Wrist
+                                                        0.00}; // E_Amp_Intake
+
+/* KeMAN_t_StateTimeOUt: Sets transition time out. */
+const double KeDJ_Amp_t_StateTimeOut = 1; // Drop-off //NOTE - will need to be changed for new bot
+
+/* KaDJ_Amp_RPM_IntakePower: sets Intake power for each state */
+const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = {  0.0,   // Sched - Init
+                                                              0.0,   // Sched - Driving
+                                                             -0.45,  // Sched - Main Intake
+                                                              0.45}; // Sched - Score
+
+/* KaDJ_Amp_Deg_WristAngle: sets Wrist final positons for each state */
+const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = { 0.00,  // Sched - Init
+                                                            0.00,  // Sched - Driving
+                                                            0.00,  // Sched -  Intake
+                                                            0.00}; // Sched - Score
+                                                                                    //NOTE - need to be calibrated and set
+/* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
+const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = { 0.0,   // Sched - Init
+                                                                 0.0,  // Sched - Driving
+                                                                 0.0, // Sched - Intake
+                                                                 0.0}; // Sched - Score
+
+/* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
+const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
+                                                        1.0,  // Sched - Driving
+                                                        1.0,  // Sched - Intake
+                                                        1.0}; // Sched - Score //NOTE - all these may need to be edited for comp bot
+
+/* KaDJ_Amp_In_ElevatorDb: Sets Elevator dead band. */
+const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {0.5,  // Sched - Init
+                                                       0.5,  // Sched - Driving
+                                                       0.5,  // Sched - Intake
+                                                       0.5}; // Sched - Score
+
+/* KaMAN_InS_LinearSlideRate: Table that contains the linear slide transition rate. */
+const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] =  // [Cmnd][Attnd]
+  { {2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0}, //NOTE - Needs to be decided for comp bot
+    {2.0, 2.0, 2.0, 2.0}
+  };
+
+const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] =  // [Cmnd][Attnd]
+  { {1.0, 1.0, 1.0, 1.0},
+    {1.0, 1.0, 1.0, 1.0},
+    {1.0, 1.0, 1.0, 1.0}, //NOTE - Needs to be decided for comp bot
+    {1.0, 1.0, 1.0, 1.0}
+  };
+
+/* KeENC_Deg_Wrist: Scalaer to convert encoder reading to actual position of the wrist, how much we've rotated. */
+const double KeENC_Deg_Wrist = -1.16883;
+
+/* KeENC_k_ElevatorEncoderScaler: Scalar multiplied against the encoder read to translate to degrees relative to inches traveled for the Elevator. */
+const double KeENC_k_ElevatorEncoderScaler = 0.001218;
+
+/* KeDJ_Amp_k_ReleaseNote: Sets rollers to releasing note. */
+const double KeDJ_Amp_k_ReleaseNote = 0.8;
+
+/* KeENC_RPM_Intake: Finds the speed of the intake rollers. */
+const double KeENC_RPM_Intake = 1.0;
+

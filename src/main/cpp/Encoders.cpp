@@ -7,6 +7,7 @@
   Converted to 2024 code: January 17, 2024
  */
 
+#include "DJ.hpp"
 #include "rev/CANSparkMax.h"
 #include "Const.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -149,4 +150,39 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   VaENC_InS_WheelVelocity[E_FrontRight] = ((m_encoderFrontRightDrive.GetVelocity() / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   VaENC_InS_WheelVelocity[E_RearRight]  = ((m_encoderRearRightDrive.GetVelocity()  / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   VaENC_InS_WheelVelocity[E_RearLeft]   = ((m_encoderRearLeftDrive.GetVelocity()   / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
+  }
+
+
+/******************************************************************************
+ * Function:     Encoders_DJ_Amp_INT
+ *
+ * Description:  Read the encoders from the Amp mech
+ ******************************************************************************/
+void Encoders_DJ_Amp_INT( rev::SparkMaxRelativeEncoder m_WristEncoder,
+                       double                       LeENC_Deg_Elevator,
+                       T_MotorControlType           LeENC_e_IntakeCmnd,
+                       bool                         LeENC_b_WristReverseLimit)
+  {
+  bool LeENC_b_IntakeExtended = false;
+  bool LeENC_b_ObjectDetected = false;
+
+  VsAmp_s_Sensors.Deg_Wrist = m_WristEncoder.GetPosition() * KeENC_Deg_Wrist;
+
+  VsAmp_s_Sensors.In_Elevator = LeENC_Deg_Elevator * KeENC_k_ElevatorEncoderScaler;
+
+  if (LeENC_e_IntakeCmnd == E_MotorExtend)
+    {
+    LeENC_b_IntakeExtended = true;
+    }
+
+  /* Switches are wired to the wrist motor controller.  Switches are intended to detect object in the gripper... */
+  if (LeENC_b_WristReverseLimit == false)
+    {
+      LeENC_b_ObjectDetected = true;
+    }
+
+  VsAmp_s_Sensors.b_Amp_ObjDetected = LeENC_b_ObjectDetected;
+
+  frc::SmartDashboard::PutNumber("Wrist",          VsAmp_s_Sensors.Deg_Wrist);
+  frc::SmartDashboard::PutNumber("LinearSlide",    VsAmp_s_Sensors.In_Elevator);
   }
