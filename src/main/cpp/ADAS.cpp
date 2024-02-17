@@ -30,7 +30,7 @@
 
 #include "Driver_inputs.hpp"
 #include "Gyro.hpp"
-
+#include "ADAS_DJ.hpp"
 #include "ADAS_DM.hpp"
 #include "Odometry.hpp"
 /* ADAS control state variables */

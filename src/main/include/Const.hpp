@@ -20,9 +20,9 @@ static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRi
 static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
 
 static const int KeDJ_Amp_i_Intake = 11;
-static const int KeDJ_Amp_i_Wrist = 12; //NOTE: these are temporary mechinism ids they have not been flashed 10 - 15
+static const int KeDJ_Amp_i_Wrist = 12; // NOTE: these are temporary mechinism ids they have not been flashed 10 - 15
 static const int KeDJ_Spk_i_Underbelly = 13;
-static const int KeDJ_Spk_i_Shooter1 = 14; 
+static const int KeDJ_Spk_i_Shooter1 = 14;
 static const int KeDJ_Spk_i_Shooter2 = 15;
 static const int KeGRY_i_Gyro = 16;
 static const int KeEnc_i_WheelAngleFL = 17;
@@ -94,8 +94,6 @@ const double KeDRC_k_SD_AutonGain = 0.9;
 const double K_SD_TeleWheelMaxSpeed = 6000;
 
 const double K_SD_AutonWheelMaxSpeed = 4500;
-
-
 
 /* Ke_RPM_SD_WheelMinCmndSpeed: Min RPM speed of the swerve drive wheel to keep it under PID control.
   If the absolute value of the command, wheels will transition to 0 power (but still in brake
@@ -310,31 +308,29 @@ const double KtLU_k_SD_DesiredAccel[20] = {-1.00, //-1
                                            1.00}; // 0.95
 
 /* ADAS DM cals*/
-const double KaADAS_k_AutonXY_PID_Gx[E_PID_CalSz] = { 0.050,       // P Gx
-                                                      0.00060,    // I Gx 0.000001
-                                                      0.00007,      // D Gx
-                                                      0.60,       // P UL
-                                                     -0.60,       // P LL
-                                                      0.3,      // I UL
-                                                     -0.3,      // I LL
-                                                      0.5,       // D UL
-                                                     -0.5,       // D LL
-                                                      1.0,       // Max upper
-                                                     -1.0};      // Max lower
+const double KaADAS_k_AutonXY_PID_Gx[E_PID_CalSz] = {0.050,   // P Gx
+                                                     0.00060, // I Gx 0.000001
+                                                     0.00007, // D Gx
+                                                     0.60,    // P UL
+                                                     -0.60,   // P LL
+                                                     0.3,     // I UL
+                                                     -0.3,    // I LL
+                                                     0.5,     // D UL
+                                                     -0.5,    // D LL
+                                                     1.0,     // Max upper
+                                                     -1.0};   // Max lower
 
-                                                     
-const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = { 0.00020,     // P Gx
-                                                         0.00020, // I Gx
-                                                         0.00007,  // D Gx
-                                                         0.29,      // P UL
-                                                        -0.29,      // P LL
-                                                         0.175,     // I UL
-                                                        -0.175,     // I LL
-                                                         0.16,      // D UL
-                                                        -0.16,      // D LL
-                                                         0.4,      // Max upper
-                                                        -0.4};     // Max lower
-
+const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.00020, // P Gx
+                                                        0.00020, // I Gx
+                                                        0.00007, // D Gx
+                                                        0.29,    // P UL
+                                                        -0.29,   // P LL
+                                                        0.175,   // I UL
+                                                        -0.175,  // I LL
+                                                        0.16,    // D UL
+                                                        -0.16,   // D LL
+                                                        0.4,     // Max upper
+                                                        -0.4};   // Max lower
 
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
 const double KeADAS_t_DM_PathFollowDebounceTime = 0.045;
@@ -343,8 +339,6 @@ const double K_ADAS_DM_RotateDeadbandAngle = 3.0;
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
 const double K_ADAS_DM_XY_Deadband = 3.0;
-
-
 
 /*  Auto Rotation calibrations */
 /* K_DesiredRotateSpeedAxis - This is the effective command axis, function of error calculation, in degrees */
@@ -408,77 +402,76 @@ const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS 
  ******************************************************************************/
 
 /* KaMAN_e_ControllingTable: Table that contains the commanded state of the manipulator and intake based on the current attained state and schedueld state. */
-const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] =  // [Sched][Attnd]
-  { {E_DJ_Amp_Init, E_DJ_Amp_Init, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-    {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving,E_DJ_Amp_Driving},
-    {E_DJ_Amp_Driving, E_DJ_Amp_Intake, E_DJ_Amp_Intake, E_DJ_Amp_Driving},
-    {E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Driving, E_DJ_Amp_Score}
-  };
+const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Sched][Attnd]
+    {{E_DJ_Amp_Init, E_DJ_Amp_Init, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Intake, E_DJ_Amp_Intake, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Driving, E_DJ_Amp_Score}};
 
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
-const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
-                                                                0.000001, // kI
-                                                                0.002000, // kD
-                                                                0.0,      // kIz
-                                                                0.0,      // kFF
-                                                                1.0,      // kMaxOut
-                                                                -1.0,      // kMinOut
-                                                                1.05,     // kMaxVel
-                                                                0.5,      // kMinVel
-                                                                0.0,      // kMaxAcc
-                                                                0.0};     // kAllErr
+const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
+                                                               0.000001, // kI
+                                                               0.002000, // kD
+                                                               0.0,      // kIz
+                                                               0.0,      // kFF
+                                                               1.0,      // kMaxOut
+                                                               -1.0,     // kMinOut
+                                                               1.05,     // kMaxVel
+                                                               0.5,      // kMinVel
+                                                               0.0,      // kMaxAcc
+                                                               0.0};     // kAllErr
 
 /* KaDJ_Amp_k_WristPID_Gx: PID gains for the Wrist control. */
-const double KaDJ_Amp_k_WristPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
-                                                              0.000001, // kI
-                                                              0.002000, // kD
-                                                              0.0,      // kIz
-                                                              0.0,      // kFF
-                                                              1.0,      // kMaxOut
-                                                             -1.0,      // kMinOut
-                                                              1.05,     // kMaxVel
-                                                              0.5,      // kMinVel
-                                                              0.0,      // kMaxAcc
-                                                              0.0};     // kAllErr                                                               
+const double KaDJ_Amp_k_WristPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
+                                                            0.000001, // kI
+                                                            0.002000, // kD
+                                                            0.0,      // kIz
+                                                            0.0,      // kFF
+                                                            1.0,      // kMaxOut
+                                                            -1.0,     // kMinOut
+                                                            1.05,     // kMaxVel
+                                                            0.5,      // kMinVel
+                                                            0.0,      // kMaxAcc
+                                                            0.0};     // kAllErr
 
 /* KaDJ_Amp_k_IntakePID_Gx: PID gains for the Gripper control. */
-const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
-                                                              0.000001, // kI
-                                                              0.002000, // kD
-                                                              0.0,      // kIz
-                                                              0.0,      // kFF
-                                                              1.0,      // kMaxOut
-                                                             -1.0,      // kMinOut
-                                                              1.05,     // kMaxVel
-                                                              0.5,      // kMinVel
-                                                              0.0,      // kMaxAcc
-                                                              0.0};     // kAllErr
+const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
+                                                             0.000001, // kI
+                                                             0.002000, // kD
+                                                             0.0,      // kIz
+                                                             0.0,      // kFF
+                                                             1.0,      // kMaxOut
+                                                             -1.0,     // kMinOut
+                                                             1.05,     // kMaxVel
+                                                             0.5,      // kMinVel
+                                                             0.0,      // kMaxAcc
+                                                             0.0};     // kAllErr
 
 /* KaMAN_k_ManipulatorTestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
-const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {         0.00, // E_Amp_Elevator     //NOTE set to zero so there is no breaking needs to be changed tho
-                                                        0.00, // E_Amp_Wrist
-                                                        0.00}; // E_Amp_Intake
+const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {0.00,  // E_Amp_Elevator     //NOTE set to zero so there is no breaking needs to be changed tho
+                                               0.00,  // E_Amp_Wrist
+                                               0.00}; // E_Amp_Intake
 
 /* KeMAN_t_StateTimeOUt: Sets transition time out. */
 const double KeDJ_Amp_t_StateTimeOut = 1; // Drop-off //NOTE - will need to be changed for new bot
 
 /* KaDJ_Amp_RPM_IntakePower: sets Intake power for each state */
-const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = {  0.0,   // Sched - Init
-                                                              0.0,   // Sched - Driving
-                                                             -0.45,  // Sched - Main Intake
-                                                              0.45}; // Sched - Score
+const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = {0.0,   // Sched - Init
+                                                            0.0,   // Sched - Driving
+                                                            -0.45, // Sched - Main Intake
+                                                            0.45}; // Sched - Score
 
 /* KaDJ_Amp_Deg_WristAngle: sets Wrist final positons for each state */
-const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = { 0.00,  // Sched - Init
-                                                            0.00,  // Sched - Driving
-                                                            0.00,  // Sched -  Intake
-                                                            0.00}; // Sched - Score
-                                                                                    //NOTE - need to be calibrated and set
+const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {0.00,  // Sched - Init
+                                                           0.00,  // Sched - Driving
+                                                           0.00,  // Sched -  Intake
+                                                           0.00}; // Sched - Score
+                                                                  // NOTE - need to be calibrated and set
 /* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
-const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = { 0.0,   // Sched - Init
-                                                                 0.0,  // Sched - Driving
-                                                                 0.0, // Sched - Intake
-                                                                 0.0}; // Sched - Score
+const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched - Init
+                                                                0.0,  // Sched - Driving
+                                                                0.0,  // Sched - Intake
+                                                                0.0}; // Sched - Score
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
 const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
@@ -488,24 +481,22 @@ const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
 
 /* KaDJ_Amp_In_ElevatorDb: Sets Elevator dead band. */
 const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {0.5,  // Sched - Init
-                                                       0.5,  // Sched - Driving
-                                                       0.5,  // Sched - Intake
-                                                       0.5}; // Sched - Score
+                                                          0.5,  // Sched - Driving
+                                                          0.5,  // Sched - Intake
+                                                          0.5}; // Sched - Score
 
 /* KaMAN_InS_LinearSlideRate: Table that contains the linear slide transition rate. */
-const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] =  // [Cmnd][Attnd]
-  { {2.0, 2.0, 2.0, 2.0},
-    {2.0, 2.0, 2.0, 2.0},
-    {2.0, 2.0, 2.0, 2.0}, //NOTE - Needs to be decided for comp bot
-    {2.0, 2.0, 2.0, 2.0}
-  };
+const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
+    {{2.0, 2.0, 2.0, 2.0},
+     {2.0, 2.0, 2.0, 2.0},
+     {2.0, 2.0, 2.0, 2.0}, // NOTE - Needs to be decided for comp bot
+     {2.0, 2.0, 2.0, 2.0}};
 
-const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] =  // [Cmnd][Attnd]
-  { {1.0, 1.0, 1.0, 1.0},
-    {1.0, 1.0, 1.0, 1.0},
-    {1.0, 1.0, 1.0, 1.0}, //NOTE - Needs to be decided for comp bot
-    {1.0, 1.0, 1.0, 1.0}
-  };
+const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
+    {{1.0, 1.0, 1.0, 1.0},
+     {1.0, 1.0, 1.0, 1.0},
+     {1.0, 1.0, 1.0, 1.0}, // NOTE - Needs to be decided for comp bot
+     {1.0, 1.0, 1.0, 1.0}};
 
 /* KeENC_Deg_Wrist: Scalaer to convert encoder reading to actual position of the wrist, how much we've rotated. */
 const double KeENC_Deg_Wrist = -1.16883;
@@ -518,4 +509,3 @@ const double KeDJ_Amp_k_ReleaseNote = 0.8;
 
 /* KeENC_RPM_Intake: Finds the speed of the intake rollers. */
 const double KeENC_RPM_Intake = 1.0;
-
