@@ -2,7 +2,7 @@
  * Team 5561 2024 Code
  *
  *  This code will run our 2024 robot
- * 
+ *
  */
 
 #include "Robot.h"
@@ -17,7 +17,7 @@
 #include "ADAS.hpp"
 #include "Odometry.hpp"
 #include "Amp.hpp"
-
+#include "ADAS_DJ.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include <units/angle.h>
@@ -26,8 +26,6 @@ T_RobotState VeROBO_e_RobotState = E_Init;
 std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
-
-
 
 /******************************************************************************
  * Function:     RobotMotorCommands
@@ -66,21 +64,18 @@ void Robot::RobotMotorCommands()
 #ifdef Bot2023
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
-  m_Underbelly.Set(0.0); 
+  m_Underbelly.Set(0.0);
   m_LinearSlide.Set(0.0);
 #endif
 
 #ifdef Bot2024
-m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
-m_Elevator.Set(0.0);
-m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
-m_IntakePID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake], rev::ControlType::kVelocity);
-m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]); // This puts the gripper into a power control setup, not speed/postion
+  m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
+  m_Elevator.Set(0.0);
+  m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
+  m_IntakePID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake], rev::ControlType::kVelocity);
+  m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]); // This puts the gripper into a power control setup, not speed/postion
 
 #endif
-
-
-
 }
 
 /******************************************************************************
@@ -90,7 +85,7 @@ m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]); // This puts the gripper
  ******************************************************************************/
 void Robot::RobotInit()
 {
-  
+
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
@@ -115,19 +110,15 @@ void Robot::RobotInit()
   m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  
 
-    SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
+  SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
                               m_frontRightDrivePID,
                               m_rearLeftDrivePID,
                               m_rearRightDrivePID);
 
-
   ADAS_Main_Init();
   ADAS_Main_Reset();
-
 }
-
 
 /**
  * This function is called every 20 ms, no matter the mode. Use
@@ -137,10 +128,10 @@ void Robot::RobotInit()
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {
+void Robot::RobotPeriodic()
+{
 
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
-
 
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
                           c_joyStick.GetRawButton(8),
@@ -170,7 +161,7 @@ void Robot::RobotPeriodic() {
                           c_joyStick2.GetRawButton(7),
                           c_joyStick2.GetRawAxis(2),
                           c_joyStick2.GetRawAxis(3));
-  #endif
+#endif
 
   Encoders_Drive_CompBot(m_encoderWheelAngleCAN_FL.GetAbsolutePosition().GetValue(),
                          m_encoderWheelAngleCAN_FR.GetAbsolutePosition().GetValue(),
@@ -183,12 +174,10 @@ void Robot::RobotPeriodic() {
 
   ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
 
-
   DtrmnSwerveBotLocation(VeGRY_Rad_GyroYawAngleRad,
                          &VaENC_Rad_WheelAngleFwd[0],
                          &VaENC_In_WheelDeltaDistance[0],
                          VsCONT_s_DriverInput.b_ZeroGyro);
-
 
   frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
   frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
@@ -219,8 +208,6 @@ void Robot::RobotPeriodic() {
                                             VeADAS_in_OffsetRequestX,
                                             VeADAS_in_OffsetRequestY);
 
-
-
   DriveControlMain(VsCONT_s_DriverInput.pct_SwerveForwardBack, // swerve control forward/back
                    VsCONT_s_DriverInput.pct_SwerveStrafe,      // swerve control strafe
                    VsCONT_s_DriverInput.deg_SwerveRotate,      // rotate the robot joystick
@@ -243,11 +230,11 @@ void Robot::RobotPeriodic() {
                    &VaENC_Deg_WheelAngleRev[0],
                    &VaDRC_RPM_WheelSpeedCmnd[0],
                    &VaDRC_Pct_WheelAngleCmnd[0]);
-  #ifdef Bot2024
+#ifdef Bot2024
   Amp_MotorConfigsCal(m_ElevatorPID,
-                             m_WristPID,
-                             m_IntakePID);
-  #endif
+                      m_WristPID,
+                      m_IntakePID);
+#endif
 }
 
 /**
@@ -261,7 +248,8 @@ void Robot::RobotPeriodic() {
  * if-else structure below with additional strings. If using the SendableChooser
  * make sure to add them to the chooser code above as well.
  */
-void Robot::AutonomousInit() {
+void Robot::AutonomousInit()
+{
 
   VeROBO_e_RobotState = E_Auton;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
@@ -270,9 +258,9 @@ void Robot::AutonomousInit() {
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
   //     kAutoNameDefault);
-  
+
   GyroInit();
-  
+
   DriveControlInit();
 
   OdometryInit();
@@ -281,14 +269,18 @@ void Robot::AutonomousInit() {
 
   fmt::print("Auto selected: {}\n", m_autoSelected);
 
-  if (m_autoSelected == kAutoNameCustom) {
+  if (m_autoSelected == kAutoNameCustom)
+  {
     // Custom Auto goes here
-  } else {
+  }
+  else
+  {
     // Default Auto goes here
   }
 }
 
-void Robot::AutonomousPeriodic() {
+void Robot::AutonomousPeriodic()
+{
   // if (m_autoSelected == kAutoNameCustom) {
   //   // Custom Auto goes here
   // } else {
@@ -296,13 +288,13 @@ void Robot::AutonomousPeriodic() {
   // }
 
   RobotMotorCommands();
-
 }
 
-void Robot::TeleopInit() {
+void Robot::TeleopInit()
+{
 
   ADAS_Main_Reset();
-  
+
   VeROBO_e_RobotState = E_Teleop;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
   VeROBO_b_TestState = false;
@@ -312,10 +304,10 @@ void Robot::TeleopInit() {
   OdometryInit();
 }
 
-void Robot::TeleopPeriodic() {
+void Robot::TeleopPeriodic()
+{
 
   RobotMotorCommands();
-
 }
 
 void Robot::DisabledInit() {}
@@ -331,7 +323,8 @@ void Robot::SimulationInit() {}
 void Robot::SimulationPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
-int main() {
+int main()
+{
   return frc::StartRobot<Robot>();
 }
 #endif

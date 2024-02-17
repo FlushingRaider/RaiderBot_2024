@@ -10,8 +10,7 @@
 #ifndef ENUMS
 #define ENUMS
 
-//TODO Add Comments to explain all these? to people
-
+// TODO Add Comments to explain all these? to people
 
 // enum for each state of the robot
 typedef enum T_RobotState
@@ -20,7 +19,6 @@ typedef enum T_RobotState
   E_Auton,
   E_Teleop
 } T_RobotState;
-
 
 // enum of each swerve corner, used for motor control indexing (see DriveControl.cpp or Encoders.cpp)
 typedef enum T_RobotCorner
@@ -32,8 +30,7 @@ typedef enum T_RobotCorner
   E_RobotCornerSz
 } T_RobotCorner;
 
-
-//enum for different PID values, mostly used to index the variable KV_SD_WheelAnglePID_Gx
+// enum for different PID values, mostly used to index the variable KV_SD_WheelAnglePID_Gx
 typedef enum T_PID_Cal
 {
   E_P_Gx,
@@ -50,7 +47,7 @@ typedef enum T_PID_Cal
   E_PID_CalSz
 } T_PID_Cal;
 
-//used in conjunction with T_PID_Cal
+// used in conjunction with T_PID_Cal
 typedef enum T_PID_SparkMaxCal
 {
   E_kP,
@@ -68,7 +65,7 @@ typedef enum T_PID_SparkMaxCal
 } T_PID_SparkMaxCal;
 
 // These are the sub features in ADAS.  These can be called in teleop and/or auton
-typedef enum T_ADAS_ActiveFeature 
+typedef enum T_ADAS_ActiveFeature
 {
   E_ADAS_Disabled,
   E_ADAS_DM_DriveStraight,
@@ -81,12 +78,11 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower5,
   E_ADAS_DM_PathFollowerFWD,
 
-  
   E_ADAS_MoveOffsetTag,
   E_ADAS_MoveGlobalTag,
 } T_ADAS_ActiveFeature;
 
-typedef enum T_ADAS_ActiveAutonFeature  // The various autons we may want to call, enumurated for you convience!
+typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call, enumurated for you convience!
 {
   E_ADAS_AutonDisabled,
   E_ADAS_AutonDropCubeDriveFwd,
@@ -96,53 +92,53 @@ typedef enum T_ADAS_ActiveAutonFeature  // The various autons we may want to cal
   E_ADAS_AutonDrivePath3,  
 } T_ADAS_ActiveAutonFeature;
 
-//a big ol' object ti carry the various inputs from the driver in one place
+// a big ol' object ti carry the various inputs from the driver in one place
 struct RobotUserInput
 {
-  bool                  b_ZeroGyro;
-  double                pct_SwerveForwardBack;
-  double                pct_SwerveStrafe;
-  double                deg_SwerveRotate;
-  double                v_SwerveSpeed;
-  bool                  b_SwerveGoalAutoCenter;
-  bool                  b_SwerveRotateTo0;
-  bool                  b_SwerveRotateTo180;
-  bool                  b_CameraLight;
-  bool                  b_JoystickActive;
-  bool                  b_VisionDriverModeOverride;
-  bool                  b_IntakeRollersTest; //21
-  bool                  b_ResetManipulatorEnocders; // 21
-  bool                  b_IntakeArmIn;  // 21
-  bool                  b_IntakeArmOutTest;
-  double                Pct_WristTest;
-  double                Pct_ArmPivotTest;
-  double                Pct_LinearSlideTest;
-  double                pct_IntakeRollerTest;
-  bool                  b_MainIntakeOut;
-  bool                  b_MidIntakeOut;
-  bool                  b_FloorConeDrop;
-  bool                  b_InitState;
-  bool                  b_DrivingPosition;
-  bool                  b_FrontHighCube;
-  bool                  b_FrontLowCube;
-  bool                  b_FrontHighCone;
-  bool                  b_FrontLowCone;
-  bool                  b_DropGamePieceSlow;
-  bool                  b_DropGamePieceFast;
-  bool                  b_AutoBalance;
-  bool                  b_CubeAlign;
-  bool                  b_ConeAlign;
-  bool                  b_VisionButton;
-  bool                  b_X_Mode;
-  bool                  b_Amp_Intake;
+  bool b_ZeroGyro;
+  double pct_SwerveForwardBack;
+  double pct_SwerveStrafe;
+  double deg_SwerveRotate;
+  double v_SwerveSpeed;
+  bool b_SwerveGoalAutoCenter;
+  bool b_SwerveRotateTo0;
+  bool b_SwerveRotateTo180;
+  bool b_CameraLight;
+  bool b_JoystickActive;
+  bool b_VisionDriverModeOverride;
+  bool b_IntakeRollersTest;        // 21
+  bool b_ResetManipulatorEnocders; // 21
+  bool b_IntakeArmIn;              // 21
+  bool b_IntakeArmOutTest;
+  double Pct_WristTest;
+  double Pct_ArmPivotTest;
+  double Pct_LinearSlideTest;
+  double pct_IntakeRollerTest;
+  bool b_MainIntakeOut;
+  bool b_MidIntakeOut;
+  bool b_FloorConeDrop;
+  bool b_InitState;
+  bool b_DrivingPosition;
+  bool b_FrontHighCube;
+  bool b_FrontLowCube;
+  bool b_FrontHighCone;
+  bool b_FrontLowCone;
+  bool b_DropGamePieceSlow;
+  bool b_DropGamePieceFast;
+  bool b_AutoBalance;
+  bool b_CubeAlign;
+  bool b_ConeAlign;
+  bool b_VisionButton;
+  bool b_X_Mode;
+  bool b_Amp_Intake;
 };
 
-struct TsDJ_Sensor 
+struct TsDJ_Sensor
 {
-  double   In_Elevator;
-  double   Deg_Wrist;
-  bool   b_Amp_ObjDetected;
-  bool   b_Spk_ObjDetected;
+  double In_Elevator;
+  double Deg_Wrist;
+  bool b_Amp_ObjDetected;
+  bool b_Spk_ObjDetected;
 };
 
 typedef enum T_MotorControlType
@@ -198,13 +194,12 @@ typedef enum T_DJ_Spk_States
 
 struct TeAmp_MotorControl
 {
-  T_MotorControlType    e_MotorControlType[E_DJ_Ampz];
-  double                k_MotorCmnd[E_DJ_Ampz];
-  double                k_MotorRampRate[E_DJ_Ampz];
-  double                k_MotorTestValue[E_DJ_Ampz];
-  double                k_MotorTestPower[E_DJ_Ampz];
+  T_MotorControlType e_MotorControlType[E_DJ_Ampz];
+  double k_MotorCmnd[E_DJ_Ampz];
+  double k_MotorRampRate[E_DJ_Ampz];
+  double k_MotorTestValue[E_DJ_Ampz];
+  double k_MotorTestPower[E_DJ_Ampz];
 };
-
 
 struct CalcedPathVals
 {
@@ -213,21 +208,17 @@ struct CalcedPathVals
 
   double L_valDeg;
   double L_timRem;
-
-
 };
 
-struct DtrmnSwerveBotLocationOut{
-  
+struct DtrmnSwerveBotLocationOut
+{
+
   double L_valX;
   double L_valY;
 
   double L_valDeg;
   double L_timRem;
   bool L_timeEndReached = false;
-
-
 };
-
 
 #endif
