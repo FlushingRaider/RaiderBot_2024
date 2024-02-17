@@ -133,6 +133,15 @@ struct RobotUserInput
   bool                  b_ConeAlign;
   bool                  b_VisionButton;
   bool                  b_X_Mode;
+  bool                  b_Amp_Intake;
+};
+
+struct TsDJ_Sensor 
+{
+  double   In_Elevator;
+  double   Deg_Wrist;
+  bool   b_Amp_ObjDetected;
+  bool   b_Spk_ObjDetected;
 };
 
 typedef enum T_MotorControlType
@@ -171,9 +180,10 @@ typedef enum T_DJ_Spk_Motors
 typedef enum T_DJ_Amp_States
 {
   E_DJ_Amp_Init,
-  E_DJ_Amp_Intake,
   E_DJ_Amp_Driving,
-  E_DJ_Amp_Score
+  E_DJ_Amp_Intake,
+  E_DJ_Amp_Score,
+  E_DJ_Amp_State_Sz
 } T_DJ_Amp_States;
 
 typedef enum T_DJ_Spk_States
@@ -181,6 +191,7 @@ typedef enum T_DJ_Spk_States
   E_DJ_Spk_Init,
   E_DJ_Spk_Driving,
   E_DJ_Underbelly,
+  E_DJ_PreScore,
   E_DJ_Shooting
 } T_DJ_Spk_States;
 
