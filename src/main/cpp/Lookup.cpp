@@ -432,19 +432,6 @@ CalcedPathVals LoadPathHeader(double LeLU_s_AutonTime,
 
 
   CalcedPathVals L_PathCalcedVals;
-  // double LeLU_k_RedMirrorDirectionFlip = 1;
-
-  LeLU_Int_X_AxisSize = (int)(sizeof(L_PathTime) / sizeof(L_PathX[0]));
-  LeLU_Int_X_CalArraySize = (int)(sizeof(L_PathX) / sizeof(L_PathX[0]));
-
-  LeLU_Int_Y_AxisSize = (int)(sizeof(L_PathTime) / sizeof(L_PathY[0]));
-  LeLU_Int_Y_CalArraySize = (int)(sizeof(L_PathY) / sizeof(L_PathY[0]));
-
-  LeLU_Int_Ang_AxisSize = (int)(sizeof(L_PathTime) / sizeof(L_PathRot[0]));
-  LeLU_Int_Ang_CalArraySize = (int)(sizeof(L_PathRot) / sizeof(L_PathRot[0]));
-
-  LeLU_Int_t_AxisSize = (int)(sizeof(L_PathTime) / sizeof(L_PathTimeRemaining[0]));
-  LeLU_Int_t_CalArraySize = (int)(sizeof(L_PathTimeRemaining) / sizeof(L_PathTimeRemaining[0]));
 
 
   LeLU_Int_TimeSize = (int)L_PathTime.size();
@@ -520,19 +507,14 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
 
   case E_ADAS_DM_PathFollower1:
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                                       L_Preload_T,
-                                       L_Preload_T_REM,
-                                       L_Preload_X,
-                                       L_Preload_Y,
-                                       L_Preload_ROT);
-
-    LeLU_Int_X_AxisSize = (int)(sizeof(L_Preload_T) / sizeof(L_Preload_X[0]));
-
-    frc::SmartDashboard::PutNumber("time", LeLU_s_AutonTime);
-    frc::SmartDashboard::PutNumber("max preload time", L_Preload_T[L_Preload_T.size() - 1]);
+                                       KnADAS_t_L_Preload,
+                                       KnADAS_t_L_PreloadRemaining,
+                                       KaADAS_l_L_Preload_X,
+                                       KaADAS_l_L_Preload_Y,
+                                       KaADAS_Deg_L_Preload);
 
 
-    if (LeLU_s_AutonTime >= L_Preload_T[L_Preload_T.size() - 1])
+    if (LeLU_s_AutonTime >= KnADAS_t_L_Preload[KnADAS_t_L_Preload.size() - 1])
     {
       L_output.L_timeEndReached = true;
     }
@@ -583,6 +565,20 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
         L_output.L_timeEndReached = true;
       }
     break;
+    case E_ADAS_DM_PathFollower5:
+      LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                     KnADAS_t_Recall,
+                     KnADAS_t_RecallRemaining,
+                     KaADAS_l_Recall_X,
+                     KaADAS_l_Recall_Y,
+                     KaADAS_Deg_Recall);
+
+
+      if (LeLU_s_AutonTime >= KnADAS_t_Recall[KnADAS_t_Recall.size() - 1])
+      {
+        L_output.L_timeEndReached = true;
+      }
+    break;
   }
 
   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
@@ -596,9 +592,6 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
   // frc::SmartDashboard::PutNumber("y val", LaLU_d_CalcedVals.L_valY);
   // frc::SmartDashboard::PutNumber("deg val", LaLU_d_CalcedVals.L_valDeg);
   // frc::SmartDashboard::PutNumber("time val", LaLU_d_CalcedVals.L_timRem);
-
-
-
 
   L_output.L_valX = LaLU_d_CalcedVals.L_valX;
   L_output.L_valY = LaLU_d_CalcedVals.L_valY;
