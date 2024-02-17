@@ -10,9 +10,8 @@
 extern double VeODO_In_RobotDisplacementX;
 extern double VeODO_In_RobotDisplacementY;
 
-extern double V_OffsetXOut;
-extern double V_OffsetYOut;
-extern bool V_OdomCentered;
+extern double VeODO_In_DeltaX;
+extern double VeODO_In_DeltaY;
 
 void OdometryInitToArgs(double VeODO_In_ArgX, double VeODO_In_ArgY);
 

@@ -110,15 +110,12 @@ void ADAS_Main_Reset(void)
   VeADAS_b_State2Complete = false;
   VeADAS_b_AutonOncePerTrigger = false;
 
-
   VeADAS_t_DM_StateTimer = 0.0;
   /* Trigger the resets for all of the sub tasks/functions as well: */
-
-  // NOTE - don't forgor to add functions, always rember
 }
 
 T_ADAS_ActiveFeature AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
-                   T_ADAS_ActiveFeature LeADAS_e_ActiveFeature)
+                                   T_ADAS_ActiveFeature LeADAS_e_ActiveFeature)
 {
   if ((LeADAS_b_Driver1_JoystickActive == true) || (VeADAS_b_StateComplete == true))
   {
@@ -129,7 +126,7 @@ T_ADAS_ActiveFeature AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
     VeADAS_b_State1Complete = false;
     VeADAS_b_State2Complete = false;
   }
-  return(LeADAS_e_ActiveFeature);
+  return (LeADAS_e_ActiveFeature);
 }
 
 /******************************************************************************
@@ -152,30 +149,22 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                       double L_L_Y_FieldPos,
                                       T_RobotState LeADAS_e_RobotState,
                                       T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
-                                      bool L_OdomCentered,
-                                      std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor,
-                                      double L_OdomOffsetX,
-                                      double L_OdomOffsetY,
-                                      double L_OdomGlobalRequestX,
-                                      double L_OdomGlobalRequestY,
-                                      double L_OdomOffsetRequestX,
-                                      double L_OdomOffsetRequestY)
+                                      std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor )
 {
   bool LeADAS_b_State1Complete = false;
   bool LeADAS_b_State2Complete = false;
 
   if (LeADAS_e_RobotState == E_Teleop)
   {
-  // LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);  // What is this voodoo??
+    // LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);  // What is this voodoo??
   }
   else if (LeADAS_e_RobotState == E_Auton)
   {
 
-
     frc::SmartDashboard::PutNumber("auton sub feature", (int)LeADAS_e_ActiveFeature);
 
     // NOTE - select auton is a switch now because faaassssttttt
-    //auton selection
+    // auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)
     {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,9 +222,9 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       break;
     }
 
-// our active feature table, autons set which one they want
-  switch (LeADAS_e_ActiveFeature)
-  {
+    // our active feature table, autons set which one they want
+    switch (LeADAS_e_ActiveFeature)
+    {
     // all 5 path follower features will just flow down to the function since theres no breaks
     case E_ADAS_DM_PathFollower1:
     case E_ADAS_DM_PathFollower2:
@@ -243,27 +232,21 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     case E_ADAS_DM_PathFollower4:
     case E_ADAS_DM_PathFollower5:
       VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
-                                                      L_Pct_Strafe,
-                                                      L_Pct_Rotate,
-                                                      LeADAS_Deg_DesiredPose,
-                                                      LeADAS_b_SD_RobotOriented,
-                                                      L_L_X_FieldPos,
-                                                      L_L_Y_FieldPos,
-                                                      L_Deg_GyroAngleDeg,
-                                                      LeADAS_e_ActiveFeature,
-                                                      LeLC_e_AllianceColor); 
-    break;
-  
-  default:
-    break;
+                                                    L_Pct_Strafe,
+                                                    L_Pct_Rotate,
+                                                    LeADAS_Deg_DesiredPose,
+                                                    LeADAS_b_SD_RobotOriented,
+                                                    L_L_X_FieldPos,
+                                                    L_L_Y_FieldPos,
+                                                    L_Deg_GyroAngleDeg,
+                                                    LeADAS_e_ActiveFeature,
+                                                    LeLC_e_AllianceColor);
+      break;
+
+    default:
+      break;
+    }
   }
 
-
-
-
-
-  }
-
-return (LeADAS_e_ActiveFeature);
-
+  return (LeADAS_e_ActiveFeature);
 }

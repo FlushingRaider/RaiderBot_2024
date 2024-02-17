@@ -16,11 +16,9 @@
 double VeODO_In_RobotDisplacementX = 0; // Displacement in the X direction, which is left/right
 double VeODO_In_RobotDisplacementY = 0; // Displacement in the Y direction, which is forward/back
 
-double V_OffsetXOut;
-double V_OffsetYOut;
-bool V_OdomCentered;
+double VeODO_In_DeltaX = 0;
+double VeODO_In_DeltaY = 0;
 
-int V_PrevTagID;
 
 /******************************************************************************
  * Function:     OdometryInitToArgs
@@ -28,10 +26,10 @@ int V_PrevTagID;
  * Description:  Initializes the necessary items for odometry using a given pair of values
  *
  ******************************************************************************/
-void OdometryInitToArgs(double VeODO_In_ArgX, double VeODO_In_ArgY)
+void OdometryInitToArgs(double LeODO_In_ArgX, double LeODO_In_ArgY)
 {
-  VeODO_In_RobotDisplacementX = VeODO_In_ArgX;
-  VeODO_In_RobotDisplacementY = VeODO_In_ArgY;
+  VeODO_In_RobotDisplacementX = LeODO_In_ArgX;
+  VeODO_In_RobotDisplacementY = LeODO_In_ArgY;
 }
 
 /******************************************************************************
@@ -94,70 +92,10 @@ void DtrmnSwerveBotLocation(double  LeODO_Rad_Gyro,
   // apply to our running counter (global), these are the numbers every other fxn will use
   VeODO_In_RobotDisplacementX += LeODO_In_TotalDeltaX;
   VeODO_In_RobotDisplacementY += LeODO_In_TotalDeltaY;
+
+  
+  VeODO_In_DeltaX = LeODO_In_TotalDeltaX;
+  VeODO_In_DeltaY = LeODO_In_TotalDeltaY; 
+  // frc::SmartDashboard::PutNumber("delta x", VeODO_In_DeltaX);
 }
 
-
-//REVIEW - I'm not even sure we're using this anywhere, could be deleted
-/******************************************************************************
- * Function:     DtrmTagOffset
- *
- * Description:  TBD.
- *
- ******************************************************************************/
-void DtrmTagOffset(int L_TagID,
-                   bool L_HasTarget,
-                   bool L_VisionCentered)
-{
-
-  double L_OffsetX;
-  double L_OffsetY;
-
-
-  if (L_TagID > 0){
-  V_PrevTagID = L_TagID;
-  }
-  else if (L_TagID == 0){
-    L_TagID = V_PrevTagID;
-  }
-
-
-//   // if ( L_VisionCentered)
-//   // {
-//     if (L_TagID == 1 || L_TagID == 2 || L_TagID == 3)
-//     {
-//       L_OffsetX = C_TagXred - VeODO_In_RobotDisplacementY;
-//       if (L_TagID == 1)
-//       {
-//         L_OffsetY = C_Tag1Y - VeODO_In_RobotDisplacementX;
-//       }
-//       else if (L_TagID == 2)
-//       {
-//         L_OffsetY = C_Tag2Y - VeODO_In_RobotDisplacementX;
-//       }
-//       else if (L_TagID == 3)
-//       {
-//         L_OffsetY = C_Tag3Y - VeODO_In_RobotDisplacementX;
-//       }
-//     }
-//     else
-//     {
-//       L_OffsetX = C_TagXblue - VeODO_In_RobotDisplacementX;
-//       if (L_TagID == 8)
-//       {
-//         L_OffsetY = C_Tag1Y - VeODO_In_RobotDisplacementX;
-//       }
-//       else if (L_TagID == 7)
-//       {
-//         L_OffsetY = C_Tag2Y - VeODO_In_RobotDisplacementX;
-//       }
-//       else if (L_TagID == 6)
-//       {
-//         L_OffsetY = C_Tag3Y - VeODO_In_RobotDisplacementX;
-//       }
-//     }
-
-    V_OffsetXOut = L_OffsetX;
-    V_OffsetYOut = L_OffsetY;
-    V_OdomCentered = L_VisionCentered;
-  }
-// }

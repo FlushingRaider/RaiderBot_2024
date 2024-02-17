@@ -44,11 +44,4 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *LeADAS_Pct_FwdRev,
                                       double LeADAS_l_Y_FieldPos,
                                       T_RobotState LeADAS_e_RobotState,
                                       T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
-                                      bool L_OdomCentered,
-                                      std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor,
-                                      double L_OdomOffsetX,
-                                      double L_OdomOffsetY,
-                                      double L_OdomGlobalRequestX,
-                                      double L_OdomGlobalRequestY,
-                                      double L_OdomOffsetRequestX,
-                                      double L_OdomOffsetRequestY); 
+                                      std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor); 

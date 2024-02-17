@@ -509,3 +509,7 @@ const double KeDJ_Amp_k_ReleaseNote = 0.8;
 
 /* KeENC_RPM_Intake: Finds the speed of the intake rollers. */
 const double KeENC_RPM_Intake = 1.0;
+/*Vision configs*/
+const double KeAmbiguityThreshold = 0.2; //TODO - replace this with a number the photondevs reccomend
+const double KeMaxY = 323.25;
+const double KeMaxX = 651.25;
