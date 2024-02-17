@@ -16,7 +16,7 @@
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
 #include "Odometry.hpp"
-#include "DJ.hpp"
+#include "Amp.hpp"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 

@@ -513,7 +513,6 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
                                        KaADAS_l_L_Preload_Y,
                                        KaADAS_Deg_L_Preload);
 
-
     if (LeLU_s_AutonTime >= KnADAS_t_L_Preload[KnADAS_t_L_Preload.size() - 1])
     {
       L_output.L_timeEndReached = true;

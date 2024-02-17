@@ -10,7 +10,7 @@
 #ifndef ENUMS
 #define ENUMS
 
-//TODO Add Comments to explain all these?
+//TODO Add Comments to explain all these? to people
 
 
 // enum for each state of the robot

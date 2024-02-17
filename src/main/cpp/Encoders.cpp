@@ -7,7 +7,7 @@
   Converted to 2024 code: January 17, 2024
  */
 
-#include "DJ.hpp"
+#include "Amp.hpp"
 #include "rev/CANSparkMax.h"
 #include "Const.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>

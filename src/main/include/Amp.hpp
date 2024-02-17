@@ -1,5 +1,5 @@
 /*
-  DJ.hpp
+  Amp.hpp
 
   Created on: January 31, 2024
 

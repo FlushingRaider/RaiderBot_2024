@@ -9,12 +9,13 @@
 #include "rev/CANSparkMax.h"
 #include "ctre/Phoenix.h"
 #include <frc/DriverStation.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include "Const.hpp"
 #include "control_pid.hpp"
 #include "Lookup.hpp"
 #include "Driver_inputs.hpp"
 #include "Encoders.hpp"
-#include "DJ.hpp"
+#include "Amp.hpp"
 
 
 TeAmp_MotorControl      VsAmp_s_Motors; // All of the motor commands for the Amp Mechanism motors
@@ -90,8 +91,8 @@ bool                    VeAmp_b_TestState = false;
   VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Elevator] = KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_Init][E_DJ_Amp_Init];
   VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Wrist] = KaDJ_Amp_DegS_WristRate[E_DJ_Amp_Init][E_DJ_Amp_Init];
 
-  VaDJ_Amp_In_ElevatorError = 0.0;
-  VaDJ_Amp_k_ElevatorIntegral = 0.0;
+  VaAmp_In_ElevatorError = 0.0;
+  VaAmp_k_ElevatorIntegral = 0.0;
 
   for (LeAmp_i_Index3 = E_P_Gx;
        LeAmp_i_Index3 < E_PID_CalSz;
@@ -143,8 +144,8 @@ bool                    VeAmp_b_TestState = false;
   // frc::SmartDashboard::PutNumber("Min Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ll]);
 
   // display secondary coefficients
-  frc::SmartDashboard::PutNumber("KaDJ_Amp_InS_ElevatorRate", KaAmp_DegS_WristRate[E_DJ_Amp_Init][E_DJ_Amp_Init]);
-  frc::SmartDashboard::PutNumber("KaDJ_Amp_DegS_WristRate", [E_DJ_Amp_Init][E_DJ_Amp_Init]);
+  frc::SmartDashboard::PutNumber("KaDJ_Amp_InS_ElevatorRate", KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_Init][E_DJ_Amp_Init]);
+  frc::SmartDashboard::PutNumber("KaDJ_Amp_DegS_WristRate", KaDJ_Amp_DegS_WristRate[E_DJ_Amp_Init][E_DJ_Amp_Init]);
 
   // display target positions/speeds
   frc::SmartDashboard::PutNumber("Set Position Wrist", 0);
@@ -293,7 +294,7 @@ void Update_Amp_Actuators(      T_DJ_Amp_States LeDJ_Amp_e_CmndState,
  *
  * Description:  Updates the gripper roller control //NOTE - fix
  ******************************************************************************/
-void UpdateGripperActuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
+void UpdateAmp_hold_Actuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
                            T_DJ_Amp_States LeDJ_Amp_e_AttndState,
                            bool                    LeDJ_Amp_b_DropObject)
   {
@@ -319,7 +320,7 @@ void UpdateGripperActuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
 
    if ((LeDJ_Amp_b_AllowedReleaseState == true))
      {
-      VeDJ_Amp_t_HoldTime = 0;
+      VeAmp_t_HoldTime = 0;
       if(VsAmp_s_Sensors.b_Amp_ObjDetected)
        {
         /* We are eitehr in cone mode or main intake*/
@@ -386,10 +387,10 @@ void AmpControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
 
     /* Final output to the motor command that will be sent to the motor controller: */
 
-    VsAmp_s_Motors.k_MotorCmnd[E_MAN_LinearSlide] =  -Control_PID( VsAmp_s_MotorsTemp.k_MotorCmnd[E_MAN_LinearSlide],
+    VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator] =  -Control_PID( VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator],
                                                                   VsAmp_s_Sensors.In_Elevator,
-                                                                 &VaDJ_Amp_In_ElevatorError,
-                                                                 &VaDJ_Amp_k_ElevatorIntegral,
+                                                                 &VaAmp_In_ElevatorError,
+                                                                 &VaAmp_k_ElevatorIntegral,
                                                                   KaDJ_Amp_k_ElevatorPID_Gx[E_P_Gx],
                                                                   KaDJ_Amp_k_ElevatorPID_Gx[E_I_Gx],
                                                                   KaDJ_Amp_k_ElevatorPID_Gx[E_D_Gx],
@@ -402,7 +403,7 @@ void AmpControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
                                                                   KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ul],
                                                                   KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ll]);
 
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_Wrist] = VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Wrist];
+    VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist] = VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist];
 
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_IntakeRollers] = VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_IntakeRollers];
+    VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake] = VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake];
   }
