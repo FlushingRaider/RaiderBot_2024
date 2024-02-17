@@ -203,23 +203,25 @@ struct TeAmp_MotorControl
   double k_MotorTestPower[E_DJ_Ampz];
 };
 
+// the output struct after a path is loaded
 struct CalcedPathVals
 {
-  double L_valX;
-  double L_valY;
+  double L_valX = 0.0;
+  double L_valY = 0.0;
 
-  double L_valDeg;
-  double L_timRem;
+  double L_valDeg = 0.0;
+  double L_timRem = 0.0;
 };
 
+// the struct of data passed from lookup to ADAS_DM
 struct DtrmnSwerveBotLocationOut
 {
 
-  double L_valX;
-  double L_valY;
+  double L_valX = 0.0;
+  double L_valY = 0.0;
 
-  double L_valDeg;
-  double L_timRem;
+  double L_valDeg = 0.0;
+  double L_timRem = 0.0;
   bool L_timeEndReached = false;
 };
 
