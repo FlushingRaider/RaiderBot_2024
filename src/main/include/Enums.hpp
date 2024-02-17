@@ -212,7 +212,7 @@ struct DtrmnSwerveBotLocationOut{
 
   double L_valDeg;
   double L_timRem;
-  bool L_timeEndReached;
+  bool L_timeEndReached = false;
 
 
 };

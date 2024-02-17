@@ -12,7 +12,7 @@
 
 extern double V_ADAS_DM_InitGyroAngle;
 extern double VeADAS_t_DM_AutoMountDbTime;
-
+extern double VeADAS_t_DM_StateTimer;
 
 bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                           double *LeADAS_Pct_Strafe,

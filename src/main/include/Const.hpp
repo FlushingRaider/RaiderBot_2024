@@ -335,7 +335,7 @@ const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = { 0.00020,     // P Gx
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
 const double KeADAS_t_DM_PathFollowDebounceTime = 0.045;
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
-const double K_ADAS_DM_RotateDeadbandAngle = 2.0;
+const double K_ADAS_DM_RotateDeadbandAngle = 3.0;
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
 const double K_ADAS_DM_XY_Deadband = 3.0;
