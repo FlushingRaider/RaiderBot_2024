@@ -302,6 +302,7 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
                       bool                     L_JoyStick1_ResetDesiredAngle, // auto correct reset angle
                       bool                     LeDRC_b_X_ModeReq,  // When requested, move all wheels into an X configuration, meant to hold robot still
                       bool                     LeDRC_b_X_ModeReqTeleop,
+                      T_RobotState L_ROBO_e_RobotState,
                       T_ADAS_ActiveFeature     LeDRC_e_ADAS_ActiveFeature,
                       double                   L_ADAS_Pct_SD_FwdRev,
                       double                   L_ADAS_Pct_SD_Strafe,
@@ -343,6 +344,8 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
   bool          LeDRC_b_AutoCenterEnabled = true; // force autocorrect to always be enabled when driver is running or ADAS is NOT in robot oriented control
   double        LeDRC_k_ArmExtendScaler = 1.0;
   double        LeDRC_k_SpeedGain = 0.0;
+  double        L_k_ChosenWheelMax = 0.0;
+
 
   /* Scale the joysticks based on a calibratable lookup when in teleop: */
   if (LeDRC_e_ADAS_ActiveFeature > E_ADAS_Disabled)
@@ -514,10 +517,22 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
     L_k_SD_Gain = K_SD_MaxGain;
     }
 
-  L_RPM_SD_WS[E_FrontRight] *= (K_SD_WheelMaxSpeed * (L_k_SD_Gain));
-  L_RPM_SD_WS[E_FrontLeft]  *= (K_SD_WheelMaxSpeed * (L_k_SD_Gain));
-  L_RPM_SD_WS[E_RearLeft]   *= (K_SD_WheelMaxSpeed * (L_k_SD_Gain));
-  L_RPM_SD_WS[E_RearRight]  *= (K_SD_WheelMaxSpeed * (L_k_SD_Gain));
+
+  
+
+
+  if (L_ROBO_e_RobotState == E_Teleop){
+    L_k_ChosenWheelMax = K_SD_TeleWheelMaxSpeed;
+  }
+  else{
+    L_k_ChosenWheelMax = K_SD_AutonWheelMaxSpeed;
+  }
+
+
+  L_RPM_SD_WS[E_FrontRight] *= (L_k_ChosenWheelMax * (L_k_SD_Gain));
+  L_RPM_SD_WS[E_FrontLeft]  *= (L_k_ChosenWheelMax * (L_k_SD_Gain));
+  L_RPM_SD_WS[E_RearLeft]   *= (L_k_ChosenWheelMax * (L_k_SD_Gain));
+  L_RPM_SD_WS[E_RearRight]  *= (L_k_ChosenWheelMax * (L_k_SD_Gain));
 
   /* Now we need to detrime if we want to keep the desired commanded angle or flip 180* and flip the direction of the wheel speed.  
      This is intended to find the quickest way to reach the commanded angle. */
