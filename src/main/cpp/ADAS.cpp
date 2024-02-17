@@ -67,9 +67,15 @@ void ADAS_Main_Init(void)
 {
   std::string_view LeADAS_Str_AutonSelectorName = "Auton";
   VeADAS_e_AutonChooser.AddOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
-  VeADAS_e_AutonChooser.AddOption("Pathfollower1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath1);
-  // VeADAS_e_AutonChooser.AddOption("PathFollower2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath2);
+
+  VeADAS_e_AutonChooser.AddOption("Auton Test - Wesley", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath1);
+
+  VeADAS_e_AutonChooser.AddOption("L_Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath2);
+
+    VeADAS_e_AutonChooser.AddOption("Recall", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath3);
+
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
+  
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
 }
 
@@ -172,10 +178,12 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     //auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)
     {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case E_ADAS_AutonDisabled:
       /* code */
       break;
-    case E_ADAS_AutonDrivePath1:
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case E_ADAS_AutonDrivePath1:// Auton Test - Wesley
       if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false)){
         LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower2;
       }
@@ -185,7 +193,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower3) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower4; 
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower4;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower4) && (VeADAS_b_StateComplete == true))
       {
@@ -193,6 +201,33 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
         VeADAS_b_StateComplete = true;
         VeADAS_b_AutonOncePerTrigger = true;
       }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case E_ADAS_AutonDrivePath2:// L_Preload
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower1) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
+      }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case E_ADAS_AutonDrivePath3:// Recall
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower5;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower5) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
+      }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       break;
     default:
       break;
@@ -201,11 +236,12 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 // our active feature table, autons set which one they want
   switch (LeADAS_e_ActiveFeature)
   {
-    // all 4 path follower features will just flow down to the function since theres no breaks
+    // all 5 path follower features will just flow down to the function since theres no breaks
     case E_ADAS_DM_PathFollower1:
     case E_ADAS_DM_PathFollower2:
     case E_ADAS_DM_PathFollower3:
     case E_ADAS_DM_PathFollower4:
+    case E_ADAS_DM_PathFollower5:
       VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                       L_Pct_Strafe,
                                                       L_Pct_Rotate,

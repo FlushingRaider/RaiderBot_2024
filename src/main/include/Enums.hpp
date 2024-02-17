@@ -93,6 +93,7 @@ typedef enum T_ADAS_ActiveAutonFeature  // The various autons we may want to cal
   E_ADAS_AutonDeliverCubeDriveOnRampAutoBal,
   E_ADAS_AutonDrivePath1,
   E_ADAS_AutonDrivePath2,
+  E_ADAS_AutonDrivePath3,  
 } T_ADAS_ActiveAutonFeature;
 
 //a big ol' object ti carry the various inputs from the driver in one place
