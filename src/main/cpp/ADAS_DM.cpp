@@ -102,55 +102,54 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     bool LeADAS_b_TimeEndReached = false;
     double LeADAS_k_SlowSearch = 1.0;
 
+
+    DtrmnSwerveBotLocationOut L_lookupOut;
+
     /* Set the things we are not using to off: */
     *LeADAS_b_SD_RobotOriented = false;
 
     /* Look up the desired target location point: */
-    LeADAS_b_TimeEndReached = DesiredAutonLocation2(VeADAS_t_DM_StateTimer,
+    L_lookupOut = DesiredAutonLocation2(VeADAS_t_DM_StateTimer,
                                                     LeADAS_e_ActiveFeature,
-                                                    LeLC_e_AllianceColor,
-                                                    &LeADAS_l_TargetPositionX,
-                                                    &LeADAS_l_TargetPositionY,
-                                                    &LeADAS_Deg_TargetAngle,
-                                                    &LeADAS_t_TimeReaining);
+                                                    LeLC_e_AllianceColor);
 
     /* Capture some of the things we need to save for this state control: */
     if (VeADAS_b_DM_StateInit == false)
     {
         VeADAS_l_DM_X_StartPosition = LeADAS_l_X_FieldPos;
         VeADAS_l_DM_Y_StartPosition = LeADAS_l_Y_FieldPos;
-        VeADAS_l_DM_X_TargetStartPosition = LeADAS_l_TargetPositionX;
-        VeADAS_l_DM_Y_TargetStartPosition = LeADAS_l_TargetPositionY;
+        VeADAS_l_DM_X_TargetStartPosition = L_lookupOut.L_valX;
+        VeADAS_l_DM_Y_TargetStartPosition = L_lookupOut.L_valY;
         VeADAS_Deg_DM_StartAng = LeADAS_Deg_GyroAngle;
-        VeADAS_Deg_DM_TargetStartAng = LeADAS_Deg_TargetAngle;
+        VeADAS_Deg_DM_TargetStartAng = L_lookupOut.L_valDeg;
         VeADAS_b_DM_StateInit = true;
     }
 
     /* We need to offset the position by the start position since the odometry will
        start at zero, but the lookup table will not */
-    LeADAS_l_TargetPositionX -= VeADAS_l_DM_X_TargetStartPosition;
-    LeADAS_l_TargetPositionY -= VeADAS_l_DM_Y_TargetStartPosition;
-    LeADAS_Deg_TargetAngle -= VeADAS_Deg_DM_TargetStartAng;
+    L_lookupOut.L_valX -= VeADAS_l_DM_X_TargetStartPosition;
+    L_lookupOut.L_valY -= VeADAS_l_DM_Y_TargetStartPosition;
+    L_lookupOut.L_valDeg -= VeADAS_Deg_DM_TargetStartAng;
 
     LeADAS_l_RelativePosX = LeADAS_l_X_FieldPos - VeADAS_l_DM_X_StartPosition;
     LeADAS_l_RelativePosY = LeADAS_l_Y_FieldPos - VeADAS_l_DM_Y_StartPosition;
     LeADAS_Deg_RelativeAng = LeADAS_Deg_GyroAngle - VeADAS_Deg_DM_StartAng;
 
-    LeADAS_l_X_Error = fabs(LeADAS_l_TargetPositionX - LeADAS_l_RelativePosX);
-    LeADAS_l_Y_Error = fabs(LeADAS_l_TargetPositionY - LeADAS_l_RelativePosY);
-    // LeADAS_Deg_RotateError = fabs(LeADAS_Deg_TargetAngle - LeADAS_Deg_RelativeAng);
-    LeADAS_Deg_RotateErrorRaw = LeADAS_Deg_TargetAngle - LeADAS_Deg_RelativeAng;
+    LeADAS_l_X_Error = fabs(L_lookupOut.L_valX - LeADAS_l_RelativePosX);
+    LeADAS_l_Y_Error = fabs(L_lookupOut.L_valY - LeADAS_l_RelativePosY);
+    // LeADAS_Deg_RotateError = fabs(L_lookupOut.L_valDeg - LeADAS_Deg_RelativeAng);
+    LeADAS_Deg_RotateErrorRaw = L_lookupOut.L_valDeg - LeADAS_Deg_RelativeAng;
 
     VeADAS_t_DM_StateTimer += C_ExeTime;
 
     if (LeADAS_Deg_RotateErrorRaw < -180)
     {
-        LeADAS_Deg_TargetAngle += 360;
+        L_lookupOut.L_valDeg += 360;
         LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw + 360);
     }
     else if (LeADAS_Deg_RotateErrorRaw > 180)
     {
-        LeADAS_Deg_TargetAngle -= 360;
+        L_lookupOut.L_valDeg -= 360;
         LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw - 360);
     }
     else
@@ -160,12 +159,12 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
     // if (LeADAS_Deg_RotateErrorRaw < -180)
     //   {
-    //   // LeADAS_Deg_TargetAngle += 360;
+    //   // L_lookupOut.L_valDeg += 360;
     //   LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw + 360);
     //   }
     // else if (LeADAS_Deg_RotateErrorRaw > 180)
     //   {
-    //   // LeADAS_Deg_TargetAngle -= 360;
+    //   // L_lookupOut.L_valDeg -= 360;
     //   LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw - 360);
     //   }
     // else
@@ -173,13 +172,13 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     //   LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw);
     //   }
 
-    if ((LeADAS_Deg_TargetAngle < -90) && (LeADAS_Deg_RelativeAng > 90))
+    if ((L_lookupOut.L_valDeg < -90) && (LeADAS_Deg_RelativeAng > 90))
     {
-        LeADAS_Deg_TargetAngle += 360;
+        L_lookupOut.L_valDeg += 360;
     }
-    else if ((LeADAS_Deg_TargetAngle > 90) && (LeADAS_Deg_RelativeAng < -90))
+    else if ((L_lookupOut.L_valDeg > 90) && (LeADAS_Deg_RelativeAng < -90))
     {
-        LeADAS_Deg_TargetAngle -= 360;
+        L_lookupOut.L_valDeg -= 360;
     }
 
     /* Exit criteria: */
@@ -187,7 +186,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
         LeADAS_l_X_Error <= K_ADAS_DM_XY_Deadband &&
         LeADAS_l_Y_Error <= K_ADAS_DM_XY_Deadband &&
         VeADAS_t_DM_Debounce < KeADAS_t_DM_PathFollowDebounceTime &&
-        LeADAS_b_TimeEndReached == true)
+        L_lookupOut.L_timeEndReached == true)
     {
         VeADAS_t_DM_Debounce += C_ExeTime;
     }
@@ -207,7 +206,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
     if (LeADAS_b_DM_StateComplete == false)
     {
-        *LeADAS_Pct_Strafe = -Control_PID(LeADAS_l_TargetPositionX,
+        *LeADAS_Pct_Strafe = -Control_PID(L_lookupOut.L_valX,
                                           LeADAS_l_RelativePosX,
                                           &V_ADAS_DM_X_ErrorPrev,
                                           &V_ADAS_DM_X_Integral,
@@ -223,7 +222,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                                           KaADAS_k_AutonXY_PID_Gx[E_Max_Ul],
                                           KaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
 
-        *LeADAS_Pct_FwdRev = -Control_PID(LeADAS_l_TargetPositionY,
+        *LeADAS_Pct_FwdRev = -Control_PID(L_lookupOut.L_valY,
                                           LeADAS_l_RelativePosY,
                                           &V_ADAS_DM_Y_ErrorPrev,
                                           &V_ADAS_DM_Y_Integral,
@@ -239,7 +238,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                                           KaADAS_k_AutonXY_PID_Gx[E_Max_Ul],
                                           KaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
 
-        *LeADAS_Pct_Rotate = Control_PID(LeADAS_Deg_TargetAngle,
+        *LeADAS_Pct_Rotate = Control_PID(L_lookupOut.L_valDeg,
                                          LeADAS_Deg_RelativeAng,
                                          &VeADAS_Deg_DM_AngleErrorPrev,
                                          &VeADAS_Deg_DM_AngleIntegral,
@@ -255,7 +254,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                                          KaADAS_k_AutonRotatePID_Gx[E_Max_Ul],
                                          KaADAS_k_AutonRotatePID_Gx[E_Max_Ll]);
 
-        *LeADAS_Deg_DesiredPose = LeADAS_Deg_TargetAngle;
+        *LeADAS_Deg_DesiredPose = L_lookupOut.L_valDeg;
     }
     else    
     {
@@ -280,16 +279,16 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     }
 
     frc::SmartDashboard::PutNumber("DM Timer", VeADAS_t_DM_StateTimer);
-    // frc::SmartDashboard::PutNumber("X Cmnd",   LeADAS_l_TargetPositionX);
+    frc::SmartDashboard::PutNumber("X Cmnd",   L_lookupOut.L_valX);
     // frc::SmartDashboard::PutNumber("X Act",    LeADAS_l_RelativePosX);
     frc::SmartDashboard::PutNumber("X Err", LeADAS_l_X_Error);
-    // frc::SmartDashboard::PutNumber("Y Cmnd",   LeADAS_l_TargetPositionY);
+    frc::SmartDashboard::PutNumber("Y Cmnd",   L_lookupOut.L_valY);
     // frc::SmartDashboard::PutNumber("Y Act",    LeADAS_l_RelativePosY);
     frc::SmartDashboard::PutNumber("Y Err", LeADAS_l_Y_Error);
-    // frc::SmartDashboard::PutNumber("Rot Cmnd", LeADAS_Deg_TargetAngle);
+    frc::SmartDashboard::PutNumber("Rot Cmnd", L_lookupOut.L_valDeg);
     // frc::SmartDashboard::PutNumber("Rot Act",  LeADAS_Deg_RelativeAng);
     frc::SmartDashboard::PutNumber("Rot Err", LeADAS_Deg_RotateError);
-
+    // frc::SmartDashboard::PutNumber("X start position", VeADAS_l_DM_X_TargetStartPosition);
     frc::SmartDashboard::PutBoolean("path complete", LeADAS_b_DM_StateComplete);
 
     return (LeADAS_b_DM_StateComplete);

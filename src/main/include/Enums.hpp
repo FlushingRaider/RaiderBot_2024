@@ -78,6 +78,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower2,
   E_ADAS_DM_PathFollower3,
   E_ADAS_DM_PathFollower4,
+  E_ADAS_DM_PathFollower5,
   E_ADAS_DM_PathFollowerFWD,
 
   
@@ -202,4 +203,30 @@ struct TeAmp_MotorControl
   double                k_MotorTestValue[E_DJ_Ampz];
   double                k_MotorTestPower[E_DJ_Ampz];
 };
+
+
+struct CalcedPathVals
+{
+  double L_valX;
+  double L_valY;
+
+  double L_valDeg;
+  double L_timRem;
+
+
+};
+
+struct DtrmnSwerveBotLocationOut{
+  
+  double L_valX;
+  double L_valY;
+
+  double L_valDeg;
+  double L_timRem;
+  bool L_timeEndReached = false;
+
+
+};
+
+
 #endif

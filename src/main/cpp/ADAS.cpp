@@ -104,6 +104,8 @@ void ADAS_Main_Reset(void)
   VeADAS_b_State2Complete = false;
   VeADAS_b_AutonOncePerTrigger = false;
 
+
+  VeADAS_t_DM_StateTimer = 0.0;
   /* Trigger the resets for all of the sub tasks/functions as well: */
 
   // NOTE - don't forgor to add functions, always rember
@@ -158,10 +160,13 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 
   if (LeADAS_e_RobotState == E_Teleop)
   {
-    LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);
+  // LeADAS_e_ActiveFeature = (LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);  // What is this voodoo??
   }
   else if (LeADAS_e_RobotState == E_Auton)
   {
+
+
+    frc::SmartDashboard::PutNumber("auton sub feature", (int)LeADAS_e_ActiveFeature);
 
     // NOTE - select auton is a switch now because faaassssttttt
     //auton selection
@@ -172,7 +177,15 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       break;
     case E_ADAS_AutonDrivePath1:
       if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false)){
-        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower4;
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower2;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower2) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower3;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower3) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_PathFollower4; 
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_PathFollower4) && (VeADAS_b_StateComplete == true))
       {

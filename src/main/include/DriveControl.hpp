@@ -37,6 +37,7 @@ void DriveControlMain(double              L_JoyStick1Axis1Y,   // swerve control
                       bool                LeDRC_b_ZeroGyro,    // zero gyro
                       bool                LeDRC_b_X_ModeReq,
                       bool                LeDRC_b_X_ModeReqTeleop,
+                      T_RobotState L_ROBO_e_RobotState,
                       T_ADAS_ActiveFeature LeDRC_e_ADAS_ActiveFeature,
                       double               L_ADAS_Pct_SD_FwdRev,
                       double               L_ADAS_Pct_SD_Strafe,

@@ -29,6 +29,8 @@ static const int KeEnc_i_WheelAngleFL = 17;
 static const int KeEnc_i_WheelAngleFR = 18;
 static const int KeEnc_i_WheelAngleRL = 19;
 static const int KeEnc_i_WheelAngleRR = 20;
+static const int KeDJ_Clmb_i_ClimberArm1 = 21;
+static const int KeDJ_Clmb_i_ClimberArm2 = 22;
 
 #ifdef Bot2023
 static const int KeMAN_i_LinearSlide = 10;
@@ -88,8 +90,12 @@ const double K_SD_MaxGain = 0.7;
 /* KeDRC_k_SD_AutonGain: Gain applied to the auton commands coming in for swerve drive. */
 const double KeDRC_k_SD_AutonGain = 0.9;
 
-/* K_SD_WheelMaxSpeed: Max RPM speed of the swerve drive wheel motor.*/
-const double K_SD_WheelMaxSpeed = 4500;
+/* K_SD_TeleWheelMaxSpeed: Max RPM speed of the swerve drive wheel motor.*/
+const double K_SD_TeleWheelMaxSpeed = 6000;
+
+const double K_SD_AutonWheelMaxSpeed = 4500;
+
+
 
 /* Ke_RPM_SD_WheelMinCmndSpeed: Min RPM speed of the swerve drive wheel to keep it under PID control.
   If the absolute value of the command, wheels will transition to 0 power (but still in brake
@@ -333,7 +339,7 @@ const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = { 0.00020,     // P Gx
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
 const double KeADAS_t_DM_PathFollowDebounceTime = 0.045;
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
-const double K_ADAS_DM_RotateDeadbandAngle = 2.0;
+const double K_ADAS_DM_RotateDeadbandAngle = 3.0;
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
 const double K_ADAS_DM_XY_Deadband = 3.0;

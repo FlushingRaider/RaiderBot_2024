@@ -230,6 +230,7 @@ void Robot::RobotPeriodic() {
                    VsCONT_s_DriverInput.b_ZeroGyro,
                    VeADAS_b_X_Mode, // X mode req from ADAS
                    VsCONT_s_DriverInput.b_X_Mode,
+                   VeROBO_e_RobotState,
                    VeADAS_e_ActiveFeature,
                    VeADAS_Pct_SD_FwdRev, // similar to driver input but used for auton
                    VeADAS_Pct_SD_Strafe,
@@ -265,7 +266,6 @@ void Robot::AutonomousInit() {
   VeROBO_e_RobotState = E_Auton;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
   VeROBO_b_TestState = false;
-
 
   m_autoSelected = m_chooser.GetSelected();
   // m_autoSelected = SmartDashboard::GetString("Auto Selector",
