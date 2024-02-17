@@ -76,6 +76,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower3,
   E_ADAS_DM_PathFollower4,
   E_ADAS_DM_PathFollower5,
+  E_ADAS_DM_PathFollower6,
   E_ADAS_DM_PathFollowerFWD,
 
   E_ADAS_MoveOffsetTag,
@@ -89,7 +90,8 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDeliverCubeDriveOnRampAutoBal,
   E_ADAS_AutonDrivePath1,
   E_ADAS_AutonDrivePath2,
-  E_ADAS_AutonDrivePath3,  
+  E_ADAS_AutonDrivePath3,
+  E_ADAS_AutonDrivePath4,  
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place
