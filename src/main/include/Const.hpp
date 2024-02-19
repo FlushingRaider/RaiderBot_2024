@@ -29,8 +29,8 @@ static const int KeEnc_i_WheelAngleFL = 17;
 static const int KeEnc_i_WheelAngleFR = 18;
 static const int KeEnc_i_WheelAngleRL = 19;
 static const int KeEnc_i_WheelAngleRR = 20;
-static const int KeDJ_Clmb_i_ClimberArm1 = 21;
-static const int KeDJ_Clmb_i_ClimberArm2 = 22;
+static const int KeCLMR_i_ClimberArm1 = 21;
+static const int KeCLMR_i_ClimberArm2 = 22;
 
 #ifdef Bot2023
 static const int KeMAN_i_LinearSlide = 10;
@@ -498,6 +498,159 @@ const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // 
      {1.0, 1.0, 1.0, 1.0}, // NOTE - Needs to be decided for comp bot
      {1.0, 1.0, 1.0, 1.0}};
 
+
+
+
+
+
+/* KaSPK_e_ControllingTable: Table that contains the commanded state of the speaker based on the current attained state and schedueld state. */
+const TeSPK_CtrlStates KaSPK_e_ControllingTable[E_SPK_Ctrl_StateSz][E_SPK_Ctrl_StateSz] = // [Sched][Attnd]
+    {{E_SPK_Ctrl_Init,    E_SPK_Ctrl_Driving,  E_SPK_Ctrl_Intake,  E_SPK_Ctrl_Driving,  E_SPK_Ctrl_Driving},
+     {E_SPK_Ctrl_Driving, E_SPK_Ctrl_Driving,  E_SPK_Ctrl_Driving, E_SPK_Ctrl_Driving,  E_SPK_Ctrl_Driving},
+     {E_SPK_Ctrl_Driving, E_SPK_Ctrl_Intake,   E_SPK_Ctrl_Intake,  E_SPK_Ctrl_Driving,  E_SPK_Ctrl_Driving},
+     {E_SPK_Ctrl_Driving, E_SPK_Ctrl_PreScore, E_SPK_Ctrl_Driving, E_SPK_Ctrl_PreScore, E_SPK_Ctrl_PreScore},
+     {E_SPK_Ctrl_Driving, E_SPK_Ctrl_PreScore, E_SPK_Ctrl_Driving, E_SPK_Ctrl_Score,    E_SPK_Ctrl_Score}};
+
+/* KaSPK_k_IntakePID_Gx: PID gains for the intake control. */
+const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                           0.000001, // kI
+                                                           0.002000, // kD
+                                                           0.0,      // kIz
+                                                           0.0,      // kFF
+                                                           1.0,      // kMaxOut
+                                                          -1.0,      // kMinOut
+                                                           1.05,     // kMaxVel
+                                                           0.5,      // kMinVel
+                                                           0.0,      // kMaxAcc
+                                                           0.0};     // kAllErr
+
+/* KaSPK_k_Shooter1PID_Gx: PID gains for the shooter 1 control. */
+const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                           0.000001, // kI
+                                                           0.002000, // kD
+                                                           0.0,      // kIz
+                                                           0.0,      // kFF
+                                                           1.0,      // kMaxOut
+                                                          -1.0,      // kMinOut
+                                                           1.05,     // kMaxVel
+                                                           0.5,      // kMinVel
+                                                           0.0,      // kMaxAcc
+                                                           0.0};     // kAllErr
+
+/* KaSPK_k_Shooter2PID_Gx: PID gains for the shooter 2 control. */
+const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                           0.000001, // kI
+                                                           0.002000, // kD
+                                                           0.0,      // kIz
+                                                           0.0,      // kFF
+                                                           1.0,      // kMaxOut
+                                                          -1.0,      // kMinOut
+                                                           1.05,     // kMaxVel
+                                                           0.5,      // kMinVel
+                                                           0.0,      // kMaxAcc
+                                                           0.0};     // kAllErr
+
+/* KaDJ_Amp_RPM_IntakePower: Sets Intake power for each state */
+const double KaSPK_k_IntakePower[E_SPK_Ctrl_StateSz] = {0.0,   // Sched - E_SPK_Ctrl_Init
+                                                        0.0,   // Sched - E_SPK_Ctrl_Driving
+                                                       -0.45,  // Sched - E_SPK_Ctrl_Intake
+                                                       -0.0,   // Sched - E_SPK_Ctrl_PreScore
+                                                        0.45}; // Sched - E_SPK_Ctrl_Score
+
+/* KaSPK_RPMs_Shooter1Rate: Table that contains the shooter 1 ramp rate. */
+const double KaSPK_RPMs_Shooter1Rate[E_SPK_Ctrl_StateSz][E_SPK_Ctrl_StateSz] =  // [Cmnd][Attnd]
+  { {2.0, 2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0, 2.0}
+  };
+
+/* KaSPK_RPMs_Shooter2Rate: Table that contains the shooter 2 ramp rate. */
+const double KaSPK_RPMs_Shooter2Rate[E_SPK_Ctrl_StateSz][E_SPK_Ctrl_StateSz] =  // [Cmnd][Attnd]
+  { {2.0, 2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0, 2.0},
+    {2.0, 2.0, 2.0, 2.0, 2.0}
+  };
+
+/* KaSPK_k_Intake: Sets intake final power for each state */
+const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
+                                                    0.0,  // Sched - Driving
+                                                    0.7,  // Sched - Intake
+                                                    0.0,  // Sched - PreScore
+                                                    0.9}; // Sched - Score
+
+/* KaSPK_RPM_Shooter1: Sets shooter 1 final speed for each state */
+const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
+                                                          0.0,  // Sched - Driving
+                                                        -40.0,  // Sched - Intake
+                                                        800.0,  // Sched - PreScore
+                                                        800.0}; // Sched - Score
+
+/* KaSPK_RPM_Shooter2: Sets shooter 2 final speed for each state */
+const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
+                                                          0.0,  // Sched - Driving
+                                                        -40.0,  // Sched - Intake
+                                                        800.0,  // Sched - PreScore
+                                                        800.0}; // Sched - Score
+
+/* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
+const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
+                                                         10.0,  // Sched - Driving
+                                                         10.0,  // Sched - Intake
+                                                         10.0,  // Sched - PreScore
+                                                         10.0}; // Sched - Score
+
+/* KaSPK_RPM_Shooter2Db: Sets shooter 2 deadband */
+const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
+                                                         10.0,  // Sched - Driving
+                                                         10.0,  // Sched - Intake
+                                                         10.0,  // Sched - PreScore
+                                                         10.0}; // Sched - Score
+
+/* KaSPK_k_IntakePID_Gx: PID gains for the Intake Rollers control. */
+const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.00070,  // kP
+                                                           0.000001, // kI
+                                                           0.0,      // kD
+                                                           0.0,      // kIz
+                                                           0.0,      // kFF
+                                                           1.0,      // kMaxOut
+                                                          -1.0,      // kMinOut
+                                                           0.0,      // kMaxVel
+                                                           0.0,      // kMinVel
+                                                          55.0,      // kMaxAcc
+                                                           0.0};     // kAllErr
+
+/* KaSPK_k_Shooter1PID_Gx: PID gains for the shooter 1 control. */
+const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.00070,  // kP
+                                                             0.000001, // kI
+                                                             0.0,      // kD
+                                                             0.0,      // kIz
+                                                             0.0,      // kFF
+                                                             1.0,      // kMaxOut
+                                                            -1.0,      // kMinOut
+                                                             0.0,      // kMaxVel
+                                                             0.0,      // kMinVel
+                                                            55.0,      // kMaxAcc
+                                                             0.0};     // kAllErr
+
+/* KaSPK_k_Shooter2PID_Gx: PID gains for the shooter 1 control. */
+const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.00070,  // kP
+                                                             0.000001, // kI
+                                                             0.0,      // kD
+                                                             0.0,      // kIz
+                                                             0.0,      // kFF
+                                                             1.0,      // kMaxOut
+                                                            -1.0,      // kMinOut
+                                                             0.0,      // kMaxVel
+                                                             0.0,      // kMinVel
+                                                            55.0,      // kMaxAcc
+                                                             0.0};     // kAllErr
+
+/* KaMAN_k_ManipulatorTestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
+const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake
+                                               1.0, // E_SPK_m_Shooter1
+                                               1.0}; // E_SPK_m_Shooter2
 /* KeENC_Deg_Wrist: Scalaer to convert encoder reading to actual position of the wrist, how much we've rotated. */
 const double KeENC_Deg_Wrist = -1.16883;
 

@@ -211,23 +211,65 @@ struct TeAmp_MotorControl
   double k_MotorTestPower[E_DJ_Ampz];
 };
 
-struct CalcedPathVals
-{
-  double L_valX;
-  double L_valY;
+/* Enums related to the speaker subsystem */
 
-  double L_valDeg;
-  double L_timRem;
+typedef enum TeSPK_Actuators
+{
+  E_SPK_m_Intake,
+  E_SPK_m_Shooter1,
+  E_SPK_m_Shooter2,
+  E_SPK_m_Sz
+} TeSPK_Actuators;
+
+typedef enum TeSPK_CtrlStates
+{
+  E_SPK_Ctrl_Init,
+  E_SPK_Ctrl_Driving,
+  E_SPK_Ctrl_Intake,
+  E_SPK_Ctrl_PreScore,
+  E_SPK_Ctrl_Shooting,
+  E_SPK_Ctrl_StateSz
+} TeSPK_CtrlStates;
+
+struct TeSKP_MotorControl
+{
+  T_MotorControlType    e_MotorControlType[E_SPK_m_Sz];
+  double                k_MotorCmnd[E_SPK_m_Sz];
+  double                k_MotorRampRate[E_SPK_m_Sz];
+  double                k_MotorTestValue[E_SPK_m_Sz];
+  double                k_MotorTestPower[E_SPK_m_Sz];
 };
 
+struct TsSPK_Sensor 
+{
+  double RPM_Intake; // Speed of the intake rollers
+  double RPM_Shooter1; // Speed of the shooter 1 rollers
+  double RPM_Shooter2; // Speed of the shooter 2 rollers
+  bool   b_NoteDetected;
+};
+
+
+
+
+// the output struct after a path is loaded
+struct CalcedPathVals
+{
+  double L_valX = 0.0;
+  double L_valY = 0.0;
+
+  double L_valDeg = 0.0;
+  double L_timRem = 0.0;
+};
+
+// the struct of data passed from lookup to ADAS_DM
 struct DtrmnSwerveBotLocationOut
 {
 
-  double L_valX;
-  double L_valY;
+  double L_valX = 0.0;
+  double L_valY = 0.0;
 
-  double L_valDeg;
-  double L_timRem;
+  double L_valDeg = 0.0;
+  double L_timRem = 0.0;
   bool L_timeEndReached = false;
 };
 
