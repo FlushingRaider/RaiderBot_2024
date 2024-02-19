@@ -199,9 +199,9 @@ void Amp_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
 
   VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake] = KaDJ_Amp_k_TestPower[E_Amp_Intake];
 
-  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist] = LsCONT_s_DriverInput->Pct_WristTest * KaDJ_Amp_k_TestPower[E_Amp_Wrist];
+  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist] = LsCONT_s_DriverInput->Pct_Amp_Wrist_Test * KaDJ_Amp_k_TestPower[E_Amp_Wrist];
 
-  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator] = LsCONT_s_DriverInput->Pct_ArmPivotTest * KaDJ_Amp_k_TestPower[E_Amp_Elevator];
+  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator] = LsCONT_s_DriverInput->Pct_Amp_Elevator_Test * KaDJ_Amp_k_TestPower[E_Amp_Elevator];
 }
 
 /******************************************************************************

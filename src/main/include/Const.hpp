@@ -509,6 +509,10 @@ const double KeDJ_Amp_k_ReleaseNote = 0.8;
 
 /* KeENC_RPM_Intake: Finds the speed of the intake rollers. */
 const double KeENC_RPM_Intake = 1.0;
+
+/* KeAmp_t_IntakeOnTm: Amount of time Amp intake will remain on after it is initially commanded on. */
+const double KeAmp_t_IntakeOnTm = 0.5; //NOTE - set calibration time
+
 /*Vision configs*/
 const double KeAmbiguityThreshold = 0.2;
 const double KeMaxY = 323.25;

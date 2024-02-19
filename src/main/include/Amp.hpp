@@ -10,8 +10,8 @@
 #include "Enums.hpp"
 
 extern TeAmp_MotorControl VsAmp_s_Motors;
-extern T_DJ_Amp_States VeMAN_e_AttndState;
-extern T_DJ_Amp_States VeMAN_e_CmndState;
+extern T_DJ_Amp_States VeAmp_e_AttndState;
+extern T_DJ_Amp_States VeAmp_e_CmndState;
 extern TeAmp_MotorControl VsAmp_s_MotorsTest;
 extern TeAmp_MotorControl VsAmp_s_MotorsTemp;
 

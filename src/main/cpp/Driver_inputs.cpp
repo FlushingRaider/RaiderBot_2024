@@ -95,28 +95,22 @@ void Joystick2_robot_mapping(bool    LeCONT_b_Driver2ButtonA,
                              double  LeCont_Pct_Driver2AxisRB,
                              double  LeCont_Pct_Driver2AxisLB)
   {
-  double LeCONT_Pct_IntakeRollerTestCmnd = 0.0;
-  double LeCONT_Pct_ArmPivotTest = 0.0;
-  double LeCONT_Pct_LinearSlideTest = 0.0;
-  bool LeCONT_b_FrontHighCone = false;
-  bool LeCONT_b_FrontLowCone = false;
-  bool LeCONT_b_DropGamePieceFast = false;
-  bool LeCONT_b_InitState = false;
-  bool LeCONT_b_FloorConeDrop = false;
+  double LeCONT_Pct_Amp_Wrist_Test = 0.0;
+  double LeCONT_Pct_Amp_Elevator_Test = 0.0;
 
-  VsCONT_s_DriverInput.b_DrivingPosition                = LeCONT_b_Driver2ButtonB;     //Controller 2, B button Will be used to bring Everything into their position for when the robot is moving COMPETION BUTTON
-  VsCONT_s_DriverInput.b_IntakeArmOutTest               = LeCONT_b_Driver2ButtonY;      //Controller 2, Y button (2), (robot.cpp) intake out TEST BUTTON
-  VsCONT_s_DriverInput.b_IntakeArmIn                    = LeCONT_b_Driver2ButtonA;      //Controller 2, A button (1), (robot.cpp) intake in TEST BUTTON
-  VsCONT_s_DriverInput.b_FrontHighCube                  = LeCONT_b_Driver2ButtonY;      //Controller 2, Y button, Tells robot that we are scoring the gamepiece high COMPETION BUTTON
-  VsCONT_s_DriverInput.b_IntakeRollersTest              = LeCONT_b_Driver2ButtonX;     //Controller 2 Tests the intake rollers.  For test only.
-  VsCONT_s_DriverInput.b_FrontLowCube                   = LeCONT_b_Driver2ButtonX;
-  VsCONT_s_DriverInput.b_ResetManipulatorEnocders       = LeCONT_b_Driver2ButtonStart;  //controller 2 start button (8), (robot.cpp) Starts robot shooter speed based on distance
-  VsCONT_s_DriverInput.b_DropGamePieceFast              = LeCONT_b_Driver2ButtonStart;
-  VsCONT_s_DriverInput.Pct_WristTest                    = LeCONT_Pct_Driver2RightAxisX;  //Controller 2, left axis, uses y axis (1), (robot.cpp) sets desired speed for the shooter moter
-  VsCONT_s_DriverInput.b_InitState                      = LeCont_Pct_Driver2AxisRB;   
-  VsCONT_s_DriverInput.b_MidIntakeOut                   = LeCONT_b_Driver2ButtonRB;   // This will bring the arm down to pickup game pieces behind the robot
-  VsCONT_s_DriverInput.b_DropGamePieceSlow              = LeCONT_b_Driver2ButtonBack;
 
+  VsCONT_s_DriverInput.b_Amp_IntakeForward_Test         = LeCONT_b_Driver2ButtonB;     //Controller 2, B button Will be used to bring Everything into their position for when the robot is moving COMPETION BUTTON
+  VsCONT_s_DriverInput.b_Spk_IntakeForward_Test         = LeCONT_b_Driver2ButtonY;      //Controller 2, Y button (2), (robot.cpp) intake out TEST BUTTON
+  VsCONT_s_DriverInput.b_Spk_IntakeBackward_Test        = LeCONT_b_Driver2ButtonA;      //Controller 2, A button (1), (robot.cpp) intake in TEST BUTTON
+  VsCONT_s_DriverInput.b_Amp_IntakeBackward_Test        = LeCONT_b_Driver2ButtonX;     //Controller 2 Tests the intake rollers.  For test only.
+  VsCONT_s_DriverInput.b_ResetEnocders                  = LeCONT_b_Driver2ButtonStart;  //controller 2 start button (8), (robot.cpp) Starts robot shooter speed based on distance
+  VsCONT_s_DriverInput.pct_RightHookDown_Test           = LeCont_Pct_Driver2AxisRB;   
+  VsCONT_s_DriverInput.pct_LeftHookDown_Test            = LeCont_Pct_Driver2AxisLB; 
+  VsCONT_s_DriverInput.pct_RightHookUp_Test             = LeCONT_b_Driver2ButtonRB;
+  VsCONT_s_DriverInput.pct_LeftHookUp_Test              = LeCONT_b_Driver2ButtonLB;
+  VsCONT_s_DriverInput.Pct_Shooter1_Test                = LeCONT_Pct_Driver2RightAxisX;
+  VsCONT_s_DriverInput.Pct_Shooter2_Test                = LeCONT_Pct_Driver2LeftAxisY;
+  
   if (LeCONT_b_Driver2ButtonRB == true)
     {
     }
@@ -128,28 +122,21 @@ void Joystick2_robot_mapping(bool    LeCONT_b_Driver2ButtonA,
 
   if (LeCONT_Deg_Driver2POV == 0)
     {
-    LeCONT_Pct_ArmPivotTest = 1.0;
-    LeCONT_b_FrontLowCone = true;
-    // LeCONT_b_FrontHighCone = true; // Disabled
+    LeCONT_Pct_Amp_Wrist_Test = 1.0;
     }
   else if (LeCONT_Deg_Driver2POV == 180)
     {
-    LeCONT_Pct_ArmPivotTest = -1.0;
-    LeCONT_b_FloorConeDrop = true;
+    LeCONT_Pct_Amp_Wrist_Test = -1.0;
     }
   else if (LeCONT_Deg_Driver2POV == 270)
     {
-    LeCONT_Pct_LinearSlideTest = 1.0;
+    LeCONT_Pct_Amp_Elevator_Test = 1.0;
     }
   else if (LeCONT_Deg_Driver2POV == 90)
     {
-    LeCONT_Pct_LinearSlideTest = -1.0;
+    LeCONT_Pct_Amp_Elevator_Test = -1.0;
     }
     
-  VsCONT_s_DriverInput.b_FloorConeDrop = LeCONT_b_FloorConeDrop;
-  VsCONT_s_DriverInput.Pct_ArmPivotTest = LeCONT_Pct_ArmPivotTest;
-  VsCONT_s_DriverInput.Pct_LinearSlideTest = LeCONT_Pct_LinearSlideTest;
-  VsCONT_s_DriverInput.b_FrontHighCone = LeCONT_b_FrontHighCone;
-  VsCONT_s_DriverInput.b_FrontLowCone = LeCONT_b_FrontLowCone;
-  VsCONT_s_DriverInput.b_InitState = LeCONT_b_InitState;
+  VsCONT_s_DriverInput.Pct_Amp_Wrist_Test = LeCONT_Pct_Amp_Wrist_Test;
+  VsCONT_s_DriverInput.Pct_Amp_Elevator_Test = LeCONT_Pct_Amp_Elevator_Test;
   }

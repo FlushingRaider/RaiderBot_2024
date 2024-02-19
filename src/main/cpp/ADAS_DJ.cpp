@@ -37,8 +37,8 @@ void ADAS_DJ_Reset(void)
 
 /******************************************************************************
  * Function:    DJ_ScheduelerTeleop
- * Made By:     Jay L 2/21/2023
- * Description: Determines scheduled state of the manipulator
+ * Made By:     Lauren
+ * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
  ******************************************************************************/
 bool DJ_ScheduelerTeleop(void)
 {
@@ -57,41 +57,34 @@ bool DJ_ScheduelerTeleop(void)
   {
     VeADAS_e_Amp_SchedState = E_DJ_Amp_PreScore;
   }
-  else if (VsCONT_s_DriverInput.b_Amp_Score == true)
-  {
-    VeADAS_e_Amp_SchedState = E_DJ_Amp_Score;
-  }
   else
   {
     /* No updates */
   }
 
-  if (VsCONT_s_DriverInput.b_DropGamePieceFast == true)
+  if (VsCONT_s_DriverInput.b_Amp_Score == true)
   {
     VeADAS_b_Amp_DropObject = true;
     VeADAS_t_Amp_DropObjectTm = C_ExeTime;
   }
-  else if ((VeADAS_t_MAN_DropObjectTm > 0) &&
-           (VeADAS_t_MAN_DropObjectTm <= KeMAN_t_GripperOnTm))
+  else if ((VeADAS_t_Amp_DropObjectTm > 0) &&
+           (VeADAS_t_Amp_DropObjectTm <= KeAmp_t_IntakeOnTm))
   {
-    LeADAS_b_MAN_DropObjectSlow = VeADAS_b_MAN_DropObjectSlow;
-    LeADAS_b_MAN_DropObjectFast = VeADAS_b_MAN_DropObjectFast;
-    VeADAS_t_MAN_DropObjectTm += C_ExeTime;
+    LeADAS_b_Amp_DropObject = VeADAS_b_Amp_DropObject;
+    VeADAS_t_Amp_DropObjectTm += C_ExeTime;
   }
   else
   {
-    LeADAS_b_MAN_DropObjectSlow = false;
-    LeADAS_b_MAN_DropObjectFast = false;
-    VeADAS_t_MAN_DropObjectTm = 0.0;
+    LeADAS_b_Amp_DropObject = false;
+    VeADAS_t_Amp_DropObjectTm = 0.0;
   }
 
-  if (VeADAS_e_MAN_SchedState == VeMAN_e_AttndState)
+  if (VeADAS_e_Amp_SchedState == VeAmp_e_AttndState)
   {
-    LeADAS_b_MAN_StateComplete = true;
+    LeADAS_b_DJ_StateComplete = true;
   }
 
-  VeADAS_b_MAN_DropObjectSlow = LeADAS_b_MAN_DropObjectSlow;
-  VeADAS_b_MAN_DropObjectFast = LeADAS_b_MAN_DropObjectFast;
+  VeADAS_b_Amp_DropObject = LeADAS_b_Amp_DropObject;
 
-  return (LeADAS_b_MAN_StateComplete);
+  return (LeADAS_b_DJ_StateComplete);
 }

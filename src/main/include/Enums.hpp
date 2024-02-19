@@ -91,7 +91,7 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDrivePath1,
   E_ADAS_AutonDrivePath2,
   E_ADAS_AutonDrivePath3,
-  E_ADAS_AutonDrivePath4,  
+  E_ADAS_AutonDrivePath4,
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place
@@ -108,18 +108,21 @@ struct RobotUserInput
   bool b_CameraLight;
   bool b_JoystickActive;
   bool b_VisionDriverModeOverride;
-  bool b_IntakeRollersTest;        // 21
-  bool b_ResetManipulatorEnocders; // 21
-  bool b_IntakeArmIn;              // 21
+  bool b_Amp_IntakeBackward_Test;        
+  bool b_ResetEnocders; 
+  bool b_Spk_IntakeBackward_Test;              
   bool b_IntakeArmOutTest;
-  double Pct_WristTest;
-  double Pct_ArmPivotTest;
-  double Pct_LinearSlideTest;
-  double pct_IntakeRollerTest;
+  double Pct_Shooter1_Test;
+  double Pct_Shooter2_Test;
+  double Pct_Amp_Wrist_Test;
+  double Pct_Amp_Elevator_Test;
+  double b_Spk_IntakeForward_Test;
   bool b_MainIntakeOut;
-  bool b_MidIntakeOut;
+  double pct_RightHookUp_Test;
+  double pct_LeftHookUp_Test;
   bool b_FloorConeDrop;
-  bool b_InitState;
+  double pct_RightHookDown_Test;
+  double pct_LeftHookDown_Test;
   bool b_DrivingPosition;
   bool b_FrontHighCube;
   bool b_FrontLowCube;
@@ -132,8 +135,9 @@ struct RobotUserInput
   bool b_ConeAlign;
   bool b_VisionButton;
   bool b_X_Mode;
-  bool b_Amp_Intake;
   bool b_Amp_DrivingPosition;
+  bool b_Amp_Intake;
+  bool b_Amp_IntakeForward_Test;
   bool b_Amp_PreScore;
   bool b_Amp_Score;
 };
@@ -207,25 +211,23 @@ struct TeAmp_MotorControl
   double k_MotorTestPower[E_DJ_Ampz];
 };
 
-// the output struct after a path is loaded
 struct CalcedPathVals
 {
-  double L_valX = 0.0;
-  double L_valY = 0.0;
+  double L_valX;
+  double L_valY;
 
-  double L_valDeg = 0.0;
-  double L_timRem = 0.0;
+  double L_valDeg;
+  double L_timRem;
 };
 
-// the struct of data passed from lookup to ADAS_DM
 struct DtrmnSwerveBotLocationOut
 {
 
-  double L_valX = 0.0;
-  double L_valY = 0.0;
+  double L_valX;
+  double L_valY;
 
-  double L_valDeg = 0.0;
-  double L_timRem = 0.0;
+  double L_valDeg;
+  double L_timRem;
   bool L_timeEndReached = false;
 };
 

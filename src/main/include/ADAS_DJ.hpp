@@ -10,3 +10,5 @@
 
 extern T_DJ_Amp_States VeADAS_e_Amp_SchedState;
 extern bool                    VeADAS_b_Amp_DropObject;
+
+void ADAS_DJ_Reset(void);
