@@ -2,9 +2,9 @@
   SpeakerCntrl.cpp
 
    Created on: Feb 17, 2024
-   Author: 5561
+   Author: Biggs
 
-   The underbelly intake and launch rollers state machine.
+   The underbelly intake and launch rollers control / state machine.
  */
 
 #include "rev/CANSparkMax.h"
@@ -16,16 +16,10 @@
 #include "Lookup.hpp"
 #include "Driver_inputs.hpp"
 #include "Encoders.hpp"
-#include "ADAS_MN.hpp"
+#include "ADAS_DJ.hpp"
 
-// the rpm where under it we consider the gripper holding something
-double                  C_GripperRPMHoldingThreshold = 0.0;
-double                  C_GripperRPMReadyThreshold = 1.0;
-bool                    VeSPK_b_ReadyToGrab;
-bool                    VeSPK_b_HasObject;
-
-TeMAN_ManipulatorStates VeSPK_e_CmndState  = E_MAN_Init; // What is our next/current step?
-TeMAN_ManipulatorStates VeSPK_e_AttndState = E_MAN_Init; // What is our desired end state?
+TeSPK_CtrlStates VeSPK_e_CmndState  = E_SPK_Ctrl_Init; // What is our next/current step?
+TeSPK_CtrlStates VeSPK_e_AttndState = E_SPK_Ctrl_Init; // What is our desired end state?
 
 TeSKP_MotorControl      VsSPK_s_Motors; // All of the motor commands for the speaker motors
 TeSKP_MotorControl      VsSPK_s_MotorsTemp; // Temporary commands for the motors, not the final output
@@ -33,36 +27,30 @@ TeSKP_MotorControl      VsSPK_s_MotorsTest; // Temporary commands for the motors
 TsSPK_Sensor            VsSPK_s_Sensors; // All of the sensor values for the speaker  motors
 
 double                  VeSPK_t_TransitionTime = 0;
-double                  VeSPK_t_GripperHoldTime = 0; // Amount of time after object is detected, to continue pulling in
 
 double                  VaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz];
 double                  VaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz];
 double                  VaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz];
 
 bool                    VeSPK_b_CriteriaMet = false;
-bool                    VeSPK_b_NoteHold = false;  // Used for the holding power.  If cone, use cone cal, otherwise use cube.
 
-#ifdef Manipulator_Test
+#ifdef SPK_Test
 bool                    VeSPK_b_TestState = true; // temporary, we don't want to use the manual overrides
 #else
 bool                    VeSPK_b_TestState = false;
 #endif
 
 /******************************************************************************
- * Function:     ManipulatorMotorConfigsInit
+ * Function:     SPK_MotorConfigsInit
  *
- * Description:  Contains the motor configurations for the Arm and intake motors.
+ * Description:  Contains the motor configurations for the intake and shooter.
  ******************************************************************************/
-void ManipulatorMotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
-                                 rev::SparkMaxPIDController m_Shooter1PID,
-                                 rev::SparkMaxPIDController m_Shooter2PID)
+void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
+                          rev::SparkMaxPIDController m_Shooter1PID,
+                          rev::SparkMaxPIDController m_Shooter2PID)
   {
   TeSPK_Actuators LeSPK_i_Index  = E_SPK_m_Intake;
   T_PID_Cal       LeSPK_i_Index3 = E_P_Gx;
-
-  rev::SparkMaxPIDController                 m_UnderbellyPID       = m_Underbelly.GetPIDController();
-  rev::SparkMaxPIDController                 m_Shooter1PID         = m_Shooter1.GetPIDController();
-  rev::SparkMaxPIDController                 m_Shooter2PID         = m_Shooter2.GetPIDController();
 
   // set PID coefficients
   m_UnderbellyPID.SetP(KaSPK_k_IntakePID_Gx[E_kP]);
@@ -99,7 +87,7 @@ void ManipulatorMotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
   VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter1] = KeSPK_RPMs_Shooter1Rate;
   VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2] = KeSPK_RPMs_Shooter2Rate;
 
-  #ifdef Manipulator_Test
+  #ifdef SPK_Test
   T_PID_SparkMaxCal LeMAN_i_Index2 = E_kP;
 
   for (LeMAN_i_Index2 = E_kP;
@@ -146,18 +134,17 @@ void ManipulatorMotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
 
 
 /******************************************************************************
- * Function:     ManipulatorMotorConfigsCal
+ * Function:     SPK_MotorConfigsCal
  *
- * Description:  Contains the motor configurations for the manipulator motors.  This 
+ * Description:  Contains the motor configurations for the speaker motors.  This 
  *               allows for rapid calibration, but must not be used for comp.
  ******************************************************************************/
-void ManipulatorMotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
-                                rev::SparkMaxPIDController m_Shooter1PID,
-                                rev::SparkMaxPIDController m_Shooter2PID)
+void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
+                         rev::SparkMaxPIDController m_Shooter1PID,
+                         rev::SparkMaxPIDController m_Shooter2PID)
   {
   // read PID coefficients from SmartDashboard
-  #ifdef Manipulator_Test
-  bool LeMAN_b_IntakePosition = false;  // false is retracted, true extended
+  #ifdef SPK_Test
   double L_p_Intake   = frc::SmartDashboard::GetNumber("P Gain - Intake", KaSPK_k_IntakePID_Gx[E_kP]);
   double L_i_Intake   = frc::SmartDashboard::GetNumber("I Gain - Intake", KaSPK_k_IntakePID_Gx[E_kI]);
   double L_d_Intake   = frc::SmartDashboard::GetNumber("D Gain - Intake", KaSPK_k_IntakePID_Gx[E_kD]);
@@ -208,27 +195,26 @@ void ManipulatorMotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
 
 
 /******************************************************************************
- * Function:     ManipulatorControlInit
+ * Function:     SPK_ControlInit
  *
- * Description:  Initialization function for the Manipulator controls.
+ * Description:  Initialization function for the speaker controls.
  ******************************************************************************/
-void ManipulatorControlInit()
+void SPK_ControlInit()
   {
-  VeSPK_e_CmndState  = E_MAN_Init;
-  VeSPK_e_AttndState = E_MAN_Init;
+  VeSPK_e_CmndState  = E_SPK_Ctrl_Init;
+  VeSPK_e_AttndState = E_SPK_Ctrl_Init;
 
   VeSPK_b_CriteriaMet = false;
   VeSPK_t_TransitionTime = 0.0;
-  VeSPK_b_NoteHold = false;
   }
 
 
 /******************************************************************************
- * Function:     ManipulatorControlManualOverride
+ * Function:     SPK_ControlManualOverride
  *
  * Description:  Manual override control used during the FRC test section. Use incase of Y2K -J 
  ******************************************************************************/
-void ManipulatorControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
+void SPK_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
   {
   TeSPK_Actuators LeSPK_i_Index;
 
@@ -239,18 +225,18 @@ void ManipulatorControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
       VsSPK_s_Motors.k_MotorTestPower[LeSPK_i_Index] = 0.0;
     }
 
-  if (LsCONT_s_DriverInput->b_SPK_IntakeFwdTest == true)
+  if (LsCONT_s_DriverInput->b_Spk_IntakeForward_Test == true)
     {
     VsSPK_s_Motors.k_MotorTestPower[LeSPK_i_Index] = KaSPK_k_TestPower[E_SPK_m_Intake];
     }
-  else if (LsCONT_s_DriverInput->b_SPK_IntakeBkTest == true)
+  else if (LsCONT_s_DriverInput->b_Spk_IntakeBackward_Test == true)
     {
     VsSPK_s_Motors.k_MotorTestPower[LeSPK_i_Index] = -KaSPK_k_TestPower[E_SPK_m_Intake];
     }
 
-  VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1] = LsCONT_s_DriverInput->Pct_SPK_Shooter1Test * KaSPK_k_TestPower[E_SPK_m_Shooter1];
+  VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1] = LsCONT_s_DriverInput->Pct_Shooter1_Test * KaSPK_k_TestPower[E_SPK_m_Shooter1];
 
-  VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter2] = LsCONT_s_DriverInput->Pct_SPK_Shooter2Test * KaSPK_k_TestPower[E_SPK_m_Shooter2];
+  VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter2] = LsCONT_s_DriverInput->Pct_Shooter2_Test * KaSPK_k_TestPower[E_SPK_m_Shooter2];
   }
 
 /******************************************************************************
@@ -265,7 +251,7 @@ bool UpdateSpeakerCommandAttainedState(bool             LeSPK_b_CriteriaMet,
 
   if(LeSPK_b_CriteriaMet == true)
     {
-    VeSPK_e_AttndState = LeMAN_e_CmndState;
+    VeSPK_e_AttndState = LeSPK_e_CmndState;
     LeSPK_b_CriteriaMet = false;
     }
 
@@ -292,13 +278,13 @@ bool CmndStateReachedSpeaker(TeSPK_CtrlStates LeSPK_e_CmndState)
 
   VeSPK_t_TransitionTime += C_ExeTime;
 
-  if((VeSPK_t_TransitionTime >= KeMAN_t_StateTimeOut) ||
+  if((VeSPK_t_TransitionTime >= KeSPK_t_StateTimeOut) ||
 
      ((VsSPK_s_Sensors.RPM_Shooter1 <= (KaSPK_RPM_Shooter1[LeSPK_e_CmndState] + KaSPK_RPM_Shooter1Db[LeSPK_e_CmndState])) &&
       (VsSPK_s_Sensors.RPM_Shooter1 >= (KaSPK_RPM_Shooter1[LeSPK_e_CmndState] - KaSPK_RPM_Shooter1Db[LeSPK_e_CmndState])) &&
 
       (VsSPK_s_Sensors.RPM_Shooter2 <= (KaSPK_RPM_Shooter2[LeSPK_e_CmndState] + KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState])) &&
-      (VsSPK_s_Sensors.RPM_Shooter2 >= (KaSPK_RPM_Shooter2[LeSPK_e_CmndState] - KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState])))))
+      (VsSPK_s_Sensors.RPM_Shooter2 >= (KaSPK_RPM_Shooter2[LeSPK_e_CmndState] - KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState]))))
       {
       LeSPK_b_CriteriaMet = true;
       VeSPK_t_TransitionTime = 0.0;
@@ -309,254 +295,73 @@ bool CmndStateReachedSpeaker(TeSPK_CtrlStates LeSPK_e_CmndState)
 
 
 /******************************************************************************
- * Function:     UpdateManipulatorActuators
+ * Function:     UpdateSPK_Actuators
  *
  * Description:  Updates the intermediate state of the actuartors for the 
  *               manipulator
  ******************************************************************************/
-void UpdateManipulatorActuators(TeSPK_CtrlStates LeSPK_e_CmndState,
-                                TeSPK_CtrlStates LeSPK_e_AttndState)
+void UpdateSPK_Actuators(TeSPK_CtrlStates LeSPK_e_CmndState,
+                         TeSPK_CtrlStates LeSPK_e_AttndState)
   {
-  //  T_PID_Cal LeSPK_i_Index = E_P_Gx;
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = KaSPK_k_Intake[LeSPK_e_CmndState];
 
-   VsMAN_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(KaSPK_RPM_Shooter1[LeSPK_e_CmndState], 
-                                                             VsMAN_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
-                                                             KeSPK_RPMs_Shooter1Rate);
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(KaSPK_RPM_Shooter1[LeSPK_e_CmndState], 
+                                                            VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
+                                                            KeSPK_RPMs_Shooter1Rate);
 
-   VsMAN_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(KaSPK_RPM_Shooter2[LeSPK_e_CmndState], 
-                                                             VsMAN_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
-                                                             KeSPK_RPMs_Shooter2Rate);
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(KaSPK_RPM_Shooter2[LeSPK_e_CmndState], 
+                                                            VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
+                                                            KeSPK_RPMs_Shooter2Rate);
   }
 
 
 /******************************************************************************
- * Function:     UpdateGripperActuator
+ * Function:     SPK_SpeakerControlMain
  *
- * Description:  Updates the gripper roller control
+ * Description:  Main calling function for speaker control.
  ******************************************************************************/
-void UpdateGripperActuator(TeSPK_CtrlStates LeSPK_e_CmndState,
-                           TeSPK_CtrlStates LeSPK_e_AttndState,
-                           bool                    LeMAN_b_DropObjectSlow,
-                           bool                    LeMAN_b_DropObjectFast)
+void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
+                            bool             LeSPK_b_TestPowerOverride)
   {
-   double LeMAN_k_TempCmnd = 0.0;
-   bool   LeMAN_b_AllowedReleaseState = false;
-   bool   LeMAN_b_ConeState = false;
-   bool   LeMAN_b_CubeState = false;
-
-  // frc::SmartDashboard::PutBoolean("Gripper Has Object", VeSPK_b_HasObject);
-  // frc::SmartDashboard::PutBoolean("Gripper ready to grab", VeSPK_b_ReadyToGrab);
-
-  // if (fabs(VsMAN_s_Sensors.RPM_Gripper) > C_GripperRPMReadyThreshold)
-  // {
-  //   VeSPK_b_ReadyToGrab = true;
-  // }
-  // else if ((fabs(VsMAN_s_Sensors.RPM_Gripper) <= C_GripperRPMReadyThreshold) && (VeSPK_b_HasObject == false))
-  // {
-  //   VeSPK_b_ReadyToGrab = false;
-  // }
-
-  // if ((fabs(VsMAN_s_Sensors.RPM_Gripper) <= C_GripperRPMHoldingThreshold) && (VeSPK_b_ReadyToGrab) &&
-  //     (LeMAN_e_CmndState == E_MAN_MidCubeIntake ||
-  //      LeMAN_e_CmndState == E_MAN_MidConeIntake ||
-  //      LeMAN_e_CmndState == E_MAN_FloorConeDrop ||
-  //      LeMAN_e_CmndState == E_MAN_MainIntake))
-  // {
-  //   VeSPK_b_HasObject = true;
-  // }
-  // else if (fabs(VsMAN_s_Sensors.RPM_Gripper) > C_GripperRPMHoldingThreshold)
-  // {
-  //   VeSPK_b_HasObject = false;
-  // }
-
-   /* Determine if we are attempting to drop a cube or cone: */
-   if ((LeSPK_e_CmndState == E_SPK_Ctrl_Intake) ||
-       (LeMAN_e_AttndState == E_MAN_LowCubeDrop)  ||
-       (LeMAN_e_AttndState == E_MAN_MidCubeIntake) ||
-       (LeMAN_e_AttndState == E_MAN_MainIntake))
-     {
-      LeMAN_b_CubeState = true;
-      VeSPK_b_NoteHold = false;
-     }
-
-   if ((LeMAN_e_AttndState == E_MAN_HighConeDrop) ||
-       (LeMAN_e_AttndState == E_MAN_LowConeDrop)  ||
-       (LeMAN_e_AttndState == E_MAN_MidConeIntake) ||
-       (LeMAN_e_AttndState == E_MAN_FloorConeDrop))
-     {
-      LeMAN_b_ConeState = true;
-      VeSPK_b_NoteHold = true;
-     }
-
-   /* Determine if we are in an allowed state to drop: */
-   if ((LeMAN_e_AttndState == LeMAN_e_CmndState) &&
-
-       ((LeMAN_b_CubeState == true) ||
-        (LeMAN_b_ConeState == true)  ||
-        ((LeMAN_e_AttndState == E_MAN_Driving) && (VeSPK_b_NoteHold == false)) ||  // Do not allow a cone to be shot out in driving
-        (LeMAN_e_AttndState == E_MAN_MainIntake)))
-     {
-      LeMAN_b_AllowedReleaseState = true;
-     }
-
-
-   if ((LeMAN_b_DropObjectSlow == true) && (LeMAN_b_AllowedReleaseState == true))
-     {
-      VeMAN_t_GripperHoldTime = 0;
-      if (VeSPK_b_NoteHold == false)
-       {
-        LeMAN_k_TempCmnd = KeMAN_k_GripperReleaseCubeSlow;
-       }
-      else
-       {
-        /* We are eitehr in cone mode or main intake*/
-        LeMAN_k_TempCmnd = KeMAN_k_GripperReleaseConeSlow;
-       }
-     }
-   else if ((LeMAN_b_DropObjectFast == true) && (LeMAN_b_AllowedReleaseState == true))
-     {
-      VeMAN_t_GripperHoldTime = 0;
-      if (VeSPK_b_NoteHold == false)
-       {
-        LeMAN_k_TempCmnd = KeMAN_k_GripperReleaseCubeFast;
-       }
-      else
-       {
-        /* We are eitehr in cone mode or main intake*/
-        LeMAN_k_TempCmnd = KeMAN_k_GripperReleaseConeFast;
-       }
-     }
-   else if ((VeMAN_t_GripperHoldTime < KeMAN_t_GripperPullInTm) &&
-            (((LeMAN_e_AttndState == E_MAN_MainIntake)    && (LeMAN_e_CmndState  == E_MAN_MainIntake)) ||
-             ((LeMAN_e_AttndState == E_MAN_MidCubeIntake) && (LeMAN_e_CmndState  == E_MAN_MidCubeIntake))))
-     {
-     LeMAN_k_TempCmnd = KeMAN_k_GripperIntakeCube;
-     if (VsMAN_s_Sensors.b_GripperObjDetected == true)
-       {
-        VeMAN_t_GripperHoldTime += C_ExeTime;
-       }
-       else
-       {
-        VeMAN_t_GripperHoldTime = 0;
-       }
-     }
-   else if ((VeMAN_t_GripperHoldTime < KeMAN_t_GripperPullInTm) &&
-             (((LeMAN_e_AttndState == E_MAN_MidConeIntake)   && (LeMAN_e_CmndState  == E_MAN_MidConeIntake))))
-     {
-     LeMAN_k_TempCmnd = KeMAN_k_GripperIntakeCone;
-      if (VsMAN_s_Sensors.b_GripperObjDetected == true)
-       {
-        VeMAN_t_GripperHoldTime += C_ExeTime;
-       }
-      else
-       {
-        VeMAN_t_GripperHoldTime = 0;
-       }
-     }
-   else if ((VsMAN_s_Sensors.b_GripperObjDetected == true) || (VeMAN_t_GripperHoldTime >= KeMAN_t_GripperPullInTm))
-     {
-      if (VeSPK_b_NoteHold == true)
-       {
-        LeMAN_k_TempCmnd = KeMAN_k_GripperIntakeholdCone;
-       }
-      else
-       {
-        LeMAN_k_TempCmnd = KeMAN_k_GripperIntakeholdCube;
-       }
-     }
-
-   VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = LeMAN_k_TempCmnd;
-  }
-
-/******************************************************************************
- * Function:     ManipulatorControlMain
- *
- * Description:  Main calling function for manipulator control.
- ******************************************************************************/
-void ManipulatorControlMain(TeMAN_ManipulatorStates LeMAN_e_SchedState,
-                            bool                    LeMAN_b_TestPowerOverride,
-                            bool                    LeMAN_b_DropObjectSlow,
-                            bool                    LeMAN_b_DropObjectFast)
-  {
-  TeMAN_e_ManipulatorActuator LeMAN_i_Index;
   double LeMAN_Deg_Error = 0.0;
   double LeMAN_k_P_Gain = 0.0;
 
-  if (LeMAN_b_TestPowerOverride == true)
+  if (LeSPK_b_TestPowerOverride == true)
     {
     // Do nothing.  Robot is in test state using power commands for all the acutators
     }
-  else if (VeMAN_b_TestState == true)
+  else if (VeSPK_b_TestState == true)
     {
     /* Only used for testing/calibration. */
-     VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_ArmPivot] = RampTo(VsMAN_s_MotorsTest.k_MotorCmnd[E_MAN_ArmPivot] / KeENC_k_ArmPivot, 
-                                                             VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_ArmPivot],
-                                                             VsMAN_s_MotorsTest.k_MotorRampRate[E_MAN_ArmPivot]);
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake];
 
-     VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_LinearSlide] = RampTo(VsMAN_s_MotorsTest.k_MotorCmnd[E_MAN_LinearSlide], 
-                                                                VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_LinearSlide],
-                                                                VsMAN_s_MotorsTest.k_MotorRampRate[E_MAN_LinearSlide]);
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1], 
+                                                              VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
+                                                              KeSPK_RPMs_Shooter1Rate);
 
-     VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Wrist] = RampTo(VsMAN_s_MotorsTest.k_MotorCmnd[E_MAN_Wrist] / KeENC_Deg_Wrist, 
-                                                          VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Wrist],
-                                                          VsMAN_s_MotorsTest.k_MotorRampRate[E_MAN_Wrist]);
-
-     VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Gripper] = RampTo(VsMAN_s_MotorsTest.k_MotorCmnd[E_MAN_Gripper], 
-                                                          VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Gripper],
-                                                          1.0);
-
-     VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_IntakeRollers] = RampTo(VsMAN_s_MotorsTest.k_MotorCmnd[E_MAN_IntakeRollers] / KeENC_RPM_IntakeRollers, 
-                                                                  VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_IntakeRollers],
-                                                                  VsMAN_s_MotorsTest.k_MotorRampRate[E_MAN_IntakeRollers]);
-
-     VsMAN_s_MotorsTemp.e_MotorControlType[E_MAN_IntakeArm] = VsMAN_s_MotorsTest.e_MotorControlType[E_MAN_IntakeArm];
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2], 
+                                                              VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
+                                                              KeSPK_RPMs_Shooter2Rate);
     }
   else
     {
     /* This is the actual manipulator control */
     VeSPK_b_CriteriaMet = UpdateSpeakerCommandAttainedState(VeSPK_b_CriteriaMet,
-                                                            LeMAN_e_SchedState);
+                                                            LeSPK_e_SchedState);
 
-    UpdateManipulatorActuators(VeSPK_e_CmndState, VeSPK_e_AttndState);
+    UpdateSPK_Actuators(VeSPK_e_CmndState, VeSPK_e_AttndState);
 
-    UpdateGripperActuator(VeSPK_e_CmndState,
-                          VeSPK_e_AttndState,
-                          LeMAN_b_DropObjectSlow,
-                          LeMAN_b_DropObjectFast);  // Need to come up with object detected
-
-    if ((LeMAN_e_SchedState != VeSPK_e_CmndState) ||
-        (LeMAN_e_SchedState != VeSPK_e_AttndState))
+    if ((LeSPK_e_SchedState != VeSPK_e_CmndState) ||
+        (LeSPK_e_SchedState != VeSPK_e_AttndState))
       {
-        UpdateManipulatorActuators(VeSPK_e_CmndState, VeSPK_e_AttndState);
-
         VeSPK_b_CriteriaMet = CmndStateReachedSpeaker(VeSPK_e_CmndState);
       }
     }
 
     /* Final output to the motor command that will be sent to the motor controller: */
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_ArmPivot] = VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_ArmPivot];
+    VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake];
 
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_LinearSlide] =  -Control_PID( VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_LinearSlide],
-                                                                  VsMAN_s_Sensors.In_LinearSlide,
-                                                                 &VaMAN_In_LinearSlideError,
-                                                                 &VaMAN_k_LinearSlideIntegral,
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_P_Gx],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_I_Gx],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_D_Gx],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_P_Ul],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_P_Ll],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_I_Ul],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_I_Ll],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_D_Ul],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_D_Ll],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_Max_Ul],
-                                                                  KaMAN_k_LinearSlidePID_Gx[E_Max_Ll]);
+    VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1];
 
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_Wrist] = VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Wrist];
-
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_Gripper] = VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_Gripper];
-
-    VsMAN_s_Motors.k_MotorCmnd[E_MAN_IntakeRollers] = VsMAN_s_MotorsTemp.k_MotorCmnd[E_MAN_IntakeRollers];
-
-    VsMAN_s_Motors.e_MotorControlType[E_MAN_IntakeArm] = VsMAN_s_MotorsTemp.e_MotorControlType[E_MAN_IntakeArm];
+    VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2];
   }

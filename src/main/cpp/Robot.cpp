@@ -13,6 +13,7 @@
 #include "Encoders.hpp"
 #include "Gyro.hpp"
 #include "DriveControl.hpp"
+#include "SpeakerCntrl.hpp"
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
 #include "Odometry.hpp"
@@ -26,6 +27,7 @@ T_RobotState VeROBO_e_RobotState = E_Init;
 std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
+
 
 /******************************************************************************
  * Function:     RobotMotorCommands
@@ -85,7 +87,6 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
-
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
@@ -118,19 +119,28 @@ void Robot::RobotInit()
 
   ADAS_Main_Init();
   ADAS_Main_Reset();
+#ifdef Bot2024 
+  SPK_MotorConfigsInit(m_UnderbellyPID,
+                       m_Shooter1PID,
+                       m_Shooter2PID);
+
+  SPK_ControlInit();
+#endif
 }
 
-/**
- * This function is called every 20 ms, no matter the mode. Use
- * this for items like diagnostics that you want ran during disabled,
- * autonomous, teleoperated and test.
+
+/******************************************************************************
+ * Function:     RobotPeriodic
  *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
+ * Description:  This function is called every 20 ms, no matter the mode. Use
+ *               this for items like diagnostics that you want ran during disabled,
+ *               autonomous, teleoperated and test.
+ *
+ *               <p> This runs after the mode specific periodic functions, but before
+ *               LiveWindow and SmartDashboard integrated updating.
+ ******************************************************************************/
 void Robot::RobotPeriodic()
 {
-
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
 
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
@@ -227,20 +237,30 @@ void Robot::RobotPeriodic()
   Amp_MotorConfigsCal(m_ElevatorPID,
                       m_WristPID,
                       m_IntakePID);
+
+  SPK_MotorConfigsCal(m_UnderbellyPID,
+                      m_Shooter1PID,
+                      m_Shooter2PID);
+  
+  SPK_SpeakerControlMain(VeADAS_e_SPK_SchedState,
+                         VeROBO_b_TestState);
 #endif
 }
 
-/**
- * This autonomous (along with the chooser code above) shows how to select
- * between different autonomous modes using the dashboard. The sendable chooser
- * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
- * remove all of the chooser code and uncomment the GetString line to get the
- * auto name from the text box below the Gyro.
+
+/******************************************************************************
+ * Function:     AutonomousInit
  *
- * You can add additional auto modes by adding additional comparisons to the
- * if-else structure below with additional strings. If using the SendableChooser
- * make sure to add them to the chooser code above as well.
- */
+ * Description:  This autonomous (along with the chooser code above) shows how to select
+ *               between different autonomous modes using the dashboard. The sendable chooser
+ *               code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+ *               remove all of the chooser code and uncomment the GetString line to get the
+ *               auto name from the text box below the Gyro.
+ *
+ *               You can add additional auto modes by adding additional comparisons to the
+ *               if-else structure below with additional strings. If using the SendableChooser
+ *               make sure to add them to the chooser code above as well.
+ ******************************************************************************/
 void Robot::AutonomousInit()
 {
 
@@ -259,6 +279,9 @@ void Robot::AutonomousInit()
   OdometryInit();
 
   ADAS_Main_Reset();
+  #ifdef Bot2024
+  SPK_ControlInit();
+  #endif
 
   fmt::print("Auto selected: {}\n", m_autoSelected);
 
@@ -272,6 +295,13 @@ void Robot::AutonomousInit()
   }
 }
 
+
+/******************************************************************************
+ * Function:     AutonomousPeriodic
+ *
+ * Description:  Function called periodically in autonomous.  This is where we
+ *               should place our primary autonomous control code.
+ ******************************************************************************/
 void Robot::AutonomousPeriodic()
 {
   // if (m_autoSelected == kAutoNameCustom) {
@@ -283,25 +313,38 @@ void Robot::AutonomousPeriodic()
   RobotMotorCommands();
 }
 
+
+/******************************************************************************
+ * Function:     TeleopInit
+ *
+ * Description:  Function called when starting out in teleop mode.
+ *               We should zero out all of our global varibles.
+ ******************************************************************************/
 void Robot::TeleopInit()
 {
-
-  ADAS_Main_Reset();
-
   VeROBO_e_RobotState = E_Teleop;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
   VeROBO_b_TestState = false;
-
+  ADAS_Main_Reset();
   DriveControlInit();
-
   OdometryInit();
+  #ifdef Bot2024
+  SPK_ControlInit();
+  #endif
 }
 
+
+/******************************************************************************
+ * Function:     TeleopPeriodic
+ *
+ * Description:  Primary function called when in teleop mode.
+ ******************************************************************************/
 void Robot::TeleopPeriodic()
 {
 
   RobotMotorCommands();
 }
+
 
 void Robot::DisabledInit() {}
 
@@ -309,13 +352,30 @@ void Robot::DisabledPeriodic() {}
 
 void Robot::TestInit() {}
 
-void Robot::TestPeriodic() {}
+
+/******************************************************************************
+ * Function:     TestPeriodic
+ *
+ * Description:  Called during the test phase initiated on the driver station.
+ ******************************************************************************/
+void Robot::TestPeriodic()
+{
+  #ifdef Bot2024
+  SPK_ControlManualOverride(&VsCONT_s_DriverInput);
+  #endif
+}
+
 
 void Robot::SimulationInit() {}
 
 void Robot::SimulationPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
+/******************************************************************************
+ * Function:     main
+ *
+ * Description:  This is the main calling function for the robot.
+ ******************************************************************************/
 int main()
 {
   return frc::StartRobot<Robot>();

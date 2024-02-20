@@ -10,6 +10,7 @@
 #include "Amp.hpp"
 #include "rev/CANSparkMax.h"
 #include "Const.hpp"
+#include "SpeakerCntrl.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz]; // This is the wheel angle coming from the angle Encoder and processed to only be from 0 - 180

@@ -8,7 +8,8 @@
     DJ (our 2024 controls, Amp.cpp and Speaker_Cntrl.cpp)
  */
 
-extern T_DJ_Amp_States VeADAS_e_Amp_SchedState;
-extern bool                    VeADAS_b_Amp_DropObject;
+extern T_DJ_Amp_States  VeADAS_e_Amp_SchedState;
+extern bool             VeADAS_b_Amp_DropObject;
+extern TeSPK_CtrlStates VeADAS_e_SPK_SchedState;
 
 void ADAS_DJ_Reset(void);

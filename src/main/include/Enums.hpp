@@ -91,7 +91,7 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDrivePath1,
   E_ADAS_AutonDrivePath2,
   E_ADAS_AutonDrivePath3,
-  E_ADAS_AutonDrivePath4,
+  E_ADAS_AutonDrivePath4,  
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place
@@ -108,19 +108,19 @@ struct RobotUserInput
   bool b_CameraLight;
   bool b_JoystickActive;
   bool b_VisionDriverModeOverride;
-  bool b_Amp_IntakeBackward_Test;        
-  bool b_ResetEnocders; 
-  bool b_Spk_IntakeBackward_Test;              
+  bool b_Amp_IntakeBackward_Test;
+  bool b_ResetEnocders;
+  bool b_Spk_IntakeBackward_Test;
   bool b_IntakeArmOutTest;
   double Pct_Shooter1_Test;
   double Pct_Shooter2_Test;
   double Pct_Amp_Wrist_Test;
   double Pct_Amp_Elevator_Test;
-  double b_Spk_IntakeForward_Test;
-  bool b_MainIntakeOut;
+  bool   b_Spk_IntakeForward_Test;
+  bool   b_MainIntakeOut;
   double pct_RightHookUp_Test;
   double pct_LeftHookUp_Test;
-  bool b_FloorConeDrop;
+  bool   b_FloorConeDrop;
   double pct_RightHookDown_Test;
   double pct_LeftHookDown_Test;
   bool b_DrivingPosition;
@@ -176,13 +176,6 @@ typedef enum T_DJ_Amp_Motors
   E_DJ_Ampz
 } T_DJ_Amp_Motors;
 
-typedef enum T_DJ_Spk_Motors
-{
-  E_DJ_m_Underbelly,
-  E_DJ_m_Shooter1,
-  E_DJ_m_Shooter2
-} T_DJ_Spk_Motors;
-
 typedef enum T_DJ_Amp_States
 {
   E_DJ_Amp_Init,
@@ -192,15 +185,6 @@ typedef enum T_DJ_Amp_States
   E_DJ_Amp_Score,
   E_DJ_Amp_State_Sz
 } T_DJ_Amp_States;
-
-typedef enum T_DJ_Spk_States
-{
-  E_DJ_Spk_Init,
-  E_DJ_Spk_Driving,
-  E_DJ_Underbelly,
-  E_DJ_PreScore,
-  E_DJ_Shooting
-} T_DJ_Spk_States;
 
 struct TeAmp_MotorControl
 {
@@ -227,7 +211,7 @@ typedef enum TeSPK_CtrlStates
   E_SPK_Ctrl_Driving,
   E_SPK_Ctrl_Intake,
   E_SPK_Ctrl_PreScore,
-  E_SPK_Ctrl_Shooting,
+  E_SPK_Ctrl_Score,
   E_SPK_Ctrl_StateSz
 } TeSPK_CtrlStates;
 
