@@ -360,9 +360,39 @@ void Robot::TestInit() {}
  ******************************************************************************/
 void Robot::TestPeriodic()
 {
+  VeROBO_b_TestState = true;
+
   #ifdef Bot2024
   SPK_ControlManualOverride(&VsCONT_s_DriverInput);
   #endif
+
+  if (VsCONT_s_DriverInput.b_ResetEnocders == true)
+    {
+      EncodersInitSwerve(m_encoderFrontRightSteer,
+                         m_encoderFrontLeftSteer,
+                         m_encoderRearRightSteer,
+                         m_encoderRearLeftSteer,
+                         m_encoderFrontRightDrive,
+                         m_encoderFrontLeftDrive,
+                         m_encoderRearRightDrive,
+                         m_encoderRearLeftDrive);
+    }
+
+  m_frontLeftDriveMotor.Set(0);
+  m_frontRightDriveMotor.Set(0);
+  m_rearLeftDriveMotor.Set(0);
+  m_rearRightDriveMotor.Set(0);
+
+  m_frontLeftSteerMotor.Set(0);
+  m_frontRightSteerMotor.Set(0);
+  m_rearLeftSteerMotor.Set(0);
+  m_rearRightSteerMotor.Set(0);
+
+#ifdef Bot2024
+  m_Underbelly.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake]);
+  m_Shooter1.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1]);
+  m_Shooter2.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter2]);
+#endif
 }
 
 
