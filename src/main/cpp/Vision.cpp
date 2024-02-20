@@ -4,11 +4,12 @@
 #include <photon/PhotonCamera.h>
 #include <photon/PhotonPoseEstimator.h>
 #include <frc/geometry/Pose3d.h>
-
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <vector>
+
 #include "Const.hpp"
 #include "Odometry.hpp"
-#ifdef CarsonFixThisFilePlease
+
 frc::AprilTagFieldLayout L_Vis_Layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
 
 // cameras is a vector of pairs of (camera obj, camera position)
@@ -79,6 +80,9 @@ void VisionInit()
     */
 }
 
+// a debug value to see how many checks have passed
+int Debug_tests_passed = 0;
+
 void VisionRun(bool L_DisableCentering)
 {
 
@@ -96,10 +100,11 @@ void VisionRun(bool L_DisableCentering)
     if (Ve_Vis_VisionCenteredCounter >= 6.0)
     {
         Le_Vis_VisionCentered = false;
+        Debug_tests_passed = 0;
     }
 
     // loop through our list of cameras
-    for (int L_CamIndex = 0; L_CamIndex < cameras.size(); L_CamIndex++)
+    for (unsigned L_CamIndex = 0; L_CamIndex < cameras.size(); L_CamIndex++)
     {
         // grab the latest result from this cam
         L_Vis_CurrentCamResult = cameras[L_CamIndex].first.get()->GetLatestResult();
@@ -133,7 +138,7 @@ void VisionRun(bool L_DisableCentering)
     }
 
     // loop through our newly found results
-    for (int camResult = 0; camResult < L_VisCamResults.size(); camResult++)
+    for (unsigned camResult = 0; camResult < L_VisCamResults.size(); camResult++)
     {
         // if cam 1 is lower ambiguity than cam 0, make that the best
         // if cam 2 is lower than cam 1 make that the best, etc
@@ -144,20 +149,30 @@ void VisionRun(bool L_DisableCentering)
     }
 
     // we need to wait at least 2 seconds before centering, we're probably fine in those 2 seconds
-    if (Ve_Vis_VisionCenteredCounter >= 2.0)
+    // or maybe we haven't centered at all
+    if ((Ve_Vis_VisionCenteredCounter >= 2.0) || (Le_Vis_VisionCentered == false))
     {
+        Debug_tests_passed++;
         if (L_VisCamResults[L_bestCam].second >= KeAmbiguityThreshold)
         {
+            Debug_tests_passed++;
+
             if ((L_outputX > 0.0) && (L_outputY > 0.0) && (L_outputX < KeMaxX) // sanity check theat we are in the bounds of the field
                 && (L_outputY < KeMaxY))
             {
+                Debug_tests_passed++;
+
                 // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
                 //  we probably have to be a little below max speed to trust cam updating
                 if ((fabs(VeODO_In_DeltaX) < 1.0) && (fabs(VeODO_In_DeltaY) < 1.0))
                 {
+                    Debug_tests_passed++;
+
                     // even if everything passes we can manually say no
                     if (L_DisableCentering)
                     {
+                        Debug_tests_passed++;
+
                         L_outputX = L_VisCamResults[L_bestCam].first.Translation().X().value(); // this returns in meters
                         L_outputX *= C_MeterToIn;
                         L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
@@ -170,5 +185,6 @@ void VisionRun(bool L_DisableCentering)
             }
         }
     }
+
+    frc::SmartDashboard::PutNumber("Debug: Vision tests passed", Debug_tests_passed);
 }
-#endif
