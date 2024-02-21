@@ -87,6 +87,12 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
+  // Default to a length of 60, start empty output
+  // Length is expensive to set, so only set it once, then just update data
+  // m_led.SetLength(kLength);
+  // m_led.SetData(m_ledBuffer);
+  // m_led.Start();
+
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
                      m_encoderRearRightSteer,
@@ -141,6 +147,11 @@ void Robot::RobotInit()
  ******************************************************************************/
 void Robot::RobotPeriodic()
 {
+  // Fill the buffer with a rainbow
+  // Rainbow();
+  // // Set the LEDs
+  // m_led.SetData(m_ledBuffer);
+
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
 
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
@@ -246,7 +257,6 @@ void Robot::RobotPeriodic()
                          VeROBO_b_TestState);
 #endif
 }
-
 
 /******************************************************************************
  * Function:     AutonomousInit
