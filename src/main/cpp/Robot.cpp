@@ -72,11 +72,11 @@ void Robot::RobotMotorCommands()
 
 #ifdef Bot2024
   m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
-  m_Elevator.Set(0.0);
   m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
-  m_IntakePID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake], rev::ControlType::kVelocity);
-  m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]); // This puts the gripper into a power control setup, not speed/postion
-
+  m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
+  m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
+  m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
+  m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
 #endif
 }
 
@@ -126,10 +126,15 @@ void Robot::RobotInit()
   ADAS_Main_Init();
   ADAS_Main_Reset();
 #ifdef Bot2024 
+  Amp_MotorConfigsInit(m_ElevatorPID,
+                       m_WristPID,
+                       m_IntakePID);
+
   SPK_MotorConfigsInit(m_UnderbellyPID,
                        m_Shooter1PID,
                        m_Shooter2PID);
 
+  Amp_ControlInit();
   SPK_ControlInit();
 #endif
 }
@@ -253,10 +258,14 @@ void Robot::RobotPeriodic()
                       m_Shooter1PID,
                       m_Shooter2PID);
   
+  Amp_ControlMain(VeADAS_e_Amp_SchedState,
+                  VeROBO_b_TestState);
+
   SPK_SpeakerControlMain(VeADAS_e_SPK_SchedState,
                          VeROBO_b_TestState);
 #endif
 }
+
 
 /******************************************************************************
  * Function:     AutonomousInit
@@ -290,6 +299,7 @@ void Robot::AutonomousInit()
 
   ADAS_Main_Reset();
   #ifdef Bot2024
+  Amp_ControlInit();
   SPK_ControlInit();
   #endif
 
@@ -339,6 +349,7 @@ void Robot::TeleopInit()
   DriveControlInit();
   OdometryInit();
   #ifdef Bot2024
+  Amp_ControlInit();
   SPK_ControlInit();
   #endif
 }
@@ -373,6 +384,7 @@ void Robot::TestPeriodic()
   VeROBO_b_TestState = true;
 
   #ifdef Bot2024
+  Amp_ControlManualOverride(&VsCONT_s_DriverInput);
   SPK_ControlManualOverride(&VsCONT_s_DriverInput);
   #endif
 
@@ -402,6 +414,9 @@ void Robot::TestPeriodic()
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake]);
   m_Shooter1.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1]);
   m_Shooter2.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter2]);
+  m_Elevator.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator]);
+  m_Wrist.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist]);
+  m_Intake.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake]);
 #endif
 }
 

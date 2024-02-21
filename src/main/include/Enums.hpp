@@ -114,6 +114,7 @@ struct RobotUserInput
   bool b_IntakeArmOutTest;
   double Pct_Shooter1_Test;
   double Pct_Shooter2_Test;
+  double Pct_Amp_Intake_Test;
   double Pct_Amp_Wrist_Test;
   double Pct_Amp_Elevator_Test;
   bool   b_Spk_IntakeForward_Test;
@@ -146,8 +147,7 @@ struct TsDJ_Sensor
 {
   double In_Elevator;
   double Deg_Wrist;
-  bool b_Amp_ObjDetected;
-  bool b_Spk_ObjDetected;
+  bool   b_Amp_ObjDetected;
 };
 
 typedef enum T_MotorControlType
