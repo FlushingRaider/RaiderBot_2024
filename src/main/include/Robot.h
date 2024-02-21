@@ -94,8 +94,8 @@ class Robot : public frc::TimedRobot {
 
 #ifdef Bot2024
   rev::CANSparkMax                           m_Elevator            {KeDJ_Amp_i_Elevator,        rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANSparkMax                           m_Climber1            {KeCLMR_i_ClimberArm1,           rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANSparkMax                           m_Climber2            {KeCLMR_i_ClimberArm2,           rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_ClimberLeft         {KeCLMR_i_ClimberArm1,           rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_ClimberRight        {KeCLMR_i_ClimberArm2,           rev::CANSparkMax::MotorType::kBrushless};
 #endif  
   rev::CANSparkMax                           m_Wrist               {KeDJ_Amp_i_Wrist,               rev::CANSparkMax::MotorType::kBrushless};        
   rev::CANSparkMax                           m_Intake              {KeDJ_Amp_i_Intake,              rev::CANSparkMax::MotorType::kBrushless};
@@ -104,8 +104,8 @@ class Robot : public frc::TimedRobot {
   rev::CANSparkMax                           m_Shooter2            {KeDJ_Spk_i_Shooter2,            rev::CANSparkMax::MotorType::kBrushless};
 #ifdef Bot2024
   rev::SparkMaxPIDController                 m_ElevatorPID         = m_Elevator.GetPIDController();
-  rev::SparkMaxPIDController                 m_Climber1PID         = m_Climber1.GetPIDController();
-  rev::SparkMaxPIDController                 m_Climber2PID         = m_Climber2.GetPIDController();
+  rev::SparkMaxPIDController                 m_ClimberLeftPID      = m_ClimberLeft.GetPIDController();
+  rev::SparkMaxPIDController                 m_ClimberRightPID     = m_ClimberRight.GetPIDController();
 #endif
   rev::SparkMaxPIDController                 m_WristPID            = m_Wrist.GetPIDController();
   rev::SparkMaxPIDController                 m_IntakePID           = m_Intake.GetPIDController();

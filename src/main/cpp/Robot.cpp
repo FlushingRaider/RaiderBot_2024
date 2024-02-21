@@ -13,11 +13,12 @@
 #include "Encoders.hpp"
 #include "Gyro.hpp"
 #include "DriveControl.hpp"
-#include "SpeakerCntrl.hpp"
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
 #include "Odometry.hpp"
 #include "Amp.hpp"
+#include "SpeakerCntrl.hpp"
+#include "Climber.hpp"
 #include "ADAS_DJ.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -386,6 +387,7 @@ void Robot::TestPeriodic()
   #ifdef Bot2024
   Amp_ControlManualOverride(&VsCONT_s_DriverInput);
   SPK_ControlManualOverride(&VsCONT_s_DriverInput);
+  CLMR_ControlManualOverride(&VsCONT_s_DriverInput);
   #endif
 
   if (VsCONT_s_DriverInput.b_ResetEnocders == true)
@@ -417,6 +419,8 @@ void Robot::TestPeriodic()
   m_Elevator.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator]);
   m_Wrist.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist]);
   m_Intake.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake]);
+  m_ClimberLeft.Set(VsCLMR_s_Motors.k_MotorTestPower[E_CLMR_m_Left]);
+  m_ClimberRight.Set(VsCLMR_s_Motors.k_MotorTestPower[E_CLMR_m_Right]);
 #endif
 }
 

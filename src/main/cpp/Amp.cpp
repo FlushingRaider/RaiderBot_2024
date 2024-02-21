@@ -354,9 +354,6 @@ void UpdateAmp_hold_Actuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
 void Amp_ControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
                      bool LeDJ_Amp_b_TestPowerOverride)
 {
-  TeDJ_Amp_e_AmpActuator LeMAN_i_Index;
-  double LeDJ_Amp_Deg_Error = 0.0;
-  double LeDJ_Amp_k_P_Gain = 0.0;
 
   if (LeDJ_Amp_b_TestPowerOverride == true)
   {

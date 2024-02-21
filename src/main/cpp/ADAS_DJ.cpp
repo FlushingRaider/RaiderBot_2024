@@ -33,7 +33,8 @@ double VeADAS_t_Amp_DropObjectTm = 0.0; // Timer that will keep rollers on for a
  ******************************************************************************/
 void ADAS_DJ_Reset(void)
 {
-  T_DJ_Amp_States VeADAS_Amp_e_AttndState = E_DJ_Amp_Init;
+  VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;
+  VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init;
   VeADAS_t_Amp_DropObjectTm = 0.0;
 }
 
