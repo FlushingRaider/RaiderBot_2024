@@ -15,7 +15,7 @@ const double C_Tau = 6.28318530717958647;
 const double C_ExeTime = 0.02;              // Set to match the the default controller loop time of 20 ms
 const units::second_t C_ExeTime_t = 0.02_s; // Set to match the the default controller loop time of 20 ms
 // CAN Device IDs:
-static const int C_PDP_ID = 21;
+static const int C_PDP_ID = 21; //NOTE - needs to be changed bc repeat below
 static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 4, frontRightDriveDeviceID = 3;
 static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
 
@@ -612,9 +612,6 @@ const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake
                                                1.0, // E_SPK_m_Shooter1
                                                1.0}; // E_SPK_m_Shooter2
 
-
-
-
 /* KaCLMR_e_ControllingTable: Table that contains the commanded state of the climber based on the current attained state and schedueld state. */
 const TeCLMR_CtrlStates KaCLMR_e_ControllingTable[E_CLMR_Ctrl_StateSz][E_CLMR_Ctrl_StateSz] = // [Sched][Attnd]
     {{E_CLMR_Ctrl_Init,       E_CLMR_Ctrl_Init,       E_CLMR_Ctrl_Init},
@@ -694,7 +691,13 @@ const double KeENC_RPM_Intake = 1.0;
 /* KeENC_k_LiftEncoderScaler: Scalar multiplied against the encoder read to translate to degrees relative to inches traveled for the lift. */
 const double KeENC_k_LiftEncoderScaler = 0.001218;
 
-/*Vision configs*/
+/* KeSPK_t_ShooterOnTm: Amount of time Speaker Shooter will remain on after it is initially commanded on. */
+const double KeSPK_t_ShooterOnTm = 0.5; //NOTE - set calibration time
+
+
+
+
+/////////////////*Vision configs*//////////////////////
 const double KeAmbiguityThreshold = 0.2;
 const double KeMaxY = 323.25;
 const double KeMaxX = 651.25;
