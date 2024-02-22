@@ -9,7 +9,7 @@
 
 #include "Const.hpp"
 #include "Odometry.hpp"
-
+#ifdef VisonOn
 frc::AprilTagFieldLayout L_Vis_Layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
 
 // cameras is a vector of pairs of (camera obj, camera position)
@@ -188,3 +188,4 @@ void VisionRun(bool L_DisableCentering)
 
     frc::SmartDashboard::PutNumber("Debug: Vision tests passed", Debug_tests_passed);
 }
+#endif

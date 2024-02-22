@@ -4,7 +4,7 @@
    Created on: Feb 17, 2024
    Author: Biggs
 
-   The underbelly intake and launch rollers control / state machine.
+   The climber controls / state machine.
  */
 
 #include "rev/CANSparkMax.h"
@@ -18,74 +18,66 @@
 #include "Encoders.hpp"
 #include "ADAS_DJ.hpp"
 
-TeSPK_CtrlStates VeSPK_e_CmndState  = E_SPK_Ctrl_Init; // What is our next/current step?
-TeSPK_CtrlStates VeSPK_e_AttndState = E_SPK_Ctrl_Init; // What is our desired end state?
+TeCLMR_CtrlStates VeCLMR_e_CmndState  = E_CLMR_Ctrl_Init; // What is our next/current step?
+TeCLMR_CtrlStates VeCLMR_e_AttndState = E_CLMR_Ctrl_Init; // What is our desired end state?
 
-TeSKP_MotorControl      VsSPK_s_Motors; // All of the motor commands for the speaker motors
-TeSKP_MotorControl      VsSPK_s_MotorsTemp; // Temporary commands for the motors, not the final output
-TeSKP_MotorControl      VsSPK_s_MotorsTest; // Temporary commands for the motors, not the final output
-TsSPK_Sensor            VsSPK_s_Sensors; // All of the sensor values for the speaker  motors
+TeCLMR_MotorControl      VsCLMR_s_Motors; // All of the motor commands for the speaker motors
+TeCLMR_MotorControl      VsCLMR_s_MotorsTemp; // Temporary commands for the motors, not the final output
+TeCLMR_MotorControl      VsCLMR_s_MotorsTest; // Temporary commands for the motors, not the final output
+TsCLMR_Sensor            VsCLMR_s_Sensors; // All of the sensor values for the speaker  motors
 
-double                  VeSPK_t_TransitionTime = 0;
+double                  VeCLMR_t_TransitionTime = 0;
 
-double                  VaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz];
-double                  VaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz];
-double                  VaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz];
+double                  VaCLMR_k_LeftPID_Gx[E_PID_SparkMaxCalSz];
+double                  VaCLMR_k_RightPID_Gx[E_PID_SparkMaxCalSz];
 
-bool                    VeSPK_b_CriteriaMet = false;
+bool                    VeCLMR_b_CriteriaMet = false;
 
-#ifdef SPK_Test
-bool                    VeSPK_b_TestState = true; // temporary, we don't want to use the manual overrides
+#ifdef CLMR_Test
+bool                    VeCLMR_b_TestState = true; // temporary, we don't want to use the manual overrides
 #else
-bool                    VeSPK_b_TestState = false;
+bool                    VeCLMR_b_TestState = false;
 #endif
 
+#ifdef DOESNOTWORKYET
 /******************************************************************************
  * Function:     SPK_MotorConfigsInit
  *
  * Description:  Contains the motor configurations for the intake and shooter.
  ******************************************************************************/
-void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
-                          rev::SparkMaxPIDController m_Shooter1PID,
-                          rev::SparkMaxPIDController m_Shooter2PID)
+void CLMR_MotorConfigsInit(rev::SparkMaxPIDController m_ClimberLeftPID,
+                           rev::SparkMaxPIDController m_ClimberRightPID)
   {
-  TeSPK_Actuators LeSPK_i_Index  = E_SPK_m_Intake;
-  T_PID_Cal       LeSPK_i_Index3 = E_P_Gx;
+  TeCLMR_Actuators LeCLMR_i_Index  = E_CLMR_m_Left;
+  T_PID_Cal        LeCLMR_i_Index3 = E_P_Gx;
 
   // set PID coefficients
-  m_UnderbellyPID.SetP(KaSPK_k_IntakePID_Gx[E_kP]);
-  m_UnderbellyPID.SetI(KaSPK_k_IntakePID_Gx[E_kI]);
-  m_UnderbellyPID.SetD(KaSPK_k_IntakePID_Gx[E_kD]);
-  m_UnderbellyPID.SetIZone(KaSPK_k_IntakePID_Gx[E_kIz]);
-  m_UnderbellyPID.SetFF(KaSPK_k_IntakePID_Gx[E_kFF]);
-  m_UnderbellyPID.SetOutputRange(KaSPK_k_IntakePID_Gx[E_kMinOutput], KaSPK_k_IntakePID_Gx[E_kMaxOutput]);
+  m_ClimberLeftPID.SetP(KaCLMR_k_LeftPID_Gx[E_kP]);
+  m_ClimberLeftPID.SetI(KaCLMR_k_LeftPID_Gx[E_kI]);
+  m_ClimberLeftPID.SetD(KaCLMR_k_LeftPID_Gx[E_kD]);
+  m_ClimberLeftPID.SetIZone(KaCLMR_k_LeftPID_Gx[E_kIz]);
+  m_ClimberLeftPID.SetFF(KaCLMR_k_LeftPID_Gx[E_kFF]);
+  m_ClimberLeftPID.SetOutputRange(KaCLMR_k_LeftPID_Gx[E_kMinOutput], KaCLMR_k_LeftPID_Gx[E_kMaxOutput]);
 
-  m_Shooter1PID.SetP(KaSPK_k_Shooter1PID_Gx[E_kP]);
-  m_Shooter1PID.SetI(KaSPK_k_Shooter1PID_Gx[E_kI]);
-  m_Shooter1PID.SetD(KaSPK_k_Shooter1PID_Gx[E_kD]);
-  m_Shooter1PID.SetIZone(KaSPK_k_Shooter1PID_Gx[E_kIz]);
-  m_Shooter1PID.SetFF(KaSPK_k_Shooter1PID_Gx[E_kFF]);
-  m_Shooter1PID.SetOutputRange(KaSPK_k_Shooter1PID_Gx[E_kMinOutput], KaSPK_k_Shooter1PID_Gx[E_kMaxOutput]);
+  m_ClimberRightPID.SetP(KaCLMR_k_RightPID_Gx[E_kP]);
+  m_ClimberRightPID.SetI(KaCLMR_k_RightPID_Gx[E_kI]);
+  m_ClimberRightPID.SetD(KaCLMR_k_RightPID_Gx[E_kD]);
+  m_ClimberRightPID.SetIZone(KaCLMR_k_RightPID_Gx[E_kIz]);
+  m_ClimberRightPID.SetFF(KaCLMR_k_RightPID_Gx[E_kFF]);
+  m_ClimberRightPID.SetOutputRange(KaCLMR_k_RightPID_Gx[E_kMinOutput], KaCLMR_k_RightPID_Gx[E_kMaxOutput]);
 
-  m_Shooter2PID.SetP(KaSPK_k_Shooter2PID_Gx[E_kP]);
-  m_Shooter2PID.SetI(KaSPK_k_Shooter2PID_Gx[E_kI]);
-  m_Shooter2PID.SetD(KaSPK_k_Shooter2PID_Gx[E_kD]);
-  m_Shooter2PID.SetIZone(KaSPK_k_Shooter2PID_Gx[E_kIz]);
-  m_Shooter2PID.SetFF(KaSPK_k_Shooter2PID_Gx[E_kFF]);
-  m_Shooter2PID.SetOutputRange(KaSPK_k_Shooter2PID_Gx[E_kMinOutput], KaSPK_k_Shooter2PID_Gx[E_kMaxOutput]);
-
-  for (LeSPK_i_Index = E_SPK_m_Intake;
-       LeSPK_i_Index < E_SPK_m_Sz;
-       LeSPK_i_Index = TeSPK_Actuators(int(LeSPK_i_Index) + 1))
+  for (LeCLMR_i_Index = E_CLMR_m_Left;
+       LeCLMR_i_Index < E_CLMR_m_Sz;
+       LeCLMR_i_Index = TeCLMR_Actuators(int(LeCLMR_i_Index) + 1))
     {
-      VsSPK_s_Motors.k_MotorCmnd[LeSPK_i_Index] = 0.0;
-      VsSPK_s_MotorsTemp.k_MotorCmnd[LeSPK_i_Index] = 0.0;
-      VsSPK_s_MotorsTest.k_MotorCmnd[LeSPK_i_Index] = 0.0;
+      VsCLMR_s_Motors.k_MotorCmnd[LeCLMR_i_Index] = 0.0;
+      VsCLMR_s_MotorsTemp.k_MotorCmnd[LeCLMR_i_Index] = 0.0;
+      VsCLMR_s_MotorsTest.k_MotorCmnd[LeCLMR_i_Index] = 0.0;
     }
 
  /* We don't have a ramp rate for the intake motor as we are running as power based only... */
-  VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter1] = KeSPK_RPMs_Shooter1Rate;
-  VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2] = KeSPK_RPMs_Shooter2Rate;
+  VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Left] = KeCLMR_ins_LiftRate;
+  VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Right] = KeSPK_RPMs_Shooter2Rate;
 
   #ifdef SPK_Test
   T_PID_SparkMaxCal LeMAN_i_Index2 = E_kP;
@@ -207,38 +199,29 @@ void SPK_ControlInit()
   VeSPK_b_CriteriaMet = false;
   VeSPK_t_TransitionTime = 0.0;
   }
-
+#endif
 
 /******************************************************************************
- * Function:     SPK_ControlManualOverride
+ * Function:     CLMR_ControlManualOverride
  *
  * Description:  Manual override control used during the FRC test section. Use incase of Y2K -J 
  ******************************************************************************/
-void SPK_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
+void CLMR_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
   {
-  TeSPK_Actuators LeSPK_i_Index;
+  TeCLMR_Actuators LeCLMR_i_Index;
 
-  for (LeSPK_i_Index = E_SPK_m_Intake;
-       LeSPK_i_Index < E_SPK_m_Sz;
-       LeSPK_i_Index = TeSPK_Actuators(int(LeSPK_i_Index) + 1))
+  for (LeCLMR_i_Index = E_CLMR_m_Left;
+       LeCLMR_i_Index < E_CLMR_m_Sz;
+       LeCLMR_i_Index = TeCLMR_Actuators(int(LeCLMR_i_Index) + 1))
     {
-      VsSPK_s_Motors.k_MotorTestPower[LeSPK_i_Index] = 0.0;
+      VsCLMR_s_Motors.k_MotorTestPower[LeCLMR_i_Index] = 0.0;
     }
 
-  if (LsCONT_s_DriverInput->b_Spk_IntakeForward_Test == true)
-    {
-    VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake] = KaSPK_k_TestPower[E_SPK_m_Intake];
-    }
-  else if (LsCONT_s_DriverInput->b_Spk_IntakeBackward_Test == true)
-    {
-    VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake] = -KaSPK_k_TestPower[E_SPK_m_Intake];
-    }
+  VsCLMR_s_Motors.k_MotorTestPower[E_CLMR_m_Left] = LsCONT_s_DriverInput->pct_LeftHook_Test * KaCLMR_k_TestPower[E_CLMR_m_Left];
 
-  VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1] = LsCONT_s_DriverInput->Pct_Shooter1_Test * KaSPK_k_TestPower[E_SPK_m_Shooter1];
-
-  VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter2] = LsCONT_s_DriverInput->Pct_Shooter2_Test * KaSPK_k_TestPower[E_SPK_m_Shooter2];
+  VsCLMR_s_Motors.k_MotorTestPower[E_CLMR_m_Right] = LsCONT_s_DriverInput->pct_RightHook_Test * KaCLMR_k_TestPower[E_CLMR_m_Right];
   }
-
+#ifdef DOESNOTWORKYET
 /******************************************************************************
  * Function:     UpdateSpeakerCommandAttainedState
  *
@@ -365,3 +348,5 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
 
     VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2];
   }
+
+  #endif

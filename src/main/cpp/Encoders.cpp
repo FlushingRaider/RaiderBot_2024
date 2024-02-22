@@ -82,9 +82,6 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   {
   T_RobotCorner LeENC_e_Index;
 
-  
-
-
   VaENC_Deg_WheelAngleConverted[E_FrontLeft]  = std::fmod((LeENC_Cnt_EncoderWheelAngleFrontLeftRaw.value()), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_FrontLeft];
   VaENC_Deg_WheelAngleConverted[E_FrontRight] = std::fmod((LeENC_Cnt_EncoderWheelAngleFrontRightRaw.value()), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_FrontRight];
   VaENC_Deg_WheelAngleConverted[E_RearLeft]   = std::fmod((LeENC_Cnt_EncoderWheelAngleRearLeftRaw.value()), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearLeft];
@@ -95,21 +92,15 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   // frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
   // frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
 
-
   // frc::SmartDashboard::PutNumber("WS FL", m_encoderFrontLeftDrive.GetVelocity());
   // frc::SmartDashboard::PutNumber("WS FR", m_encoderFrontRightDrive.GetVelocity());
   // frc::SmartDashboard::PutNumber("WS RL", m_encoderRearLeftDrive.GetVelocity());
   // frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
 
-
-
-  
-
   // frc::SmartDashboard::PutNumber("raw WA FL", LeENC_Cnt_EncoderWheelAngleFrontLeftRaw.value());
   // frc::SmartDashboard::PutNumber("Raw WA FR", LeENC_Cnt_EncoderWheelAngleFrontRightRaw.value());
   // frc::SmartDashboard::PutNumber("Raw WA RL", LeENC_Cnt_EncoderWheelAngleRearLeftRaw.value());
   // frc::SmartDashboard::PutNumber("raw WA RR", LeENC_Cnt_EncoderWheelAngleRearRightRaw.value());
-
 
   VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontLeft]  = m_encoderFrontLeftDrive.GetPosition();
   VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontRight] = m_encoderFrontRightDrive.GetPosition();
@@ -159,22 +150,15 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
  *
  * Description:  Read the encoders from the Amp mech
  ******************************************************************************/
-void Encoders_DJ_Amp_INT( rev::SparkMaxRelativeEncoder m_WristEncoder,
-                       double                       LeENC_Deg_Elevator,
-                       T_MotorControlType           LeENC_e_IntakeCmnd,
-                       bool                         LeENC_b_WristReverseLimit)
+void Encoders_DJ_Amp_INT(rev::SparkMaxRelativeEncoder m_WristEncoder,
+                         double                       LeENC_Deg_Elevator,
+                         bool                         LeENC_b_WristReverseLimit)
   {
-  bool LeENC_b_IntakeExtended = false;
   bool LeENC_b_ObjectDetected = false;
 
   VsAmp_s_Sensors.Deg_Wrist = m_WristEncoder.GetPosition() * KeENC_Deg_Wrist;
 
   VsAmp_s_Sensors.In_Elevator = LeENC_Deg_Elevator * KeENC_k_ElevatorEncoderScaler;
-
-  if (LeENC_e_IntakeCmnd == E_MotorExtend)
-    {
-    LeENC_b_IntakeExtended = true;
-    }
 
   /* Switches are wired to the wrist motor controller.  Switches are intended to detect object in the gripper... */
   if (LeENC_b_WristReverseLimit == false)

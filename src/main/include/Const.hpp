@@ -4,7 +4,7 @@
 #include <units/length.h>
 
 // Define the desired test state here: Bot_Testing, Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-#define Bot2024
+#define Bot_Testing
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
@@ -403,10 +403,10 @@ const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS 
 
 /* KaMAN_e_ControllingTable: Table that contains the commanded state of the manipulator and intake based on the current attained state and schedueld state. */
 const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Sched][Attnd]
-    {{E_DJ_Amp_Init, E_DJ_Amp_Init, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,    E_DJ_Amp_Driving, E_DJ_Amp_Driving},
      {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Intake, E_DJ_Amp_Intake, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Driving, E_DJ_Amp_Score}};
+     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,  E_DJ_Amp_Intake,  E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Score,   E_DJ_Amp_Driving, E_DJ_Amp_Score}};
 
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
@@ -447,13 +447,19 @@ const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                              0.0,      // kMaxAcc
                                                              0.0};     // kAllErr
 
-/* KaMAN_k_ManipulatorTestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
-const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {0.00,  // E_Amp_Elevator     //NOTE set to zero so there is no breaking needs to be changed tho
-                                               0.00,  // E_Amp_Wrist
-                                               0.00}; // E_Amp_Intake
+/* KaDJ_Amp_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
+const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {0.10,  // E_Amp_Elevator 
+                                               0.10,  // E_Amp_Wrist
+                                               0.10}; // E_Amp_Intake
 
-/* KeMAN_t_StateTimeOUt: Sets transition time out. */
-const double KeDJ_Amp_t_StateTimeOut = 1; // Drop-off //NOTE - will need to be changed for new bot
+/* KeDJ_Amp_t_StateTimeOut: Sets transition time out. */
+const double KeDJ_Amp_t_StateTimeOut = 120.0; // Drop-off //NOTE - will need to be changed for new bot
+
+/* KeDJ_Amp_k_HoldNote: Sets rollers to hold note. */
+const double KeDJ_Amp_k_HoldNote = -0.1;
+
+/* KeAmp_t_IntakeOnTm: Amount of time Amp intake will remain on after it is initially commanded on. */
+const double KeAmp_t_IntakeOnTm = 0.5; //NOTE - set calibration time
 
 /* KaDJ_Amp_RPM_IntakePower: sets Intake power for each state */
 const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = {0.0,   // Sched - Init
@@ -550,7 +556,7 @@ const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0,      // kMaxAcc
                                                            0.0};     // kAllErr
 
-/* KaDJ_Amp_RPM_IntakePower: Sets Intake power for each state */
+/* KaSPK_k_IntakePower: Sets Intake power for each state */
 const double KaSPK_k_IntakePower[E_SPK_Ctrl_StateSz] = {0.0,   // Sched - E_SPK_Ctrl_Init
                                                         0.0,   // Sched - E_SPK_Ctrl_Driving
                                                        -0.45,  // Sched - E_SPK_Ctrl_Intake
@@ -601,10 +607,80 @@ const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
 /* KeSPK_t_StateTimeOut: Sets transition time out. */
 const double KeSPK_t_StateTimeOut = 1.5;
 
-/* KaMAN_k_ManipulatorTestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
+/* KaSPK_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
 const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake
                                                1.0, // E_SPK_m_Shooter1
                                                1.0}; // E_SPK_m_Shooter2
+
+
+
+
+/* KaCLMR_e_ControllingTable: Table that contains the commanded state of the climber based on the current attained state and schedueld state. */
+const TeCLMR_CtrlStates KaCLMR_e_ControllingTable[E_CLMR_Ctrl_StateSz][E_CLMR_Ctrl_StateSz] = // [Sched][Attnd]
+    {{E_CLMR_Ctrl_Init,       E_CLMR_Ctrl_Init,       E_CLMR_Ctrl_Init},
+     {E_CLMR_Ctrl_MidClimb,   E_CLMR_Ctrl_MidClimb,   E_CLMR_Ctrl_MidClimb},
+     {E_CLMR_Ctrl_FullExtend, E_CLMR_Ctrl_FullExtend, E_CLMR_Ctrl_FullExtend}};
+
+/* KaCLMR_k_LeftPID_Gx: PID gains for the left control. */
+const double KaCLMR_k_LeftPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                          0.000001, // kI
+                                                          0.002000, // kD
+                                                          0.0,      // kIz
+                                                          0.0,      // kFF
+                                                          1.0,      // kMaxOut
+                                                         -1.0,      // kMinOut
+                                                          1.05,     // kMaxVel
+                                                          0.5,      // kMinVel
+                                                          0.0,      // kMaxAcc
+                                                          0.0};     // kAllErr
+
+/* KaCLMR_k_RightPID_Gx: PID gains for the right control. */
+const double KaCLMR_k_RightPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                           0.000001, // kI
+                                                           0.002000, // kD
+                                                           0.0,      // kIz
+                                                           0.0,      // kFF
+                                                           1.0,      // kMaxOut
+                                                          -1.0,      // kMinOut
+                                                           1.05,     // kMaxVel
+                                                           0.5,      // kMinVel
+                                                           0.0,      // kMaxAcc
+                                                           0.0};     // kAllErr
+
+/* KeCLMR_ins_LiftRate: Rate at which the arms will pull the robot up. */
+const double KeCLMR_ins_LiftRate = 1.0;
+
+/* KeCLMR_ins_ExtendRate: Rate at which the arms will extend up. */
+const double KeCLMR_ins_ExtendRate = 6.0;
+
+/* KaCLMR_in_LeftPosition: Sets left climber position for each state */
+const double KaCLMR_in_LeftPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
+                                                            100.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                            800.0}; // Sched - E_CLMR_Ctrl_FullExtend
+
+/* KaCLMR_in_RightPosition: Sets right climber position for each state */
+const double KaCLMR_in_RightPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
+                                                             100.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                             800.0}; // Sched - E_CLMR_Ctrl_FullExtend
+
+/* KaCLMR_in_LeftDb: Sets left deadband */
+const double KaCLMR_in_LeftDb[E_SPK_Ctrl_StateSz] = {2.0,  // Sched - E_CLMR_Ctrl_Init
+                                                     2.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                     2.0}; // Sched - E_CLMR_Ctrl_FullExtend
+
+/* KaCLMR_in_RightDb: Sets right deadband */
+const double KaCLMR_in_RightDb[E_SPK_Ctrl_StateSz] = {2.0,  // Sched - E_CLMR_Ctrl_Init
+                                                      2.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                      2.0}; // Sched - E_CLMR_Ctrl_FullExtend
+
+/* KeCLMR_t_StateTimeOut: Sets transition time out. */
+const double KeCLMR_t_StateTimeOut = 4.0;
+
+/* KaCLMR_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
+const double KaCLMR_k_TestPower[E_CLMR_m_Sz] = { 0.4, // E_CLMR_m_Left
+                                                 0.4}; // E_CLMR_m_Right
+
+
 
 /* KeENC_Deg_Wrist: Scalaer to convert encoder reading to actual position of the wrist, how much we've rotated. */
 const double KeENC_Deg_Wrist = -1.16883;
@@ -612,14 +688,11 @@ const double KeENC_Deg_Wrist = -1.16883;
 /* KeENC_k_ElevatorEncoderScaler: Scalar multiplied against the encoder read to translate to degrees relative to inches traveled for the Elevator. */
 const double KeENC_k_ElevatorEncoderScaler = 0.001218;
 
-/* KeDJ_Amp_k_ReleaseNote: Sets rollers to releasing note. */
-const double KeDJ_Amp_k_ReleaseNote = 0.8;
-
 /* KeENC_RPM_Intake: Finds the speed of the intake rollers. */
 const double KeENC_RPM_Intake = 1.0;
 
-/* KeAmp_t_IntakeOnTm: Amount of time Amp intake will remain on after it is initially commanded on. */
-const double KeAmp_t_IntakeOnTm = 0.5; //NOTE - set calibration time
+/* KeENC_k_LiftEncoderScaler: Scalar multiplied against the encoder read to translate to degrees relative to inches traveled for the lift. */
+const double KeENC_k_LiftEncoderScaler = 0.001218;
 
 /*Vision configs*/
 const double KeAmbiguityThreshold = 0.2;

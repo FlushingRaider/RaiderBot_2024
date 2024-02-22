@@ -31,5 +31,4 @@ void Amp_ControlInit();
 void Amp_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput);
 
 void Amp_ControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
-                     bool LeDJ_Amp_b_TestPowerOverride,
-                     bool LeDJ_Amp_b_DropObject);
+                     bool LeDJ_Amp_b_TestPowerOverride);

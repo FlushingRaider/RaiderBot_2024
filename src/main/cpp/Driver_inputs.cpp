@@ -97,20 +97,58 @@ void Joystick2_robot_mapping(bool    LeCONT_b_Driver2ButtonA,
   {
   double LeCONT_Pct_Amp_Wrist_Test = 0.0;
   double LeCONT_Pct_Amp_Elevator_Test = 0.0;
+  double LeCONT_Pct_Amp_Intake_Test = 0.0;
+  double LeCONT_Pct_CLMR_Left_Test = 0.0;
+  double LeCONT_Pct_CLMR_Right_Test = 0.0;
 
 
-  VsCONT_s_DriverInput.b_Amp_IntakeForward_Test         = LeCONT_b_Driver2ButtonB;     //Controller 2, B button Will be used to bring Everything into their position for when the robot is moving COMPETION BUTTON
+  // VsCONT_s_DriverInput.b_Amp_IntakeForward_Test         = LeCONT_b_Driver2ButtonB;     //Controller 2, B button Will be used to bring Everything into their position for when the robot is moving COMPETION BUTTON
   VsCONT_s_DriverInput.b_Spk_IntakeForward_Test         = LeCONT_b_Driver2ButtonY;      //Controller 2, Y button (2), (robot.cpp) intake out TEST BUTTON
   VsCONT_s_DriverInput.b_Spk_IntakeBackward_Test        = LeCONT_b_Driver2ButtonA;      //Controller 2, A button (1), (robot.cpp) intake in TEST BUTTON
-  VsCONT_s_DriverInput.b_Amp_IntakeBackward_Test        = LeCONT_b_Driver2ButtonX;     //Controller 2 Tests the intake rollers.  For test only.
+  // VsCONT_s_DriverInput.b_Amp_IntakeBackward_Test        = LeCONT_b_Driver2ButtonX;     //Controller 2 Tests the intake rollers.  For test only.
   VsCONT_s_DriverInput.b_ResetEnocders                  = LeCONT_b_Driver2ButtonStart;  //controller 2 start button (8), (robot.cpp) Starts robot shooter speed based on distance
-  VsCONT_s_DriverInput.pct_RightHookDown_Test           = LeCont_Pct_Driver2AxisRB;   
-  VsCONT_s_DriverInput.pct_LeftHookDown_Test            = LeCont_Pct_Driver2AxisLB; 
-  VsCONT_s_DriverInput.pct_RightHookUp_Test             = LeCONT_b_Driver2ButtonRB;
-  VsCONT_s_DriverInput.pct_LeftHookUp_Test              = LeCONT_b_Driver2ButtonLB;
+  // VsCONT_s_DriverInput.pct_RightHookDown_Test           = LeCont_Pct_Driver2AxisRB;   
+  // VsCONT_s_DriverInput.pct_LeftHookDown_Test            = LeCont_Pct_Driver2AxisLB; 
+  // VsCONT_s_DriverInput.pct_RightHookUp_Test             = LeCONT_b_Driver2ButtonRB;  // Boolean is being written to float
+  // VsCONT_s_DriverInput.pct_LeftHookUp_Test              = LeCONT_b_Driver2ButtonLB;  // Boolean is being written to float
   VsCONT_s_DriverInput.Pct_Shooter1_Test                = LeCONT_Pct_Driver2RightAxisX;
   VsCONT_s_DriverInput.Pct_Shooter2_Test                = LeCONT_Pct_Driver2LeftAxisY;
   
+  if (LeCONT_b_Driver2ButtonB == true)
+    {
+      LeCONT_Pct_Amp_Intake_Test = 1;
+    }
+  else if (LeCONT_b_Driver2ButtonX == true)
+    {
+      LeCONT_Pct_Amp_Intake_Test = -1;
+    }
+  VsCONT_s_DriverInput.Pct_Amp_Intake_Test = LeCONT_Pct_Amp_Intake_Test;
+
+
+  if (LeCONT_b_Driver2ButtonLB == true)
+    {
+      LeCONT_Pct_CLMR_Left_Test = 1;
+    }
+  else if (LeCont_Pct_Driver2AxisLB > 0.01) // ToDo: Add deadband cal
+    {
+      LeCONT_Pct_CLMR_Left_Test = -LeCont_Pct_Driver2AxisLB;  // ToDo: I think this direction flip is correct, need to verify
+    }
+
+  VsCONT_s_DriverInput.pct_LeftHook_Test = LeCONT_Pct_CLMR_Left_Test;
+
+
+  if (LeCONT_b_Driver2ButtonRB == true)
+    {
+      LeCONT_Pct_CLMR_Right_Test = 1;
+    }
+  else if (LeCont_Pct_Driver2AxisRB > 0.01) // ToDo: Add deadband cal
+    {
+      LeCONT_Pct_CLMR_Right_Test = -LeCont_Pct_Driver2AxisRB;  // ToDo: I think this direction flip is correct, need to verify
+    }
+
+  VsCONT_s_DriverInput.pct_RightHook_Test = LeCONT_Pct_CLMR_Right_Test;
+
+
   if (LeCONT_b_Driver2ButtonRB == true)
     {
     }

@@ -8,6 +8,7 @@
 
 #include <frc/TimedRobot.h>
 
+// #include <frc/AddressableLED.h>
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/DigitalInput.h>
 #include <frc/DigitalOutput.h>
@@ -45,14 +46,6 @@ class Robot : public frc::TimedRobot {
   void SimulationInit() override;
   void SimulationPeriodic() override;
   void RobotMotorCommands();
-
-// Practice Bot Encoders
-  #ifdef PracticeBot
-  frc::AnalogInput a_encoderFrontLeftSteer{2};
-  frc::AnalogInput a_encoderFrontRightSteer{1};
-  frc::AnalogInput a_encoderRearLeftSteer{3};
-  frc::AnalogInput a_encoderRearRightSteer{0};
-  #endif
 
   frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
   frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
@@ -101,8 +94,8 @@ class Robot : public frc::TimedRobot {
 
 #ifdef Bot2024
   rev::CANSparkMax                           m_Elevator            {KeDJ_Amp_i_Elevator,        rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANSparkMax                           m_Climber1            {KeCLMR_i_ClimberArm1,           rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANSparkMax                           m_Climber2            {KeCLMR_i_ClimberArm2,           rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_ClimberLeft         {KeCLMR_i_ClimberArm1,           rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_ClimberRight        {KeCLMR_i_ClimberArm2,           rev::CANSparkMax::MotorType::kBrushless};
 #endif  
   rev::CANSparkMax                           m_Wrist               {KeDJ_Amp_i_Wrist,               rev::CANSparkMax::MotorType::kBrushless};        
   rev::CANSparkMax                           m_Intake              {KeDJ_Amp_i_Intake,              rev::CANSparkMax::MotorType::kBrushless};
@@ -111,8 +104,8 @@ class Robot : public frc::TimedRobot {
   rev::CANSparkMax                           m_Shooter2            {KeDJ_Spk_i_Shooter2,            rev::CANSparkMax::MotorType::kBrushless};
 #ifdef Bot2024
   rev::SparkMaxPIDController                 m_ElevatorPID         = m_Elevator.GetPIDController();
-  rev::SparkMaxPIDController                 m_Climber1PID         = m_Climber1.GetPIDController();
-  rev::SparkMaxPIDController                 m_Climber2PID         = m_Climber2.GetPIDController();
+  rev::SparkMaxPIDController                 m_ClimberLeftPID      = m_ClimberLeft.GetPIDController();
+  rev::SparkMaxPIDController                 m_ClimberRightPID     = m_ClimberRight.GetPIDController();
 #endif
   rev::SparkMaxPIDController                 m_WristPID            = m_Wrist.GetPIDController();
   rev::SparkMaxPIDController                 m_IntakePID           = m_Intake.GetPIDController();
@@ -124,10 +117,6 @@ class Robot : public frc::TimedRobot {
   #ifdef Bot2023
   WPI_TalonSRX                               m_LinearSlide          {KeMAN_i_LinearSlide};
   #endif
-
-  
-
-
 
 
     // Driver Inputs
@@ -142,6 +131,33 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+
+// // Light Controls
+//     static constexpr int kLength = 60;
+
+//   // PWM port 9
+//   // Must be a PWM header!
+//   frc::AddressableLED m_led{9};
+//   std::array<frc::AddressableLED::LEDData, kLength>
+//   m_ledBuffer;  // Reuse the buffer
+//   // Store what the last hue of the first pixel is
+//   int firstPixelHue = 0;
+
+// void Robot::Rainbow() {
+//   // For every pixel
+//   for (int i = 0; i < kLength; i++) {
+//     // Calculate the hue - hue is easier for rainbows because the color
+//     // shape is a circle so only one value needs to precess
+//     const auto pixelHue = (firstPixelHue + (i * 180 / kLength)) % 180;
+//     // Set the value
+//     m_ledBuffer[i].SetHSV(pixelHue, 255, 128);
+//   }
+//   // Increase by to make the rainbow "move"
+//   firstPixelHue += 3;
+//   // Check bounds
+//   firstPixelHue %= 180;
+// }
+
 };
 
   frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");

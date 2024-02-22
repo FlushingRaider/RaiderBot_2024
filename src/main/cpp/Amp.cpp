@@ -24,15 +24,12 @@ TeAmp_MotorControl VsAmp_s_MotorsTest; // Temporary commands for the motors, not
 
 TsDJ_Sensor VsAmp_s_Sensors; // All of the sensor values for the manipulator/intake motors
 
-T_DJ_Amp_States VeAmp_e_CmndState = E_DJ_Amp_Init;  // What is our next/current step?
+T_DJ_Amp_States VeAmp_e_CmndState  = E_DJ_Amp_Init;  // What is our next/current step?
 T_DJ_Amp_States VeAmp_e_AttndState = E_DJ_Amp_Init; // What is our desired end state?
 
 double VaAmp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz];
 double VaAmp_k_WristPID_Gx[E_PID_SparkMaxCalSz];
 double VaAmp_k_IntakePID_Gx[E_PID_SparkMaxCalSz];
-
-double VaAmp_In_ElevatorError;
-double VaAmp_k_ElevatorIntegral;
 
 bool VeAmp_b_CriteriaMet = false;
 bool VeAmp_t_TransitionTime = 0;
@@ -91,16 +88,6 @@ void Amp_MotorConfigsInit(rev::SparkMaxPIDController m_ElevatorPID,
   VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Elevator] = KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_Init][E_DJ_Amp_Init];
   VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Wrist] = KaDJ_Amp_DegS_WristRate[E_DJ_Amp_Init][E_DJ_Amp_Init];
 
-  VaAmp_In_ElevatorError = 0.0;
-  VaAmp_k_ElevatorIntegral = 0.0;
-
-  for (LeAmp_i_Index3 = E_P_Gx;
-       LeAmp_i_Index3 < E_PID_CalSz;
-       LeAmp_i_Index3 = T_PID_Cal(int(LeAmp_i_Index3) + 1))
-  {
-    VaAmp_k_ElevatorPID_Gx[LeAmp_i_Index3] = KaDJ_Amp_k_ElevatorPID_Gx[LeAmp_i_Index3];
-  }
-
 #ifdef Bot_Testing
   T_PID_SparkMaxCal LeAmp_i_Index2 = E_kP;
 
@@ -110,38 +97,31 @@ void Amp_MotorConfigsInit(rev::SparkMaxPIDController m_ElevatorPID,
   {
     VaAmp_k_WristPID_Gx[LeAmp_i_Index2] = KaDJ_Amp_k_WristPID_Gx[LeAmp_i_Index2];
     VaAmp_k_IntakePID_Gx[LeAmp_i_Index2] = KaDJ_Amp_k_IntakePID_Gx[LeAmp_i_Index2];
-  }
-
-  for (LeAmp_i_Index3 = E_P_Gx;
-       LeAmp_i_Index3 < E_PID_CalSz;
-       LeAmp_i_Index3 = T_PID_Cal(int(LeAmp_i_Index3) + 1))
-  {
-    VaAmp_k_ElevatorPID_Gx[LeAmp_i_Index3] = KaDJ_Amp_k_ElevatorPID_Gx[LeAmp_i_Index3];
+    VaAmp_k_ElevatorPID_Gx[LeAmp_i_Index2] = KaDJ_Amp_k_ElevatorPID_Gx[LeAmp_i_Index2];
   }
 
   // display PID coefficients on SmartDashboard
 
-  // frc::SmartDashboard::PutNumber("P Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kP]);
-  // frc::SmartDashboard::PutNumber("I Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kI]);
-  // frc::SmartDashboard::PutNumber("D Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kD]);
-  // frc::SmartDashboard::PutNumber("I Zone - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kIz]);
-  // frc::SmartDashboard::PutNumber("Max Output - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kMaxOutput]);
-  // frc::SmartDashboard::PutNumber("Min Output - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kMinOutput]);
+  frc::SmartDashboard::PutNumber("P Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kP]);
+  frc::SmartDashboard::PutNumber("I Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kI]);
+  frc::SmartDashboard::PutNumber("D Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kD]);
+  frc::SmartDashboard::PutNumber("I Zone - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kIz]);
+  frc::SmartDashboard::PutNumber("Max Output - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kMaxOutput]);
+  frc::SmartDashboard::PutNumber("Min Output - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kMinOutput]);
 
-  // frc::SmartDashboard::PutNumber("P Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kP]);
-  // frc::SmartDashboard::PutNumber("I Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kI]);
-  // frc::SmartDashboard::PutNumber("D Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kD]);
-  // frc::SmartDashboard::PutNumber("I Zone - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kIz]);
-  // frc::SmartDashboard::PutNumber("Max Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMaxOutput]);
-  // frc::SmartDashboard::PutNumber("Min Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMinOutput]);
+  frc::SmartDashboard::PutNumber("P Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kP]);
+  frc::SmartDashboard::PutNumber("I Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kI]);
+  frc::SmartDashboard::PutNumber("D Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kD]);
+  frc::SmartDashboard::PutNumber("I Zone - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kIz]);
+  frc::SmartDashboard::PutNumber("Max Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMaxOutput]);
+  frc::SmartDashboard::PutNumber("Min Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMinOutput]);
 
-  // frc::SmartDashboard::PutNumber("P Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_P_Gx]);
-  // frc::SmartDashboard::PutNumber("I Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_I_Gx]);
-  // frc::SmartDashboard::PutNumber("D Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_D_Gx]);
-  // frc::SmartDashboard::PutNumber("I Upper - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_I_Ul]);
-  // frc::SmartDashboard::PutNumber("I Lower - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_I_Ll]);
-  // frc::SmartDashboard::PutNumber("Max Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ul]);
-  // frc::SmartDashboard::PutNumber("Min Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ll]);
+  frc::SmartDashboard::PutNumber("P Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kP]);
+  frc::SmartDashboard::PutNumber("I Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kI]);
+  frc::SmartDashboard::PutNumber("D Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kD]);
+  frc::SmartDashboard::PutNumber("I Zone - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kIz]);
+  frc::SmartDashboard::PutNumber("Max Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kMaxOutput]);
+  frc::SmartDashboard::PutNumber("Min Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kMinOutput]);
 
   // display secondary coefficients
   frc::SmartDashboard::PutNumber("KaDJ_Amp_InS_ElevatorRate", KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_Init][E_DJ_Amp_Init]);
@@ -150,7 +130,7 @@ void Amp_MotorConfigsInit(rev::SparkMaxPIDController m_ElevatorPID,
   // display target positions/speeds
   frc::SmartDashboard::PutNumber("Set Position Wrist", 0);
   frc::SmartDashboard::PutNumber("Set Elevator", 0);
-  frc::SmartDashboard::PutNumber("Set Speed Intake", 0);
+  frc::SmartDashboard::PutNumber("Set Intake Power", 0);
 #endif
 }
 
@@ -164,15 +144,63 @@ void Amp_MotorConfigsInit(rev::SparkMaxPIDController m_ElevatorPID,
 void Amp_MotorConfigsCal(rev::SparkMaxPIDController m_ElevatorPID,
                          rev::SparkMaxPIDController m_WristPID,
                          rev::SparkMaxPIDController m_IntakePID)
-{ // TODO - old code had smart dashboard PID stuff sooo This is going to need Shuffleboard equivlents
+{ 
+  // read PID coefficients from SmartDashboard
+  #ifdef AMP_Test
+  double L_p_Elevator   = frc::SmartDashboard::GetNumber("P Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kP]);
+  double L_i_Elevator   = frc::SmartDashboard::GetNumber("I Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kI]);
+  double L_d_Elevator   = frc::SmartDashboard::GetNumber("D Gain - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kD]);
+  double L_iz_Elevator  = frc::SmartDashboard::GetNumber("I Zone - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kIz]);
+  double L_max_Elevator = frc::SmartDashboard::GetNumber("Max Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kMaxOutput]);
+  double L_min_Elevator = frc::SmartDashboard::GetNumber("Min Output - Elevator", KaDJ_Amp_k_ElevatorPID_Gx[E_kMinOutput]);
+
+  double L_p_Wrist   = frc::SmartDashboard::GetNumber("P Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kP]);
+  double L_i_Wrist   = frc::SmartDashboard::GetNumber("I Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kI]);
+  double L_d_Wrist   = frc::SmartDashboard::GetNumber("D Gain - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kD]);
+  double L_iz_Wrist  = frc::SmartDashboard::GetNumber("I Zone - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kIz]);
+  double L_max_Wrist = frc::SmartDashboard::GetNumber("Max Output - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kMaxOutput]);
+  double L_min_Wrist = frc::SmartDashboard::GetNumber("Min Output - Wrist", KaDJ_Amp_k_WristPID_Gx[E_kMinOutput]);
+
+  double L_p_Intake   = frc::SmartDashboard::GetNumber("P Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kP]);
+  double L_i_Intake   = frc::SmartDashboard::GetNumber("I Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kI]);
+  double L_d_Intake   = frc::SmartDashboard::GetNumber("D Gain - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kD]);
+  double L_iz_Intake  = frc::SmartDashboard::GetNumber("I Zone - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kIz]);
+  double L_max_Intake = frc::SmartDashboard::GetNumber("Max Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMaxOutput]);
+  double L_min_Intake = frc::SmartDashboard::GetNumber("Min Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMinOutput]);
+ 
+  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Elevator]   = frc::SmartDashboard::GetNumber("Set Elevator", 0);
+  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist] = frc::SmartDashboard::GetNumber("Set Position Wrist", 0);
+  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Intake] = frc::SmartDashboard::GetNumber("Set Intake Power", 0);
+
+  if(L_p_Elevator != VaAmp_k_ElevatorPID_Gx[E_kP])   { m_ElevatorPID.SetP(L_p_Elevator); VaAmp_k_ElevatorPID_Gx[E_kP] = L_p_Elevator; }
+  if(L_i_Elevator != VaAmp_k_ElevatorPID_Gx[E_kI])   { m_ElevatorPID.SetI(L_i_Elevator); VaAmp_k_ElevatorPID_Gx[E_kI] = L_i_Elevator; }
+  if(L_d_Elevator != VaAmp_k_ElevatorPID_Gx[E_kD])   { m_ElevatorPID.SetD(L_d_Elevator); VaAmp_k_ElevatorPID_Gx[E_kD] = L_d_Elevator; }
+  if(L_iz_Elevator != VaAmp_k_ElevatorPID_Gx[E_kIz]) { m_ElevatorPID.SetIZone(L_iz_Elevator); VaAmp_k_ElevatorPID_Gx[E_kIz] = L_iz_Elevator; }
+  if((L_max_Elevator != VaAmp_k_ElevatorPID_Gx[E_kMaxOutput]) || (L_min_Elevator != VaAmp_k_ElevatorPID_Gx[E_kMinOutput])) { m_ElevatorPID.SetOutputRange(L_min_Elevator, L_max_Elevator); VaAmp_k_ElevatorPID_Gx[E_kMinOutput] = L_min_Elevator; VaAmp_k_ElevatorPID_Gx[E_kMaxOutput] = L_max_Elevator; }
+
+  if(L_p_Wrist != VaAmp_k_WristPID_Gx[E_kP])   { m_WristPID.SetP(L_p_Wrist); VaAmp_k_WristPID_Gx[E_kP] = L_p_Wrist; }
+  if(L_i_Wrist != VaAmp_k_WristPID_Gx[E_kI])   { m_WristPID.SetI(L_i_Wrist); VaAmp_k_WristPID_Gx[E_kI] = L_i_Wrist; }
+  if(L_d_Wrist != VaAmp_k_WristPID_Gx[E_kD])   { m_WristPID.SetD(L_d_Wrist); VaAmp_k_WristPID_Gx[E_kD] = L_d_Wrist; }
+  if(L_iz_Wrist != VaAmp_k_WristPID_Gx[E_kIz]) { m_WristPID.SetIZone(L_iz_Wrist); VaAmp_k_WristPID_Gx[E_kIz] = L_iz_Wrist; }
+  if((L_max_Wrist != VaAmp_k_WristPID_Gx[E_kMaxOutput]) || (L_min_Wrist != VaAmp_k_WristPID_Gx[E_kMinOutput])) { m_WristPID.SetOutputRange(L_min_Wrist, L_max_Wrist); VaAmp_k_WristPID_Gx[E_kMinOutput] = L_min_Wrist; VaAmp_k_WristPID_Gx[E_kMaxOutput] = L_max_Wrist; }
+
+  if(L_p_Intake != VaAmp_k_IntakePID_Gx[E_kP])   { m_IntakePID.SetP(L_p_Intake); VaAmp_k_IntakePID_Gx[E_kP] = L_p_Intake; }
+  if(L_i_Intake != VaAmp_k_IntakePID_Gx[E_kI])   { m_IntakePID.SetI(L_i_Intake); VaAmp_k_IntakePID_Gx[E_kI] = L_i_Intake; }
+  if(L_d_Intake != VaAmp_k_IntakePID_Gx[E_kD])   { m_IntakePID.SetD(L_d_Intake); VaAmp_k_IntakePID_Gx[E_kD] = L_d_Intake; }
+  if(L_iz_Intake != VaAmp_k_IntakePID_Gx[E_kIz]) { m_IntakePID.SetIZone(L_iz_Intake); VaAmp_k_IntakePID_Gx[E_kIz] = L_iz_Intake; }
+  if((L_max_Intake != VaAmp_k_IntakePID_Gx[E_kMaxOutput]) || (L_min_Intake != VaAmp_k_IntakePID_Gx[E_kMinOutput])) { m_IntakePID.SetOutputRange(L_min_Intake, L_max_Intake); VaAmp_k_IntakePID_Gx[E_kMinOutput] = L_min_Intake; VaAmp_k_IntakePID_Gx[E_kMaxOutput] = L_max_Intake; }
+
+  VsAmp_s_MotorsTest.k_MotorRampRate[E_DJ_Amp_m_Elevator] = frc::SmartDashboard::GetNumber("KaDJ_Amp_InS_ElevatorRate", VsAmp_s_MotorsTest.k_MotorRampRate[E_DJ_Amp_m_Elevator]);
+  VsAmp_s_MotorsTest.k_MotorRampRate[E_DJ_Amp_m_Wrist] = frc::SmartDashboard::GetNumber("KaDJ_Amp_DegS_WristRate", VsAmp_s_MotorsTest.k_MotorRampRate[E_DJ_Amp_m_Wrist]);
+   #endif
 }
 
 /******************************************************************************
- * Function:     AmpControlInit
+ * Function:     Amp_ControlInit
  *
  * Description:  Initialization function for the amp moter controls.
  ******************************************************************************/
-void AmpControlInit()
+void Amp_ControlInit()
 {
   VeAmp_e_CmndState = E_DJ_Amp_Init;
   VeAmp_e_AttndState = E_DJ_Amp_Init;
@@ -197,7 +225,7 @@ void Amp_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
     VsAmp_s_Motors.k_MotorTestPower[LeMAN_i_Index] = 0.0;
   }
 
-  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake] = KaDJ_Amp_k_TestPower[E_Amp_Intake];
+  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake] = LsCONT_s_DriverInput->Pct_Amp_Intake_Test * KaDJ_Amp_k_TestPower[E_Amp_Intake];
 
   VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist] = LsCONT_s_DriverInput->Pct_Amp_Wrist_Test * KaDJ_Amp_k_TestPower[E_Amp_Wrist];
 
@@ -232,11 +260,11 @@ bool Update_Command_Atained_State(bool LeAmp_b_CriteriaMet,
 }
 
 /******************************************************************************
- * Function:     CmndStateReached
+ * Function:     CmndStateReachedAmp
  *
  * Description:  Checks to see if we have reached the desired commanded state
  ******************************************************************************/
-bool CmndStateReached(T_DJ_Amp_States LeDJ_Amp_e_CmndState)
+bool CmndStateReachedAmp(T_DJ_Amp_States LeDJ_Amp_e_CmndState)
 {
   bool LeAmp_b_CriteriaMet = false;
 
@@ -281,8 +309,6 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_Deg_Wrist,
                                                        VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                        LeAmp_DegS_WristRate);
-
-  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[LeDJ_Amp_e_CmndState];
 }
 
 /******************************************************************************
@@ -291,52 +317,43 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
  * Description:  Updates the gripper roller control //NOTE - fix
  ******************************************************************************/
 void UpdateAmp_hold_Actuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
-                             T_DJ_Amp_States LeDJ_Amp_e_AttndState,
-                             bool LeDJ_Amp_b_DropObject)
+                             T_DJ_Amp_States LeDJ_Amp_e_AttndState)
 {
   double LeDJ_Amp_k_TempCmnd = 0.0;
-  bool LeDJ_Amp_b_AllowedReleaseState = false;
-  bool LeAmp_b_Note = false;
 
-  /* Determine if we are attempting to drop a cube or cone: */
-  if ((LeDJ_Amp_e_AttndState == E_DJ_Amp_Intake))
-  {
-    LeAmp_b_Note = true;
-  }
-
-  /* Determine if we are in an allowed state to drop: */
-  if ((LeDJ_Amp_e_AttndState == LeDJ_Amp_e_CmndState) &&
-      ((LeAmp_b_Note == true) ||
-       (VsAmp_s_Sensors.b_Amp_ObjDetected == true)))
-  {
-    LeDJ_Amp_b_AllowedReleaseState = true;
-  }
-
-  if ((LeDJ_Amp_b_AllowedReleaseState == true))
-  {
-    VeAmp_t_HoldTime = 0;
-    if (VsAmp_s_Sensors.b_Amp_ObjDetected)
+  if ((VsAmp_s_Sensors.b_Amp_ObjDetected == false) &&
+      (LeDJ_Amp_e_AttndState == E_DJ_Amp_Intake) &&
+      (LeDJ_Amp_e_CmndState == E_DJ_Amp_Intake))
     {
-      /* We are eitehr in cone mode or main intake*/
-      LeDJ_Amp_k_TempCmnd = KeDJ_Amp_k_ReleaseNote;
+    LeDJ_Amp_k_TempCmnd = KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_Intake];
     }
-  }
+  else if ((VsAmp_s_Sensors.b_Amp_ObjDetected == true)   &&
+           ((LeDJ_Amp_e_AttndState == E_DJ_Amp_Intake)   ||
+            (LeDJ_Amp_e_CmndState == E_DJ_Amp_Intake)    || 
+            (LeDJ_Amp_e_AttndState == E_DJ_Amp_Driving)  ||
+            (LeDJ_Amp_e_CmndState == E_DJ_Amp_Driving)   ||
+            (LeDJ_Amp_e_AttndState == E_DJ_Amp_PreScore) ||
+            (LeDJ_Amp_e_CmndState == E_DJ_Amp_PreScore)))
+    {
+    LeDJ_Amp_k_TempCmnd = KeDJ_Amp_k_HoldNote;
+    }
+  else if ((LeDJ_Amp_e_AttndState == E_DJ_Amp_Score) &&
+           (LeDJ_Amp_e_CmndState == E_DJ_Amp_Score))
+    {
+    LeDJ_Amp_k_TempCmnd = KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_Score];
+    }
 
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = LeDJ_Amp_k_TempCmnd;
 }
 
 /******************************************************************************
- * Function:     AmpControlMain
+ * Function:     Amp_ControlMain
  *
  * Description:  Main calling function for manipulator control.
  ******************************************************************************/
-void AmpControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
-                    bool LeDJ_Amp_b_TestPowerOverride,
-                    bool LeDJ_Amp_b_DropObject)
+void Amp_ControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
+                     bool LeDJ_Amp_b_TestPowerOverride)
 {
-  TeDJ_Amp_e_AmpActuator LeMAN_i_Index;
-  double LeDJ_Amp_Deg_Error = 0.0;
-  double LeDJ_Amp_k_P_Gain = 0.0;
 
   if (LeDJ_Amp_b_TestPowerOverride == true)
   {
@@ -345,18 +362,15 @@ void AmpControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
   else if (VeAmp_b_TestState == true)
   {
     /* Only used for testing/calibration. */
+    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Intake];
 
     VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Elevator],
                                                             VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator],
                                                             VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Elevator]);
 
-    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist] / KeENC_Deg_Wrist,
+    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist],
                                                          VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                          VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Wrist]);
-
-    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Intake] / KeENC_RPM_Intake,
-                                                          VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake],
-                                                          VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Intake]);
   }
   else
   {
@@ -367,35 +381,17 @@ void AmpControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
     Update_Amp_Actuators(VeAmp_e_CmndState, VeAmp_e_AttndState);
 
     UpdateAmp_hold_Actuator(VeAmp_e_CmndState,
-                            VeAmp_e_AttndState,
-                            LeDJ_Amp_b_DropObject); // Need to come up with object detected
+                            VeAmp_e_AttndState);
 
     if ((LeDJ_Amp_e_SchedState != VeAmp_e_CmndState) ||
         (LeDJ_Amp_e_SchedState != VeAmp_e_AttndState))
     {
-      Update_Amp_Actuators(VeAmp_e_CmndState, VeAmp_e_AttndState);
-
-      VeAmp_b_CriteriaMet = CmndStateReached(VeAmp_e_CmndState);
+      VeAmp_b_CriteriaMet = CmndStateReachedAmp(VeAmp_e_CmndState);
     }
   }
 
   /* Final output to the motor command that will be sent to the motor controller: */
-
-  VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator] = -Control_PID(VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator],
-                                                            VsAmp_s_Sensors.In_Elevator,
-                                                            &VaAmp_In_ElevatorError,
-                                                            &VaAmp_k_ElevatorIntegral,
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_P_Gx],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_I_Gx],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_D_Gx],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_P_Ul],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_P_Ll],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_I_Ul],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_I_Ll],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_D_Ul],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_D_Ll],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ul],
-                                                            KaDJ_Amp_k_ElevatorPID_Gx[E_Max_Ll]);
+  VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator] = VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator];
 
   VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist] = VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist];
 

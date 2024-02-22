@@ -114,10 +114,13 @@ struct RobotUserInput
   bool b_IntakeArmOutTest;
   double Pct_Shooter1_Test;
   double Pct_Shooter2_Test;
+  double Pct_Amp_Intake_Test;
   double Pct_Amp_Wrist_Test;
   double Pct_Amp_Elevator_Test;
   bool   b_Spk_IntakeForward_Test;
   bool   b_MainIntakeOut;
+  double pct_RightHook_Test;
+  double pct_LeftHook_Test;
   double pct_RightHookUp_Test;
   double pct_LeftHookUp_Test;
   bool   b_FloorConeDrop;
@@ -146,8 +149,7 @@ struct TsDJ_Sensor
 {
   double In_Elevator;
   double Deg_Wrist;
-  bool b_Amp_ObjDetected;
-  bool b_Spk_ObjDetected;
+  bool   b_Amp_ObjDetected;
 };
 
 typedef enum T_MotorControlType
@@ -233,6 +235,37 @@ struct TsSPK_Sensor
 };
 
 
+/* Enums related to the climber subsystem */
+
+typedef enum TeCLMR_Actuators
+{
+  E_CLMR_m_Left,
+  E_CLMR_m_Right,
+  E_CLMR_m_Sz
+} TeCLMR_Actuators;
+
+typedef enum TeCLMR_CtrlStates
+{
+  E_CLMR_Ctrl_Init,
+  E_CLMR_Ctrl_MidClimb,
+  E_CLMR_Ctrl_FullExtend,
+  E_CLMR_Ctrl_StateSz
+} TeCLMR_CtrlStates;
+
+struct TeCLMR_MotorControl
+{
+  T_MotorControlType    e_MotorControlType[E_CLMR_m_Sz];
+  double                k_MotorCmnd[E_CLMR_m_Sz];
+  double                k_MotorRampRate[E_CLMR_m_Sz];
+  double                k_MotorTestValue[E_CLMR_m_Sz];
+  double                k_MotorTestPower[E_CLMR_m_Sz];
+};
+
+struct TsCLMR_Sensor 
+{
+  double in_Left;  // Extended position of the left climber
+  double in_Right; // Extended position of the right climber
+};
 
 
 // the output struct after a path is loaded
