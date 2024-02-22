@@ -78,6 +78,8 @@ void Robot::RobotMotorCommands()
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
   m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
   m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
+  m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
+  m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
 #endif
 }
 
@@ -135,8 +137,12 @@ void Robot::RobotInit()
                        m_Shooter1PID,
                        m_Shooter2PID);
 
+  CLMR_MotorConfigsInit(m_ClimberLeftPID,
+                        m_ClimberRightPID);
+
   Amp_ControlInit();
   SPK_ControlInit();
+  CLMR_ControlInit();
 #endif
 }
 
@@ -258,12 +264,18 @@ void Robot::RobotPeriodic()
   SPK_MotorConfigsCal(m_UnderbellyPID,
                       m_Shooter1PID,
                       m_Shooter2PID);
+
+  CLMR_MotorConfigsCal(m_ClimberLeftPID,
+                       m_ClimberRightPID);
   
   Amp_ControlMain(VeADAS_e_Amp_SchedState,
                   VeROBO_b_TestState);
 
   SPK_SpeakerControlMain(VeADAS_e_SPK_SchedState,
                          VeROBO_b_TestState);
+
+  CLMR_SpeakerControlMain(VeADAS_e_CLMR_SchedState,
+                          VeROBO_b_TestState);
 #endif
 }
 
@@ -302,6 +314,7 @@ void Robot::AutonomousInit()
   #ifdef Bot2024
   Amp_ControlInit();
   SPK_ControlInit();
+  CLMR_ControlInit();
   #endif
 
   fmt::print("Auto selected: {}\n", m_autoSelected);
@@ -352,6 +365,7 @@ void Robot::TeleopInit()
   #ifdef Bot2024
   Amp_ControlInit();
   SPK_ControlInit();
+  CLMR_ControlInit();
   #endif
 }
 

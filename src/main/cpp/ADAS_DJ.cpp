@@ -23,6 +23,7 @@
 
 T_DJ_Amp_States  VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeSPK_CtrlStates VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
+TeCLMR_CtrlStates VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 bool VeADAS_b_Amp_DropObject = false;
 bool VeADAS_b_SPK_Release = false;
 double VeADAS_t_Amp_DropObjectTm = 0.0; // Timer that will keep rollers on for a specific amount of time
@@ -37,6 +38,7 @@ void ADAS_DJ_Reset(void)
 {
   VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;
   VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init;
+  VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
   VeADAS_t_Amp_DropObjectTm = 0.0;
   VeADAS_t_SPK_ReleaseTm = 0.0;
 }

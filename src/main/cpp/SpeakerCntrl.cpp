@@ -88,15 +88,15 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
   VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2] = KeSPK_RPMs_Shooter2Rate;
 
   #ifdef SPK_Test
-  T_PID_SparkMaxCal LeMAN_i_Index2 = E_kP;
+  T_PID_SparkMaxCal LeSPK_i_Index2 = E_kP;
 
-  for (LeMAN_i_Index2 = E_kP;
-       LeMAN_i_Index2 < E_PID_SparkMaxCalSz;
-       LeMAN_i_Index2 = T_PID_SparkMaxCal(int(LeMAN_i_Index2) + 1))
+  for (LeSPK_i_Index2 = E_kP;
+       LeSPK_i_Index2 < E_PID_SparkMaxCalSz;
+       LeSPK_i_Index2 = T_PID_SparkMaxCal(int(LeSPK_i_Index2) + 1))
     {
-    VaSPK_k_IntakePID_Gx[LeMAN_i_Index2] = KaSPK_k_IntakePID_Gx[LeMAN_i_Index2];
-    VaSPK_k_Shooter1PID_Gx[LeMAN_i_Index2] = KaSPK_k_Shooter1PID_Gx[LeMAN_i_Index2];
-    VaSPK_k_Shooter2PID_Gx[LeMAN_i_Index2] = KaSPK_k_Shooter2PID_Gx[LeMAN_i_Index2];
+    VaSPK_k_IntakePID_Gx[LeSPK_i_Index2] = KaSPK_k_IntakePID_Gx[LeSPK_i_Index2];
+    VaSPK_k_Shooter1PID_Gx[LeSPK_i_Index2] = KaSPK_k_Shooter1PID_Gx[LeSPK_i_Index2];
+    VaSPK_k_Shooter2PID_Gx[LeSPK_i_Index2] = KaSPK_k_Shooter2PID_Gx[LeSPK_i_Index2];
     }
 
   // display PID coefficients on SmartDashboard
@@ -337,11 +337,11 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
 
     VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1], 
                                                               VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
-                                                              KeSPK_RPMs_Shooter1Rate);
+                                                              VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter1]);
 
     VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2], 
                                                               VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
-                                                              KeSPK_RPMs_Shooter2Rate);
+                                                              VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2]);
     }
   else
     {
