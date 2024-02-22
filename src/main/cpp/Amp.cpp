@@ -22,7 +22,7 @@ TeAmp_MotorControl VsAmp_s_Motors;     // All of the motor commands for the Amp 
 TeAmp_MotorControl VsAmp_s_MotorsTemp; // Temporary commands for the motors, not the final output
 TeAmp_MotorControl VsAmp_s_MotorsTest; // Temporary commands for the motors, not the final output
 
-TsDJ_Sensor VsAmp_s_Sensors; // All of the sensor values for the manipulator/intake motors
+TsAmp_Sensor VsAmp_s_Sensors; // All of the sensor values for the manipulator/intake motors
 
 T_DJ_Amp_States VeAmp_e_CmndState  = E_DJ_Amp_Init;  // What is our next/current step?
 T_DJ_Amp_States VeAmp_e_AttndState = E_DJ_Amp_Init; // What is our desired end state?

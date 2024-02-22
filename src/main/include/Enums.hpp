@@ -127,15 +127,6 @@ struct RobotUserInput
   double pct_RightHookDown_Test;
   double pct_LeftHookDown_Test;
   bool b_DrivingPosition;
-  bool b_FrontHighCube;
-  bool b_FrontLowCube;
-  bool b_FrontHighCone;
-  bool b_FrontLowCone;
-  bool b_DropGamePieceSlow;
-  bool b_DropGamePieceFast;
-  bool b_AutoBalance;
-  bool b_CubeAlign;
-  bool b_ConeAlign;
   bool b_VisionButton;
   bool b_X_Mode;
   bool b_Amp_DrivingPosition;
@@ -143,13 +134,19 @@ struct RobotUserInput
   bool b_Amp_IntakeForward_Test;
   bool b_Amp_PreScore;
   bool b_Amp_Score;
+  bool b_SPK_DrivingPosition;
+  bool b_SPK_Intake;
+  bool b_SPK_PreScore;
+  bool b_SPK_Score;
 };
 
-struct TsDJ_Sensor
+struct TsAmp_Sensor
 {
-  double In_Elevator;
-  double Deg_Wrist;
+  double In_Elevator; //height of elevator in inches
+  double Deg_Wrist;  //Angle of Wrist in Degrees
+  double RPM_AmpRollers; //Speed of 
   bool   b_Amp_ObjDetected;
+  bool   b_ElevatorSwitch;
 };
 
 typedef enum T_MotorControlType

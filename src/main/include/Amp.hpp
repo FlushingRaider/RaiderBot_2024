@@ -15,7 +15,7 @@ extern T_DJ_Amp_States VeAmp_e_CmndState;
 extern TeAmp_MotorControl VsAmp_s_MotorsTest;
 extern TeAmp_MotorControl VsAmp_s_MotorsTemp;
 
-extern TsDJ_Sensor VsAmp_s_Sensors;
+extern TsAmp_Sensor VsAmp_s_Sensors;
 extern double VaAmp_In_ElevatorError;
 
 void Amp_MotorConfigsCal(rev::SparkMaxPIDController m_ElevatorPID,
