@@ -25,7 +25,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                           T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
                           std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor);
 
-bool MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
+bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
                           double *LeADAS_Pct_Strafe,
                           double *LeADAS_Pct_Rotate,
                           double L_CurrentOdomX,
