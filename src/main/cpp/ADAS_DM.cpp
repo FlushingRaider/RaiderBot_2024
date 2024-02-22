@@ -64,8 +64,7 @@ bool V_GyroFlipNeg;
 bool V_GyroFlipPos;
 double V_OffsettedGyro;
 
-
-//TODO - cleanup function for 2024
+// TODO - cleanup function for 2024
 /******************************************************************************
  * Function:     ADAS_DM_PathFollower
  *
@@ -102,7 +101,6 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     bool LeADAS_b_TimeEndReached = false;
     double LeADAS_k_SlowSearch = 1.0;
 
-
     DtrmnSwerveBotLocationOut L_lookupOut;
 
     /* Set the things we are not using to off: */
@@ -110,8 +108,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
     /* Look up the desired target location point: */
     L_lookupOut = DesiredAutonLocation2(VeADAS_t_DM_StateTimer,
-                                                    LeADAS_e_ActiveFeature,
-                                                    LeLC_e_AllianceColor);
+                                        LeADAS_e_ActiveFeature,
+                                        LeLC_e_AllianceColor);
 
     /* Capture some of the things we need to save for this state control: */
     if (VeADAS_b_DM_StateInit == false)
@@ -256,7 +254,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
         *LeADAS_Deg_DesiredPose = L_lookupOut.L_valDeg;
     }
-    else    
+    else
     {
         /* We have been at the correct location for the set amount of time. */
         *LeADAS_Pct_FwdRev = 0;
@@ -292,4 +290,58 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     frc::SmartDashboard::PutBoolean("path complete", LeADAS_b_DM_StateComplete);
 
     return (LeADAS_b_DM_StateComplete);
+}
+
+/******************************************************************************
+ * Function:     MoveWithGlobalCoords
+ *
+ * Description:  have the robot move to a pair of coordinates in a straight line
+ ******************************************************************************/
+bool MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
+                          double *LeADAS_Pct_Strafe,
+                          double *LeADAS_Pct_Rotate,
+                          double L_CurrentOdomX,
+                          double L_CurrentOdomY,
+                          double L_CurrentYaw,
+                          double L_RequestedCoordX,
+                          double L_RequestedCoordY,
+                          double L_RequestedYaw)
+{
+
+    bool LeADAS_b_DM_StateComplete = false;
+
+    double K_ADAS_DM_MinimumError = 5.0; // the amount of error (in inches) we're cool with
+
+    double K_ADAS_DM_SlowDownError = 20.0; // with this much error or less we need to be more percise
+
+    double L_ADAS_DM_SlopSpeeed = 0.0; // how fast we're gonna come at it
+
+    // establish our errors
+    double L_YawError = L_CurrentYaw - L_RequestedYaw;
+    double L_XError = L_CurrentOdomX - L_RequestedCoordX;
+    double L_YError = L_CurrentOdomY - L_RequestedCoordY;
+
+    // rotation is quite simple
+    if (L_YawError > 0 || L_YawError < 0)
+    {
+        *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
+    }
+
+    // x and y is where things get tricky
+
+    // check if our error is big enough to bother moving
+    if (fabs(L_XError) > K_ADAS_DM_MinimumError)
+    {
+
+        if (fabs(L_XError) < K_ADAS_DM_SlowDownError)
+        {
+            L_ADAS_DM_SlopSpeeed = 5.0; // TODO - arbitrary, change later
+        }
+        else
+        {
+            L_ADAS_DM_SlopSpeeed = L_XError / 4.0;
+        }
+
+        *LeADAS_Pct_FwdRev = 0.2 * RampTo(K_ADAS_DM_MinimumError, L_XError, L_ADAS_DM_SlopSpeeed);
+    }
 }
