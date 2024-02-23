@@ -392,6 +392,5 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
     {
         LeADAS_b_DM_StateComplete = true;
     }
-
     return (LeADAS_b_DM_StateComplete);
 }

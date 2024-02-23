@@ -165,20 +165,19 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   // bool LeADAS_b_State1Complete = false;
   // bool LeADAS_b_State2Complete = false;
   // not current used
-
-  // again, not setup with controller yet
-  // this activates move global when a button is pressed once and goes till it finishes
-  /*
-  if (VsCONT_s_DriverInput.some button == true){
-    VeADAS_b_TelepMoveGlobalActive = true; // this will be set to false when the state is compelete
+  
+  if (VsCONT_s_DriverInput.b_OdomGlobalMove == true){
+    VeADAS_b_TelopMoveGlobalActive = true; // this will be set to false when the state is compelete
   }
-  */
+
  frc::SmartDashboard::PutNumber("auton sub feature", (int)LeADAS_e_ActiveFeature);
+
+ frc::SmartDashboard::PutBoolean("State Complete", VeADAS_b_StateComplete);
 
   DEBUGREQUESTX = frc::SmartDashboard::GetNumber("Request x", 0.0);
   DEBUGREQUESTY = frc::SmartDashboard::GetNumber("Request y", 0.0);
   DEBUGREQUESTYaw = frc::SmartDashboard::GetNumber("Request yaw", 0.0);
-  VeADAS_b_TelopMoveGlobalActive = frc::SmartDashboard::GetBoolean("activate global move", false);
+  // VeADAS_b_TelopMoveGlobalActive = frc::SmartDashboard::GetBoolean("activate global move", false);
 
 
   double LeADAS_e_RequestedX = 0.0;
@@ -310,6 +309,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     if (VeADAS_b_StateComplete) // telop adas features need to manually set to false
     {
       VeADAS_b_TelopMoveGlobalActive = false; // we done
+      
     }
 
     break;

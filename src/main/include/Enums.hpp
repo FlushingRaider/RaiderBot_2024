@@ -137,6 +137,11 @@ struct RobotUserInput
   bool b_SPK_Intake;
   bool b_SPK_PreScore;
   bool b_SPK_Score;
+
+
+  bool b_OdomGlobalMove;
+
+
 };
 
 struct TsAmp_Sensor
