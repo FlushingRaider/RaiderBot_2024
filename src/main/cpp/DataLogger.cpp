@@ -8,13 +8,26 @@
   that can be used for playback.
  */
 
-#include "frc/DataLogManager.h"
-#include "frc/DriverStation.h"
-#include "wpi/DataLog.h"
+#include "DataLogger.hpp"
 
-wpi::log::BooleanLogEntry myBooleanLog;
-wpi::log::DoubleLogEntry myDoubleLog;
-wpi::log::StringLogEntry myStringLog;
+// Joystick one 
+
+wpi::log::DoubleLogEntry joy1_leftstick_x;
+wpi::log::DoubleLogEntry joy1_leftstick_y;
+
+wpi::log::DoubleLogEntry joy1_rightstick_x;
+wpi::log::DoubleLogEntry joy1_rightstick_y;
+
+wpi::log::DoubleLogEntry joy1_boost; 
+
+
+wpi::log::DoubleArrayLogEntry    log_swerve_WheelAngleFwd; 
+wpi::log::DoubleArrayLogEntry    log_swerve_WheelAngleRev;
+wpi::log::DoubleArrayLogEntry    log_swerve_WheelSpeedCmnd;
+wpi::log::DoubleArrayLogEntry    log_swerve_WheelAngleCmnd;
+
+wpi::log::DoubleArrayLogEntry    log_encoders_wheelangleconverted;
+wpi::log::DoubleArrayLogEntry    log_encoders_wheelVelocity;
 
 /******************************************************************************
  * Function:     DataLogRobotInit
@@ -32,9 +45,21 @@ void DataLogRobotInit()
 
     // Set up custom log entries
     wpi::log::DataLog& log = frc::DataLogManager::GetLog();
-    myBooleanLog = wpi::log::BooleanLogEntry(log, "/my/boolean");
-    myDoubleLog = wpi::log::DoubleLogEntry(log, "/my/double");
-    myStringLog = wpi::log::StringLogEntry(log, "/my/string");
+    joy1_leftstick_x = wpi::log::DoubleLogEntry(log, "/joy1/leftstick_x");
+    joy1_leftstick_y = wpi::log::DoubleLogEntry(log, "/joy1/leftstick_y");
+
+    joy1_rightstick_x = wpi::log::DoubleLogEntry(log, "/joy1/rightstick_x");
+    joy1_rightstick_y = wpi::log::DoubleLogEntry(log, "/joy1/rightstick_y");
+
+    joy1_boost = wpi::log::DoubleLogEntry(log, "/joy1/boost");
+
+    log_swerve_WheelAngleFwd = wpi::log::DoubleArrayLogEntry(log, "/swerve/WheelAngleFwd");
+    log_swerve_WheelAngleRev = wpi::log::DoubleArrayLogEntry(log, "/swerve/WheelAngleRev");
+    log_swerve_WheelSpeedCmnd = wpi::log::DoubleArrayLogEntry(log, "/swerve/WheelSpeedCmnd");
+    log_swerve_WheelAngleCmnd = wpi::log::DoubleArrayLogEntry(log, "/swerve/WheelAngleCmnd");
+
+    log_encoders_wheelangleconverted = wpi::log::DoubleArrayLogEntry(log, "/encoders/wheelAngleConverted");
+    log_encoders_wheelVelocity = wpi::log::DoubleArrayLogEntry(log, "/encoders/wheelVelocity");
   }
 
 /******************************************************************************
@@ -43,10 +68,14 @@ void DataLogRobotInit()
  * Description:  Run in the periodic loop to capture data every loop the 
  *               robot is running. This is common between teleop and auton.
  ******************************************************************************/
-void DataLogRobotPeriodic()
-  {
-    // Only log when necessary
-    myBooleanLog.Append(true);
-    myDoubleLog.Append(3.5);
-    myStringLog.Append("wow!");
-  }
+
+// void LogControler1() {
+//   LeftStick_X = wpi::log::DoubleLogEntry(log, "/my/double");
+
+// }
+
+
+
+
+
+
