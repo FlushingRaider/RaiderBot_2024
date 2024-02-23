@@ -99,6 +99,7 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   // frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
 
     log_encoders_wheelangleconverted.Append(VaENC_Deg_WheelAngleConverted);
+    frc::SmartDashboard::PutNumberArray("encoders_wheelAngleConverted", VaENC_Deg_WheelAngleConverted);
 
   
 
@@ -149,6 +150,7 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   VaENC_InS_WheelVelocity[E_RearLeft]   = ((m_encoderRearLeftDrive.GetVelocity()   / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   
     log_encoders_wheelVelocity.Append(VaENC_InS_WheelVelocity);
+    frc::SmartDashboard::PutNumberArray("encoders_wheelVelocity", VaENC_InS_WheelVelocity);
   }
 
 
