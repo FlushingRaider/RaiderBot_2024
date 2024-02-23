@@ -324,11 +324,31 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
 
     frc::SmartDashboard::PutNumber("odom X error", L_XError);
     frc::SmartDashboard::PutNumber("odom Yaw error", L_YawError);
+    frc::SmartDashboard::PutNumber("raw odom yaw error", L_YawErrorRaw);
 
-    // if (fabs(L_YawError) > 5.0)
-    // {
-    //     *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
-    // }
+    if (fabs(L_YawError) > 5.0)
+    {
+
+        if (fabs(L_YawError) < 20.0)
+        {
+            
+            // *LeADAS_Pct_Rotate = 0.2 * DesiredAutoRotateSpeed(L_YawError);
+        }
+        else
+        {
+            if((L_YawError > 0.0) && (L_YawErrorRaw > 0.0)){
+                *LeADAS_Pct_Rotate = -DesiredAutoRotateSpeed(L_YawError);
+            }
+            else{
+                *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
+            }
+            
+        }
+    }
+    else
+    {
+        *LeADAS_Pct_Rotate = 0.0;
+    }
 
     // check if our error is big enough to bother moving
     if (fabs(L_XError) > K_ADAS_DM_MinimumError)
@@ -368,7 +388,7 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
         *LeADAS_Pct_FwdRev = 0.0;
     }
 
-    if ((fabs(L_XError) < K_ADAS_DM_MinimumError) && (fabs(L_YError) < K_ADAS_DM_MinimumError))
+    if ((fabs(L_XError) < K_ADAS_DM_MinimumError) && (fabs(L_YError) < K_ADAS_DM_MinimumError) && (fabs(L_YawError) < K_ADAS_DM_MinimumError))
     {
         LeADAS_b_DM_StateComplete = true;
     }
