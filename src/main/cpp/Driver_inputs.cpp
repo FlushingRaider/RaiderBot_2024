@@ -125,11 +125,11 @@ void Joystick2_robot_mapping(bool    LeCONT_b_Driver2ButtonA,
 
   if (LeCONT_b_Driver2ButtonLB == true)
     {
-      LeCONT_Pct_CLMR_Left_Test = 1;
+      LeCONT_Pct_CLMR_Left_Test = -1;
     }
   else if (LeCont_Pct_Driver2AxisLB > 0.01) // ToDo: Add deadband cal
     {
-      LeCONT_Pct_CLMR_Left_Test = -LeCont_Pct_Driver2AxisLB;  // ToDo: I think this direction flip is correct, need to verify
+      LeCONT_Pct_CLMR_Left_Test = LeCont_Pct_Driver2AxisLB;  // ToDo: I think this direction flip is correct, need to verify
     }
 
   VsCONT_s_DriverInput.pct_LeftHook_Test = LeCONT_Pct_CLMR_Left_Test;
@@ -166,11 +166,11 @@ void Joystick2_robot_mapping(bool    LeCONT_b_Driver2ButtonA,
     }
   else if (LeCONT_Deg_Driver2POV == 270)
     {
-    LeCONT_Pct_Amp_Elevator_Test = 1.0;
+    LeCONT_Pct_Amp_Elevator_Test = -1.0;
     }
   else if (LeCONT_Deg_Driver2POV == 90)
     {
-    LeCONT_Pct_Amp_Elevator_Test = -1.0;
+    LeCONT_Pct_Amp_Elevator_Test = 1.0;
     }
     
   VsCONT_s_DriverInput.Pct_Amp_Wrist_Test = LeCONT_Pct_Amp_Wrist_Test;

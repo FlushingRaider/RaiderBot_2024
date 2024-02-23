@@ -4,7 +4,7 @@
 #include <units/length.h>
 
 // Define the desired test state here: Bot_Testing, Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-#define Bot_Testing
+#define Bot2024
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
@@ -15,7 +15,7 @@ const double C_Tau = 6.28318530717958647;
 const double C_ExeTime = 0.02;              // Set to match the the default controller loop time of 20 ms
 const units::second_t C_ExeTime_t = 0.02_s; // Set to match the the default controller loop time of 20 ms
 // CAN Device IDs:
-static const int C_PDP_ID = 21; //NOTE - needs to be changed bc repeat below
+static const int C_PDP_ID = 23; //NOTE - needs to be changed bc repeat below
 static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 4, frontRightDriveDeviceID = 3;
 static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
 
@@ -38,6 +38,7 @@ static const int KeMAN_i_LinearSlide = 10;
 
 #ifdef Bot2024
 static const int KeDJ_Amp_i_Elevator = 10;
+static const 
 #endif
 
 /******************************************************************************
@@ -609,8 +610,8 @@ const double KeSPK_t_StateTimeOut = 1.5;
 
 /* KaSPK_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
 const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake
-                                               1.0, // E_SPK_m_Shooter1
-                                               1.0}; // E_SPK_m_Shooter2
+                                               0.5, // E_SPK_m_Shooter1
+                                               0.5}; // E_SPK_m_Shooter2
 
 /* KaCLMR_e_ControllingTable: Table that contains the commanded state of the climber based on the current attained state and schedueld state. */
 const TeCLMR_CtrlStates KaCLMR_e_ControllingTable[E_CLMR_Ctrl_StateSz][E_CLMR_Ctrl_StateSz] = // [Sched][Attnd]
@@ -674,8 +675,8 @@ const double KaCLMR_in_RightDb[E_SPK_Ctrl_StateSz] = {2.0,  // Sched - E_CLMR_Ct
 const double KeCLMR_t_StateTimeOut = 4.0;
 
 /* KaCLMR_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
-const double KaCLMR_k_TestPower[E_CLMR_m_Sz] = { 0.4, // E_CLMR_m_Left
-                                                 0.4}; // E_CLMR_m_Right
+const double KaCLMR_k_TestPower[E_CLMR_m_Sz] = { 0.1, // E_CLMR_m_Left
+                                                 0.1}; // E_CLMR_m_Right
 
 
 
