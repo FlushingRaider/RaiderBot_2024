@@ -20,7 +20,7 @@
 #include "Const.hpp"
 #include "control_pid.hpp"
 #include "Lookup.hpp"
-#include "Shuffleboard.hpp"
+#include "shuffleboard.hpp"
 
 double VeDRC_Deg_AutoCorrectDesired;        // Saved robot orientation angle used for auto correct
 double VeDRC_Deg_AutoCorrectionError;       // Error value for auto correction PID control.

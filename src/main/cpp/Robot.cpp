@@ -20,6 +20,8 @@
 #include "SpeakerCntrl.hpp"
 #include "Climber.hpp"
 #include "ADAS_DJ.hpp"
+#include "DataLogger.hpp"
+
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include <units/angle.h>
@@ -90,6 +92,9 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
+
+  DataLogRobotInit();
+
   // Default to a length of 60, start empty output
   // Length is expensive to set, so only set it once, then just update data
   // m_led.SetLength(kLength);
@@ -165,6 +170,7 @@ void Robot::RobotPeriodic()
   // m_led.SetData(m_ledBuffer);
 
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
+
 
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
                           c_joyStick.GetRawButton(8),
@@ -256,6 +262,12 @@ void Robot::RobotPeriodic()
                    &VaENC_Deg_WheelAngleRev[0],
                    &VaDRC_RPM_WheelSpeedCmnd[0],
                    &VaDRC_Pct_WheelAngleCmnd[0]);
+
+  log_swerve_WheelAngleFwd.Append(VaENC_Deg_WheelAngleFwd);
+  log_swerve_WheelAngleRev.Append(VaENC_Deg_WheelAngleRev);
+  log_swerve_WheelSpeedCmnd.Append(VaDRC_RPM_WheelSpeedCmnd);
+  log_swerve_WheelAngleCmnd.Append(VaDRC_Pct_WheelAngleCmnd);
+
 #ifdef Bot2024
   Amp_MotorConfigsCal(m_ElevatorPID,
                       m_WristPID,
