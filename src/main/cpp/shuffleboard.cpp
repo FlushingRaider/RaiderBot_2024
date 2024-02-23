@@ -6,7 +6,7 @@ Writen by - Chris & Wes 2024
 */
 
 #include <frc/shuffleboard/Shuffleboard.h>
-#include "Shuffleboard.hpp"
+#include "shuffleboard.hpp"
 #include <networktables/NetworkTable.h>
 
 Shuffleboard_PID shuffleboard_FrontleftPID;

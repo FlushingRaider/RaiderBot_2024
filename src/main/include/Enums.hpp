@@ -78,9 +78,8 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower5,
   E_ADAS_DM_PathFollower6,
   E_ADAS_DM_PathFollowerFWD,
-
-  E_ADAS_MoveOffsetTag,
-  E_ADAS_MoveGlobalTag,
+  E_ADAS_MoveGlobal,
+  
 } T_ADAS_ActiveFeature;
 
 typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call, enumurated for you convience!
@@ -138,6 +137,11 @@ struct RobotUserInput
   bool b_SPK_Intake;
   bool b_SPK_PreScore;
   bool b_SPK_Score;
+
+
+  bool b_OdomGlobalMove;
+
+
 };
 
 struct TsAmp_Sensor

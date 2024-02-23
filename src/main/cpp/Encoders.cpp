@@ -10,6 +10,7 @@
 #include "Amp.hpp"
 #include "rev/CANSparkMax.h"
 #include "Const.hpp"
+#include "DataLogger.hpp"
 #include "SpeakerCntrl.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -97,6 +98,11 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   // frc::SmartDashboard::PutNumber("WS RL", m_encoderRearLeftDrive.GetVelocity());
   // frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
 
+    log_encoders_wheelangleconverted.Append(VaENC_Deg_WheelAngleConverted);
+    frc::SmartDashboard::PutNumberArray("encoders_wheelAngleConverted", VaENC_Deg_WheelAngleConverted);
+
+  
+
   // frc::SmartDashboard::PutNumber("raw WA FL", LeENC_Cnt_EncoderWheelAngleFrontLeftRaw.value());
   // frc::SmartDashboard::PutNumber("Raw WA FR", LeENC_Cnt_EncoderWheelAngleFrontRightRaw.value());
   // frc::SmartDashboard::PutNumber("Raw WA RL", LeENC_Cnt_EncoderWheelAngleRearLeftRaw.value());
@@ -142,6 +148,9 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   VaENC_InS_WheelVelocity[E_FrontRight] = ((m_encoderFrontRightDrive.GetVelocity() / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   VaENC_InS_WheelVelocity[E_RearRight]  = ((m_encoderRearRightDrive.GetVelocity()  / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   VaENC_InS_WheelVelocity[E_RearLeft]   = ((m_encoderRearLeftDrive.GetVelocity()   / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
+  
+    log_encoders_wheelVelocity.Append(VaENC_InS_WheelVelocity);
+    frc::SmartDashboard::PutNumberArray("encoders_wheelVelocity", VaENC_InS_WheelVelocity);
   }
 
 

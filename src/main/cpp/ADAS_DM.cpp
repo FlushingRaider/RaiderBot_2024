@@ -155,21 +155,6 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
         LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw);
     }
 
-    // if (LeADAS_Deg_RotateErrorRaw < -180)
-    //   {
-    //   // L_lookupOut.L_valDeg += 360;
-    //   LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw + 360);
-    //   }
-    // else if (LeADAS_Deg_RotateErrorRaw > 180)
-    //   {
-    //   // L_lookupOut.L_valDeg -= 360;
-    //   LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw - 360);
-    //   }
-    // else
-    //   {
-    //   LeADAS_Deg_RotateError = fabs(LeADAS_Deg_RotateErrorRaw);
-    //   }
-
     if ((L_lookupOut.L_valDeg < -90) && (LeADAS_Deg_RelativeAng > 90))
     {
         L_lookupOut.L_valDeg += 360;
@@ -297,15 +282,15 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
  *
  * Description:  have the robot move to a pair of coordinates in a straight line
  ******************************************************************************/
-bool MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
-                          double *LeADAS_Pct_Strafe,
-                          double *LeADAS_Pct_Rotate,
-                          double L_CurrentOdomX,
-                          double L_CurrentOdomY,
-                          double L_CurrentYaw,
-                          double L_RequestedCoordX,
-                          double L_RequestedCoordY,
-                          double L_RequestedYaw)
+bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
+                                  double *LeADAS_Pct_Strafe,
+                                  double *LeADAS_Pct_Rotate,
+                                  double L_CurrentOdomX,
+                                  double L_CurrentOdomY,
+                                  double L_CurrentYaw,
+                                  double L_RequestedCoordX,
+                                  double L_RequestedCoordY,
+                                  double L_RequestedYaw)
 {
 
     bool LeADAS_b_DM_StateComplete = false;
@@ -317,17 +302,53 @@ bool MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
     double L_ADAS_DM_SlopSpeeed = 0.0; // how fast we're gonna come at it
 
     // establish our errors
-    double L_YawError = L_CurrentYaw - L_RequestedYaw;
+    double L_YawErrorRaw = L_CurrentYaw - L_RequestedYaw;
+    double L_YawError = 0.0;
     double L_XError = L_CurrentOdomX - L_RequestedCoordX;
     double L_YError = L_CurrentOdomY - L_RequestedCoordY;
 
-    // rotation is quite simple
-    if (L_YawError > 0 || L_YawError < 0)
+    if (L_YawErrorRaw < -180)
     {
-        *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
+        L_RequestedYaw += 360;
+        L_YawError = fabs(L_YawErrorRaw + 360);
+    }
+    else if (L_YawErrorRaw > 180)
+    {
+        L_RequestedYaw -= 360;
+        L_YawError = fabs(L_YawErrorRaw - 360);
+    }
+    else
+    {
+        L_YawError = fabs(L_YawErrorRaw);
     }
 
-    // x and y is where things get tricky
+    frc::SmartDashboard::PutNumber("odom X error", L_XError);
+    frc::SmartDashboard::PutNumber("odom Yaw error", L_YawError);
+    frc::SmartDashboard::PutNumber("raw odom yaw error", L_YawErrorRaw);
+
+    if (fabs(L_YawError) > 5.0)
+    {
+
+        if (fabs(L_YawError) < 20.0)
+        {
+            
+            // *LeADAS_Pct_Rotate = 0.2 * DesiredAutoRotateSpeed(L_YawError);
+        }
+        else
+        {
+            if((L_YawError > 0.0) && (L_YawErrorRaw > 0.0)){
+                *LeADAS_Pct_Rotate = -DesiredAutoRotateSpeed(L_YawError);
+            }
+            else{
+                *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
+            }
+            
+        }
+    }
+    else
+    {
+        *LeADAS_Pct_Rotate = 0.0;
+    }
 
     // check if our error is big enough to bother moving
     if (fabs(L_XError) > K_ADAS_DM_MinimumError)
@@ -335,13 +356,41 @@ bool MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
 
         if (fabs(L_XError) < K_ADAS_DM_SlowDownError)
         {
-            L_ADAS_DM_SlopSpeeed = 5.0; // TODO - arbitrary, change later
+            L_ADAS_DM_SlopSpeeed = 0.02; // TODO - arbitrary, change later
         }
         else
         {
-            L_ADAS_DM_SlopSpeeed = L_XError / 4.0;
+            L_ADAS_DM_SlopSpeeed = 0.2;
         }
 
-        *LeADAS_Pct_FwdRev = 0.2 * RampTo(K_ADAS_DM_MinimumError, L_XError, L_ADAS_DM_SlopSpeeed);
+        *LeADAS_Pct_Strafe = 0.02 * L_XError;
     }
+    else
+    {
+        *LeADAS_Pct_Strafe = 0.0;
+    }
+    if (fabs(L_YError) > K_ADAS_DM_MinimumError)
+    {
+
+        if (fabs(L_YError) < K_ADAS_DM_SlowDownError)
+        {
+            L_ADAS_DM_SlopSpeeed = 0.02; // TODO - arbitrary, change later
+        }
+        else
+        {
+            L_ADAS_DM_SlopSpeeed = .2;
+        }
+
+        *LeADAS_Pct_FwdRev = L_ADAS_DM_SlopSpeeed * L_YError;
+    }
+    else
+    {
+        *LeADAS_Pct_FwdRev = 0.0;
+    }
+
+    if ((fabs(L_XError) < K_ADAS_DM_MinimumError) && (fabs(L_YError) < K_ADAS_DM_MinimumError) && (fabs(L_YawError) < K_ADAS_DM_MinimumError))
+    {
+        LeADAS_b_DM_StateComplete = true;
+    }
+    return (LeADAS_b_DM_StateComplete);
 }
