@@ -26,7 +26,6 @@ T_DJ_Amp_States  VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in 
 TeSPK_CtrlStates VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeCLMR_CtrlStates VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 bool VeADAS_b_Amp_DropObject = false;
-bool VeADAS_b_SPK_Release = false;
 double VeADAS_t_Amp_DropObjectTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 double VeADAS_t_SPK_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 
@@ -45,11 +44,11 @@ void ADAS_DJ_Reset(void)
 }
 
 /******************************************************************************
- * Function:    DJ_ScheduelerTeleop
+ * Function:    ScheduelerTeleopAMP
  * Made By:     Lauren
  * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
  ******************************************************************************/
-bool DJ_ScheduelerTeleop(void)
+bool ScheduelerTeleopAMP(void)
 {
   bool LeADAS_b_Amp_DropObject = false;
   bool LeADAS_b_DJ_StateComplete = false;
@@ -99,10 +98,22 @@ bool DJ_ScheduelerTeleop(void)
   VeADAS_b_Amp_DropObject = LeADAS_b_Amp_DropObject;
 
   return (LeADAS_b_DJ_StateComplete);
+}
 
+/******************************************************************************
+ * Function:    ScheduelerTeleopSPK
+ * Made By:     Lauren
+ * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
+ ******************************************************************************/
+bool ScheduelerTeleopSPK(void)
+{
+  bool LeADAS_b_Amp_DropObject = false;
+  bool LeADAS_b_DJ_StateComplete = false;
+  bool LeADAS_b_SPK_Release = false;
 /////////////////     SpK CONTROL      /////////////////  coordinates what the Speaker mechanism does when a button is pressed
 
-  if (VsCONT_s_DriverInput.b_SPK_DrivingPosition == true)
+  if ((VsCONT_s_DriverInput.b_SPK_DrivingPosition == true) ||
+      (VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Intake && VsSPK_s_Sensors.b_NoteDetected == true))
   {
     VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
   }
@@ -114,26 +125,31 @@ bool DJ_ScheduelerTeleop(void)
   {
     VeADAS_e_SPK_SchedState = E_SPK_Ctrl_PreScore;
   }
+  else if (VsCONT_s_DriverInput.b_SPK_Score == true)
+  {
+    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Score;
+  }
   else
   {
     /* No updates */
   }
 
-  if (VsCONT_s_DriverInput.b_SPK_Score == true)
+  if (VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Score)
   {
-    VeADAS_b_SPK_Release = true;
     VeADAS_t_SPK_ReleaseTm = C_ExeTime;
   }
-  else if ((VeADAS_t_SPK_ReleaseTm > 0) &&
+  else if ((VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Score) &&
+           (VeADAS_t_SPK_ReleaseTm > 0) &&
            (VeADAS_t_SPK_ReleaseTm <= KeSPK_t_ShooterOnTm))
   {
-    LeADAS_b_SPK_Release = VeADAS_b_SPK_Release;
     VeADAS_t_SPK_ReleaseTm += C_ExeTime;
   }
-  else
+  else if ((VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Score) &&
+           (VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm))
   {
     LeADAS_b_SPK_Release = false;
     VeADAS_t_SPK_ReleaseTm = 0.0;
+    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
   }
 
   if (VeADAS_e_SPK_SchedState == VeSPK_e_AttndState)
@@ -141,10 +157,20 @@ bool DJ_ScheduelerTeleop(void)
     LeADAS_b_DJ_StateComplete = true;
   }
 
-  VeADAS_b_SPK_Release = LeADAS_b_SPK_Release;
-
   return (LeADAS_b_DJ_StateComplete);
+}
 
+
+/******************************************************************************
+ * Function:    ScheduelerTeleopCLMR
+ * Made By:     Lauren
+ * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
+ ******************************************************************************/
+bool ScheduelerTeleopCLMR(void)
+{
+  bool LeADAS_b_Amp_DropObject = false;
+  bool LeADAS_b_DJ_StateComplete = false;
+  bool LeADAS_b_SPK_Release = false;
   /////////////////     Climb CONTROL      /////////////////  coordinates what the Climb mechanism does when a button is pressed
 
   if (VsCONT_s_DriverInput.b_CLMR_MidClimb == true)
@@ -179,7 +205,6 @@ bool DJ_ScheduelerTeleop(void)
     TeSPK_CtrlStates LeADAS_e_DJ_State = E_SPK_Ctrl_Score;
 
     VeADAS_e_SPK_SchedState = LeADAS_e_DJ_State;
-    VeADAS_b_SPK_Release = false;
 
     if (LeADAS_e_DJ_State == VeSPK_e_AttndState)
       {
@@ -292,6 +317,7 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   //   LeADAS_b_DJ_Complete = DJ_ScheduelerBasicAuton();
   // break;
   // }
+  LeADAS_b_DJ_Complete = ScheduelerTeleopSPK();
 
   return (LeADAS_b_DJ_Complete);
 }
