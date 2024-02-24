@@ -73,15 +73,24 @@ void Robot::RobotMotorCommands()
 #endif
 
 #ifdef Bot2024
-  m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
-  m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
-  m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
-  m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
-  m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
-  m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
-  m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
-  m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
+  // m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
+  // m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
+  // m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
+  // m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
+  // m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
+  // m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
+  // m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
+  // m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
 #endif
+
+  m_Elevator.Set(0.0);
+  m_Wrist.Set(0.0);
+  m_Intake.Set(0.0);
+  m_Underbelly.Set(0.0);
+  m_Shooter1.Set(0.0);
+  m_Shooter2.Set(0.0);
+  m_ClimberLeft.Set(0.0);
+  m_ClimberRight.Set(0.0);
 }
 
 /******************************************************************************
