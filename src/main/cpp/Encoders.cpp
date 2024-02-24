@@ -90,18 +90,18 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   VaENC_Deg_WheelAngleConverted[E_RearLeft]   = std::fmod((LeENC_Cnt_EncoderWheelAngleRearLeftRaw.value()), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearLeft];
   VaENC_Deg_WheelAngleConverted[E_RearRight]  = std::fmod((LeENC_Cnt_EncoderWheelAngleRearRightRaw.value()), 360) - KeENC_Deg_SD_WheelOffsetAngle[E_RearRight];
 
-  // frc::SmartDashboard::PutNumber("WA FL", VaENC_Deg_WheelAngleConverted[E_FrontLeft]);
-  // frc::SmartDashboard::PutNumber("WA FR", VaENC_Deg_WheelAngleConverted[E_FrontRight]);
-  // frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
-  // frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
+  frc::SmartDashboard::PutNumber("WA FL", VaENC_Deg_WheelAngleConverted[E_FrontLeft]);
+  frc::SmartDashboard::PutNumber("WA FR", VaENC_Deg_WheelAngleConverted[E_FrontRight]);
+  frc::SmartDashboard::PutNumber("WA RL", VaENC_Deg_WheelAngleConverted[E_RearLeft]);
+  frc::SmartDashboard::PutNumber("WA RR", VaENC_Deg_WheelAngleConverted[E_RearRight]);
 
-  // frc::SmartDashboard::PutNumber("WS FL", m_encoderFrontLeftDrive.GetVelocity());
-  // frc::SmartDashboard::PutNumber("WS FR", m_encoderFrontRightDrive.GetVelocity());
-  // frc::SmartDashboard::PutNumber("WS RL", m_encoderRearLeftDrive.GetVelocity());
-  // frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS FL", m_encoderFrontLeftDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS FR", m_encoderFrontRightDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS RL", m_encoderRearLeftDrive.GetVelocity());
+  frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
 
     log_encoders_wheelangleconverted.Append(VaENC_Deg_WheelAngleConverted);
-    frc::SmartDashboard::PutNumberArray("encoders_wheelAngleConverted", VaENC_Deg_WheelAngleConverted);
+    // frc::SmartDashboard::PutNumberArray("encoders_wheelAngleConverted", VaENC_Deg_WheelAngleConverted);
 
   
 
@@ -151,8 +151,11 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   VaENC_InS_WheelVelocity[E_RearRight]  = ((m_encoderRearRightDrive.GetVelocity()  / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   VaENC_InS_WheelVelocity[E_RearLeft]   = ((m_encoderRearLeftDrive.GetVelocity()   / KeENC_k_ReductionRatio) / 60) * KeENC_In_WheelCircumfrence;
   
+  double LTest_distance = ((((VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontLeft])/  KeENC_k_ReductionRatio)) * KeENC_In_WheelCircumfrence );
+    frc::SmartDashboard::PutNumber("Wheeel_Distance_FL", LTest_distance);
+
     log_encoders_wheelVelocity.Append(VaENC_InS_WheelVelocity);
-    frc::SmartDashboard::PutNumberArray("encoders_wheelVelocity", VaENC_InS_WheelVelocity);
+    // frc::SmartDashboard::PutNumberArray("encoders_wheelVelocity", VaENC_InS_WheelVelocity);
   }
 
 

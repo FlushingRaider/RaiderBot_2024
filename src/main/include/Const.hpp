@@ -16,8 +16,8 @@ const double C_ExeTime = 0.02;              // Set to match the the default cont
 const units::second_t C_ExeTime_t = 0.02_s; // Set to match the the default controller loop time of 20 ms
 // CAN Device IDs:
 static const int C_PDP_ID = 23; //NOTE - needs to be changed bc repeat below
-static const int frontLeftSteerDeviceID = 1, frontLeftDriveDeviceID = 2, frontRightSteerDeviceID = 4, frontRightDriveDeviceID = 3;
-static const int rearLeftSteerDeviceID = 5, rearLeftDriveDeviceID = 6, rearRightSteerDeviceID = 7, rearRightDriveDeviceID = 8;
+static const int frontLeftSteerDeviceID = 4, frontLeftDriveDeviceID = 3, frontRightSteerDeviceID = 1, frontRightDriveDeviceID = 2;
+static const int rearLeftSteerDeviceID = 7, rearLeftDriveDeviceID = 8, rearRightSteerDeviceID = 5, rearRightDriveDeviceID = 6;
 
 static const int KeDJ_Amp_i_Intake = 11;
 static const int KeDJ_Amp_i_Wrist = 12; // NOTE: these are temporary mechinism ids they have not been flashed 10 - 15
@@ -25,16 +25,16 @@ static const int KeDJ_Spk_i_Underbelly = 13;
 static const int KeDJ_Spk_i_Shooter1 = 14;
 static const int KeDJ_Spk_i_Shooter2 = 15;
 static const int KeGRY_i_Gyro = 16;
-static const int KeEnc_i_WheelAngleFL = 17;
-static const int KeEnc_i_WheelAngleFR = 18;
-static const int KeEnc_i_WheelAngleRL = 19;
-static const int KeEnc_i_WheelAngleRR = 20;
+static const int KeEnc_i_WheelAngleFL = 18;
+static const int KeEnc_i_WheelAngleFR = 17;
+static const int KeEnc_i_WheelAngleRL = 20;
+static const int KeEnc_i_WheelAngleRR = 19;
 static const int KeCLMR_i_ClimberArm1 = 21;
 static const int KeCLMR_i_ClimberArm2 = 22;
 
 // DIO Device IDs:
 static const int KeSPK_i_BreakBeamIO  = 0;
-static const int KeSPK_i_ElevatorSwitchIO  = 1;
+static const int KeSPK_i_ElevatorSwitchIO  = 2;
 
 #ifdef Bot2023
 static const int KeMAN_i_LinearSlide = 10;
@@ -53,9 +53,13 @@ static const int KeDJ_Amp_i_Elevator = 10;
  ******************************************************************************/
 
 // Encoder / speed calculation related cals
+#ifdef Bot2023
 /* KeENC_k_ReductionRatio: Reduction ratio for swerve drive module. mk4 */
-const double KeENC_k_ReductionRatio = 8.33;
-
+const double KeENC_k_ReductionRatio = 8.33; 
+#else
+/* KeENC_k_ReductionRatio: Reduction ratio for swerve drive module. mk4 */
+const double KeENC_k_ReductionRatio = 6.12; 
+#endif
 /* KeENC_In_WheelCircumfrence: Circumferance of wheel, in inches (4in nominal diameter). mk4 */
 const double KeENC_In_WheelCircumfrence = 12.566;
 
@@ -71,14 +75,21 @@ const double C_SD_R = 0.8441;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
 const double K_SD_SteerMotorCurrentLimit = 25;
-
+#ifdef Bot2023
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
    reading from the absolute encoder that is indicated in order for the wheel to point straight. */
 const double KeENC_Deg_SD_WheelOffsetAngle[E_RobotCornerSz] = {158.291015625, // E_FrontLeft 152.578125
                                                                218.14453125,  // E_FrontRight 212.783203
                                                                117.509765625, // E_RearLeft 118.740234
                                                                82.79296875};  // E_RearRight 76.289063
-
+#else
+/* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
+   reading from the absolute encoder that is indicated in order for the wheel to point straight. */
+const double KeENC_Deg_SD_WheelOffsetAngle[E_RobotCornerSz] = {157.466796, // E_FrontLeft 
+                                                               357.1875,  // E_FrontRight 
+                                                               176.394531, // E_RearLeft 
+                                                               258.4863};  // E_RearRight 
+#endif
 /* K_SD_WheelGx: Gain multiplied by each calculated desired speed.  Intended to account for variation in wheel size. */
 const double K_SD_WheelGx[E_RobotCornerSz] = {-1.0,  // E_FrontLeft
                                               -1.0,  // E_FrontRight
