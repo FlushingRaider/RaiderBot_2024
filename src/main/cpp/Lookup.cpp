@@ -610,144 +610,144 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
       }
  case E_ADAS_DM_PathFollower7:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_R_P1,
+                     KaADAS_t_R_P1Remaining,
+                     KaADAS_Deg_R_P1,
+                     KaADAS_l_R_P1_X,
+                     KaADAS_l_R_P1_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_R_P1[KnADAS_t_R_P1.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower8:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_R_P2,
+                     KaADAS_t_R_P2Remaining,
+                     KaADAS_Deg_R_P2,
+                     KaADAS_l_R_P2_X,
+                     KaADAS_l_R_P2_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_R_P2[KnADAS_t_R_P2.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower9:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_R_P3,
+                     KaADAS_t_R_P3Remaining,
+                     KaADAS_Deg_R_P3,
+                     KaADAS_l_R_P3_X,
+                     KaADAS_l_R_P3_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_R_P3[KnADAS_t_R_P3.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower10:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_R_R1,
+                     KaADAS_t_R_R1Remaining,
+                     KaADAS_Deg_R_R1,
+                     KaADAS_l_R_R1_X,
+                     KaADAS_l_R_R1_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_R_R1[KnADAS_t_R_R1.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower11:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_R_R2,
+                     KaADAS_t_R_R2Remaining,
+                     KaADAS_Deg_R_R2,
+                     KaADAS_l_R_R2_X,
+                     KaADAS_l_R_R2_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_R_R2[KnADAS_t_R_R2.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower12:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_R_R3,
+                     KaADAS_t_R_R3Remaining,
+                     KaADAS_Deg_R_R3,
+                     KaADAS_l_R_R3_X,
+                     KaADAS_l_R_R3_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_R_R3[KnADAS_t_R_R3.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower13:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_RTB_L,
+                     KaADAS_t_RTB_LRemaining,
+                     KaADAS_Deg_RTB_L,
+                     KaADAS_l_RTB_L_X,
+                     KaADAS_l_RTB_L_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_RTB_L[KnADAS_t_RTB_L.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower14:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_RTB_R1,
+                     KaADAS_t_RTB_R1Remaining,
+                     KaADAS_Deg_RTB_R1,
+                     KaADAS_l_RTB_R1_X,
+                     KaADAS_l_RTB_R1_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_RTB_R1[KnADAS_t_RTB_R1.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower15:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_RTB_R2,
+                     KaADAS_t_RTB_R2Remaining,
+                     KaADAS_Deg_RTB_R2,
+                     KaADAS_l_RTB_R2_X,
+                     KaADAS_l_RTB_R2_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_RTB_R2[KnADAS_t_RTB_R2.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower16:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_TL_2,
+                     KaADAS_t_TL_2Remaining,
+                     KaADAS_Deg_TL_2,
+                     KaADAS_l_TL_2_X,
+                     KaADAS_l_TL_2_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_TL_2[KnADAS_t_TL_2.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
  case E_ADAS_DM_PathFollower17:
       LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
-                     KnADAS_t_R_P,
-                     KaADAS_t_R_PRemaining,
-                     KaADAS_Deg_R_P,
-                     KaADAS_l_R_P_X,
-                     KaADAS_l_R_P_Y);
+                     KnADAS_t_TLR_2,
+                     KaADAS_t_TLR_2Remaining,
+                     KaADAS_Deg_TLR_2,
+                     KaADAS_l_TLR_2_X,
+                     KaADAS_l_TLR_2_Y);
 
 
-      if (LeLU_s_AutonTime >= KnADAS_t_L_PR_load[KnADAS_t_L_PR_load.size() - 1])
+      if (LeLU_s_AutonTime >= KnADAS_t_TLR_2[KnADAS_t_TLR_2.size() - 1])
       {
         L_output.L_timeEndReached = true;
       }
