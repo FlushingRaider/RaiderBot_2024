@@ -300,13 +300,13 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
 
   LeAmp_InS_ElevatorRate = KaDJ_Amp_InS_ElevatorRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
 
-  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = RampTo(KaDJ_Amp_In_ElevatorPosition[LeDJ_Amp_e_CmndState],
+  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = RampTo(KaDJ_Amp_In_ElevatorPosition[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_ElevatorRatio,
                                                           VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator],
                                                           LeAmp_InS_ElevatorRate);
 
   LeAmp_DegS_WristRate = KaDJ_Amp_DegS_WristRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
 
-  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_Deg_Wrist,
+  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_WristRatio,
                                                        VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                        LeAmp_DegS_WristRate);
 }
@@ -364,11 +364,11 @@ void Amp_ControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
     /* Only used for testing/calibration. */
     VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Intake];
 
-    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Elevator],
+    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Elevator]/KeENC_k_AMP_ElevatorRatio,
                                                             VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator],
                                                             VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Elevator]);
 
-    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist],
+    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist]/KeENC_k_AMP_WristRatio,
                                                          VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                          VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Wrist]);
   }

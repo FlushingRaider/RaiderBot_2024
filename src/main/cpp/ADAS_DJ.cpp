@@ -248,50 +248,50 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
 {
   bool LeADAS_b_DJ_Complete = false;
 
-  switch (LeADAS_e_ActiveFeature)
-  {
-  case E_ADAS_DM_PathFollower1:
-  break;
-  case E_ADAS_DM_PathFollower2:
-  case E_ADAS_DM_PathFollower3:
-  case E_ADAS_DM_PathFollower4:
-      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_Driving;
-  break;
-  case E_ADAS_MN_DeployHighCube:
-      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_HighCubeDropPosition;
-  break;
-  case E_ADAS_MN_DeployMidCube:
-      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_MidCubeDropPosition;
-  break;
-  case E_ADAS_MN_DeployLowCube:
-      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_LowCubeDropPosition;
-  break;
-  default:
-  break;
-  }
+  // switch (LeADAS_e_ActiveFeature)
+  // {
+  // case E_ADAS_DM_PathFollower1:
+  // break;
+  // case E_ADAS_DM_PathFollower2:
+  // case E_ADAS_DM_PathFollower3:
+  // case E_ADAS_DM_PathFollower4:
+  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_Driving;
+  // break;
+  // case E_ADAS_MN_DeployHighCube:
+  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_HighCubeDropPosition;
+  // break;
+  // case E_ADAS_MN_DeployMidCube:
+  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_MidCubeDropPosition;
+  // break;
+  // case E_ADAS_MN_DeployLowCube:
+  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_LowCubeDropPosition;
+  // break;
+  // default:
+  // break;
+  // }
 
-  switch (LeADAS_e_ActiveFeature)
-  {
-  case E_ADAS_Disabled:
-    LeADAS_b_DJ_Complete = DJ_ScheduelerTeleop();
-  break;
+  // switch (LeADAS_e_ActiveFeature)
+  // {
+  // case E_ADAS_Disabled:
+  //   LeADAS_b_DJ_Complete = DJ_ScheduelerTeleop();
+  // break;
   
-  case E_ADAS_DM_StopDeployCube:
-  case E_ADAS_MN_DeployHighCube:
-  case E_ADAS_MN_DeployMidCube:
-  case E_ADAS_MN_DeployLowCube:
-  case E_ADAS_DM_PathFollower1:
-  case E_ADAS_DM_PathFollower2:
-  case E_ADAS_DM_PathFollower3:
-  case E_ADAS_DM_PathFollower4:
-    LeADAS_b_DJ_Complete = DJ_ScheduelerAutonAction(LeADAS_e_DJ_ReqAction);
-  break;
+  // case E_ADAS_DM_StopDeployCube:
+  // case E_ADAS_MN_DeployHighCube:
+  // case E_ADAS_MN_DeployMidCube:
+  // case E_ADAS_MN_DeployLowCube:
+  // case E_ADAS_DM_PathFollower1:
+  // case E_ADAS_DM_PathFollower2:
+  // case E_ADAS_DM_PathFollower3:
+  // case E_ADAS_DM_PathFollower4:
+  //   LeADAS_b_DJ_Complete = DJ_ScheduelerAutonAction(LeADAS_e_DJ_ReqAction);
+  // break;
 
-  case E_ADAS_MoveOffsetTag:
-  default:
-    LeADAS_b_DJ_Complete = DJ_ScheduelerBasicAuton();
-  break;
-  }
+  // case E_ADAS_MoveOffsetTag:
+  // default:
+  //   LeADAS_b_DJ_Complete = DJ_ScheduelerBasicAuton();
+  // break;
+  // }
 
   return (LeADAS_b_DJ_Complete);
 }

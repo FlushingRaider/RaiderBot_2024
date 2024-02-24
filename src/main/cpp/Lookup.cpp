@@ -593,6 +593,13 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
         L_output.L_timeEndReached = true;
       }
     break;
+    default:
+      LaLU_d_CalcedVals.L_valX = 0;
+      LaLU_d_CalcedVals.L_valY = 0;
+      LaLU_d_CalcedVals.L_valDeg = 0;
+      LaLU_d_CalcedVals.L_timRem = 0;
+      L_output.L_timeEndReached = true;
+    break;
   }
 
   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)

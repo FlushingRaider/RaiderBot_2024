@@ -275,11 +275,11 @@ void UpdateCLMR_Actuators(TeCLMR_CtrlStates LeCLMR_e_CmndState,
     LeCLMR_ins_Rate = KeCLMR_ins_LiftRate;
     }
 
-  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(KaCLMR_in_LeftPosition[LeCLMR_e_CmndState], 
+  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(KaCLMR_in_LeftPosition[LeCLMR_e_CmndState] / KeENC_k_CLMR_LeftRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left],
                                                             LeCLMR_ins_Rate);
 
-  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right] = RampTo(KaCLMR_in_RightPosition[LeCLMR_e_CmndState], 
+  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right] = RampTo(KaCLMR_in_RightPosition[LeCLMR_e_CmndState] / KeENC_k_CLMR_RightRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right],
                                                             LeCLMR_ins_Rate);
   }
@@ -301,13 +301,13 @@ void CLMR_SpeakerControlMain(TeCLMR_CtrlStates LeCLMR_e_SchedState,
   else if (VeCLMR_b_TestState == true)
     {
     /* Only used for testing/calibration. */
-    VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Left], 
+    VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Left] / KeENC_k_CLMR_LeftRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left],
                                                             VsCLMR_s_MotorsTemp.k_MotorRampRate[E_CLMR_m_Left]);
 
-    VsCLMR_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Right], 
-                                                               VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right],
-                                                               VsCLMR_s_MotorsTemp.k_MotorRampRate[E_CLMR_m_Right]);
+    VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right] = RampTo(VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Right] / KeENC_k_CLMR_RightRatio, 
+                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right],
+                                                             VsCLMR_s_MotorsTemp.k_MotorRampRate[E_CLMR_m_Right]);
     }
   else
     {

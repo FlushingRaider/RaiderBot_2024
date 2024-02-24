@@ -68,29 +68,27 @@ typedef enum T_PID_SparkMaxCal
 typedef enum T_ADAS_ActiveFeature
 {
   E_ADAS_Disabled,
-  E_ADAS_DM_DriveStraight,
-  E_ADAS_DM_DriveStraightFar,
-  E_ADAS_DM_DriveRevStraight,
   E_ADAS_DM_PathFollower1,
   E_ADAS_DM_PathFollower2,
   E_ADAS_DM_PathFollower3,
   E_ADAS_DM_PathFollower4,
   E_ADAS_DM_PathFollower5,
   E_ADAS_DM_PathFollower6,
-  E_ADAS_DM_PathFollowerFWD,
   E_ADAS_MoveGlobal,
-  
+  E_ADAS_DJ_ShootNote,
+  E_ADAS_DJ_ShootNoteFinal,
+  E_ADAS_DM_DJ_Opt1Path1,
+  E_ADAS_DM_Opt1Path2
 } T_ADAS_ActiveFeature;
 
 typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call, enumurated for you convience!
 {
   E_ADAS_AutonDisabled,
-  E_ADAS_AutonDropCubeDriveFwd,
-  E_ADAS_AutonDeliverCubeDriveOnRampAutoBal,
   E_ADAS_AutonDrivePath1,
   E_ADAS_AutonDrivePath2,
   E_ADAS_AutonDrivePath3,
-  E_ADAS_AutonDrivePath4,  
+  E_ADAS_AutonDrivePath4,
+  E_ADAS_AutonOpt1
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place

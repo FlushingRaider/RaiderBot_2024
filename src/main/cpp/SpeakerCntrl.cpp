@@ -305,11 +305,11 @@ void UpdateSPK_Actuators(TeSPK_CtrlStates LeSPK_e_CmndState,
   {
   VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = KaSPK_k_Intake[LeSPK_e_CmndState];
 
-  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(KaSPK_RPM_Shooter1[LeSPK_e_CmndState], 
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(KaSPK_RPM_Shooter1[LeSPK_e_CmndState] / KeENC_k_SPK_Shooter1Ratio, 
                                                             VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
                                                             KeSPK_RPMs_Shooter1Rate);
 
-  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(KaSPK_RPM_Shooter2[LeSPK_e_CmndState], 
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(KaSPK_RPM_Shooter2[LeSPK_e_CmndState] / KeENC_k_SPK_Shooter2Ratio, 
                                                             VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
                                                             KeSPK_RPMs_Shooter2Rate);
   }
@@ -335,11 +335,11 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
     /* Only used for testing/calibration. */
     VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake];
 
-    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1], 
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1] / KeENC_k_SPK_Shooter1Ratio, 
                                                               VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
                                                               VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter1]);
 
-    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2], 
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2] / KeENC_k_SPK_Shooter2Ratio, 
                                                               VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
                                                               VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2]);
     }
