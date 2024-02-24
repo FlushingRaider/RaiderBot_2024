@@ -24,10 +24,10 @@
 
 
 // needed for 2023 bot compatibility
-#include <ctre/Phoenix.h>
-#include <frc/Compressor.h>
-#include <frc/DoubleSolenoid.h>
-#include <frc/Solenoid.h>
+// #include <ctre/Phoenix.h>
+// #include <frc/Compressor.h>
+// #include <frc/DoubleSolenoid.h>
+// #include <frc/Solenoid.h>
 
 
 
@@ -113,7 +113,10 @@ class Robot : public frc::TimedRobot {
   rev::SparkMaxPIDController                 m_Shooter1PID         = m_Shooter1.GetPIDController();
   rev::SparkMaxPIDController                 m_Shooter2PID         = m_Shooter2.GetPIDController();
   //rev::SparkMaxLimitSwitch                   m_WristforwardLimit   = m_Wrist.GetForwardLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
-  //rev::SparkMaxLimitSwitch                   m_WristreverseLimit   = m_Wrist.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  #ifdef Bot2024
+  frc::DigitalInput breakbeam_shooter{0};
+  rev::SparkMaxLimitSwitch m_WristreverseLimit = m_Intake.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  #endif
   #ifdef Bot2023
   WPI_TalonSRX                               m_LinearSlide          {KeMAN_i_LinearSlide};
   #endif

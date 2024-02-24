@@ -31,6 +31,11 @@ std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
 
+// frc::DigitalInput breakbeam_shooter{0};
+// // frc::DigitalInput breakbeam_sparkmaxrefernce{};
+
+// rev::SparkMaxLimitSwitch m_WristreverseLimit;
+
 
 /******************************************************************************
  * Function:     RobotMotorCommands
@@ -112,6 +117,10 @@ void Robot::RobotInit()
 
   GyroInit();
 
+  //NOTE - Wrist break beam sensor 
+  // m_WristreverseLimit = m_Intake.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  bool breakbeam_shooter_b = breakbeam_shooter.Get();
+
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_rearLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -166,7 +175,7 @@ void Robot::RobotPeriodic()
 {
   // Fill the buffer with a rainbow
   // Rainbow();
-  // // Set the LEDs
+  // // Set the LED
   // m_led.SetData(m_ledBuffer);
 
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();

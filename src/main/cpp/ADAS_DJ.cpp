@@ -20,6 +20,7 @@
 #include "Amp.hpp"
 #include "Driver_inputs.hpp"
 #include "SpeakerCntrl.hpp"
+#include "Climber.hpp"
 
 T_DJ_Amp_States  VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeSPK_CtrlStates VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
@@ -146,4 +147,151 @@ bool DJ_ScheduelerTeleop(void)
 
   /////////////////     Climb CONTROL      /////////////////  coordinates what the Climb mechanism does when a button is pressed
 
+  if (VsCONT_s_DriverInput.b_CLMR_MidClimb == true)
+  {
+    VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
+  }
+  else if (VsCONT_s_DriverInput.b_CLMR_FullExtend == true)
+  {
+    VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_FullExtend;
+  }
+  else
+  {
+    /* No updates */
+  }
+
+  if (VeADAS_e_CLMR_SchedState == VeCLMR_e_AttndState)
+  {
+    LeADAS_b_DJ_StateComplete = true;
+  }
+
+  return (LeADAS_b_DJ_StateComplete);
+}
+
+/******************************************************************************
+ * Function:    DJ_ScheduelerBasicAuton
+ * Made By:     Jay L 2/21/2023
+ * Description: Determines scheduled state of the manipulator in auton.
+ ******************************************************************************/
+ bool DJ_ScheduelerBasicAuton(void)
+  {
+    bool LeADAS_b_DJ_StateComplete = false;
+    TeSPK_CtrlStates LeADAS_e_DJ_State = E_SPK_Ctrl_Score;
+
+    VeADAS_e_SPK_SchedState = LeADAS_e_DJ_State;
+    VeADAS_b_SPK_Release = false;
+
+    if (LeADAS_e_DJ_State == VeSPK_e_AttndState)
+      {
+        LeADAS_b_DJ_StateComplete = true;
+      }
+    return(LeADAS_b_DJ_StateComplete);
+  }
+
+/******************************************************************************
+ * Function:    DJ_ScheduelerAutonAction
+ * Made By:     Jay L 2/21/2023
+ * Description: Determines scheduled state of the manipulator in auton. FOR SCORING.
+ ******************************************************************************/
+ bool DJ_ScheduelerAutonAction(TeADAS_Auton_SPK_States LeADAS_e_SPK_StateReq)
+  {
+    bool                    LeADAS_b_SPK_StateComplete = false;
+    TeSPK_CtrlStates        LeADAS_e_SPK_State         = E_SPK_Ctrl_Driving;
+    bool                    LeADAS_b_SPK_Release       = false;
+    bool                    LeADAS_b_SPK_DropCmplt     = false;
+
+    if (LeADAS_e_SPK_StateReq == E_ADAS_SPK_Driving)
+      {
+        LeADAS_e_SPK_State = E_SPK_Ctrl_Driving;
+        LeADAS_b_SPK_DropCmplt = true;
+      }
+    else if (LeADAS_e_SPK_StateReq == E_ADAS_SPK_Score)
+      {
+        LeADAS_e_SPK_State = E_SPK_Ctrl_Score;
+        LeADAS_b_SPK_Release = true;
+        
+        if (VeSPK_e_AttndState == LeADAS_e_SPK_State)
+          {
+            VeADAS_t_SPK_ReleaseTm += C_ExeTime;
+          }
+
+        if (VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm)
+          {
+            LeADAS_b_SPK_DropCmplt = true;
+            LeADAS_b_SPK_Release = false;
+          }
+        }
+    else
+      {
+        LeADAS_b_SPK_DropCmplt = true;
+      }
+
+    VeADAS_e_SPK_SchedState = LeADAS_e_SPK_State;
+
+    if ((LeADAS_e_SPK_State == VeSPK_e_AttndState) &&
+        (LeADAS_b_SPK_DropCmplt == true))
+      {
+        LeADAS_b_SPK_StateComplete = true;
+        VeADAS_t_SPK_ReleaseTm = 0;
+      }
+    return(LeADAS_b_SPK_StateComplete);
+  }
+
+/******************************************************************************
+ * Function:     ADAS_DJ_Main
+ *
+ * Description:  Manages and controls the manipulator controls.
+ ******************************************************************************///NOTE - I don't know what exactly we are doing for auton or doing here so I'm stopping here
+bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
+                  T_ADAS_ActiveFeature          LeADAS_e_ActiveFeature,
+                  TeADAS_Auton_SPK_States       LeADAS_e_DJ_ReqAction)
+{
+  bool LeADAS_b_DJ_Complete = false;
+
+  switch (LeADAS_e_ActiveFeature)
+  {
+  case E_ADAS_DM_PathFollower1:
+  break;
+  case E_ADAS_DM_PathFollower2:
+  case E_ADAS_DM_PathFollower3:
+  case E_ADAS_DM_PathFollower4:
+      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_Driving;
+  break;
+  case E_ADAS_MN_DeployHighCube:
+      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_HighCubeDropPosition;
+  break;
+  case E_ADAS_MN_DeployMidCube:
+      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_MidCubeDropPosition;
+  break;
+  case E_ADAS_MN_DeployLowCube:
+      LeADAS_e_DJ_ReqAction = E_ADAS_MAN_LowCubeDropPosition;
+  break;
+  default:
+  break;
+  }
+
+  switch (LeADAS_e_ActiveFeature)
+  {
+  case E_ADAS_Disabled:
+    LeADAS_b_DJ_Complete = DJ_ScheduelerTeleop();
+  break;
+  
+  case E_ADAS_DM_StopDeployCube:
+  case E_ADAS_MN_DeployHighCube:
+  case E_ADAS_MN_DeployMidCube:
+  case E_ADAS_MN_DeployLowCube:
+  case E_ADAS_DM_PathFollower1:
+  case E_ADAS_DM_PathFollower2:
+  case E_ADAS_DM_PathFollower3:
+  case E_ADAS_DM_PathFollower4:
+    LeADAS_b_DJ_Complete = DJ_ScheduelerAutonAction(LeADAS_e_DJ_ReqAction);
+  break;
+
+  case E_ADAS_MoveOffsetTag:
+  default:
+    LeADAS_b_DJ_Complete = DJ_ScheduelerBasicAuton();
+  break;
+  }
+
+  return (LeADAS_b_DJ_Complete);
 }
