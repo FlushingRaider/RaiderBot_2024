@@ -22,15 +22,6 @@
 
 #include <ctre/phoenix6/core/CoreCANcoder.hpp>
 
-
-// needed for 2023 bot compatibility
-// #include <ctre/Phoenix.h>
-// #include <frc/Compressor.h>
-// #include <frc/DoubleSolenoid.h>
-// #include <frc/Solenoid.h>
-
-
-
 class Robot : public frc::TimedRobot {
  public:
   void RobotInit() override;
@@ -52,17 +43,13 @@ class Robot : public frc::TimedRobot {
   frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
   frc::ShuffleboardTab& BackRight = frc::Shuffleboard::GetTab("Back Right");
   
-
-
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FR     {KeEnc_i_WheelAngleFR, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RL     {KeEnc_i_WheelAngleRL, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RR     {KeEnc_i_WheelAngleRR, "rio"};
 
-
   // PDP - Power Distribution Panel - CAN
   frc::PowerDistribution                     PDP                   {C_PDP_ID,               frc::PowerDistribution::ModuleType::kRev};
-
 
   // CAN Motor Controllers
   rev::CANSparkMax                           m_frontLeftSteerMotor {frontLeftSteerDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
@@ -75,7 +62,6 @@ class Robot : public frc::TimedRobot {
   rev::CANSparkMax                           m_rearRightDriveMotor {rearRightDriveDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
 
   // CAN Encoders
-  //NOTE - its no longer SparkRelativeEncoder its now SparkRelativeEncoder
   rev::SparkRelativeEncoder               m_encoderFrontLeftSteer  = m_frontLeftSteerMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_encoderFrontLeftDrive  = m_frontLeftDriveMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_encoderFrontRightSteer = m_frontRightSteerMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
@@ -85,7 +71,6 @@ class Robot : public frc::TimedRobot {
   rev::SparkRelativeEncoder               m_encoderRearLeftDrive   = m_rearLeftDriveMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_encoderRearRightSteer  = m_rearRightSteerMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder               m_encoderRearRightDrive  = m_rearRightDriveMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
-
 
   rev::SparkMaxPIDController                 m_frontLeftDrivePID    = m_frontLeftDriveMotor.GetPIDController();
   rev::SparkMaxPIDController                 m_frontRightDrivePID   = m_frontRightDriveMotor.GetPIDController();
@@ -103,6 +88,15 @@ class Robot : public frc::TimedRobot {
   rev::CANSparkMax                           m_Shooter1            {KeDJ_Spk_i_Shooter1,            rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Shooter2            {KeDJ_Spk_i_Shooter2,            rev::CANSparkMax::MotorType::kBrushless};
 #ifdef Bot2024
+  rev::SparkRelativeEncoder                  m_encoderElevator     = m_Elevator.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderClimberLeft  = m_ClimberLeft.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderClimberRight = m_ClimberRight.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderWrist        = m_Wrist.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderIntake       = m_Intake.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderUnderbelly   = m_Underbelly.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderShooter1     = m_Shooter1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderShooter2     = m_Shooter2.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+
   rev::SparkMaxPIDController                 m_ElevatorPID         = m_Elevator.GetPIDController();
   rev::SparkMaxPIDController                 m_ClimberLeftPID      = m_ClimberLeft.GetPIDController();
   rev::SparkMaxPIDController                 m_ClimberRightPID     = m_ClimberRight.GetPIDController();
@@ -112,10 +106,10 @@ class Robot : public frc::TimedRobot {
   rev::SparkMaxPIDController                 m_UnderbellyPID       = m_Underbelly.GetPIDController();
   rev::SparkMaxPIDController                 m_Shooter1PID         = m_Shooter1.GetPIDController();
   rev::SparkMaxPIDController                 m_Shooter2PID         = m_Shooter2.GetPIDController();
-  //rev::SparkMaxLimitSwitch                   m_WristforwardLimit   = m_Wrist.GetForwardLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
   #ifdef Bot2024
-  frc::DigitalInput breakbeam_shooter{0};
-  rev::SparkMaxLimitSwitch m_WristreverseLimit = m_Intake.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
+  frc::DigitalInput                          breakbeam_shooter{KeSPK_i_BreakBeamIO};
+  frc::DigitalInput                          m_ElevatorLimitSwitch{KeSPK_i_ElevatorSwitchIO};
+  rev::SparkMaxLimitSwitch                   m_WristreverseLimit   = m_Intake.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
   #endif
   #ifdef Bot2023
   WPI_TalonSRX                               m_LinearSlide          {KeMAN_i_LinearSlide};

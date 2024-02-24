@@ -31,12 +31,6 @@ std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
 
-// frc::DigitalInput breakbeam_shooter{0};
-// // frc::DigitalInput breakbeam_sparkmaxrefernce{};
-
-// rev::SparkMaxLimitSwitch m_WristreverseLimit;
-
-
 /******************************************************************************
  * Function:     RobotMotorCommands
  *
@@ -117,10 +111,6 @@ void Robot::RobotInit()
 
   GyroInit();
 
-  //NOTE - Wrist break beam sensor 
-  // m_WristreverseLimit = m_Intake.GetReverseLimitSwitch(rev::SparkMaxLimitSwitch::Type::kNormallyClosed);
-  bool breakbeam_shooter_b = breakbeam_shooter.Get();
-
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_rearLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -157,6 +147,15 @@ void Robot::RobotInit()
   Amp_ControlInit();
   SPK_ControlInit();
   CLMR_ControlInit();
+
+  Encoders_AMP_SPK_CLMR_Init(m_encoderElevator,
+                             m_encoderClimberLeft,
+                             m_encoderClimberRight,
+                             m_encoderWrist,
+                             m_encoderIntake,
+                             m_encoderUnderbelly,
+                             m_encoderShooter1,
+                             m_encoderShooter2);
 #endif
 }
 
@@ -282,6 +281,18 @@ void Robot::RobotPeriodic()
   frc::SmartDashboard::PutNumberArray("swerve_WheelSpeedCmnd", VaDRC_RPM_WheelSpeedCmnd);
   frc::SmartDashboard::PutNumberArray("swerve_WheelAngleCmnd", VaDRC_Pct_WheelAngleCmnd);
 #ifdef Bot2024
+  Encoders_AMP_SPK_CLMR_Run(breakbeam_shooter.Get(),
+                            m_ElevatorLimitSwitch.Get(),
+                            m_WristreverseLimit.Get(),
+                            m_encoderElevator,
+                            m_encoderClimberLeft,
+                            m_encoderClimberRight,
+                            m_encoderWrist,
+                            m_encoderIntake,
+                            m_encoderUnderbelly,
+                            m_encoderShooter1,
+                            m_encoderShooter2);
+
   Amp_MotorConfigsCal(m_ElevatorPID,
                       m_WristPID,
                       m_IntakePID);
@@ -439,6 +450,15 @@ void Robot::TestPeriodic()
                          m_encoderFrontLeftDrive,
                          m_encoderRearRightDrive,
                          m_encoderRearLeftDrive);
+
+    Encoders_AMP_SPK_CLMR_Init(m_encoderElevator,
+                               m_encoderClimberLeft,
+                               m_encoderClimberRight,
+                               m_encoderWrist,
+                               m_encoderIntake,
+                               m_encoderUnderbelly,
+                               m_encoderShooter1,
+                               m_encoderShooter2);
     }
 
   m_frontLeftDriveMotor.Set(0);

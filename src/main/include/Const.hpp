@@ -32,6 +32,10 @@ static const int KeEnc_i_WheelAngleRR = 20;
 static const int KeCLMR_i_ClimberArm1 = 21;
 static const int KeCLMR_i_ClimberArm2 = 22;
 
+// DIO Device IDs:
+static const int KeSPK_i_BreakBeamIO  = 0;
+static const int KeSPK_i_ElevatorSwitchIO  = 1;
+
 #ifdef Bot2023
 static const int KeMAN_i_LinearSlide = 10;
 #endif
@@ -505,8 +509,15 @@ const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // 
      {1.0, 1.0, 1.0, 1.0}};
 
 
+// Encoder / speed calculation related cals
+/* KeENC_k_AMP_IntakeRatio: Reduction ratio for AMP intake. */
+const double KeENC_k_AMP_IntakeRatio = 1.0;
 
+/* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to linear distance. */
+const double KeENC_k_AMP_ElevatorRatio = 1.0;
 
+/* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to angle. */
+const double KeENC_k_AMP_WristRatio = 1.0;
 
 
 /* KaSPK_e_ControllingTable: Table that contains the commanded state of the speaker based on the current attained state and schedueld state. */
@@ -612,6 +623,16 @@ const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake
                                                0.5, // E_SPK_m_Shooter1
                                                0.5}; // E_SPK_m_Shooter2
 
+/* KeENC_k_SPK_IntakeRatio: Ratio to convert encoder counts to intake. */
+const double KeENC_k_SPK_IntakeRatio = 1.0;
+
+/* KeENC_k_SPK_Shooter1Ratio: Ratio to convert shooter 1 encoder counts to RPM. */
+const double KeENC_k_SPK_Shooter1Ratio = 1.0;
+
+/* KeENC_k_SPK_Shooter2Ratio: Ratio to convert shooter 1 encoder counts to RPM. */
+const double KeENC_k_SPK_Shooter2Ratio = 1.0;
+
+
 /* KaCLMR_e_ControllingTable: Table that contains the commanded state of the climber based on the current attained state and schedueld state. */
 const TeCLMR_CtrlStates KaCLMR_e_ControllingTable[E_CLMR_Ctrl_StateSz][E_CLMR_Ctrl_StateSz] = // [Sched][Attnd]
     {{E_CLMR_Ctrl_Init,       E_CLMR_Ctrl_Init,       E_CLMR_Ctrl_Init},
@@ -677,19 +698,11 @@ const double KeCLMR_t_StateTimeOut = 4.0;
 const double KaCLMR_k_TestPower[E_CLMR_m_Sz] = { 0.1, // E_CLMR_m_Left
                                                  0.1}; // E_CLMR_m_Right
 
+/* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to linear distance. */
+const double KeENC_k_CLMR_RightRatio = 1.0;
 
-
-/* KeENC_Deg_Wrist: Scalaer to convert encoder reading to actual position of the wrist, how much we've rotated. */
-const double KeENC_Deg_Wrist = -1.16883;
-
-/* KeENC_k_ElevatorEncoderScaler: Scalar multiplied against the encoder read to translate to degrees relative to inches traveled for the Elevator. */
-const double KeENC_k_ElevatorEncoderScaler = 0.001218;
-
-/* KeENC_RPM_Intake: Finds the speed of the intake rollers. */
-const double KeENC_RPM_Intake = 1.0;
-
-/* KeENC_k_LiftEncoderScaler: Scalar multiplied against the encoder read to translate to degrees relative to inches traveled for the lift. */
-const double KeENC_k_LiftEncoderScaler = 0.001218;
+/* KeENC_k_CLMR_LeftRatio: Ratio to convert encoder counts to linear distance. */
+const double KeENC_k_CLMR_LeftRatio = 1.0;
 
 /* KeSPK_t_ShooterOnTm: Amount of time Speaker Shooter will remain on after it is initially commanded on. */
 const double KeSPK_t_ShooterOnTm = 0.5; //NOTE - set calibration time

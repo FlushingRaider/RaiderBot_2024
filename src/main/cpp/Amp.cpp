@@ -32,9 +32,9 @@ double VaAmp_k_WristPID_Gx[E_PID_SparkMaxCalSz];
 double VaAmp_k_IntakePID_Gx[E_PID_SparkMaxCalSz];
 
 bool VeAmp_b_CriteriaMet = false;
-bool VeAmp_t_TransitionTime = 0;
+double VeAmp_t_TransitionTime = 0;
 bool VeAmp_b_Hold = false; // Used for the holding power.
-bool VeAmp_t_HoldTime = 0;
+double VeAmp_t_HoldTime = 0;
 
 #ifdef Amp_Test
 bool VeAmp_b_TestState = true; // temporary, we don't want to use the manual overrides

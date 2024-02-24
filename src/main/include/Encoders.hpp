@@ -34,3 +34,24 @@ void EncodersInitSwerve(rev::SparkRelativeEncoder m_encoderFrontRightSteer,
                         rev::SparkRelativeEncoder m_encoderFrontLeftDrive,
                         rev::SparkRelativeEncoder m_encoderRearRightDrive,
                         rev::SparkRelativeEncoder m_encoderRearLeftDrive);
+
+void Encoders_AMP_SPK_CLMR_Init( rev::SparkMaxRelativeEncoder m_encoderElevator,
+                                 rev::SparkMaxRelativeEncoder m_encoderClimberLeft,
+                                 rev::SparkMaxRelativeEncoder m_encoderClimberRight,
+                                 rev::SparkMaxRelativeEncoder m_encoderWrist,
+                                 rev::SparkMaxRelativeEncoder m_encoderIntake,
+                                 rev::SparkMaxRelativeEncoder m_encoderUnderbelly,
+                                 rev::SparkMaxRelativeEncoder m_encoderShooter1,
+                                 rev::SparkMaxRelativeEncoder m_encoderShooter2);
+
+void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeLimit,
+                                bool                         LeENC_b_AMP_ElevatorLimit,
+                                bool                         LeENC_b_SPK_IntakeLimit,
+                                rev::SparkMaxRelativeEncoder m_encoderElevator,
+                                rev::SparkMaxRelativeEncoder m_encoderClimberLeft,
+                                rev::SparkMaxRelativeEncoder m_encoderClimberRight,
+                                rev::SparkMaxRelativeEncoder m_encoderWrist,
+                                rev::SparkMaxRelativeEncoder m_encoderIntake,
+                                rev::SparkMaxRelativeEncoder m_encoderUnderbelly,
+                                rev::SparkMaxRelativeEncoder m_encoderShooter1,
+                                rev::SparkMaxRelativeEncoder m_encoderShooter2);

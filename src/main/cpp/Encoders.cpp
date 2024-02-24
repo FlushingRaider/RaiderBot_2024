@@ -11,7 +11,9 @@
 #include "rev/CANSparkMax.h"
 #include "Const.hpp"
 #include "DataLogger.hpp"
+#include "Amp.hpp"
 #include "SpeakerCntrl.hpp"
+#include "Climber.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz]; // This is the wheel angle coming from the angle Encoder and processed to only be from 0 - 180
@@ -155,28 +157,78 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
 
 
 /******************************************************************************
- * Function:     Encoders_DJ_Amp_INT
+ * Function:     Encoders_AMP_SPK_CLMR
  *
- * Description:  Read the encoders from the Amp mech
+ * Description:  Read the encoders/sensors from the amp, speaker and climber
  ******************************************************************************/
-void Encoders_DJ_Amp_INT(rev::SparkMaxRelativeEncoder m_WristEncoder,
-                         double                       LeENC_Deg_Elevator,
-                         bool                         LeENC_b_WristReverseLimit)
+void Encoders_AMP_SPK_CLMR_Init( rev::SparkMaxRelativeEncoder m_encoderElevator,
+                                 rev::SparkMaxRelativeEncoder m_encoderClimberLeft,
+                                 rev::SparkMaxRelativeEncoder m_encoderClimberRight,
+                                 rev::SparkMaxRelativeEncoder m_encoderWrist,
+                                 rev::SparkMaxRelativeEncoder m_encoderIntake,
+                                 rev::SparkMaxRelativeEncoder m_encoderUnderbelly,
+                                 rev::SparkMaxRelativeEncoder m_encoderShooter1,
+                                 rev::SparkMaxRelativeEncoder m_encoderShooter2)
   {
-  bool LeENC_b_ObjectDetected = false;
+  m_encoderWrist.SetPosition(0);
+  m_encoderElevator.SetPosition(0);
+  m_encoderIntake.SetPosition(0);
+  m_encoderUnderbelly.SetPosition(0);
+  m_encoderShooter1.SetPosition(0);
+  m_encoderShooter2.SetPosition(0);
+  m_encoderClimberLeft.SetPosition(0);
+  m_encoderClimberRight.SetPosition(0);
+  }
 
-  VsAmp_s_Sensors.Deg_Wrist = m_WristEncoder.GetPosition() * KeENC_Deg_Wrist;
 
-  VsAmp_s_Sensors.In_Elevator = LeENC_Deg_Elevator * KeENC_k_ElevatorEncoderScaler;
+/******************************************************************************
+ * Function:     Encoders_AMP_SPK_CLMR_Run
+ *
+ * Description:  Read the encoders/sensors from the amp, speaker and climber
+ ******************************************************************************/
+void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeLimit,
+                                bool                         LeENC_b_AMP_ElevatorLimit,
+                                bool                         LeENC_b_SPK_IntakeLimit,
+                                rev::SparkMaxRelativeEncoder m_encoderElevator,
+                                rev::SparkMaxRelativeEncoder m_encoderClimberLeft,
+                                rev::SparkMaxRelativeEncoder m_encoderClimberRight,
+                                rev::SparkMaxRelativeEncoder m_encoderWrist,
+                                rev::SparkMaxRelativeEncoder m_encoderIntake,
+                                rev::SparkMaxRelativeEncoder m_encoderUnderbelly,
+                                rev::SparkMaxRelativeEncoder m_encoderShooter1,
+                                rev::SparkMaxRelativeEncoder m_encoderShooter2)
+  {
+  VsAmp_s_Sensors.b_Amp_ObjDetected = LeENC_b_AMP_IntakeLimit;
 
-  /* Switches are wired to the wrist motor controller.  Switches are intended to detect object in the gripper... */
-  if (LeENC_b_WristReverseLimit == false)
-    {
-      LeENC_b_ObjectDetected = true;
-    }
+  VsAmp_s_Sensors.b_ElevatorSwitch = LeENC_b_AMP_ElevatorLimit;
 
-  VsAmp_s_Sensors.b_Amp_ObjDetected = LeENC_b_ObjectDetected;
+  VsAmp_s_Sensors.Deg_Wrist = m_encoderWrist.GetPosition() * KeENC_k_AMP_WristRatio;
 
-  frc::SmartDashboard::PutNumber("Wrist",          VsAmp_s_Sensors.Deg_Wrist);
-  frc::SmartDashboard::PutNumber("LinearSlide",    VsAmp_s_Sensors.In_Elevator);
+  VsAmp_s_Sensors.In_Elevator = m_encoderElevator.GetPosition() * KeENC_k_AMP_ElevatorRatio;
+
+  VsAmp_s_Sensors.RPM_AmpRollers = m_encoderIntake.GetVelocity() * KeENC_k_AMP_IntakeRatio;
+
+  VsSPK_s_Sensors.b_NoteDetected = LeENC_b_SPK_IntakeLimit;
+
+  VsSPK_s_Sensors.RPM_Intake = m_encoderUnderbelly.GetVelocity() * KeENC_k_SPK_IntakeRatio;
+
+  VsSPK_s_Sensors.RPM_Shooter1 = m_encoderShooter1.GetVelocity() * KeENC_k_SPK_Shooter1Ratio;
+
+  VsSPK_s_Sensors.RPM_Shooter2 = m_encoderShooter2.GetVelocity() * KeENC_k_SPK_Shooter2Ratio;
+
+  VsCLMR_s_Sensors.in_Left = m_encoderClimberLeft.GetPosition() * KeENC_k_CLMR_LeftRatio;
+
+  VsCLMR_s_Sensors.in_Right = m_encoderClimberRight.GetPosition() * KeENC_k_CLMR_RightRatio;
+
+  frc::SmartDashboard::PutBoolean("AMP Note Detected",    VsAmp_s_Sensors.b_Amp_ObjDetected);
+  frc::SmartDashboard::PutBoolean("AMP Elevator Switch",  VsAmp_s_Sensors.b_ElevatorSwitch);
+  frc::SmartDashboard::PutNumber("AMP Wrist Angle",       VsAmp_s_Sensors.Deg_Wrist);
+  frc::SmartDashboard::PutNumber("AMP Elevator",          VsAmp_s_Sensors.In_Elevator);
+  frc::SmartDashboard::PutNumber("AMP Intake",            VsAmp_s_Sensors.RPM_AmpRollers);
+  frc::SmartDashboard::PutNumber("SPK Note Detected",     VsSPK_s_Sensors.b_NoteDetected);
+  frc::SmartDashboard::PutNumber("SPK Intake",            VsSPK_s_Sensors.RPM_Intake);
+  frc::SmartDashboard::PutNumber("SPK Shooter1",          VsSPK_s_Sensors.RPM_Shooter1);
+  frc::SmartDashboard::PutNumber("SPK Shooter2",          VsSPK_s_Sensors.RPM_Shooter2);
+  frc::SmartDashboard::PutNumber("CLRM Left",             VsCLMR_s_Sensors.in_Left);
+  frc::SmartDashboard::PutNumber("CLRM Right",            VsCLMR_s_Sensors.in_Right);
   }
