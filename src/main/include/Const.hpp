@@ -540,10 +540,10 @@ const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // 
 const double KeENC_k_AMP_IntakeRatio = 1.0;
 
 /* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to linear distance. */
-const double KeENC_k_AMP_ElevatorRatio = 1.0;
+const double KeENC_k_AMP_ElevatorRatio = - 0.1484992;
 
 /* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to angle. */
-const double KeENC_k_AMP_WristRatio = 1.0;
+const double KeENC_k_AMP_WristRatio = 4.951194;
 
 
 /* KaSPK_e_ControllingTable: Table that contains the commanded state of the speaker based on the current attained state and schedueld state. */
@@ -720,10 +720,10 @@ const double KaCLMR_k_TestPower[E_CLMR_m_Sz] = { 0.1, // E_CLMR_m_Left
                                                  0.1}; // E_CLMR_m_Right
 
 /* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to linear distance. */
-const double KeENC_k_CLMR_RightRatio = 1.0;
+const double KeENC_k_CLMR_RightRatio = 0.251497;
 
 /* KeENC_k_CLMR_LeftRatio: Ratio to convert encoder counts to linear distance. */
-const double KeENC_k_CLMR_LeftRatio = 1.0;
+const double KeENC_k_CLMR_LeftRatio = -0.251497;
 
 /* KeSPK_t_ShooterOnTm: Amount of time Speaker Shooter will remain on after it is initially commanded on. */
 const double KeSPK_t_ShooterOnTm = 1.5; //NOTE - set calibration time
