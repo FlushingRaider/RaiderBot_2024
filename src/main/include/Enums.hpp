@@ -74,6 +74,17 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower4,
   E_ADAS_DM_PathFollower5,
   E_ADAS_DM_PathFollower6,
+  E_ADAS_DM_PathFollower7,
+  E_ADAS_DM_PathFollower8,
+  E_ADAS_DM_PathFollower9,
+  E_ADAS_DM_PathFollower10,
+  E_ADAS_DM_PathFollower11,
+  E_ADAS_DM_PathFollower12,
+  E_ADAS_DM_PathFollower13,
+  E_ADAS_DM_PathFollower14,
+  E_ADAS_DM_PathFollower15,
+  E_ADAS_DM_PathFollower16,
+  E_ADAS_DM_PathFollower17,
   E_ADAS_MoveGlobal,
   E_ADAS_DJ_ShootNote,
   E_ADAS_DJ_ShootNoteFinal,
@@ -88,6 +99,8 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDrivePath2,
   E_ADAS_AutonDrivePath3,
   E_ADAS_AutonDrivePath4,
+  E_ADAS_AutonDrivePath5,
+  E_ADAS_AutonDrivePath6,
   E_ADAS_AutonOpt1
 } T_ADAS_ActiveAutonFeature;
 

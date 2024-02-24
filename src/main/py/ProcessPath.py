@@ -5,7 +5,7 @@ import pdb
 
 #pdb.set_trace()
 working_path = "C:/Users/gnich/Documents/RaiderBot_2024/src/main/pathing/Arena_Paths/"
-working_name = "TLR_2"
+working_name = "RTB_R1"
 
 output_path = "C:/Users/gnich/Documents/RaiderBot_2024/src/main/include/ArenaMotion/"
 output_name = working_name + ".hpp"
