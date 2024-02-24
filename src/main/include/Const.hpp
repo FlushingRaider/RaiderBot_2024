@@ -38,7 +38,6 @@ static const int KeMAN_i_LinearSlide = 10;
 
 #ifdef Bot2024
 static const int KeDJ_Amp_i_Elevator = 10;
-static const 
 #endif
 
 /******************************************************************************
