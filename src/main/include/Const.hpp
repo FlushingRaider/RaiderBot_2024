@@ -56,12 +56,6 @@ static const int KeDJ_Amp_i_Elevator = 10;
 #ifdef Bot2023
 /* KeENC_k_ReductionRatio: Reduction ratio for swerve drive module. mk4 */
 const double KeENC_k_ReductionRatio = 8.33; 
-#else
-/* KeENC_k_ReductionRatio: Reduction ratio for swerve drive module. mk4 */
-const double KeENC_k_ReductionRatio = 6.12; 
-#endif
-/* KeENC_In_WheelCircumfrence: Circumferance of wheel, in inches (4in nominal diameter). mk4 */
-const double KeENC_In_WheelCircumfrence = 12.566;
 
 // Constants and cals for Swerve Drive (SD) control:
 /* C_SD_L: Robot wheelbase. [meters] */
@@ -72,6 +66,22 @@ const double C_SD_W = 0.5969;
 
 /* C_SD_R: Constant composed of the C_SD_W and C_SD_L constants: R = sqrt(L^2 + W^2) [meters]*/
 const double C_SD_R = 0.8441;
+#else
+/* KeENC_k_ReductionRatio: Reduction ratio for swerve drive module. mk4 */
+const double KeENC_k_ReductionRatio = 6.12; 
+
+// Constants and cals for Swerve Drive (SD) control:
+/* C_SD_L: Robot wheelbase. [meters] */
+const double C_SD_L = 0.53;
+
+/* C_SD_W: Robot track width. [meters] */
+const double C_SD_W = 0.53;
+
+/* C_SD_R: Constant composed of the C_SD_W and C_SD_L constants: R = sqrt(L^2 + W^2) [meters]*/
+const double C_SD_R = 0.7495;
+#endif
+/* KeENC_In_WheelCircumfrence: Circumferance of wheel, in inches (4in nominal diameter). mk4 */
+const double KeENC_In_WheelCircumfrence = 12.566;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
 const double K_SD_SteerMotorCurrentLimit = 25;
@@ -82,13 +92,17 @@ const double KeENC_Deg_SD_WheelOffsetAngle[E_RobotCornerSz] = {158.291015625, //
                                                                218.14453125,  // E_FrontRight 212.783203
                                                                117.509765625, // E_RearLeft 118.740234
                                                                82.79296875};  // E_RearRight 76.289063
+
+const double K_ENC_WheelAngleGx = 1.0;
 #else
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
    reading from the absolute encoder that is indicated in order for the wheel to point straight. */
-const double KeENC_Deg_SD_WheelOffsetAngle[E_RobotCornerSz] = {157.466796, // E_FrontLeft 
-                                                               357.1875,  // E_FrontRight 
-                                                               176.394531, // E_RearLeft 
-                                                               258.4863};  // E_RearRight 
+const double KeENC_Deg_SD_WheelOffsetAngle[E_RobotCornerSz] = {157.466796, // E_FrontLeft 157.466796
+                                                               357.1875,  // E_FrontRight 357.1875
+                                                               172.89453, // E_RearLeft 176.394531
+                                                               258.4863};  // E_RearRight 258.4863
+
+const double K_ENC_WheelAngleGx = -1.0;
 #endif
 /* K_SD_WheelGx: Gain multiplied by each calculated desired speed.  Intended to account for variation in wheel size. */
 const double K_SD_WheelGx[E_RobotCornerSz] = {-1.0,  // E_FrontLeft
@@ -716,7 +730,7 @@ const double KeENC_k_CLMR_RightRatio = 1.0;
 const double KeENC_k_CLMR_LeftRatio = 1.0;
 
 /* KeSPK_t_ShooterOnTm: Amount of time Speaker Shooter will remain on after it is initially commanded on. */
-const double KeSPK_t_ShooterOnTm = 0.5; //NOTE - set calibration time
+const double KeSPK_t_ShooterOnTm = 1.5; //NOTE - set calibration time
 
 
 

@@ -37,6 +37,7 @@
 #include "ArenaMotion/R_R3.hpp"
 #include "ArenaMotion/TLR_2.hpp"
 #include "ArenaMotion/TL_2.hpp"
+#include "MotionProfiles/L_PR_load.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /******************************************************************************

@@ -113,7 +113,7 @@ void SwerveDriveMotorConfigsInit(rev::SparkMaxPIDController m_frontLeftDrivePID,
        L_Index3 < E_RobotCornerSz;
        L_Index3 = T_RobotCorner(int(L_Index3) + 1))
       {
-      KV_SD_WheelGx[L_Index3] = K_SD_WheelGx[L_Index3];
+      KV_SD_WheelGx[L_Index3] = K_SD_WheelGx[L_Index3] * K_ENC_WheelAngleGx;
       }
 
   #ifdef DriveMotorTest
@@ -625,7 +625,7 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
                                                      KV_SD_WheelAnglePID_Gx[E_D_Ul],
                                                      KV_SD_WheelAnglePID_Gx[E_D_Ll],
                                                      KV_SD_WheelAnglePID_Gx[E_Max_Ul],
-                                                     KV_SD_WheelAnglePID_Gx[E_Max_Ll]);
+                                                     KV_SD_WheelAnglePID_Gx[E_Max_Ll]) * K_ENC_WheelAngleGx;
       }
     else
       {
