@@ -201,9 +201,9 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
                                 rev::SparkMaxRelativeEncoder m_encoderShooter1,
                                 rev::SparkMaxRelativeEncoder m_encoderShooter2)
   {
-  VsAmp_s_Sensors.b_Amp_ObjDetected = LeENC_b_AMP_IntakeLimit;
+  VsAmp_s_Sensors.b_Amp_ObjDetected = !LeENC_b_AMP_IntakeLimit;
 
-  VsAmp_s_Sensors.b_ElevatorSwitch = LeENC_b_AMP_ElevatorLimit;
+  VsAmp_s_Sensors.b_ElevatorSwitch = !LeENC_b_AMP_ElevatorLimit;
 
   VsAmp_s_Sensors.Deg_Wrist = m_encoderWrist.GetPosition() * KeENC_k_AMP_WristRatio;
 
@@ -211,7 +211,7 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
 
   VsAmp_s_Sensors.RPM_AmpRollers = m_encoderIntake.GetVelocity() * KeENC_k_AMP_IntakeRatio;
 
-  VsSPK_s_Sensors.b_NoteDetected = LeENC_b_SPK_IntakeLimit;
+  VsSPK_s_Sensors.b_NoteDetected = !LeENC_b_SPK_IntakeLimit;
 
   VsSPK_s_Sensors.RPM_Intake = m_encoderUnderbelly.GetVelocity() * KeENC_k_SPK_IntakeRatio;
 
@@ -228,7 +228,7 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
   frc::SmartDashboard::PutNumber("AMP Wrist Angle",       VsAmp_s_Sensors.Deg_Wrist);
   frc::SmartDashboard::PutNumber("AMP Elevator",          VsAmp_s_Sensors.In_Elevator);
   frc::SmartDashboard::PutNumber("AMP Intake",            VsAmp_s_Sensors.RPM_AmpRollers);
-  frc::SmartDashboard::PutNumber("SPK Note Detected",     VsSPK_s_Sensors.b_NoteDetected);
+  frc::SmartDashboard::PutBoolean("SPK Note Detected",    VsSPK_s_Sensors.b_NoteDetected);
   frc::SmartDashboard::PutNumber("SPK Intake",            VsSPK_s_Sensors.RPM_Intake);
   frc::SmartDashboard::PutNumber("SPK Shooter1",          VsSPK_s_Sensors.RPM_Shooter1);
   frc::SmartDashboard::PutNumber("SPK Shooter2",          VsSPK_s_Sensors.RPM_Shooter2);

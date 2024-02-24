@@ -5,6 +5,7 @@
 
 // Define the desired test state here: Bot_Testing, Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
 #define Bot2024
+// #define SPK_Test
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
@@ -567,9 +568,9 @@ const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0};     // kAllErr
 
 /* KaSPK_k_Shooter1PID_Gx: PID gains for the shooter 1 control. */
-const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
                                                            0.000001, // kI
-                                                           0.002000, // kD
+                                                           0.001000, // kD
                                                            0.0,      // kIz
                                                            0.0,      // kFF
                                                            1.0,      // kMaxOut
@@ -580,9 +581,9 @@ const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0};     // kAllErr
 
 /* KaSPK_k_Shooter2PID_Gx: PID gains for the shooter 2 control. */
-const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
                                                            0.000001, // kI
-                                                           0.002000, // kD
+                                                           0.001000, // kD
                                                            0.0,      // kIz
                                                            0.0,      // kFF
                                                            1.0,      // kMaxOut
@@ -592,39 +593,34 @@ const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0,      // kMaxAcc
                                                            0.0};     // kAllErr
 
-/* KaSPK_k_IntakePower: Sets Intake power for each state */
-const double KaSPK_k_IntakePower[E_SPK_Ctrl_StateSz] = {0.0,   // Sched - E_SPK_Ctrl_Init
-                                                        0.0,   // Sched - E_SPK_Ctrl_Driving
-                                                       -0.45,  // Sched - E_SPK_Ctrl_Intake
-                                                       -0.0,   // Sched - E_SPK_Ctrl_PreScore
-                                                        0.45}; // Sched - E_SPK_Ctrl_Score
+
 
 /* KeSPK_RPMs_Shooter1Rate: Table that contains the shooter 1 ramp rate. */
-const double KeSPK_RPMs_Shooter1Rate = 6.0;
+const double KeSPK_RPMs_Shooter1Rate = 75.0;
 
 /* KeSPK_RPMs_Shooter2Rate: Table that contains the shooter 2 ramp rate. */
-const double KeSPK_RPMs_Shooter2Rate = 6.0;
+const double KeSPK_RPMs_Shooter2Rate = 75.0;
 
 /* KaSPK_k_Intake: Sets intake final power for each state */
 const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                     0.0,  // Sched - Driving
-                                                    0.7,  // Sched - Intake
+                                                    -0.45,  // Sched - Intake
                                                     0.0,  // Sched - PreScore
-                                                    0.9}; // Sched - Score
+                                                    -0.45}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1: Sets shooter 1 final speed for each state */
 const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
-                                                        -40.0,  // Sched - Intake
-                                                        800.0,  // Sched - PreScore
-                                                        800.0}; // Sched - Score
+                                                        -100.0,  // Sched - Intake
+                                                        2800.0,  // Sched - PreScore
+                                                        2800.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter2: Sets shooter 2 final speed for each state */
 const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
-                                                        -40.0,  // Sched - Intake
-                                                        800.0,  // Sched - PreScore
-                                                        800.0}; // Sched - Score
+                                                        -100.0,  // Sched - Intake
+                                                        3000.0,  // Sched - PreScore
+                                                        3000.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
 const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init

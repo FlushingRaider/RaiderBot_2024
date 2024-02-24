@@ -333,7 +333,13 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
   else if (VeSPK_b_TestState == true)
     {
     /* Only used for testing/calibration. */
-    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake];
+    double LeSPK_k_Power = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake];
+    if (VsSPK_s_Sensors.b_NoteDetected == true)
+    {
+      LeSPK_k_Power = 0;
+    }
+    
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = LeSPK_k_Power;
 
     VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1] / KeENC_k_SPK_Shooter1Ratio, 
                                                               VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
