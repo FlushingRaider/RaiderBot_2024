@@ -9,27 +9,20 @@
     - Schedules states in a non-linear state machine
  */
 
-#include <math.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/DriverStation.h>
-#include "control_pid.hpp"
-#include "rev/CANSparkMax.h"
+// #include <frc/smartdashboard/SmartDashboard.h>
+// #include <frc/DriverStation.h>
 #include "Const.hpp"
-#include "Lookup.hpp"
-#include "DriveControl.hpp"
-#include "Amp.hpp"
 #include "Driver_inputs.hpp"
+#include "Amp.hpp"
 #include "SpeakerCntrl.hpp"
 #include "Climber.hpp"
 
-T_DJ_Amp_States  VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
-TeSPK_CtrlStates VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
-TeCLMR_CtrlStates VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
-T_ADAS_ActiveFeature VeADAS_e_AutonFeatureDJ_Prev = E_ADAS_Disabled;
-bool VeADAS_b_Amp_DropObject = false;
-double VeADAS_t_Amp_DropObjectTm = 0.0; // Timer that will keep rollers on for a specific amount of time
-double VeADAS_t_SPK_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
-double VeADAS_t_AMP_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
+T_DJ_Amp_States      VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
+TeSPK_CtrlStates     VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
+TeCLMR_CtrlStates    VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
+T_ADAS_ActiveFeature VeADAS_e_AutonFeatureDJ_Prev = E_ADAS_Disabled;  // Previous state of auton feature.  Needed so we can detect transitions in states
+double               VeADAS_t_SPK_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
+double               VeADAS_t_AMP_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 
 /******************************************************************************
  * Function:     ADAS_DJ_Reset
@@ -41,7 +34,7 @@ void ADAS_DJ_Reset(void)
   VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;
   VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init;
   VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
-  VeADAS_t_Amp_DropObjectTm = 0.0;
+  VeADAS_e_AutonFeatureDJ_Prev = E_ADAS_Disabled;
   VeADAS_t_SPK_ReleaseTm = 0.0;
   VeADAS_t_AMP_ReleaseTm = 0.0;
 }
