@@ -25,9 +25,11 @@
 T_DJ_Amp_States  VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeSPK_CtrlStates VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeCLMR_CtrlStates VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
+T_ADAS_ActiveFeature VeADAS_e_AutonFeatureDJ_Prev = E_ADAS_Disabled;
 bool VeADAS_b_Amp_DropObject = false;
 double VeADAS_t_Amp_DropObjectTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 double VeADAS_t_SPK_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
+double VeADAS_t_AMP_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 
 /******************************************************************************
  * Function:     ADAS_DJ_Reset
@@ -41,283 +43,281 @@ void ADAS_DJ_Reset(void)
   VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
   VeADAS_t_Amp_DropObjectTm = 0.0;
   VeADAS_t_SPK_ReleaseTm = 0.0;
+  VeADAS_t_AMP_ReleaseTm = 0.0;
 }
+
 
 /******************************************************************************
  * Function:    ScheduelerTeleopAMP
  * Made By:     Lauren
  * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
  ******************************************************************************/
-bool ScheduelerTeleopAMP(void)
+bool ScheduelerTeleopAMP(T_RobotState    LeADAS_e_RobotState,
+                         T_DJ_Amp_States LeADAS_e_AutonRequestStateAMP,
+                         bool             LeADAS_b_AutonStateTransition)
 {
-  bool LeADAS_b_Amp_DropObject = false;
-  bool LeADAS_b_DJ_StateComplete = false;
-  bool LeADAS_b_SPK_Release = false;
+  bool LeADAS_b_AMP_StateComplete = false;
 
-/////////////////     AMP CONTROL      /////////////////   coordinates what the amp mechanism does when a button is pressed
+  if (LeADAS_e_RobotState == E_Auton)
+  {
+    /* Only allow auton to update the sched state once per transition.
+       This is to allow the overrides below to work properly. */
+    if (LeADAS_b_AutonStateTransition == true)
+    {
+      VeADAS_e_Amp_SchedState = LeADAS_e_AutonRequestStateAMP;
+    }
+  }
+  else if (LeADAS_e_RobotState == E_Teleop)
+  {
+    if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+    }
+    else if (VsCONT_s_DriverInput.b_Amp_Intake == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Intake;
+    }
+    else if (VsCONT_s_DriverInput.b_Amp_PreScore == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_PreScore;
+    }
+    else if (VsCONT_s_DriverInput.b_Amp_Score == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Score;
+    }
+  }
 
-  if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
+  /* Overrides go here: */
+  if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Score)
   {
-    VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+    if (VsAmp_s_Sensors.b_Amp_ObjDetected == true)
+    {
+      VeADAS_t_AMP_ReleaseTm = C_ExeTime;
+    }
+    else if ((VeADAS_t_AMP_ReleaseTm > 0) &&
+             (VeADAS_t_AMP_ReleaseTm < KeAmp_t_IntakeOnTm))
+    {
+      VeADAS_t_AMP_ReleaseTm += C_ExeTime;
+    }
+    else if ((VeADAS_t_AMP_ReleaseTm >= KeAmp_t_IntakeOnTm))
+    {
+      VeADAS_t_AMP_ReleaseTm = 0.0;
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+    }
   }
-  else if (VsCONT_s_DriverInput.b_Amp_Intake == true)
+  else if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Intake)
   {
-    VeADAS_e_Amp_SchedState = E_DJ_Amp_Intake;
-  }
-  else if (VsCONT_s_DriverInput.b_Amp_PreScore == true)
-  {
-    VeADAS_e_Amp_SchedState = E_DJ_Amp_PreScore;
-  }
-  else
-  {
-    /* No updates */
-  }
-
-  if (VsCONT_s_DriverInput.b_Amp_Score == true)
-  {
-    VeADAS_b_Amp_DropObject = true;
-    VeADAS_t_Amp_DropObjectTm = C_ExeTime;
-  }
-  else if ((VeADAS_t_Amp_DropObjectTm > 0) &&
-           (VeADAS_t_Amp_DropObjectTm <= KeAmp_t_IntakeOnTm))
-  {
-    LeADAS_b_Amp_DropObject = VeADAS_b_Amp_DropObject;
-    VeADAS_t_Amp_DropObjectTm += C_ExeTime;
-  }
-  else
-  {
-    LeADAS_b_Amp_DropObject = false;
-    VeADAS_t_Amp_DropObjectTm = 0.0;
+    if (VsAmp_s_Sensors.b_Amp_ObjDetected == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+    }
   }
 
   if (VeADAS_e_Amp_SchedState == VeAmp_e_AttndState)
   {
-    LeADAS_b_DJ_StateComplete = true;
+    LeADAS_b_AMP_StateComplete = true;
   }
 
-  VeADAS_b_Amp_DropObject = LeADAS_b_Amp_DropObject;
-
-  return (LeADAS_b_DJ_StateComplete);
+  return (LeADAS_b_AMP_StateComplete);
 }
+
 
 /******************************************************************************
  * Function:    ScheduelerTeleopSPK
  * Made By:     Lauren
- * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
+ * Description: Determines scheduled state of the speaker
  ******************************************************************************/
-bool ScheduelerTeleopSPK(void)
+bool ScheduelerTeleopSPK(T_RobotState     LeADAS_e_RobotState,
+                         TeSPK_CtrlStates LeADAS_e_AutonRequestStateSPK,
+                         bool             LeADAS_b_AutonStateTransition)
 {
-  bool LeADAS_b_Amp_DropObject = false;
-  bool LeADAS_b_DJ_StateComplete = false;
-  bool LeADAS_b_SPK_Release = false;
-/////////////////     SpK CONTROL      /////////////////  coordinates what the Speaker mechanism does when a button is pressed
+  bool LeADAS_b_SPK_StateComplete = false;
 
-  if ((VsCONT_s_DriverInput.b_SPK_DrivingPosition == true) ||
-      (VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Intake && VsSPK_s_Sensors.b_NoteDetected == true))
+  if (LeADAS_e_RobotState == E_Auton)
   {
-    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
+    /* Only allow auton to update the sched state once per transition.
+       This is to allow the overrides below to work properly. */
+    if (LeADAS_b_AutonStateTransition == true)
+    {
+      VeADAS_e_SPK_SchedState = LeADAS_e_AutonRequestStateSPK;
+    }
   }
-  else if (VsCONT_s_DriverInput.b_SPK_Intake == true)
+  else if (LeADAS_e_RobotState == E_Teleop)
   {
-    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Intake;
-  }
-  else if (VsCONT_s_DriverInput.b_SPK_PreScore == true)
-  {
-    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_PreScore;
-  }
-  else if (VsCONT_s_DriverInput.b_SPK_Score == true)
-  {
-    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Score;
-  }
-  else
-  {
-    /* No updates */
+    if (VsCONT_s_DriverInput.b_SPK_DrivingPosition == true)
+    {
+      VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
+    }
+    else if (VsCONT_s_DriverInput.b_SPK_Intake == true)
+    {
+      VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Intake;
+    }
+    else if (VsCONT_s_DriverInput.b_SPK_PreScore == true)
+    {
+      VeADAS_e_SPK_SchedState = E_SPK_Ctrl_PreScore;
+    }
+    else if (VsCONT_s_DriverInput.b_SPK_Score == true)
+    {
+      VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Score;
+    }
   }
 
+  /* Overrides go here: */
   if (VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Score)
   {
-    VeADAS_t_SPK_ReleaseTm = C_ExeTime;
+    if (VsSPK_s_Sensors.b_NoteDetected == true)
+    {
+      VeADAS_t_SPK_ReleaseTm = C_ExeTime;
+    }
+    else if ((VeADAS_t_SPK_ReleaseTm > 0) &&
+             (VeADAS_t_SPK_ReleaseTm < KeSPK_t_ShooterOnTm))
+    {
+      VeADAS_t_SPK_ReleaseTm += C_ExeTime;
+    }
+    else if ((VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm))
+    {
+      VeADAS_t_SPK_ReleaseTm = 0.0;
+      VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
+    }
   }
-  else if ((VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Score) &&
-           (VeADAS_t_SPK_ReleaseTm > 0) &&
-           (VeADAS_t_SPK_ReleaseTm <= KeSPK_t_ShooterOnTm))
+  else if (VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Intake)
   {
-    VeADAS_t_SPK_ReleaseTm += C_ExeTime;
-  }
-  else if ((VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Score) &&
-           (VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm))
-  {
-    LeADAS_b_SPK_Release = false;
-    VeADAS_t_SPK_ReleaseTm = 0.0;
-    VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
+    if (VsSPK_s_Sensors.b_NoteDetected == true)
+    {
+      VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
+    }
   }
 
   if (VeADAS_e_SPK_SchedState == VeSPK_e_AttndState)
   {
-    LeADAS_b_DJ_StateComplete = true;
+    LeADAS_b_SPK_StateComplete = true;
   }
 
-  return (LeADAS_b_DJ_StateComplete);
+  return (LeADAS_b_SPK_StateComplete);
 }
 
 
 /******************************************************************************
  * Function:    ScheduelerTeleopCLMR
  * Made By:     Lauren
- * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
+ * Description: Determines scheduled state of the speaker
  ******************************************************************************/
-bool ScheduelerTeleopCLMR(void)
+bool ScheduelerTeleopCLMR(T_RobotState      LeADAS_e_RobotState,
+                          TeCLMR_CtrlStates LeADAS_e_AutonRequestStateCLMR,
+                          bool              LeADAS_b_AutonStateTransition)
 {
-  bool LeADAS_b_Amp_DropObject = false;
-  bool LeADAS_b_DJ_StateComplete = false;
-  bool LeADAS_b_SPK_Release = false;
-  /////////////////     Climb CONTROL      /////////////////  coordinates what the Climb mechanism does when a button is pressed
+  bool LeADAS_b_CLMR_StateComplete = false;
 
-  if (VsCONT_s_DriverInput.b_CLMR_MidClimb == true)
+  if (LeADAS_e_RobotState == E_Auton)
   {
-    VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
+    /* Only allow auton to update the sched state once per transition.
+       This is to allow the overrides below to work properly. */
+    if (LeADAS_b_AutonStateTransition == true)
+    {
+      VeADAS_e_CLMR_SchedState = LeADAS_e_AutonRequestStateCLMR;
+    }
   }
-  else if (VsCONT_s_DriverInput.b_CLMR_FullExtend == true)
+  else if (LeADAS_e_RobotState == E_Teleop)
   {
-    VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_FullExtend;
+    if (VsCONT_s_DriverInput.b_CLMR_MidClimb == true)
+    {
+      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
+    }
+    else if (VsCONT_s_DriverInput.b_CLMR_FullExtend == true)
+    {
+      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_FullExtend;
+    }
+    else if (VsCONT_s_DriverInput.b_CLMR_Init == true)
+    {
+      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
+    }
   }
-  else
-  {
-    /* No updates */
-  }
+
+  /* Overrides go here: */
+  /* None currently */
 
   if (VeADAS_e_CLMR_SchedState == VeCLMR_e_AttndState)
   {
-    LeADAS_b_DJ_StateComplete = true;
+    LeADAS_b_CLMR_StateComplete = true;
   }
 
-  return (LeADAS_b_DJ_StateComplete);
+  return (LeADAS_b_CLMR_StateComplete);
 }
 
-/******************************************************************************
- * Function:    DJ_ScheduelerBasicAuton
- * Made By:     Jay L 2/21/2023
- * Description: Determines scheduled state of the manipulator in auton.
- ******************************************************************************/
- bool DJ_ScheduelerBasicAuton(void)
-  {
-    bool LeADAS_b_DJ_StateComplete = false;
-    TeSPK_CtrlStates LeADAS_e_DJ_State = E_SPK_Ctrl_Score;
-
-    VeADAS_e_SPK_SchedState = LeADAS_e_DJ_State;
-
-    if (LeADAS_e_DJ_State == VeSPK_e_AttndState)
-      {
-        LeADAS_b_DJ_StateComplete = true;
-      }
-    return(LeADAS_b_DJ_StateComplete);
-  }
-
-/******************************************************************************
- * Function:    DJ_ScheduelerAutonAction
- * Made By:     Jay L 2/21/2023
- * Description: Determines scheduled state of the manipulator in auton. FOR SCORING.
- ******************************************************************************/
- bool DJ_ScheduelerAutonAction(TeADAS_Auton_SPK_States LeADAS_e_SPK_StateReq)
-  {
-    bool                    LeADAS_b_SPK_StateComplete = false;
-    TeSPK_CtrlStates        LeADAS_e_SPK_State         = E_SPK_Ctrl_Driving;
-    bool                    LeADAS_b_SPK_Release       = false;
-    bool                    LeADAS_b_SPK_DropCmplt     = false;
-
-    if (LeADAS_e_SPK_StateReq == E_ADAS_SPK_Driving)
-      {
-        LeADAS_e_SPK_State = E_SPK_Ctrl_Driving;
-        LeADAS_b_SPK_DropCmplt = true;
-      }
-    else if (LeADAS_e_SPK_StateReq == E_ADAS_SPK_Score)
-      {
-        LeADAS_e_SPK_State = E_SPK_Ctrl_Score;
-        LeADAS_b_SPK_Release = true;
-        
-        if (VeSPK_e_AttndState == LeADAS_e_SPK_State)
-          {
-            VeADAS_t_SPK_ReleaseTm += C_ExeTime;
-          }
-
-        if (VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm)
-          {
-            LeADAS_b_SPK_DropCmplt = true;
-            LeADAS_b_SPK_Release = false;
-          }
-        }
-    else
-      {
-        LeADAS_b_SPK_DropCmplt = true;
-      }
-
-    VeADAS_e_SPK_SchedState = LeADAS_e_SPK_State;
-
-    if ((LeADAS_e_SPK_State == VeSPK_e_AttndState) &&
-        (LeADAS_b_SPK_DropCmplt == true))
-      {
-        LeADAS_b_SPK_StateComplete = true;
-        VeADAS_t_SPK_ReleaseTm = 0;
-      }
-    return(LeADAS_b_SPK_StateComplete);
-  }
 
 /******************************************************************************
  * Function:     ADAS_DJ_Main
  *
  * Description:  Manages and controls the manipulator controls.
- ******************************************************************************///NOTE - I don't know what exactly we are doing for auton or doing here so I'm stopping here
+ ******************************************************************************/
 bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
-                  T_ADAS_ActiveFeature          LeADAS_e_ActiveFeature,
-                  TeADAS_Auton_SPK_States       LeADAS_e_DJ_ReqAction)
+                  T_ADAS_ActiveFeature          LeADAS_e_ActiveFeature)
 {
-  bool LeADAS_b_DJ_Complete = false;
+  bool                 LeADAS_b_AMP_Complete = false;
+  bool                 LeADAS_b_SPK_Complete = false;
+  bool                 LeADAS_b_CLMR_Complete = false;
+  bool                 LeADAS_b_DJ_Complete = false;
+  bool                 LeADAS_b_AutonTransition = false;
+  T_DJ_Amp_States      LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
+  TeSPK_CtrlStates     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Init;
+  TeCLMR_CtrlStates    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
+  T_ADAS_ActiveFeature LeADAS_e_ActiveFeatureDJ = E_ADAS_Disabled;
 
-  // switch (LeADAS_e_ActiveFeature)
-  // {
-  // case E_ADAS_DM_PathFollower1:
-  // break;
-  // case E_ADAS_DM_PathFollower2:
-  // case E_ADAS_DM_PathFollower3:
-  // case E_ADAS_DM_PathFollower4:
-  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_Driving;
-  // break;
-  // case E_ADAS_MN_DeployHighCube:
-  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_HighCubeDropPosition;
-  // break;
-  // case E_ADAS_MN_DeployMidCube:
-  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_MidCubeDropPosition;
-  // break;
-  // case E_ADAS_MN_DeployLowCube:
-  //     LeADAS_e_DJ_ReqAction = E_ADAS_MAN_LowCubeDropPosition;
-  // break;
-  // default:
-  // break;
-  // }
-
-  // switch (LeADAS_e_ActiveFeature)
-  // {
-  // case E_ADAS_Disabled:
-  //   LeADAS_b_DJ_Complete = DJ_ScheduelerTeleop();
-  // break;
+  if (L_RobotState == E_Auton)
+    {
+      /* If we are in auton, copy the commanded auton feature to 
+         the DJ copy.  Otherwise, leave as disabled. */
+      LeADAS_e_ActiveFeatureDJ = LeADAS_e_ActiveFeature;
+    }
   
-  // case E_ADAS_DM_StopDeployCube:
-  // case E_ADAS_MN_DeployHighCube:
-  // case E_ADAS_MN_DeployMidCube:
-  // case E_ADAS_MN_DeployLowCube:
-  // case E_ADAS_DM_PathFollower1:
-  // case E_ADAS_DM_PathFollower2:
-  // case E_ADAS_DM_PathFollower3:
-  // case E_ADAS_DM_PathFollower4:
-  //   LeADAS_b_DJ_Complete = DJ_ScheduelerAutonAction(LeADAS_e_DJ_ReqAction);
-  // break;
+  if (VeADAS_e_AutonFeatureDJ_Prev != LeADAS_e_ActiveFeatureDJ)
+    {
+      LeADAS_b_AutonTransition = true;
+    }
 
-  // case E_ADAS_MoveOffsetTag:
-  // default:
-  //   LeADAS_b_DJ_Complete = DJ_ScheduelerBasicAuton();
-  // break;
-  // }
-  LeADAS_b_DJ_Complete = ScheduelerTeleopSPK();
+  /* Ok, we need to determine what the schedueled AMP, SPK and CLMR states should be 
+     based on the commanded auton. */
+  switch (LeADAS_e_ActiveFeatureDJ)
+  {
+  case E_ADAS_Disabled:
+  default:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
+    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
+  break;
+
+  case E_ADAS_DJ_ShootNote:
+  case E_ADAS_DJ_ShootNoteFinal:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Score;
+    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
+  break;
+
+  case E_ADAS_DM_DJ_Opt1Path1:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Intake;
+    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
+    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
+  break;
+  }
+
+  LeADAS_b_AMP_Complete = ScheduelerTeleopAMP(L_RobotState,
+                                              LeADAS_e_AutonRequestStateAMP,
+                                              LeADAS_b_AutonTransition);
+
+  LeADAS_b_SPK_Complete = ScheduelerTeleopSPK(L_RobotState,
+                                              LeADAS_e_AutonRequestStateSPK,
+                                              LeADAS_b_AutonTransition);
+
+  LeADAS_b_CLMR_Complete = ScheduelerTeleopCLMR(L_RobotState,
+                                                LeADAS_e_AutonRequestStateCLMR,
+                                                LeADAS_b_AutonTransition);
+
+  VeADAS_e_AutonFeatureDJ_Prev = LeADAS_e_ActiveFeatureDJ;
+
+  if (LeADAS_b_AMP_Complete && LeADAS_b_SPK_Complete && LeADAS_b_CLMR_Complete)
+  {
+    LeADAS_b_DJ_Complete = true;
+  }
 
   return (LeADAS_b_DJ_Complete);
 }

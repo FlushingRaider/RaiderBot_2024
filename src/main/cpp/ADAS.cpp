@@ -352,8 +352,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_Disabled:
   default:
     VeADAS_b_State1Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
-                                           LeADAS_e_ActiveFeature,
-                                           E_ADAS_SPK_Driving);
+                                           LeADAS_e_ActiveFeature);
     VeADAS_b_StateComplete = true;
     *L_Pct_FwdRev = 0;
     *L_Pct_Strafe = 0;

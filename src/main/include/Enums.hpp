@@ -150,6 +150,7 @@ struct RobotUserInput
   bool b_SPK_Score;
   bool b_CLMR_MidClimb;
   bool b_CLMR_FullExtend;
+  bool b_CLMR_Init;
 
 
   bool b_OdomGlobalMove;
@@ -230,13 +231,6 @@ typedef enum TeSPK_CtrlStates
   E_SPK_Ctrl_Score,
   E_SPK_Ctrl_StateSz
 } TeSPK_CtrlStates;
-
-typedef enum TeADAS_Auton_SPK_States
-{
-  E_ADAS_SPK_Driving,
-  E_ADAS_SPK_Score,
-  E_ADAS_SPK_StateSz
-} TeADAS_Auton_SPK_States;
 
 struct TeSKP_MotorControl
 {

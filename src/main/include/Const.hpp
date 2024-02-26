@@ -726,7 +726,9 @@ const double KeENC_k_CLMR_RightRatio = 0.251497;
 const double KeENC_k_CLMR_LeftRatio = -0.251497;
 
 /* KeSPK_t_ShooterOnTm: Amount of time Speaker Shooter will remain on after it is initially commanded on. */
-const double KeSPK_t_ShooterOnTm = 1.5; //NOTE - set calibration time
+const double KeSPK_t_ShooterOnTm = 0.5; //NOTE - set calibration time
+
+
 
 
 
