@@ -65,13 +65,6 @@ void Robot::RobotMotorCommands()
     m_rearRightSteerMotor.Set(0);
   }
 
-#ifdef Bot2023
-  m_Intake.Set(0.0);
-  m_Wrist.Set(0.0);
-  m_Underbelly.Set(0.0);
-  m_LinearSlide.Set(0.0);
-#endif
-
 #ifdef Bot2024
   // m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
   // m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
@@ -81,16 +74,21 @@ void Robot::RobotMotorCommands()
   m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
   // m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
   // m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
-#endif
 
   m_Elevator.Set(0.0);
   m_Wrist.Set(0.0);
   m_Intake.Set(0.0);
  // m_Underbelly.Set(0.0);
-  //m_Shooter1.Set(0.0);
+ // m_Shooter1.Set(0.0);
  // m_Shooter2.Set(0.0);
   m_ClimberLeft.Set(0.0);
   m_ClimberRight.Set(0.0);
+#else
+  m_Intake.Set(0.0);
+  m_Wrist.Set(0.0);
+  m_Underbelly.Set(0.0);
+  m_LinearSlide.Set(0.0);
+#endif
 }
 
 /******************************************************************************
@@ -100,7 +98,6 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
-
   DataLogRobotInit();
 
   // Default to a length of 60, start empty output
@@ -133,6 +130,15 @@ void Robot::RobotInit()
   m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+
+  m_Elevator.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_ClimberLeft.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_ClimberRight.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Wrist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Intake.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Underbelly.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
   SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
                               m_frontRightDrivePID,
@@ -187,7 +193,6 @@ void Robot::RobotPeriodic()
   // m_led.SetData(m_ledBuffer);
 
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
-
 
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
                           c_joyStick.GetRawButton(8),
@@ -343,11 +348,6 @@ void Robot::AutonomousInit()
 
   VeROBO_e_RobotState = E_Auton;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
-  VeROBO_b_TestState = false;
-
-  m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
 
   GyroInit();
 
@@ -357,21 +357,17 @@ void Robot::AutonomousInit()
 
   ADAS_Main_Reset();
   #ifdef Bot2024
-  Amp_ControlInit();
-  SPK_ControlInit();
-  CLMR_ControlInit();
+  if (VeROBO_b_TestState == true)
+  {
+    /* If we were in "test state", the motors may have been moved from there initialized position,
+       we need to rezero all of the encoders/sensors */
+    Amp_ControlInit();
+    SPK_ControlInit();
+    CLMR_ControlInit();
+  }
   #endif
 
-  fmt::print("Auto selected: {}\n", m_autoSelected);
-
-  if (m_autoSelected == kAutoNameCustom)
-  {
-    // Custom Auto goes here
-  }
-  else
-  {
-    // Default Auto goes here
-  }
+  VeROBO_b_TestState = false;
 }
 
 
@@ -383,12 +379,6 @@ void Robot::AutonomousInit()
  ******************************************************************************/
 void Robot::AutonomousPeriodic()
 {
-  // if (m_autoSelected == kAutoNameCustom) {
-  //   // Custom Auto goes here
-  // } else {
-  //   // Default Auto goes here
-  // }
-
   RobotMotorCommands();
 }
 
@@ -403,15 +393,20 @@ void Robot::TeleopInit()
 {
   VeROBO_e_RobotState = E_Teleop;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
-  VeROBO_b_TestState = false;
   ADAS_Main_Reset();
   DriveControlInit();
   OdometryInit();
-  #ifdef Bot2024
-  Amp_ControlInit();
-  SPK_ControlInit();
-  CLMR_ControlInit();
+#ifdef Bot2024
+  if (VeROBO_b_TestState == true)
+  {
+    /* If we were in "test state", the motors may have been moved from there initialized position,
+       we need to rezero all of the encoders/sensors */
+    Amp_ControlInit();
+    SPK_ControlInit();
+    CLMR_ControlInit();
+  }
   #endif
+  VeROBO_b_TestState = false;
 }
 
 
@@ -459,7 +454,7 @@ void Robot::TestPeriodic()
                          m_encoderFrontLeftDrive,
                          m_encoderRearRightDrive,
                          m_encoderRearLeftDrive);
-
+    #ifdef Bot2024
     Encoders_AMP_SPK_CLMR_Init(m_encoderElevator,
                                m_encoderClimberLeft,
                                m_encoderClimberRight,
@@ -468,6 +463,7 @@ void Robot::TestPeriodic()
                                m_encoderUnderbelly,
                                m_encoderShooter1,
                                m_encoderShooter2);
+    #endif
     }
 
   m_frontLeftDriveMotor.Set(0);

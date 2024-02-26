@@ -333,6 +333,13 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 
   case E_ADAS_DJ_ShootNote:
   case E_ADAS_DJ_ShootNoteFinal:
+    /* We are just attempting to shoot the note. No need to path follower. */
+    VeADAS_b_State1Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
+                                           LeADAS_e_ActiveFeature);
+                                           
+    VeADAS_b_StateComplete = VeADAS_b_State1Complete;
+    if (VeADAS_b_StateComplete == true) {VeADAS_b_State1Complete = false; VeADAS_b_State2Complete = false;}
+    break;
   case E_ADAS_DM_DJ_Opt1Path1:
   case E_ADAS_DM_Opt1Path2:
     VeADAS_b_State1Complete = ADAS_DM_PathFollower(L_Pct_FwdRev,
@@ -346,7 +353,11 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                                    LeADAS_e_ActiveFeature,
                                                    LeLC_e_AllianceColor);
 
+    VeADAS_b_State2Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
+                                           LeADAS_e_ActiveFeature);
+
     VeADAS_b_StateComplete = (VeADAS_b_State1Complete == true && VeADAS_b_State2Complete == true);
+    if (VeADAS_b_StateComplete == true) {VeADAS_b_State1Complete = false; VeADAS_b_State2Complete = false;}
     break;
 
   case E_ADAS_Disabled:

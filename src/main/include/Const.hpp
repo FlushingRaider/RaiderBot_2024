@@ -3,8 +3,9 @@
 #include <units/angle.h>
 #include <units/length.h>
 
-// Define the desired test state here: Bot_Testing, Bot2024, Bot2023, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
+// Define the desired rotob state here: Bot2024, Bot2023
 #define Bot2024
+// Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest
 // #define SPK_Test
 
 // Numerical constants
@@ -37,12 +38,10 @@ static const int KeCLMR_i_ClimberArm2 = 22;
 static const int KeSPK_i_BreakBeamIO  = 0;
 static const int KeSPK_i_ElevatorSwitchIO  = 2;
 
-#ifdef Bot2023
-static const int KeMAN_i_LinearSlide = 10;
-#endif
-
 #ifdef Bot2024
 static const int KeDJ_Amp_i_Elevator = 10;
+#else
+static const int KeMAN_i_LinearSlide = 10;
 #endif
 
 /******************************************************************************
@@ -510,28 +509,28 @@ const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched -
                                                                 0.0}; // Sched - Score
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
-const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
-                                                        1.0,  // Sched - Driving
-                                                        1.0,  // Sched - Intake
-                                                        1.0}; // Sched - Score //NOTE - all these may need to be edited for comp bot
+const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
+                                                        2.0,  // Sched - Driving
+                                                        2.0,  // Sched - Intake
+                                                        2.0}; // Sched - Score //NOTE - all these may need to be edited for comp bot
 
 /* KaDJ_Amp_In_ElevatorDb: Sets Elevator dead band. */
-const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {0.5,  // Sched - Init
-                                                          0.5,  // Sched - Driving
-                                                          0.5,  // Sched - Intake
-                                                          0.5}; // Sched - Score
+const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
+                                                          1.0,  // Sched - Driving
+                                                          1.0,  // Sched - Intake
+                                                          1.0}; // Sched - Score
 
 /* KaMAN_InS_LinearSlideRate: Table that contains the linear slide transition rate. */
 const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
     {{2.0, 2.0, 2.0, 2.0},
      {2.0, 2.0, 2.0, 2.0},
-     {2.0, 2.0, 2.0, 2.0}, // NOTE - Needs to be decided for comp bot
+     {2.0, 2.0, 2.0, 2.0},
      {2.0, 2.0, 2.0, 2.0}};
 
 const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
     {{1.0, 1.0, 1.0, 1.0},
      {1.0, 1.0, 1.0, 1.0},
-     {1.0, 1.0, 1.0, 1.0}, // NOTE - Needs to be decided for comp bot
+     {1.0, 1.0, 1.0, 1.0},
      {1.0, 1.0, 1.0, 1.0}};
 
 
@@ -592,8 +591,6 @@ const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
                                                            0.5,      // kMinVel
                                                            0.0,      // kMaxAcc
                                                            0.0};     // kAllErr
-
-
 
 /* KeSPK_RPMs_Shooter1Rate: Table that contains the shooter 1 ramp rate. */
 const double KeSPK_RPMs_Shooter1Rate = 75.0;

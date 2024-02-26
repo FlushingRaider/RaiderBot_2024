@@ -41,13 +41,13 @@ void ADAS_DJ_Reset(void)
 
 
 /******************************************************************************
- * Function:    ScheduelerTeleopAMP
+ * Function:    ScheduelerAMP
  * Made By:     Lauren
  * Description: Determines scheduled state of the DJ mechanisms, speaker and amp
  ******************************************************************************/
-bool ScheduelerTeleopAMP(T_RobotState    LeADAS_e_RobotState,
-                         T_DJ_Amp_States LeADAS_e_AutonRequestStateAMP,
-                         bool             LeADAS_b_AutonStateTransition)
+bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
+                   T_DJ_Amp_States LeADAS_e_AutonRequestStateAMP,
+                   bool             LeADAS_b_AutonStateTransition)
 {
   bool LeADAS_b_AMP_StateComplete = false;
 
@@ -116,13 +116,13 @@ bool ScheduelerTeleopAMP(T_RobotState    LeADAS_e_RobotState,
 
 
 /******************************************************************************
- * Function:    ScheduelerTeleopSPK
+ * Function:    ScheduelerSPK
  * Made By:     Lauren
  * Description: Determines scheduled state of the speaker
  ******************************************************************************/
-bool ScheduelerTeleopSPK(T_RobotState     LeADAS_e_RobotState,
-                         TeSPK_CtrlStates LeADAS_e_AutonRequestStateSPK,
-                         bool             LeADAS_b_AutonStateTransition)
+bool ScheduelerSPK(T_RobotState     LeADAS_e_RobotState,
+                   TeSPK_CtrlStates LeADAS_e_AutonRequestStateSPK,
+                   bool             LeADAS_b_AutonStateTransition)
 {
   bool LeADAS_b_SPK_StateComplete = false;
 
@@ -191,13 +191,13 @@ bool ScheduelerTeleopSPK(T_RobotState     LeADAS_e_RobotState,
 
 
 /******************************************************************************
- * Function:    ScheduelerTeleopCLMR
+ * Function:    ScheduelerCLMR
  * Made By:     Lauren
- * Description: Determines scheduled state of the speaker
+ * Description: Determines scheduled state of the climber
  ******************************************************************************/
-bool ScheduelerTeleopCLMR(T_RobotState      LeADAS_e_RobotState,
-                          TeCLMR_CtrlStates LeADAS_e_AutonRequestStateCLMR,
-                          bool              LeADAS_b_AutonStateTransition)
+bool ScheduelerCLMR(T_RobotState      LeADAS_e_RobotState,
+                    TeCLMR_CtrlStates LeADAS_e_AutonRequestStateCLMR,
+                    bool              LeADAS_b_AutonStateTransition)
 {
   bool LeADAS_b_CLMR_StateComplete = false;
 
@@ -293,17 +293,17 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   break;
   }
 
-  LeADAS_b_AMP_Complete = ScheduelerTeleopAMP(L_RobotState,
-                                              LeADAS_e_AutonRequestStateAMP,
-                                              LeADAS_b_AutonTransition);
+  LeADAS_b_AMP_Complete = ScheduelerAMP(L_RobotState,
+                                        LeADAS_e_AutonRequestStateAMP,
+                                        LeADAS_b_AutonTransition);
 
-  LeADAS_b_SPK_Complete = ScheduelerTeleopSPK(L_RobotState,
-                                              LeADAS_e_AutonRequestStateSPK,
-                                              LeADAS_b_AutonTransition);
+  LeADAS_b_SPK_Complete = ScheduelerSPK(L_RobotState,
+                                        LeADAS_e_AutonRequestStateSPK,
+                                        LeADAS_b_AutonTransition);
 
-  LeADAS_b_CLMR_Complete = ScheduelerTeleopCLMR(L_RobotState,
-                                                LeADAS_e_AutonRequestStateCLMR,
-                                                LeADAS_b_AutonTransition);
+  LeADAS_b_CLMR_Complete = ScheduelerCLMR(L_RobotState,
+                                          LeADAS_e_AutonRequestStateCLMR,
+                                          LeADAS_b_AutonTransition);
 
   VeADAS_e_AutonFeatureDJ_Prev = LeADAS_e_ActiveFeatureDJ;
 

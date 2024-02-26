@@ -38,6 +38,8 @@
 #include "ArenaMotion/TLR_2.hpp"
 #include "ArenaMotion/TL_2.hpp"
 #include "MotionProfiles/L_PR_load.hpp"
+#include "OptPaths/Opt1Path1.hpp"
+#include "OptPaths/Opt1Path2.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /******************************************************************************
@@ -752,6 +754,32 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
       {
         L_output.L_timeEndReached = true;
       }
+    break;
+  case E_ADAS_DM_DJ_Opt1Path1:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path1,
+                                       KaADAS_t_Opt1Path1Remaining,
+                                       KaADAS_Deg_Opt1Path1,
+                                       KaADAS_l_Opt1Path1_X,
+                                       KaADAS_l_Opt1Path1_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path1[KnADAS_t_Opt1Path1.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_Opt1Path2:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path2,
+                                       KaADAS_t_Opt1Path2Remaining,
+                                       KaADAS_Deg_Opt1Path2,
+                                       KaADAS_l_Opt1Path2_X,
+                                       KaADAS_l_Opt1Path2_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path2[KnADAS_t_Opt1Path2.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
     break;
     default:
       LaLU_d_CalcedVals.L_valX = 0;

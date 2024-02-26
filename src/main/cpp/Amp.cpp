@@ -88,7 +88,7 @@ void Amp_MotorConfigsInit(rev::SparkMaxPIDController m_ElevatorPID,
   VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Elevator] = KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_Init][E_DJ_Amp_Init];
   VsAmp_s_MotorsTest.k_MotorRampRate[E_Amp_Wrist] = KaDJ_Amp_DegS_WristRate[E_DJ_Amp_Init][E_DJ_Amp_Init];
 
-#ifdef Bot_Testing
+#ifdef AMP_Test
   T_PID_SparkMaxCal LeAmp_i_Index2 = E_kP;
 
   for (LeAmp_i_Index2 = E_kP;
@@ -229,7 +229,12 @@ void Amp_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
 
   VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist] = LsCONT_s_DriverInput->Pct_Amp_Wrist_Test * KaDJ_Amp_k_TestPower[E_Amp_Wrist];
 
-  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator] = LsCONT_s_DriverInput->Pct_Amp_Elevator_Test * KaDJ_Amp_k_TestPower[E_Amp_Elevator];
+  if ((VsAmp_s_Sensors.b_ElevatorSwitch == false) ||
+      (LsCONT_s_DriverInput->Pct_Amp_Elevator_Test > 0))
+  {
+    /* Don't allow the elevator to progress downward if the limit switch is depressed */
+    VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator] = LsCONT_s_DriverInput->Pct_Amp_Elevator_Test * KaDJ_Amp_k_TestPower[E_Amp_Elevator]; 
+  }
 }
 
 /******************************************************************************
@@ -296,7 +301,6 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
 {
   double LeAmp_InS_ElevatorRate = 0.0;
   double LeAmp_DegS_WristRate = 0.0;
-  T_PID_Cal LeAmp_i_Index = E_P_Gx;
 
   LeAmp_InS_ElevatorRate = KaDJ_Amp_InS_ElevatorRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
 
@@ -309,12 +313,16 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_WristRatio,
                                                        VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                        LeAmp_DegS_WristRate);
+
+  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_Score];
 }
 
 /******************************************************************************
  * Function:     UpdateAmp_hold_Actuator
  *
- * Description:  Updates the gripper roller control //NOTE - fix
+ * Description:  Updates the gripper roller control 
+ *               //NOTE - not sure if we  still want to have holding power.
+ *                 Not currently called
  ******************************************************************************/
 void UpdateAmp_hold_Actuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
                              T_DJ_Amp_States LeDJ_Amp_e_AttndState)
@@ -380,8 +388,7 @@ void Amp_ControlMain(T_DJ_Amp_States LeDJ_Amp_e_SchedState,
 
     Update_Amp_Actuators(VeAmp_e_CmndState, VeAmp_e_AttndState);
 
-    UpdateAmp_hold_Actuator(VeAmp_e_CmndState,
-                            VeAmp_e_AttndState);
+    // UpdateAmp_hold_Actuator(VeAmp_e_CmndState, VeAmp_e_AttndState);
 
     if ((LeDJ_Amp_e_SchedState != VeAmp_e_CmndState) ||
         (LeDJ_Amp_e_SchedState != VeAmp_e_AttndState))
