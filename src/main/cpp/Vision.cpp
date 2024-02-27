@@ -83,16 +83,15 @@ void VisionRun(bool L_DisableCentering)
     // time how long it's been since we had a good centering;
     if (Le_Vis_VisionCentered)
     {
-        Ve_Vis_VisionCenteredCounter += 0.02;
+        Ve_Vis_VisionCenteredCounter += C_ExeTime;
     }
 
-    if (Ve_Vis_VisionCenteredCounter >= 60.0)
+    if (Ve_Vis_VisionCenteredCounter >= KeVIS_t_VisionTimeout)
     {
         Ve_Vis_VisionCenteredCounter = 0.0;
         Le_Vis_VisionCentered = false;
         Debug_tests_passed = 0;
     }
-
 
     frc::SmartDashboard::PutNumber("vision centered counter", Ve_Vis_VisionCenteredCounter);
 
@@ -139,7 +138,7 @@ void VisionRun(bool L_DisableCentering)
     frc::SmartDashboard::PutNumber("Best cam", L_bestCam);
 
     L_outputX = L_VisCamResults[L_bestCam].first.Translation().X().value(); // this returns in meters
-    L_outputX *= C_MeterToIn; // convert to inches
+    L_outputX *= C_MeterToIn;                                               // convert to inches
     L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
     L_outputY *= C_MeterToIn;
 
@@ -152,18 +151,18 @@ void VisionRun(bool L_DisableCentering)
     if ((Ve_Vis_VisionCenteredCounter >= 2.0) || (Le_Vis_VisionCentered == false))
     {
         Debug_tests_passed++;
-        if (L_VisCamResults[L_bestCam].second <= KeAmbiguityThreshold)
+        if (L_VisCamResults[L_bestCam].second <= KeVIS_AmbiguityThreshold)
         {
             Debug_tests_passed++;
 
-            if ((L_outputX > 0.0) && (L_outputY > 0.0) && (L_outputX < KeMaxX) // sanity check theat we are in the bounds of the field
-                && (L_outputY < KeMaxY))
+            if ((L_outputX > 0.0) && (L_outputY > 0.0) && (L_outputX < KeVIS_in_MaxX) // sanity check theat we are in the bounds of the field
+                && (L_outputY < KeVIS_in_MaxY))
             {
                 Debug_tests_passed++;
 
                 // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
                 //  we probably have to be a little below max speed to trust cam updating
-                if ((fabs(VeODO_In_DeltaX) < 1.0) && (fabs(VeODO_In_DeltaY) < 1.0))
+                if ((fabs(VeODO_In_DeltaX) < KeVis_dIn_DeltaThreshold) && (fabs(VeODO_In_DeltaY) < KeVis_dIn_DeltaThreshold))
                 {
                     Debug_tests_passed++;
 

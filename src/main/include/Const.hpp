@@ -758,6 +758,8 @@ const double KeSPK_t_ShooterOnTm = 0.5; //NOTE - set calibration time
 
 
 /////////////////*Vision configs*//////////////////////
-const double KeAmbiguityThreshold = 0.2;
-const double KeMaxY = 323.25;
-const double KeMaxX = 651.25;
+const double KeVIS_AmbiguityThreshold = 0.2;
+const double KeVIS_in_MaxY = 323.25;
+const double KeVIS_in_MaxX = 651.25;
+const double KeVIS_t_VisionTimeout = 6.0;
+const double KeVis_dIn_DeltaThreshold = 1.0;
