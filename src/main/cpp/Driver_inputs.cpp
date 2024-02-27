@@ -102,6 +102,7 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   bool LeCONT_b_SPK_Intake = false;
   bool LeCONT_b_SPK_PreScore = false;
   bool LeCONT_b_SPK_Score = false;
+  bool LeCONT_b_CLMR_Init = false;
 
   VsCONT_s_DriverInput.b_Amp_DrivingPosition         = LeCONT_b_Driver2ButtonB; // Controller 2, B button Will be used to bring Everything into their position for when the robot is moving COMPETION BUTTON
   VsCONT_s_DriverInput.b_Spk_IntakeForward_Test      = LeCONT_b_Driver2ButtonY;
@@ -146,6 +147,11 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   {
     LeCONT_Pct_CLMR_Right_Test = -LeCont_Pct_Driver2AxisRB; // ToDo: I think this direction flip is correct, need to verify
   }
+ 
+  if (LeCont_Pct_Driver2AxisRB == true)
+  {
+    LeCONT_b_CLMR_Init = true;
+  }
 
   VsCONT_s_DriverInput.pct_RightHook_Test = LeCONT_Pct_CLMR_Right_Test;
 
@@ -181,6 +187,7 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   VsCONT_s_DriverInput.b_SPK_DrivingPosition = LeCONT_b_SPK_Driving;
   VsCONT_s_DriverInput.b_SPK_PreScore = LeCONT_b_SPK_PreScore;
   VsCONT_s_DriverInput.b_SPK_Score = LeCONT_b_SPK_Score;
+  VsCONT_s_DriverInput.b_CLMR_Init = LeCONT_b_CLMR_Init;
 
   VsCONT_s_DriverInput.Pct_Amp_Wrist_Test = LeCONT_Pct_Amp_Wrist_Test;
   VsCONT_s_DriverInput.Pct_Amp_Elevator_Test = LeCONT_Pct_Amp_Elevator_Test;
