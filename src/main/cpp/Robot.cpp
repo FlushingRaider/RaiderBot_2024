@@ -9,6 +9,7 @@
 
 #include <fmt/core.h>
 #include <frc/DriverStation.h>
+#include <cameraserver/CameraServer.h>
 
 #include "Encoders.hpp"
 #include "Gyro.hpp"
@@ -106,6 +107,9 @@ void Robot::RobotInit()
                      m_encoderFrontLeftDrive,
                      m_encoderRearRightDrive,
                      m_encoderRearLeftDrive);
+
+
+  frc::CameraServer::StartAutomaticCapture();
 
   GyroInit();
 
