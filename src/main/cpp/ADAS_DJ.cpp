@@ -222,17 +222,13 @@ bool ScheduelerCLMR(T_RobotState      LeADAS_e_RobotState,
   }
   else if (LeADAS_e_RobotState == E_Teleop)
   {
-    if (VsCONT_s_DriverInput.b_CLMR_MidClimb == true)
+    if (VsCONT_s_DriverInput.b_CLMR_Init == true)
     {
-      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
+      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
     }
     else if (VsCONT_s_DriverInput.b_CLMR_FullExtend == true)
     {
       VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_FullExtend;
-    }
-    else if (VsCONT_s_DriverInput.b_CLMR_Init == true)
-    {
-      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
     }
   }
 
