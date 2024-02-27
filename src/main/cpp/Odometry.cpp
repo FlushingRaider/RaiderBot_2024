@@ -96,6 +96,10 @@ void DtrmnSwerveBotLocation(double  LeODO_Rad_Gyro,
   
   VeODO_In_DeltaX = LeODO_In_TotalDeltaX;
   VeODO_In_DeltaY = LeODO_In_TotalDeltaY; 
-  // frc::SmartDashboard::PutNumber("delta x", VeODO_In_DeltaX);
+  
+  frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
+  frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
+  frc::SmartDashboard::PutNumber("delta x", VeODO_In_DeltaX);
+  frc::SmartDashboard::PutNumber("delta y", VeODO_In_DeltaY);
 }
 

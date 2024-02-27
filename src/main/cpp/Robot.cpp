@@ -67,23 +67,14 @@ void Robot::RobotMotorCommands()
   }
 
 #ifdef Bot2024
-  // m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
-  // m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
-  // m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
+  m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
+  m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
+  m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
   m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
   m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
-  // m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
-  // m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
-
-  m_Elevator.Set(0.0);
-  m_Wrist.Set(0.0);
-  m_Intake.Set(0.0);
- // m_Underbelly.Set(0.0);
- // m_Shooter1.Set(0.0);
- // m_Shooter2.Set(0.0);
-  m_ClimberLeft.Set(0.0);
-  m_ClimberRight.Set(0.0);
+  m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
+  m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
 #else
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
@@ -142,6 +133,8 @@ void Robot::RobotInit()
   m_Underbelly.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+
+  m_WristreverseLimit.EnableLimitSwitch(false);
 
   SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
                               m_frontRightDrivePID,
@@ -243,11 +236,7 @@ void Robot::RobotPeriodic()
                          &VaENC_In_WheelDeltaDistance[0],
                          VsCONT_s_DriverInput.b_ZeroGyro);
 
-  frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
-  frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
 
-  frc::SmartDashboard::PutNumber("delta x", VeODO_In_DeltaX);
-  frc::SmartDashboard::PutNumber("delta y", VeODO_In_DeltaY);
 
 
   VisionRun(false);

@@ -103,7 +103,8 @@ void CLMR_MotorConfigsInit(rev::SparkMaxPIDController m_ClimberLeftPID,
   frc::SmartDashboard::PutNumber("Min Output - CLMR_R", KaCLMR_k_RightPID_Gx[E_kMinOutput]);
 
   // display secondary coefficients
-  frc::SmartDashboard::PutNumber("KeCLMR_ins_LiftRate", KeCLMR_ins_LiftRate);
+  frc::SmartDashboard::PutNumber("KeCLMR_ins_LiftRateL", KeCLMR_ins_LiftRate);
+  frc::SmartDashboard::PutNumber("KeCLMR_ins_LiftRateR", KeCLMR_ins_LiftRate);
 
   // display target positions/speeds
   frc::SmartDashboard::PutNumber("Left Climber Height",   0);
@@ -138,7 +139,8 @@ void CLMR_MotorConfigsCal(rev::SparkMaxPIDController m_ClimberLeftPID,
   double L_min_CLMR_R = frc::SmartDashboard::GetNumber("Min Output - CLMR_R", KaCLMR_k_RightPID_Gx[E_kMinOutput]);
 
   VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Left]   = frc::SmartDashboard::GetNumber("Left Climber Height", 0);
-  VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Right]  = frc::SmartDashboard::GetNumber("Right Climber Height", 0);
+  VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Right]  = frc::SmartDashboard::GetNumber("Left Climber Height", 0);
+  // VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Right]  = frc::SmartDashboard::GetNumber("Right Climber Height", 0);
 
   if(L_p_CLMR_L != VaCLMR_k_LeftPID_Gx[E_kP])   { m_ClimberLeftPID.SetP(L_p_CLMR_L); VaCLMR_k_LeftPID_Gx[E_kP] = L_p_CLMR_L; }
   if(L_i_CLMR_L != VaCLMR_k_LeftPID_Gx[E_kI])   { m_ClimberLeftPID.SetI(L_i_CLMR_L); VaCLMR_k_LeftPID_Gx[E_kI] = L_i_CLMR_L; }
@@ -152,8 +154,8 @@ void CLMR_MotorConfigsCal(rev::SparkMaxPIDController m_ClimberLeftPID,
   if(L_iz_CLMR_R != VaCLMR_k_RightPID_Gx[E_kIz]) { m_ClimberRightPID.SetIZone(L_iz_CLMR_R); VaCLMR_k_RightPID_Gx[E_kIz] = L_iz_CLMR_R; }
   if((L_max_CLMR_R != VaCLMR_k_RightPID_Gx[E_kMaxOutput]) || (L_min_CLMR_R != VaCLMR_k_RightPID_Gx[E_kMinOutput])) { m_ClimberRightPID.SetOutputRange(L_min_CLMR_R, L_max_CLMR_R); VaCLMR_k_RightPID_Gx[E_kMinOutput] = L_min_CLMR_R; VaCLMR_k_RightPID_Gx[E_kMaxOutput] = L_max_CLMR_R; }
 
-  VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Left]  = frc::SmartDashboard::GetNumber("KeCLMR_ins_LiftRate", VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Left]);
-  VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Right] = frc::SmartDashboard::GetNumber("KeCLMR_ins_LiftRate", VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Right]);
+  VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Left]  = frc::SmartDashboard::GetNumber("KeCLMR_ins_LiftRateL", VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Left]);
+  VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Right] = frc::SmartDashboard::GetNumber("KeCLMR_ins_LiftRateR", VsCLMR_s_MotorsTest.k_MotorRampRate[E_CLMR_m_Right]);
   #endif
   }
 
@@ -261,18 +263,14 @@ void UpdateCLMR_Actuators(TeCLMR_CtrlStates LeCLMR_e_CmndState,
   {
   double LeCLMR_ins_Rate = 0;
 
-  /* The logic of the check below is as follows:
-    E_CLMR_Ctrl_FullExtend > E_CLMR_Ctrl_MidClimb > E_CLMR_Ctrl_Init
-    So if the commanded state is higher than the attained state, 
-    then we are extending the climber mech.  Otherwise, we may 
-    be lifting the robot.*/
-  if (LeCLMR_e_CmndState >= LeCLMR_e_AttndState)
+  /* The intent is to have a slower rate when climbing due to the expected load.*/
+  if (LeCLMR_e_CmndState == E_CLMR_Ctrl_MidClimb || LeCLMR_e_CmndState == E_CLMR_Ctrl_Init)
     {
-    LeCLMR_ins_Rate = KeCLMR_ins_ExtendRate;
+    LeCLMR_ins_Rate = KeCLMR_ins_LiftRate;
     }
   else
     {
-    LeCLMR_ins_Rate = KeCLMR_ins_LiftRate;
+    LeCLMR_ins_Rate = KeCLMR_ins_ExtendRate;
     }
 
   VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(KaCLMR_in_LeftPosition[LeCLMR_e_CmndState] / KeENC_k_CLMR_LeftRatio, 
@@ -303,11 +301,11 @@ void CLMR_SpeakerControlMain(TeCLMR_CtrlStates LeCLMR_e_SchedState,
     /* Only used for testing/calibration. */
     VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Left] / KeENC_k_CLMR_LeftRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left],
-                                                            VsCLMR_s_MotorsTemp.k_MotorRampRate[E_CLMR_m_Left]);
+                                                            KeCLMR_ins_LiftRate);
 
     VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right] = RampTo(VsCLMR_s_MotorsTest.k_MotorCmnd[E_CLMR_m_Right] / KeENC_k_CLMR_RightRatio, 
                                                              VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right],
-                                                             VsCLMR_s_MotorsTemp.k_MotorRampRate[E_CLMR_m_Right]);
+                                                             KeCLMR_ins_LiftRate);
     }
   else
     {
