@@ -21,6 +21,7 @@
 #include "Climber.hpp"
 #include "ADAS_DJ.hpp"
 #include "DataLogger.hpp"
+#include "Vision.hpp"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -116,6 +117,8 @@ void Robot::RobotInit()
                      m_encoderRearLeftDrive);
 
   GyroInit();
+
+  VisionInit();
 
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -242,6 +245,12 @@ void Robot::RobotPeriodic()
 
   frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
   frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
+
+  frc::SmartDashboard::PutNumber("delta x", VeODO_In_DeltaX);
+  frc::SmartDashboard::PutNumber("delta y", VeODO_In_DeltaY);
+
+
+  VisionRun(false);
 
   ADAS_DetermineMode();
 
