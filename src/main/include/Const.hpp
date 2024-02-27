@@ -152,6 +152,7 @@ const double Ke_k_SD_SignY[E_RobotCornerSz] = {1.0,   // E_FrontLeft
  * Wheel PIDs
  *
  *****************************/
+#ifdef Bot2023
 /* K_SD_WheelSpeedPID_V2_Gx: PID gains for the driven wheels that is within the motor controllers. */
 const double K_SD_WheelSpeedPID_V2_Gx[E_PID_SparkMaxCalSz] = {0.000350, // kP
                                                               0.000001, // kI
@@ -177,7 +178,33 @@ const double K_SD_WheelAnglePID_Gx[E_PID_CalSz] = {0.0035,   // P Gx  0.002
                                                    -1.0,     // D LL -0.5
                                                    1.0,      // Max upper 0.9
                                                    -1.0};    // Max lower -0.9
+#else
+/* K_SD_WheelSpeedPID_V2_Gx: PID gains for the driven wheels that is within the motor controllers. */
+const double K_SD_WheelSpeedPID_V2_Gx[E_PID_SparkMaxCalSz] = {0.000350, // kP
+                                                              0.000001, // kI
+                                                              0.000001, // kD
+                                                              0.0,      // kIz
+                                                              0.0,      // kFF
+                                                              1.0,      // kMaxOutput
+                                                              -1.0,     // kMinOutput
+                                                              0.0,      // kMaxVel
+                                                              0.0,      // kMinVel
+                                                              150.0,    // kMaxAcc 150
+                                                              0.0};     // kAllErr
 
+/* K_SD_WheelAnglePID_Gx: PID gains for the angle of the swerve drive wheels.  PID control is within the RoboRio.  */
+const double K_SD_WheelAnglePID_Gx[E_PID_CalSz] = {0.0035,   // P Gx  0.002
+                                                   0.000001, // I Gx 0.000001
+                                                   0.000005, // D Gx 0.0000005
+                                                   1.0,      // P UL 0.6
+                                                   -1.0,     // P LL -0.4
+                                                   0.15,     // I UL 0.12
+                                                   -0.15,    // I LL -0.12
+                                                   1.0,      // D UL 0.5
+                                                   -1.0,     // D LL -0.5
+                                                   1.0,      // Max upper 0.9
+                                                   -1.0};    // Max lower -0.9
+#endif
 /**********
  *
  * AutoCorrect Swerve Cals
