@@ -100,13 +100,18 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
   }
   else if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Intake)
   {
+    VeADAS_t_AMP_ReleaseTm = 0;
     if (VsAmp_s_Sensors.b_Amp_ObjDetected == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
     }
   }
+  else
+  {
+    VeADAS_t_AMP_ReleaseTm = 0;
+  }
 
-  if (VeADAS_e_Amp_SchedState == VeAmp_e_AttndState)
+  if ((VeADAS_e_Amp_SchedState == VeAmp_e_AttndState) && (VeADAS_t_AMP_ReleaseTm <= 0))
   {
     LeADAS_b_AMP_StateComplete = true;
   }
@@ -175,13 +180,18 @@ bool ScheduelerSPK(T_RobotState     LeADAS_e_RobotState,
   }
   else if (VeADAS_e_SPK_SchedState == E_SPK_Ctrl_Intake)
   {
+    VeADAS_t_SPK_ReleaseTm = 0;
     if (VsSPK_s_Sensors.b_NoteDetected == true)
     {
       VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;
     }
   }
+  else
+  {
+    VeADAS_t_SPK_ReleaseTm = 0;
+  }
 
-  if (VeADAS_e_SPK_SchedState == VeSPK_e_AttndState)
+  if ((VeADAS_e_SPK_SchedState == VeSPK_e_AttndState) && (VeADAS_t_SPK_ReleaseTm <= 0))
   {
     LeADAS_b_SPK_StateComplete = true;
   }

@@ -155,6 +155,8 @@ void Robot::RobotInit()
   CLMR_MotorConfigsInit(m_ClimberLeftPID,
                         m_ClimberRightPID);
 
+  ADAS_DJ_Reset();
+
   Amp_ControlInit();
   SPK_ControlInit();
   CLMR_ControlInit();
@@ -362,6 +364,7 @@ void Robot::AutonomousInit()
   {
     /* If we were in "test state", the motors may have been moved from there initialized position,
        we need to rezero all of the encoders/sensors */
+    ADAS_DJ_Reset();
     Amp_ControlInit();
     SPK_ControlInit();
     CLMR_ControlInit();
@@ -402,6 +405,7 @@ void Robot::TeleopInit()
   {
     /* If we were in "test state", the motors may have been moved from there initialized position,
        we need to rezero all of the encoders/sensors */
+    ADAS_DJ_Reset();
     Amp_ControlInit();
     SPK_ControlInit();
     CLMR_ControlInit();
@@ -418,14 +422,22 @@ void Robot::TeleopInit()
  ******************************************************************************/
 void Robot::TeleopPeriodic()
 {
-
   RobotMotorCommands();
 }
 
 
 void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() {}
+
+/******************************************************************************
+ * Function:     DisabledPeriodic
+ *
+ * Description:  Called during the disabled phase initiated on the driver station.
+ ******************************************************************************/
+void Robot::DisabledPeriodic()
+{
+
+}
 
 void Robot::TestInit() {}
 
