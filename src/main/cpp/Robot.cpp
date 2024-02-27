@@ -294,6 +294,9 @@ void Robot::RobotPeriodic()
   frc::SmartDashboard::PutNumberArray("swerve_WheelAngleRev", VaENC_Deg_WheelAngleRev);
   frc::SmartDashboard::PutNumberArray("swerve_WheelSpeedCmnd", VaDRC_RPM_WheelSpeedCmnd);
   frc::SmartDashboard::PutNumberArray("swerve_WheelAngleCmnd", VaDRC_Pct_WheelAngleCmnd);
+
+  frc::SmartDashboard::PutNumber("GyroYaw", -VeGRY_Deg_GyroYawAngleDegrees);
+
 #ifdef Bot2024
   Encoders_AMP_SPK_CLMR_Run(m_WristreverseLimit.Get(),
                             m_ElevatorLimitSwitch.Get(),
