@@ -322,9 +322,9 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
         L_YawError = fabs(L_YawErrorRaw);
     }
 
-    frc::SmartDashboard::PutNumber("odom X error", L_XError);
-    frc::SmartDashboard::PutNumber("odom Yaw error", L_YawError);
-    frc::SmartDashboard::PutNumber("raw odom yaw error", L_YawErrorRaw);
+    // frc::SmartDashboard::PutNumber("odom X error", L_XError);
+    // frc::SmartDashboard::PutNumber("odom Yaw error", L_YawError);
+    // frc::SmartDashboard::PutNumber("raw odom yaw error", L_YawErrorRaw);
 
     if (fabs(L_YawError) > 5.0)
     {

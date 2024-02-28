@@ -153,7 +153,7 @@ struct RobotUserInput
   bool b_CLMR_Init;
 
 
-  bool b_OdomGlobalMove;
+  bool b_goToSpeaker;
 
 
 };

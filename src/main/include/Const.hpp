@@ -771,3 +771,9 @@ const double KeVIS_in_MaxY = 323.25;
 const double KeVIS_in_MaxX = 651.25;
 const double KeVIS_t_VisionTimeout = 6.0;
 const double KeVis_dIn_DeltaThreshold = 1.0;
+
+/////////////////*Game Piece Coords*//////////////////////
+const std::pair C_in_RedSpeakerCoords = std::make_pair(616.6309, 218.5039); // takes you right to the edge of the speaker ramp
+const std::pair C_in_BlueSpeakerCoords = std::make_pair(34.550197, 218.5039);
+const std::pair C_in_RedAmpCoords = std::make_pair(578.7402, 322.8346); // puts you directly against the amp, add an offset if you need to be back a bit
+const std::pair C_in_BlueAmpCoords = std::make_pair(72.44094, 322.8346);

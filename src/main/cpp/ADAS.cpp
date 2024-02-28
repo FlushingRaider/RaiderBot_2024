@@ -33,6 +33,7 @@
 #include "ADAS_DJ.hpp"
 #include "ADAS_DM.hpp"
 #include "Odometry.hpp"
+#include "Vision.hpp"
 /* ADAS control state variables */
 T_ADAS_ActiveFeature VeADAS_e_ActiveFeature = E_ADAS_Disabled;
 T_ADAS_ActiveAutonFeature VeADAS_e_DriverRequestedAutonFeature = E_ADAS_AutonDisabled;
@@ -52,12 +53,12 @@ bool VeADAS_b_X_Mode = false;
 
 bool VeADAS_b_CompletePrev = false;
 
-// bool VeADAS_b_TelopMoveGlobalActive = false;
+// bool VeADAS_b_SpeakerMoveActive = false;
 
-double DEBUGREQUESTX = 0.0;
-double DEBUGREQUESTY = 0.0;
-double DEBUGREQUESTYaw = 0.0;
-bool VeADAS_b_TelopMoveGlobalActive = false;
+// double DEBUGREQUESTX = 0.0;
+// double DEBUGREQUESTY = 0.0;
+// double DEBUGREQUESTYaw = 0.0;
+bool VeADAS_b_SpeakerMoveActive = false;
 
 /******************************************************************************
  * Function:     ADAS_Main_Init
@@ -67,10 +68,10 @@ bool VeADAS_b_TelopMoveGlobalActive = false;
 void ADAS_Main_Init(void)
 {
 
-  frc::SmartDashboard::PutNumber("Request x", DEBUGREQUESTX);
-  frc::SmartDashboard::PutNumber("Request y", DEBUGREQUESTY);
-  frc::SmartDashboard::PutNumber("Request yaw", DEBUGREQUESTYaw);
-  frc::SmartDashboard::PutBoolean("activate global move", VeADAS_b_TelopMoveGlobalActive);
+  // frc::SmartDashboard::PutNumber("Request x", DEBUGREQUESTX);
+  // frc::SmartDashboard::PutNumber("Request y", DEBUGREQUESTY);
+  // frc::SmartDashboard::PutNumber("Request yaw", DEBUGREQUESTYaw);
+  // frc::SmartDashboard::PutBoolean("activate global move", VeADAS_b_SpeakerMoveActive);
 
   std::string_view LeADAS_Str_AutonSelectorName = "Auton";
   VeADAS_e_AutonChooser.AddOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
@@ -114,10 +115,9 @@ void ADAS_Main_Reset(void)
   VeADAS_b_State2Complete = false;
   VeADAS_b_AutonOncePerTrigger = false;
 
-  VeADAS_t_DM_StateTimer = 0.0;  // ToDo: Originally in ADAS_DM_Reset, do we want this back?
+  VeADAS_t_DM_StateTimer = 0.0; // ToDo: Originally in ADAS_DM_Reset, do we want this back?
   /* Trigger the resets for all of the sub tasks/functions as well: */
 }
-
 
 /******************************************************************************
  * Function:     AbortCriteria
@@ -138,7 +138,6 @@ T_ADAS_ActiveFeature AbortCriteria(bool LeADAS_b_Driver1_JoystickActive,
   }
   return (LeADAS_e_ActiveFeature);
 }
-
 
 /******************************************************************************
  * Function:     ADAS_ControlMain
@@ -167,27 +166,36 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   double LeADAS_e_RequestedX = 0.0;
   double LeADAS_e_RequestedY = 0.0;
   double LeADAS_e_RequestedYaw = 0.0;
-   
-  if (VsCONT_s_DriverInput.b_OdomGlobalMove == true){
-    VeADAS_b_TelopMoveGlobalActive = true; // this will be set to false when the state is compelete
+
+  if (VsCONT_s_DriverInput.b_goToSpeaker == true)
+  {
+    VeADAS_b_SpeakerMoveActive = true; // this will be set to false when the state is compelete
   }
 
- frc::SmartDashboard::PutNumber("auton sub feature", (int)LeADAS_e_ActiveFeature);
- frc::SmartDashboard::PutBoolean("State Complete", VeADAS_b_StateComplete);
+  frc::SmartDashboard::PutNumber("auton sub feature", (int)LeADAS_e_ActiveFeature);
+  frc::SmartDashboard::PutBoolean("State Complete", VeADAS_b_StateComplete);
 
-  DEBUGREQUESTX = frc::SmartDashboard::GetNumber("Request x", 0.0);
-  DEBUGREQUESTY = frc::SmartDashboard::GetNumber("Request y", 0.0);
-  DEBUGREQUESTYaw = frc::SmartDashboard::GetNumber("Request yaw", 0.0);
-  // VeADAS_b_TelopMoveGlobalActive = frc::SmartDashboard::GetBoolean("activate global move", false);
+  // DEBUGREQUESTX = frc::SmartDashboard::GetNumber("Request x", 0.0);
+  // DEBUGREQUESTY = frc::SmartDashboard::GetNumber("Request y", 0.0);
+  // DEBUGREQUESTYaw = frc::SmartDashboard::GetNumber("Request yaw", 0.0);
+  // VeADAS_b_SpeakerMoveActive = frc::SmartDashboard::GetBoolean("activate global move", false);
 
   /* First, let's determine what we are going to do: */
   if (LeADAS_e_RobotState == E_Teleop)
   {
-    if (VeADAS_b_TelopMoveGlobalActive)
+    if (VeADAS_b_SpeakerMoveActive)
     {
-      LeADAS_e_RequestedX = DEBUGREQUESTX;
-      LeADAS_e_RequestedY = DEBUGREQUESTY;
-      LeADAS_e_RequestedYaw = DEBUGREQUESTYaw;
+      if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
+      {
+        LeADAS_e_RequestedX = C_in_RedSpeakerCoords.first;
+        LeADAS_e_RequestedY = C_in_RedSpeakerCoords.second;
+      }
+      else if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kBlue)
+      {
+        LeADAS_e_RequestedX = C_in_BlueSpeakerCoords.first;
+        LeADAS_e_RequestedY = C_in_BlueSpeakerCoords.second;
+      }
+      LeADAS_e_RequestedYaw = 0.0; // we wanna look straight at it
       LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
     }
 
@@ -290,7 +298,6 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     }
   }
 
-
   // our active feature table, ADAS sets which one they want
   switch (LeADAS_e_ActiveFeature)
   {
@@ -319,15 +326,14 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                                           L_Pct_Rotate,
                                                           VeODO_In_RobotDisplacementX,
                                                           VeODO_In_RobotDisplacementY,
-                                                          VeGRY_Deg_GyroYawAngleDegrees,
+                                                          VeVis_deg_VisionYaw,
                                                           LeADAS_e_RequestedX,
                                                           LeADAS_e_RequestedY,
                                                           LeADAS_e_RequestedYaw);
 
     if (VeADAS_b_StateComplete) // telop adas features need to manually set to false
     {
-      VeADAS_b_TelopMoveGlobalActive = false; // we done
-      
+      VeADAS_b_SpeakerMoveActive = false; // we done
     }
     break;
 
@@ -336,9 +342,13 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     /* We are just attempting to shoot the note. No need to path follower. */
     VeADAS_b_State1Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
                                            LeADAS_e_ActiveFeature);
-                                           
+
     VeADAS_b_StateComplete = VeADAS_b_State1Complete;
-    if (VeADAS_b_StateComplete == true) {VeADAS_b_State1Complete = false; VeADAS_b_State2Complete = false;}
+    if (VeADAS_b_StateComplete == true)
+    {
+      VeADAS_b_State1Complete = false;
+      VeADAS_b_State2Complete = false;
+    }
     break;
   case E_ADAS_DM_DJ_Opt1Path1:
   case E_ADAS_DM_Opt1Path2:
@@ -357,7 +367,11 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                            LeADAS_e_ActiveFeature);
 
     VeADAS_b_StateComplete = (VeADAS_b_State1Complete == true && VeADAS_b_State2Complete == true);
-    if (VeADAS_b_StateComplete == true) {VeADAS_b_State1Complete = false; VeADAS_b_State2Complete = false;}
+    if (VeADAS_b_StateComplete == true)
+    {
+      VeADAS_b_State1Complete = false;
+      VeADAS_b_State2Complete = false;
+    }
     break;
 
   case E_ADAS_Disabled:

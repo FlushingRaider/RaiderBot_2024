@@ -60,6 +60,9 @@ std::vector<std::pair<frc::Pose3d, double>> L_VisCamResults = {};
 
 double Ve_Vis_VisionCenteredCounter = 0.0;
 bool Le_Vis_VisionCentered = false;
+double VeVis_deg_VisionYaw = 0.0;
+
+
 
 /******************************************************************************
  * Function:     VisionInit
@@ -137,6 +140,8 @@ void VisionRun(bool L_DisableCentering)
 
     frc::SmartDashboard::PutNumber("Best cam", L_bestCam);
 
+    VeVis_deg_VisionYaw = L_VisCamResults[L_bestCam].first.Rotation().Z().value() * 180;
+
     L_outputX = L_VisCamResults[L_bestCam].first.Translation().X().value(); // this returns in meters
     L_outputX *= C_MeterToIn;                                               // convert to inches
     L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
@@ -145,7 +150,7 @@ void VisionRun(bool L_DisableCentering)
     frc::SmartDashboard::PutNumber("vision out x", L_outputX);
 
     frc::SmartDashboard::PutNumber("vision out y", L_outputY);
-
+    frc::SmartDashboard::PutNumber("vision out yaw", VeVis_deg_VisionYaw);
     // we need to wait at least 2 seconds before centering, we're probably fine in those 2 seconds
     // or maybe we haven't centered at all
     if ((Ve_Vis_VisionCenteredCounter >= 2.0) || (Le_Vis_VisionCentered == false))
@@ -171,7 +176,7 @@ void VisionRun(bool L_DisableCentering)
                     {
                         Debug_tests_passed++;
 
-                        // OdometryInitToArgs(L_outputX, L_outputY);
+                        OdometryInitToArgs(L_outputX, L_outputY);
 
                         Le_Vis_VisionCentered = true;
                     }
@@ -180,7 +185,7 @@ void VisionRun(bool L_DisableCentering)
         }
     }
 
-    frc::SmartDashboard::PutNumber("Debug: Vision tests passed", Debug_tests_passed);
+    // frc::SmartDashboard::PutNumber("Debug: Vision tests passed", Debug_tests_passed);
     frc::SmartDashboard::PutBoolean("vision centred", Le_Vis_VisionCentered);
 }
 #endif
