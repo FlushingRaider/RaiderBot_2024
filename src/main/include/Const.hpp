@@ -724,6 +724,11 @@ const double KeCLMR_ins_LiftRate = 0.2;
 /* KeCLMR_ins_ExtendRate: Rate at which the arms will extend up. */
 const double KeCLMR_ins_ExtendRate = 0.6;
 
+/*KeCLMR_Pct_CntrlDb: Deadband for manual control of the climber hooks. */
+const double KeCLMR_Pct_CntrlDb = 0.05;
+
+const double KeCLMR_k_CntrlGx = 0.04;
+
 /* KaCLMR_in_LeftPosition: Sets left climber position for each state */
 const double KaCLMR_in_LeftPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
                                                             0.0,  // Sched - E_CLMR_Ctrl_MidClimb
@@ -771,3 +776,9 @@ const double KeVIS_in_MaxY = 323.25;
 const double KeVIS_in_MaxX = 651.25;
 const double KeVIS_t_VisionTimeout = 6.0;
 const double KeVis_dIn_DeltaThreshold = 1.0;
+
+/////////////////*Game Piece Coords*//////////////////////
+const std::pair C_in_RedSpeakerCoords = std::make_pair(616.6309, 218.5039); // takes you right to the edge of the speaker ramp
+const std::pair C_in_BlueSpeakerCoords = std::make_pair(34.550197, 218.5039);
+const std::pair C_in_RedAmpCoords = std::make_pair(578.7402, 322.8346); // puts you directly against the amp, add an offset if you need to be back a bit
+const std::pair C_in_BlueAmpCoords = std::make_pair(72.44094, 322.8346);

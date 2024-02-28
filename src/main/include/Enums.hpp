@@ -154,7 +154,7 @@ struct RobotUserInput
   double Pct_Manual_CLMR;
 
 
-  bool b_OdomGlobalMove;
+  bool b_goToSpeaker;
 
 
 };

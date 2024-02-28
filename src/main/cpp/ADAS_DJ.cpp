@@ -230,6 +230,10 @@ bool ScheduelerCLMR(T_RobotState      LeADAS_e_RobotState,
     {
       VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_FullExtend;
     }
+    else if (fabs(VsCONT_s_DriverInput.Pct_Manual_CLMR) >= KeCLMR_Pct_CntrlDb)
+    {
+      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
+    }
   }
 
   /* Overrides go here: */
