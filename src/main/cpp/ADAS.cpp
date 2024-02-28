@@ -53,8 +53,6 @@ bool VeADAS_b_X_Mode = false;
 
 bool VeADAS_b_CompletePrev = false;
 
-// bool VeADAS_b_SpeakerMoveActive = false;
-
 // double DEBUGREQUESTX = 0.0;
 // double DEBUGREQUESTY = 0.0;
 // double DEBUGREQUESTYaw = 0.0;
@@ -203,6 +201,9 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   }
   else if (LeADAS_e_RobotState == E_Auton)
   {
+
+    *VeVis_CenteringEnable = false;
+
     // auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)
     {

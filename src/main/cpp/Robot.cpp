@@ -33,6 +33,7 @@ std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
 
+
 /******************************************************************************
  * Function:     RobotMotorCommands
  *
@@ -245,7 +246,7 @@ void Robot::RobotPeriodic()
 
 
 
-  VisionRun(false);
+  VisionRun();
 
   ADAS_DetermineMode();
 

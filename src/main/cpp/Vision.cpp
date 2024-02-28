@@ -61,7 +61,7 @@ std::vector<std::pair<frc::Pose3d, double>> L_VisCamResults = {};
 double Ve_Vis_VisionCenteredCounter = 0.0;
 bool Le_Vis_VisionCentered = false;
 double VeVis_deg_VisionYaw = 0.0;
-
+bool *VeVis_CenteringEnable = false;
 
 
 /******************************************************************************
@@ -77,7 +77,7 @@ void VisionInit()
 
 // a debug value to see how many checks have passed
 
-void VisionRun(bool L_DisableCentering)
+void VisionRun()
 {
     int Debug_tests_passed = 0;
     double L_outputX = 0.0;
@@ -172,7 +172,7 @@ void VisionRun(bool L_DisableCentering)
                     Debug_tests_passed++;
 
                     // even if everything passes we can manually say no
-                    if (!L_DisableCentering)
+                    if (VeVis_CenteringEnable)
                     {
                         Debug_tests_passed++;
 
