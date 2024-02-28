@@ -459,11 +459,12 @@ const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS 
 
 /* KaMAN_e_ControllingTable: Table that contains the commanded state of the manipulator and intake based on the current attained state and schedueld state. */
 const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Sched][Attnd]
-    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,    E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,  E_DJ_Amp_Intake, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving, E_DJ_Amp_PreScore, E_DJ_Amp_PreScore},
-     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,   E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Score}};
+    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,      E_DJ_Amp_Driving,   E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Driving,   E_DJ_Amp_Driving,   E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,    E_DJ_Amp_Intake,    E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving,   E_DJ_Amp_PreScore, E_DJ_Amp_PreScore, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving,   E_DJ_Amp_Score,    E_DJ_Amp_Score,    E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Trade_Off, E_DJ_Amp_Trade_Off, E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Trade_Off}};
 
 /* KeSPK_I_WristCurrentLimit: Max allowed current going to wrist motor. */
 const double KeSPK_I_WristCurrentLimit = 25;
@@ -475,7 +476,7 @@ const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                                0.0,      // kIz
                                                                0.0,      // kFF
                                                                1.0,      // kMaxOut
-                                                               -1.0,     // kMinOut
+                                                              -1.0,     // kMinOut
                                                                1.05,     // kMaxVel
                                                                0.5,      // kMinVel
                                                                0.0,      // kMaxAcc
@@ -488,7 +489,7 @@ const double KaDJ_Amp_k_WristPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                             0.0,      // kIz
                                                             0.0,      // kFF
                                                             1.0,      // kMaxOut
-                                                            -1.0,     // kMinOut
+                                                           -1.0,     // kMinOut
                                                             1.05,     // kMaxVel
                                                             0.5,      // kMinVel
                                                             0.0,      // kMaxAcc
@@ -501,7 +502,7 @@ const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                              0.0,      // kIz
                                                              0.0,      // kFF
                                                              1.0,      // kMaxOut
-                                                             -1.0,     // kMinOut
+                                                            -1.0,     // kMinOut
                                                              1.05,     // kMaxVel
                                                              0.5,      // kMinVel
                                                              0.0,      // kMaxAcc
@@ -522,54 +523,61 @@ const double KeDJ_Amp_k_HoldNote = -0.1;
 const double KeAmp_t_IntakeOnTm = 0.5; //NOTE - set calibration time
 
 /* KaDJ_Amp_RPM_IntakePower: sets Intake power for each state */
-const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = {0.0,   // Sched - Init
-                                                            0.0,   // Sched - Driving
+const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = { 0.0,   // Sched - Init
+                                                             0.0,   // Sched - Driving
                                                             -0.45, // Sched - Main Intake
-                                                            0.0,   // Sched - PreScore
-                                                            0.45}; // Sched - Score
+                                                             0.0,   // Sched - PreScore
+                                                             0.45,  // Sched - Score
+                                                             0.30}; // Sched - Trade_Off
 
 /* KaDJ_Amp_Deg_WristAngle: sets Wrist final positons for each state */
 const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {  0.00,  // Sched - Init
-                                                            31.00,  // Sched - Driving
-                                                           122.00,  // Sched -  Intake
-                                                           95.00,  // Sched - PreScore
-                                                           95.00}; // Sched - Score
-                                                                  // NOTE - need to be calibrated and set
+                                                             31.00,  // Sched - Driving
+                                                             124.00,  // Sched -  Intake
+                                                             95.00,  // Sched - PreScore
+                                                             95.00, // Sched - Score
+                                                             50.00}; // Sched - Trade_Off // NOTE - need to be calibrated and set
+
 /* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
 const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched - Init
                                                                 0.0,  // Sched - Driving
                                                                 0.0,  // Sched - Intake
                                                                 12.32,  // Sched - PreScore
-                                                                12.32}; // Sched - Score
+                                                                12.32, // Sched - Score
+                                                                0.0}; // Sched - Trade_Off
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
 const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
                                                         2.0,  // Sched - Driving
                                                         2.0,  // Sched - Intake
                                                         2.0,  // Sched - PreScore
-                                                        2.0}; // Sched - Score //NOTE - all these may need to be edited for comp bot
+                                                        2.0, // Sched - Score
+                                                        2.0}; // Sched - Trade_off //NOTE - all these may need to be edited for comp bot
 
 /* KaDJ_Amp_In_ElevatorDb: Sets Elevator dead band. */
 const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
                                                           1.0,  // Sched - Driving
                                                           1.0,  // Sched - Intake
                                                           1.0,  // Sched - PreScore
-                                                          1.0}; // Sched - Score
+                                                          1.0,  // Sched - Score
+                                                          1.0}; // Sched - Trade_Off
 
 /* KaMAN_InS_LinearSlideRate: Table that contains the linear slide transition rate. */
 const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
-    {{1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1}};
+    {{1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1}};
 
 const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
-    {{0.3, 0.3, 0.3, 0.3, 0.3},
-     {0.3, 0.3, 1.0, 0.3, 0.3},
-     {1.0, 1.0, 1.0, 1.0, 1.0},
-     {0.3, 0.3, 0.3, 0.3, 0.3},
-     {0.3, 0.3, 0.3, 0.3, 0.3}};
+    {{0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 1.0, 0.3, 0.3, 0.3},
+     {1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
+     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3}};
 
 
 // Encoder / speed calculation related cals
@@ -606,29 +614,29 @@ const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
 
 /* KaSPK_k_Shooter1PID_Gx: PID gains for the shooter 1 control. */
 const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
-                                                           0.000001, // kI
-                                                           0.001000, // kD
-                                                           0.0,      // kIz
-                                                           0.0,      // kFF
-                                                           1.0,      // kMaxOut
-                                                          -1.0,      // kMinOut
-                                                           1.05,     // kMaxVel
-                                                           0.5,      // kMinVel
-                                                           0.0,      // kMaxAcc
-                                                           0.0};     // kAllErr
+                                                             0.000001, // kI
+                                                             0.001000, // kD
+                                                             0.0,      // kIz
+                                                             0.0,      // kFF
+                                                             1.0,      // kMaxOut
+                                                            -1.0,      // kMinOut
+                                                             1.05,     // kMaxVel
+                                                             0.5,      // kMinVel
+                                                             0.0,      // kMaxAcc
+                                                             0.0};     // kAllErr
 
 /* KaSPK_k_Shooter2PID_Gx: PID gains for the shooter 2 control. */
 const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
-                                                           0.000001, // kI
-                                                           0.001000, // kD
-                                                           0.0,      // kIz
-                                                           0.0,      // kFF
-                                                           1.0,      // kMaxOut
-                                                          -1.0,      // kMinOut
-                                                           1.05,     // kMaxVel
-                                                           0.5,      // kMinVel
-                                                           0.0,      // kMaxAcc
-                                                           0.0};     // kAllErr
+                                                             0.000001, // kI
+                                                             0.001000, // kD
+                                                             0.0,      // kIz
+                                                             0.0,      // kFF
+                                                             1.0,      // kMaxOut
+                                                            -1.0,      // kMinOut
+                                                             1.05,     // kMaxVel
+                                                             0.5,      // kMinVel
+                                                             0.0,      // kMaxAcc
+                                                             0.0};     // kAllErr
 
 /* KeSPK_RPMs_Shooter1Rate: Table that contains the shooter 1 ramp rate. */
 const double KeSPK_RPMs_Shooter1Rate = 75.0;
@@ -639,23 +647,23 @@ const double KeSPK_RPMs_Shooter2Rate = 75.0;
 /* KaSPK_k_Intake: Sets intake final power for each state */
 const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                     0.0,  // Sched - Driving
-                                                    -0.45,  // Sched - Intake
+                                                   -0.45,  // Sched - Intake
                                                     0.0,  // Sched - PreScore
-                                                    -0.45}; // Sched - Score
+                                                   -0.45}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1: Sets shooter 1 final speed for each state */
 const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
-                                                        -100.0,  // Sched - Intake
-                                                        2800.0,  // Sched - PreScore
-                                                        2800.0}; // Sched - Score
+                                                         -100.0,  // Sched - Intake
+                                                          2800.0,  // Sched - PreScore
+                                                          2800.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter2: Sets shooter 2 final speed for each state */
 const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
-                                                        -100.0,  // Sched - Intake
-                                                        3000.0,  // Sched - PreScore
-                                                        3000.0}; // Sched - Score
+                                                         -100.0,  // Sched - Intake
+                                                          3000.0,  // Sched - PreScore
+                                                          3000.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
 const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
