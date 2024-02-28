@@ -4,10 +4,10 @@ import pdb
 #open our file
 
 #pdb.set_trace()
-working_path = "C:/Users/gnich/Documents/RaiderBot_2024/src/main/pathing/Arena_Paths/"
-working_name = "RTB_R1"
+working_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
+working_name = "Opt3Path5"
 
-output_path = "C:/Users/gnich/Documents/RaiderBot_2024/src/main/include/ArenaMotion/"
+output_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
 output_name = working_name + ".hpp"
 
 json_file = working_path + working_name + ".wpilib.json"

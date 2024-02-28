@@ -222,17 +222,18 @@ bool ScheduelerCLMR(T_RobotState      LeADAS_e_RobotState,
   }
   else if (LeADAS_e_RobotState == E_Teleop)
   {
-    if (VsCONT_s_DriverInput.b_CLMR_Init == true)
+    if (fabs(VsCONT_s_DriverInput.Pct_Manual_CLMR) >= KeCLMR_Pct_CntrlDb)
+    {
+      /* Give priority to manual/mid climb in order to make srue we are trying to slowly climb/drop. */
+      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
+    }
+    else if (VsCONT_s_DriverInput.b_CLMR_Init == true)
     {
       VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init;
     }
     else if (VsCONT_s_DriverInput.b_CLMR_FullExtend == true)
     {
       VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_FullExtend;
-    }
-    else if (fabs(VsCONT_s_DriverInput.Pct_Manual_CLMR) >= KeCLMR_Pct_CntrlDb)
-    {
-      VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_MidClimb;
     }
   }
 
@@ -289,16 +290,37 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
-  case E_ADAS_DJ_ShootNote:
-  case E_ADAS_DJ_ShootNoteFinal:
+  case E_ADAS_DJ_ShootNote1:
+  case E_ADAS_DJ_ShootNote2:
+  case E_ADAS_DJ_ShootNote3:
     LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Score;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
-  case E_ADAS_DM_DJ_Opt1Path1:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Intake;
+  case E_ADAS_DM_DJ_Opt1Path3:
+  case E_ADAS_DM_DJ_Opt2Path3:
+  case E_ADAS_DM_DJ_Opt3Path5:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
+    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
+  break;
+
+ case E_ADAS_DM_DJ_Opt1Path1:
+ case E_ADAS_DM_DJ_Opt2Path1:
+ case E_ADAS_DM_DJ_Opt3Path1:
+ case E_ADAS_DM_DJ_Opt3Path3:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Intake;
+    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
+  break;
+
+ case E_ADAS_DM_DJ_Opt1Path2:
+ case E_ADAS_DM_DJ_Opt2Path2:
+ case E_ADAS_DM_DJ_Opt3Path2:
+ case E_ADAS_DM_DJ_Opt3Path4:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_PreScore;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
   }

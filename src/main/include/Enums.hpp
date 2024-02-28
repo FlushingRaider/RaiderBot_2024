@@ -86,10 +86,20 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_PathFollower16,
   E_ADAS_DM_PathFollower17,
   E_ADAS_MoveGlobal,
-  E_ADAS_DJ_ShootNote,
-  E_ADAS_DJ_ShootNoteFinal,
+  E_ADAS_DJ_ShootNote1,
+  E_ADAS_DJ_ShootNote2,
+  E_ADAS_DJ_ShootNote3,
   E_ADAS_DM_DJ_Opt1Path1,
-  E_ADAS_DM_Opt1Path2
+  E_ADAS_DM_DJ_Opt1Path2,
+  E_ADAS_DM_DJ_Opt1Path3,
+  E_ADAS_DM_DJ_Opt2Path1,
+  E_ADAS_DM_DJ_Opt2Path2,
+  E_ADAS_DM_DJ_Opt2Path3,
+  E_ADAS_DM_DJ_Opt3Path1,
+  E_ADAS_DM_DJ_Opt3Path2,
+  E_ADAS_DM_DJ_Opt3Path3,
+  E_ADAS_DM_DJ_Opt3Path4,
+  E_ADAS_DM_DJ_Opt3Path5
 } T_ADAS_ActiveFeature;
 
 typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call, enumurated for you convience!
@@ -102,7 +112,9 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDrivePath5,
   E_ADAS_AutonDrivePath6,
   E_ADAS_AutonDrivePath7,
-  E_ADAS_AutonOpt1
+  E_ADAS_AutonOpt1,
+  E_ADAS_AutonOpt2,
+  E_ADAS_AutonOpt3
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place

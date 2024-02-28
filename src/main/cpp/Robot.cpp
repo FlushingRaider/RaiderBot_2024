@@ -130,6 +130,8 @@ void Robot::RobotInit()
   m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
+  m_Wrist.SetSmartCurrentLimit(KeSPK_I_WristCurrentLimit);
+
   m_Elevator.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_ClimberLeft.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_ClimberRight.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);

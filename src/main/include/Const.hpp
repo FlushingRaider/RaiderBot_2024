@@ -465,6 +465,9 @@ const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_St
      {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving, E_DJ_Amp_PreScore, E_DJ_Amp_PreScore},
      {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,   E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Score}};
 
+/* KeSPK_I_WristCurrentLimit: Max allowed current going to wrist motor. */
+const double KeSPK_I_WristCurrentLimit = 25;
+
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                                0.000001, // kI
@@ -719,25 +722,20 @@ const double KaCLMR_k_RightPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0};     // kAllErr
 
 /* KeCLMR_ins_LiftRate: Rate at which the arms will pull the robot up. */
-const double KeCLMR_ins_LiftRate = 0.2;
+const double KeCLMR_ins_LiftRate = 0.4;
 
 /* KeCLMR_ins_ExtendRate: Rate at which the arms will extend up. */
-const double KeCLMR_ins_ExtendRate = 0.6;
+const double KeCLMR_ins_ExtendRate = 0.7;
 
 /*KeCLMR_Pct_CntrlDb: Deadband for manual control of the climber hooks. */
 const double KeCLMR_Pct_CntrlDb = 0.05;
 
 const double KeCLMR_k_CntrlGx = 0.04;
 
-/* KaCLMR_in_LeftPosition: Sets left climber position for each state */
-const double KaCLMR_in_LeftPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
-                                                            0.0,  // Sched - E_CLMR_Ctrl_MidClimb
-                                                            13.50}; // Sched - E_CLMR_Ctrl_FullExtend
-
-/* KaCLMR_in_RightPosition: Sets right climber position for each state */
-const double KaCLMR_in_RightPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
-                                                             0.0,  // Sched - E_CLMR_Ctrl_MidClimb
-                                                             13.5}; // Sched - E_CLMR_Ctrl_FullExtend
+/* KaCLMR_in_Position: Sets climber position for each state */
+const double KaCLMR_in_Position[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
+                                                          0.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                         13.50}; // Sched - E_CLMR_Ctrl_FullExtend
 
 /* KaCLMR_in_LeftDb: Sets left deadband */
 const double KaCLMR_in_LeftDb[E_SPK_Ctrl_StateSz] = {2.0,  // Sched - E_CLMR_Ctrl_Init

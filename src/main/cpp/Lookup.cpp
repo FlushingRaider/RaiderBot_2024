@@ -40,6 +40,15 @@
 #include "MotionProfiles/L_PR_load.hpp"
 #include "OptPaths/Opt1Path1.hpp"
 #include "OptPaths/Opt1Path2.hpp"
+#include "OptPaths/Opt1Path3.hpp"
+#include "OptPaths/Opt2Path1.hpp"
+#include "OptPaths/Opt2Path2.hpp"
+#include "OptPaths/Opt2Path3.hpp"
+#include "OptPaths/Opt3Path1.hpp"
+#include "OptPaths/Opt3Path2.hpp"
+#include "OptPaths/Opt3Path3.hpp"
+#include "OptPaths/Opt3Path4.hpp"
+#include "OptPaths/Opt3Path5.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /******************************************************************************
@@ -434,25 +443,13 @@ CalcedPathVals LoadPathHeader(double LeLU_s_AutonTime,
   double LeLU_l_Y_Loc = 0.0;
   double LeLU_Deg_Ang = 0.0;
   double LeLU_t_TimeRemaining = 0.0;
-  int LeLU_Int_X_AxisSize = 0;
-  int LeLU_Int_X_CalArraySize = 0;
-  int LeLU_Int_Y_AxisSize = 0;
-  int LeLU_Int_Y_CalArraySize = 0;
-  int LeLU_Int_Ang_AxisSize = 0;
-  int LeLU_Int_Ang_CalArraySize = 0;
-  int LeLU_Int_t_AxisSize = 0;
-  int LeLU_Int_t_CalArraySize = 0;
-
   int LeLU_Int_TimeSize = 0;
   int L_XSize = 0;
   int L_YSize = 0;
   int L_DegSize = 0;
   int L_TimeRemSize = 0;
 
-
-
   CalcedPathVals L_PathCalcedVals;
-
 
   LeLU_Int_TimeSize = (int)L_PathTime.size();
 
@@ -503,23 +500,7 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
                                                 T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
                                                 std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor)
 {
-  double LeLU_l_X_Loc = 0.0;
-  double LeLU_l_Y_Loc = 0.0;
-  double LeLU_Deg_Ang = 0.0;
-  double LeLU_t_TimeRemaining = 0.0;
-  int LeLU_Int_X_AxisSize = 0;
-  int LeLU_Int_X_CalArraySize = 0;
-  int LeLU_Int_Y_AxisSize = 0;
-  int LeLU_Int_Y_CalArraySize = 0;
-  int LeLU_Int_Ang_AxisSize = 0;
-  int LeLU_Int_Ang_CalArraySize = 0;
-  int LeLU_Int_t_AxisSize = 0;
-  int LeLU_Int_t_CalArraySize = 0;
-  // bool   LeLU_b_timeTableDONE = false;
-  double LeLU_k_RedMirrorDirectionFlip = 1;
-
   CalcedPathVals LaLU_d_CalcedVals;
-
   DtrmnSwerveBotLocationOut L_output;
 
   switch (LeADAS_e_ActiveFeature)
@@ -762,13 +743,12 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
                                        KaADAS_Deg_Opt1Path1,
                                        KaADAS_l_Opt1Path1_X,
                                        KaADAS_l_Opt1Path1_Y);
-
     if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path1[KnADAS_t_Opt1Path1.size() - 1])
     {
       L_output.L_timeEndReached = true;
     }
     break;
-  case E_ADAS_DM_Opt1Path2:
+  case E_ADAS_DM_DJ_Opt1Path2:
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt1Path2,
                                        KaADAS_t_Opt1Path2Remaining,
@@ -781,6 +761,124 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
       L_output.L_timeEndReached = true;
     }
     break;
+  case E_ADAS_DM_DJ_Opt1Path3:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path3,
+                                       KaADAS_t_Opt1Path3Remaining,
+                                       KaADAS_Deg_Opt1Path3,
+                                       KaADAS_l_Opt1Path3_X,
+                                       KaADAS_l_Opt1Path3_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path3[KnADAS_t_Opt1Path3.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
+  case E_ADAS_DM_DJ_Opt2Path1:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt2Path1,
+                                       KaADAS_t_Opt2Path1Remaining,
+                                       KaADAS_Deg_Opt2Path1,
+                                       KaADAS_l_Opt2Path1_X,
+                                       KaADAS_l_Opt2Path1_Y);
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt2Path1[KnADAS_t_Opt2Path1.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt2Path2:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt2Path2,
+                                       KaADAS_t_Opt2Path2Remaining,
+                                       KaADAS_Deg_Opt2Path2,
+                                       KaADAS_l_Opt2Path2_X,
+                                       KaADAS_l_Opt2Path2_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt2Path2[KnADAS_t_Opt2Path2.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt2Path3:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt2Path3,
+                                       KaADAS_t_Opt2Path3Remaining,
+                                       KaADAS_Deg_Opt2Path3,
+                                       KaADAS_l_Opt2Path3_X,
+                                       KaADAS_l_Opt2Path3_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt2Path3[KnADAS_t_Opt2Path3.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
+  case E_ADAS_DM_DJ_Opt3Path1:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path1,
+                                       KaADAS_t_Opt3Path1Remaining,
+                                       KaADAS_Deg_Opt3Path1,
+                                       KaADAS_l_Opt3Path1_X,
+                                       KaADAS_l_Opt3Path1_Y);
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path1[KnADAS_t_Opt3Path1.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt3Path2:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path2,
+                                       KaADAS_t_Opt3Path2Remaining,
+                                       KaADAS_Deg_Opt3Path2,
+                                       KaADAS_l_Opt3Path2_X,
+                                       KaADAS_l_Opt3Path2_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path2[KnADAS_t_Opt3Path2.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt3Path3:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path3,
+                                       KaADAS_t_Opt3Path3Remaining,
+                                       KaADAS_Deg_Opt3Path3,
+                                       KaADAS_l_Opt3Path3_X,
+                                       KaADAS_l_Opt3Path3_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path3[KnADAS_t_Opt3Path3.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt3Path4:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path4,
+                                       KaADAS_t_Opt3Path4Remaining,
+                                       KaADAS_Deg_Opt3Path4,
+                                       KaADAS_l_Opt3Path4_X,
+                                       KaADAS_l_Opt3Path4_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path4[KnADAS_t_Opt3Path4.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt3Path5:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path5,
+                                       KaADAS_t_Opt3Path5Remaining,
+                                       KaADAS_Deg_Opt3Path5,
+                                       KaADAS_l_Opt3Path5_X,
+                                       KaADAS_l_Opt3Path5_Y);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path5[KnADAS_t_Opt3Path5.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
     default:
       LaLU_d_CalcedVals.L_valX = 0;
       LaLU_d_CalcedVals.L_valY = 0;
@@ -793,8 +891,8 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
   {
     // Need to flip X and Angle for Red side:
-    LeLU_l_X_Loc *= -1;
-    LeLU_Deg_Ang *= -1;
+    LaLU_d_CalcedVals.L_valX *= -1;
+    LaLU_d_CalcedVals.L_valDeg *= -1;
   }
 
   // frc::SmartDashboard::PutNumber("x val", LaLU_d_CalcedVals.L_valX);
