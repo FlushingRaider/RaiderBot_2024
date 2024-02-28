@@ -101,6 +101,7 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDrivePath4,
   E_ADAS_AutonDrivePath5,
   E_ADAS_AutonDrivePath6,
+  E_ADAS_AutonDrivePath7,
   E_ADAS_AutonOpt1
 } T_ADAS_ActiveAutonFeature;
 
