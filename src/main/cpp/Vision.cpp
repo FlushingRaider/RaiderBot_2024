@@ -61,7 +61,7 @@ std::vector<std::pair<frc::Pose3d, double>> L_VisCamResults = {};
 double Ve_Vis_VisionCenteredCounter = 0.0;
 bool Le_Vis_VisionCentered = false;
 double VeVis_deg_VisionYaw = 0.0;
-bool *VeVis_CenteringEnable = false;
+bool VeVis_CenteringEnable = false;
 
 
 /******************************************************************************
