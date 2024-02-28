@@ -13,6 +13,7 @@
 #include <frc/DriverStation.h>
 #include "Lookup.hpp"
 #include <math.h>
+#include "Const.hpp"
 
 RobotUserInput VsCONT_s_DriverInput;
 
@@ -102,22 +103,24 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   bool LeCONT_b_SPK_Intake = false;
   bool LeCONT_b_SPK_PreScore = false;
   bool LeCONT_b_SPK_Score = false;
-  bool LeCONT_b_CLMR_Init = false;
+  double LeCONT_Pct_Man_CLMR = 0.0;
 
-  VsCONT_s_DriverInput.b_Amp_DrivingPosition         = LeCONT_b_Driver2ButtonB; // Controller 2, B button Will be used to bring Everything into their position for when the robot is moving COMPETION BUTTON
-  VsCONT_s_DriverInput.b_Spk_IntakeForward_Test      = LeCONT_b_Driver2ButtonY;
-  VsCONT_s_DriverInput.b_Amp_Intake                  = LeCONT_b_Driver2ButtonY;
+
+  VsCONT_s_DriverInput.b_Amp_DrivingPosition         = LeCONT_b_Driver2ButtonB; // COMP - Controller 2, B button brings the Amp mechanism into driver position
+  VsCONT_s_DriverInput.b_Spk_IntakeForward_Test      = LeCONT_b_Driver2ButtonY; // TEST - Controller 2, Y button tests the intake going foward so intaking a note
+  VsCONT_s_DriverInput.b_Amp_Intake                  = LeCONT_b_Driver2ButtonY; // COMP - Controller 2, Y
   VsCONT_s_DriverInput.b_Spk_IntakeBackward_Test     = LeCONT_b_Driver2ButtonA; // Controller 2, A button (1), (robot.cpp) intake in TEST BUTTON
   VsCONT_s_DriverInput.b_Amp_PreScore                = LeCONT_b_Driver2ButtonA;
   VsCONT_s_DriverInput.b_Amp_Score                   = LeCONT_b_Driver2ButtonX;
   VsCONT_s_DriverInput.b_ResetEnocders               = LeCONT_b_Driver2ButtonStart; // controller 2 start button (8), (robot.cpp) Starts robot shooter speed based on distance
   // VsCONT_s_DriverInput.pct_RightHookDown_Test           = LeCont_Pct_Driver2AxisRB;
   // VsCONT_s_DriverInput.pct_LeftHookDown_Test            = LeCont_Pct_Driver2AxisLB;
-  VsCONT_s_DriverInput.b_CLMR_MidClimb               = LeCONT_b_Driver2ButtonRB;   // Boolean is being written to float
+  VsCONT_s_DriverInput.b_CLMR_Init               = LeCONT_b_Driver2ButtonRB;   // Boolean is being written to float
   VsCONT_s_DriverInput.b_CLMR_FullExtend             = LeCONT_b_Driver2ButtonLB; // Boolean is being written to float
   VsCONT_s_DriverInput.Pct_Shooter1_Test             = LeCONT_Pct_Driver2RightAxisX;
   VsCONT_s_DriverInput.Pct_Shooter2_Test             = LeCONT_Pct_Driver2LeftAxisY;
 
+ /*Tests the climber hooks - in test mode*/
   if (LeCONT_b_Driver2ButtonB == true)
   {
     LeCONT_Pct_Amp_Intake_Test = 1;
@@ -148,21 +151,12 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
     LeCONT_Pct_CLMR_Right_Test = -LeCont_Pct_Driver2AxisRB; // ToDo: I think this direction flip is correct, need to verify
   }
  
-  if (LeCont_Pct_Driver2AxisRB == true)
-  {
-    LeCONT_b_CLMR_Init = true;
-  }
 
   VsCONT_s_DriverInput.pct_RightHook_Test = LeCONT_Pct_CLMR_Right_Test;
 
-  if (LeCONT_b_Driver2ButtonRB == true)
-  {
-  }
 
-  if (LeCONT_b_Driver2ButtonLB == true)
-  {
-  }
-
+/*Test for amp's elevator and wrist motors - test mode*/
+/*controls the Speaker using D-pad - teleop mode*/
   if (LeCONT_Deg_Driver2POV == 0)
   {
     LeCONT_Pct_Amp_Wrist_Test = 1.0;
@@ -187,8 +181,20 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   VsCONT_s_DriverInput.b_SPK_DrivingPosition = LeCONT_b_SPK_Driving;
   VsCONT_s_DriverInput.b_SPK_PreScore = LeCONT_b_SPK_PreScore;
   VsCONT_s_DriverInput.b_SPK_Score = LeCONT_b_SPK_Score;
-  VsCONT_s_DriverInput.b_CLMR_Init = LeCONT_b_CLMR_Init;
 
   VsCONT_s_DriverInput.Pct_Amp_Wrist_Test = LeCONT_Pct_Amp_Wrist_Test;
   VsCONT_s_DriverInput.Pct_Amp_Elevator_Test = LeCONT_Pct_Amp_Elevator_Test;
+
+/* Manual Climb controls on the comp bot*/
+  if (LeCont_Pct_Driver2AxisRB > KeCLMR_Pct_CntrlDb)
+    {
+      LeCONT_Pct_Man_CLMR = -LeCont_Pct_Driver2AxisRB;
+    }
+
+  if (LeCont_Pct_Driver2AxisLB > KeCLMR_Pct_CntrlDb)
+    {
+      LeCONT_Pct_Man_CLMR = LeCont_Pct_Driver2AxisLB;
+    }
+
+  VsCONT_s_DriverInput.Pct_Manual_CLMR = LeCONT_Pct_Man_CLMR;
 }

@@ -151,6 +151,7 @@ struct RobotUserInput
   bool b_CLMR_MidClimb;
   bool b_CLMR_FullExtend;
   bool b_CLMR_Init;
+  double Pct_Manual_CLMR;
 
 
   bool b_goToSpeaker;
