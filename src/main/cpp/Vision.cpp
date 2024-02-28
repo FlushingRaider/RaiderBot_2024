@@ -17,7 +17,7 @@ frc::AprilTagFieldLayout L_Vis_Layout = frc::LoadAprilTagLayoutField(frc::AprilT
 // cameras are defined as shared pointers like so:
 photon::PhotonCamera L_FrontCam = photon::PhotonCamera("FrontCam");
 
-// photon::PhotonCamera L_LeftCam = photon::PhotonCamera("LeftCam");
+photon::PhotonCamera L_LeftCam = photon::PhotonCamera("LeftCam");
 
 photon::PhotonCamera L_RightCam = photon::PhotonCamera("RightCam");
 
@@ -42,6 +42,12 @@ photon::PhotonPoseEstimator FrontPoseEstimator = photon::PhotonPoseEstimator{
     std::move(L_FrontCam),
     L_robotToFrontCam};
 
+photon::PhotonPoseEstimator LeftPoseEstimator = photon::PhotonPoseEstimator{
+    L_Vis_Layout,
+    photon::LOWEST_AMBIGUITY,
+    std::move(L_LeftCam),
+    L_robotToLeftCam};
+
 photon::PhotonPoseEstimator RightPoseEstimator = photon::PhotonPoseEstimator{
     L_Vis_Layout,
     photon::LOWEST_AMBIGUITY,
@@ -51,7 +57,8 @@ photon::PhotonPoseEstimator RightPoseEstimator = photon::PhotonPoseEstimator{
 // cameras is a vector of pairs of (camera obj, camera position)
 std::vector<photon::PhotonPoseEstimator> Estimators{
     FrontPoseEstimator,
-    RightPoseEstimator};
+    RightPoseEstimator,
+    LeftPoseEstimator};
 
 const frc::Pose3d BlankPose = frc::Pose3d(0.0_m, 0.0_m, 0.0_m, frc::Rotation3d(0.0_rad, 0.0_rad, 0.0_rad));
 
@@ -63,7 +70,6 @@ bool Le_Vis_VisionCentered = false;
 double VeVis_deg_VisionYaw = 0.0;
 bool VeVis_CenteringEnable = false;
 
-
 /******************************************************************************
  * Function:     VisionInit
  *
@@ -72,7 +78,7 @@ bool VeVis_CenteringEnable = false;
 void VisionInit()
 {
     // setup our results to have the same number of spots as we have estimators
-    L_VisCamResults.assign(Estimators.size(), std::make_pair(BlankPose, 255.0));
+    L_VisCamResults.assign(Estimators.size(), std::make_pair(BlankPose, std::numeric_limits<double_t>::max()));
 }
 
 // a debug value to see how many checks have passed
@@ -118,14 +124,14 @@ void VisionRun()
         {
             // if we have no target still fill the results with a blank pose and a maximum ambiguity
             L_VisCamResults[L_CamIndex].first = BlankPose;
-            L_VisCamResults[L_CamIndex].second = 255.0;
+            L_VisCamResults[L_CamIndex].second = std::numeric_limits<double_t>::max();
         }
     }
-    frc::SmartDashboard::PutNumber("cam 0 ambiguity", L_VisCamResults[0].second);
-    frc::SmartDashboard::PutNumber("cam 1 ambiguity", L_VisCamResults[1].second);
+    // frc::SmartDashboard::PutNumber("cam 0 ambiguity", L_VisCamResults[0].second);
+    // frc::SmartDashboard::PutNumber("cam 1 ambiguity", L_VisCamResults[1].second);
 
-    frc::SmartDashboard::PutNumber("cam 0 x", L_VisCamResults[0].first.Translation().X().value());
-    frc::SmartDashboard::PutNumber("cam 1 x", L_VisCamResults[1].first.Translation().X().value());
+    // frc::SmartDashboard::PutNumber("cam 0 x", L_VisCamResults[0].first.Translation().X().value());
+    // frc::SmartDashboard::PutNumber("cam 1 x", L_VisCamResults[1].first.Translation().X().value());
 
     int L_bestCam = 0;
 
