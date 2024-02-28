@@ -27,6 +27,8 @@ TsCLMR_Sensor            VsCLMR_s_Sensors; // All of the sensor values for the s
 
 double                  VeCLMR_t_TransitionTime = 0;
 
+double                  VeCLMR_in_DesiredHeight = 0; 
+
 double                  VaCLMR_k_LeftPID_Gx[E_PID_SparkMaxCalSz];
 double                  VaCLMR_k_RightPID_Gx[E_PID_SparkMaxCalSz];
 
@@ -238,6 +240,8 @@ bool CmndStateReachedClimber(TeCLMR_CtrlStates LeCLMR_e_CmndState)
 
   if((VeCLMR_t_TransitionTime >= KeCLMR_t_StateTimeOut) ||
 
+      (LeCLMR_e_CmndState == E_CLMR_Ctrl_MidClimb) ||
+
      ((VsCLMR_s_Sensors.in_Left <= (KaCLMR_in_LeftPosition[LeCLMR_e_CmndState] + KaCLMR_in_LeftDb[LeCLMR_e_CmndState])) &&
       (VsCLMR_s_Sensors.in_Left >= (KaCLMR_in_LeftPosition[LeCLMR_e_CmndState] - KaCLMR_in_LeftDb[LeCLMR_e_CmndState])) &&
 
@@ -273,11 +277,28 @@ void UpdateCLMR_Actuators(TeCLMR_CtrlStates LeCLMR_e_CmndState,
     LeCLMR_ins_Rate = KeCLMR_ins_ExtendRate;
     }
 
-  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(KaCLMR_in_LeftPosition[LeCLMR_e_CmndState] / KeENC_k_CLMR_LeftRatio, 
+  if (LeCLMR_e_CmndState == E_CLMR_Ctrl_MidClimb)
+    {
+      VeCLMR_in_DesiredHeight += VsCONT_s_DriverInput.Pct_Manual_CLMR * KeCLMR_k_CntrlGx;
+      if (VeCLMR_in_DesiredHeight <= KaCLMR_in_LeftPosition[E_CLMR_Ctrl_Init])
+      {
+        VeCLMR_in_DesiredHeight = KaCLMR_in_LeftPosition[E_CLMR_Ctrl_Init];
+      }
+      else if (VeCLMR_in_DesiredHeight >= KaCLMR_in_LeftPosition[E_CLMR_Ctrl_FullExtend])
+      {
+        VeCLMR_in_DesiredHeight = KaCLMR_in_LeftPosition[E_CLMR_Ctrl_FullExtend];
+      }
+    }
+  else
+    {
+      VeCLMR_in_DesiredHeight = KaCLMR_in_LeftPosition[LeCLMR_e_CmndState];
+    }
+
+  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(VeCLMR_in_DesiredHeight / KeENC_k_CLMR_LeftRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left],
                                                             LeCLMR_ins_Rate);
 
-  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right] = RampTo(KaCLMR_in_RightPosition[LeCLMR_e_CmndState] / KeENC_k_CLMR_RightRatio, 
+  VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right] = RampTo(VeCLMR_in_DesiredHeight / KeENC_k_CLMR_RightRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Right],
                                                             LeCLMR_ins_Rate);
   }

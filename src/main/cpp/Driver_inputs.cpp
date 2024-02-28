@@ -13,6 +13,7 @@
 #include <frc/DriverStation.h>
 #include "Lookup.hpp"
 #include <math.h>
+#include "Const.hpp"
 
 RobotUserInput VsCONT_s_DriverInput;
 
@@ -185,14 +186,14 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   VsCONT_s_DriverInput.Pct_Amp_Elevator_Test = LeCONT_Pct_Amp_Elevator_Test;
 
 /* Manual Climb controls on the comp bot*/
-  if (LeCont_Pct_Driver2AxisRB > 0.01)
+  if (LeCont_Pct_Driver2AxisRB > KeCLMR_Pct_CntrlDb)
     {
-      LeCONT_Pct_Man_CLMR = -1.0;
+      LeCONT_Pct_Man_CLMR = -LeCont_Pct_Driver2AxisRB;
     }
 
-  if (LeCont_Pct_Driver2AxisLB > 0.01)
+  if (LeCont_Pct_Driver2AxisLB > KeCLMR_Pct_CntrlDb)
     {
-      LeCONT_Pct_Man_CLMR = 1.0;
+      LeCONT_Pct_Man_CLMR = LeCont_Pct_Driver2AxisLB;
     }
 
   VsCONT_s_DriverInput.Pct_Manual_CLMR = LeCONT_Pct_Man_CLMR;

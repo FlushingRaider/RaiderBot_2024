@@ -724,6 +724,11 @@ const double KeCLMR_ins_LiftRate = 0.2;
 /* KeCLMR_ins_ExtendRate: Rate at which the arms will extend up. */
 const double KeCLMR_ins_ExtendRate = 0.6;
 
+/*KeCLMR_Pct_CntrlDb: Deadband for manual control of the climber hooks. */
+const double KeCLMR_Pct_CntrlDb = 0.05;
+
+const double KeCLMR_k_CntrlGx = 0.04;
+
 /* KaCLMR_in_LeftPosition: Sets left climber position for each state */
 const double KaCLMR_in_LeftPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
                                                             0.0,  // Sched - E_CLMR_Ctrl_MidClimb
