@@ -9,6 +9,7 @@
 
 #include <fmt/core.h>
 #include <frc/DriverStation.h>
+#include <cameraserver/CameraServer.h>
 
 #include "Encoders.hpp"
 #include "Gyro.hpp"
@@ -21,6 +22,7 @@
 #include "Climber.hpp"
 #include "ADAS_DJ.hpp"
 #include "DataLogger.hpp"
+#include "Vision.hpp"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -66,23 +68,14 @@ void Robot::RobotMotorCommands()
   }
 
 #ifdef Bot2024
-  // m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
-  // m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
-  // m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
+  m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
+  m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition);
+  m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
   m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
   m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
-  // m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
-  // m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
-
-  m_Elevator.Set(0.0);
-  m_Wrist.Set(0.0);
-  m_Intake.Set(0.0);
- // m_Underbelly.Set(0.0);
- // m_Shooter1.Set(0.0);
- // m_Shooter2.Set(0.0);
-  m_ClimberLeft.Set(0.0);
-  m_ClimberRight.Set(0.0);
+  m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
+  m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
 #else
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
@@ -115,7 +108,12 @@ void Robot::RobotInit()
                      m_encoderRearRightDrive,
                      m_encoderRearLeftDrive);
 
+
+  frc::CameraServer::StartAutomaticCapture();
+
   GyroInit();
+
+  VisionInit();
 
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -140,6 +138,8 @@ void Robot::RobotInit()
   m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
+  m_WristreverseLimit.EnableLimitSwitch(false);
+
   SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
                               m_frontRightDrivePID,
                               m_rearLeftDrivePID,
@@ -158,6 +158,8 @@ void Robot::RobotInit()
 
   CLMR_MotorConfigsInit(m_ClimberLeftPID,
                         m_ClimberRightPID);
+
+  ADAS_DJ_Reset();
 
   Amp_ControlInit();
   SPK_ControlInit();
@@ -240,8 +242,10 @@ void Robot::RobotPeriodic()
                          &VaENC_In_WheelDeltaDistance[0],
                          VsCONT_s_DriverInput.b_ZeroGyro);
 
-  frc::SmartDashboard::PutNumber("Odom x", VeODO_In_RobotDisplacementX);
-  frc::SmartDashboard::PutNumber("Odom y", VeODO_In_RobotDisplacementY);
+
+
+
+  VisionRun(false);
 
   ADAS_DetermineMode();
 
@@ -364,6 +368,7 @@ void Robot::AutonomousInit()
   {
     /* If we were in "test state", the motors may have been moved from there initialized position,
        we need to rezero all of the encoders/sensors */
+    ADAS_DJ_Reset();
     Amp_ControlInit();
     SPK_ControlInit();
     CLMR_ControlInit();
@@ -404,6 +409,7 @@ void Robot::TeleopInit()
   {
     /* If we were in "test state", the motors may have been moved from there initialized position,
        we need to rezero all of the encoders/sensors */
+    ADAS_DJ_Reset();
     Amp_ControlInit();
     SPK_ControlInit();
     CLMR_ControlInit();
@@ -420,14 +426,22 @@ void Robot::TeleopInit()
  ******************************************************************************/
 void Robot::TeleopPeriodic()
 {
-
   RobotMotorCommands();
 }
 
 
 void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() {}
+
+/******************************************************************************
+ * Function:     DisabledPeriodic
+ *
+ * Description:  Called during the disabled phase initiated on the driver station.
+ ******************************************************************************/
+void Robot::DisabledPeriodic()
+{
+
+}
 
 void Robot::TestInit() {}
 

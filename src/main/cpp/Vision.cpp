@@ -53,7 +53,7 @@ std::vector<photon::PhotonPoseEstimator> Estimators{
     FrontPoseEstimator,
     RightPoseEstimator};
 
-frc::Pose3d BlankPose = frc::Pose3d(0.0_m, 0.0_m, 0.0_m, frc::Rotation3d(0.0_rad, 0.0_rad, 0.0_rad));
+const frc::Pose3d BlankPose = frc::Pose3d(0.0_m, 0.0_m, 0.0_m, frc::Rotation3d(0.0_rad, 0.0_rad, 0.0_rad));
 
 // stores (found pose, )
 std::vector<std::pair<frc::Pose3d, double>> L_VisCamResults = {};
@@ -69,33 +69,34 @@ bool Le_Vis_VisionCentered = false;
 void VisionInit()
 {
     // setup our results to have the same number of spots as we have estimators
-    L_VisCamResults.assign(Estimators.size(), std::make_pair(BlankPose, 0.0));
+    L_VisCamResults.assign(Estimators.size(), std::make_pair(BlankPose, 255.0));
 }
 
 // a debug value to see how many checks have passed
-int Debug_tests_passed = 0;
 
 void VisionRun(bool L_DisableCentering)
 {
-    int L_bestCam = 0;
-
+    int Debug_tests_passed = 0;
     double L_outputX = 0.0;
     double L_outputY = 0.0;
 
     // time how long it's been since we had a good centering;
     if (Le_Vis_VisionCentered)
     {
-        Ve_Vis_VisionCenteredCounter += 0.02;
+        Ve_Vis_VisionCenteredCounter += C_ExeTime;
     }
 
-    if (Ve_Vis_VisionCenteredCounter >= 6.0)
+    if (Ve_Vis_VisionCenteredCounter >= KeVIS_t_VisionTimeout)
     {
+        Ve_Vis_VisionCenteredCounter = 0.0;
         Le_Vis_VisionCentered = false;
         Debug_tests_passed = 0;
     }
 
-    frc::SmartDashboard::PutNumber("slot #", L_VisCamResults.size());
-    frc::SmartDashboard::PutNumber("cam #", Estimators.size());
+    frc::SmartDashboard::PutNumber("vision centered counter", Ve_Vis_VisionCenteredCounter);
+
+    // frc::SmartDashboard::PutNumber("slot #", L_VisCamResults.size());
+    // frc::SmartDashboard::PutNumber("cam #", Estimators.size());
     // frc::SmartDashboard::PutBoolean("emtpy lists", Estimators.empty());
 
     // loop through our list of cameras
@@ -109,70 +110,77 @@ void VisionRun(bool L_DisableCentering)
         {
             L_VisCamResults[L_CamIndex].first = L_Vis_CurrentCamPose.value().estimatedPose;
             L_VisCamResults[L_CamIndex].second = Estimators[L_CamIndex].GetCamera().get()->GetLatestResult().GetBestTarget().GetPoseAmbiguity();
-
-            frc::SmartDashboard::PutNumber("incoming ambiguity", Estimators[L_CamIndex].GetCamera().get()->GetLatestResult().GetBestTarget().GetPoseAmbiguity());
-
+        }
+        else
+        {
+            // if we have no target still fill the results with a blank pose and a maximum ambiguity
+            L_VisCamResults[L_CamIndex].first = BlankPose;
+            L_VisCamResults[L_CamIndex].second = 255.0;
         }
     }
-    frc::SmartDashboard::PutNumber("cam 1 ambiguity", L_VisCamResults[0].second);
-    frc::SmartDashboard::PutNumber("cam 2 ambiguity", L_VisCamResults[1].second);
+    frc::SmartDashboard::PutNumber("cam 0 ambiguity", L_VisCamResults[0].second);
+    frc::SmartDashboard::PutNumber("cam 1 ambiguity", L_VisCamResults[1].second);
 
-    frc::SmartDashboard::PutNumber("cam 1 x", L_VisCamResults[0].first.Translation().X().value());
-    frc::SmartDashboard::PutNumber("cam 2 x", L_VisCamResults[1].first.Translation().X().value());
+    frc::SmartDashboard::PutNumber("cam 0 x", L_VisCamResults[0].first.Translation().X().value());
+    frc::SmartDashboard::PutNumber("cam 1 x", L_VisCamResults[1].first.Translation().X().value());
+
+    int L_bestCam = 0;
 
     // loop through our newly found results
     for (unsigned camResultIndex = 0; camResultIndex < L_VisCamResults.size(); camResultIndex++)
     {
-
-        if (L_VisCamResults[camResultIndex + 1].second <= L_VisCamResults[camResultIndex].second)
+        if (L_VisCamResults[camResultIndex].second <= L_VisCamResults[L_bestCam].second)
         {
-            L_bestCam = camResultIndex + 1;
+            L_bestCam = camResultIndex;
         }
     }
+
     frc::SmartDashboard::PutNumber("Best cam", L_bestCam);
+
+    L_outputX = L_VisCamResults[L_bestCam].first.Translation().X().value(); // this returns in meters
+    L_outputX *= C_MeterToIn;                                               // convert to inches
+    L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
+    L_outputY *= C_MeterToIn;
+
+    frc::SmartDashboard::PutNumber("vision out x", L_outputX);
+
+    frc::SmartDashboard::PutNumber("vision out y", L_outputY);
+
     // we need to wait at least 2 seconds before centering, we're probably fine in those 2 seconds
     // or maybe we haven't centered at all
-    // if ((Ve_Vis_VisionCenteredCounter >= 2.0) || (Le_Vis_VisionCentered == false))
-    // {
-    //     Debug_tests_passed++;
-    //     if (L_VisCamResults[L_bestCam].second >= KeAmbiguityThreshold)
-    //     {
-    //         Debug_tests_passed++;
+    if ((Ve_Vis_VisionCenteredCounter >= 2.0) || (Le_Vis_VisionCentered == false))
+    {
+        Debug_tests_passed++;
+        if (L_VisCamResults[L_bestCam].second <= KeVIS_AmbiguityThreshold)
+        {
+            Debug_tests_passed++;
 
-    //         if ((L_outputX > 0.0) && (L_outputY > 0.0) && (L_outputX < KeMaxX) // sanity check theat we are in the bounds of the field
-    //             && (L_outputY < KeMaxY))
-    //         {
-    //             Debug_tests_passed++;
+            if ((L_outputX > 0.0) && (L_outputY > 0.0) && (L_outputX < KeVIS_in_MaxX) // sanity check theat we are in the bounds of the field
+                && (L_outputY < KeVIS_in_MaxY))
+            {
+                Debug_tests_passed++;
 
-    //             // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
-    //             //  we probably have to be a little below max speed to trust cam updating
-    //             if ((fabs(VeODO_In_DeltaX) < 1.0) && (fabs(VeODO_In_DeltaY) < 1.0))
-    //             {
-    //                 Debug_tests_passed++;
+                // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
+                //  we probably have to be a little below max speed to trust cam updating
+                if ((fabs(VeODO_In_DeltaX) < KeVis_dIn_DeltaThreshold) && (fabs(VeODO_In_DeltaY) < KeVis_dIn_DeltaThreshold))
+                {
+                    Debug_tests_passed++;
 
-    //                 // even if everything passes we can manually say no
-    //                 if (L_DisableCentering)
-    //                 {
-    //                     Debug_tests_passed++;
+                    // even if everything passes we can manually say no
+                    if (!L_DisableCentering)
+                    {
+                        Debug_tests_passed++;
 
-    //                     L_outputX = L_VisCamResults[L_bestCam].first.Translation().X().value(); // this returns in meters
-    //                     L_outputX *= C_MeterToIn;
-    //                     L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
-    //                     L_outputY *= C_MeterToIn;
+                        // OdometryInitToArgs(L_outputX, L_outputY);
 
-    //                     // OdometryInitToArgs(L_outputX, L_outputY);
-
-    //                     frc::SmartDashboard::PutNumber("vision out x", L_outputX);
-
-    //                     frc::SmartDashboard::PutNumber("vision out y", L_outputY);
-
-    //                     Le_Vis_VisionCentered = true;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+                        Le_Vis_VisionCentered = true;
+                    }
+                }
+            }
+        }
+    }
 
     frc::SmartDashboard::PutNumber("Debug: Vision tests passed", Debug_tests_passed);
+    frc::SmartDashboard::PutBoolean("vision centred", Le_Vis_VisionCentered);
 }
 #endif

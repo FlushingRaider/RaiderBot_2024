@@ -36,7 +36,7 @@ double VeAmp_t_TransitionTime = 0;
 bool VeAmp_b_Hold = false; // Used for the holding power.
 double VeAmp_t_HoldTime = 0;
 
-#ifdef Amp_Test
+#ifdef AMP_Test
 bool VeAmp_b_TestState = true; // temporary, we don't want to use the manual overrides
 #else
 bool VeAmp_b_TestState = false;
@@ -225,12 +225,16 @@ void Amp_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
     VsAmp_s_Motors.k_MotorTestPower[LeMAN_i_Index] = 0.0;
   }
 
-  VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake] = LsCONT_s_DriverInput->Pct_Amp_Intake_Test * KaDJ_Amp_k_TestPower[E_Amp_Intake];
-
+  if ((VsAmp_s_Sensors.b_Amp_ObjDetected == false))
+  {
+    /* Don't allow the intake to progress downward if the limit switch is depressed */
+    VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake] = LsCONT_s_DriverInput->Pct_Amp_Intake_Test * KaDJ_Amp_k_TestPower[E_Amp_Intake];
+  }
+  frc::SmartDashboard::PutNumber("IntakePwr", VsAmp_s_Motors.k_MotorTestPower[E_Amp_Intake]);
   VsAmp_s_Motors.k_MotorTestPower[E_Amp_Wrist] = LsCONT_s_DriverInput->Pct_Amp_Wrist_Test * KaDJ_Amp_k_TestPower[E_Amp_Wrist];
 
   if ((VsAmp_s_Sensors.b_ElevatorSwitch == false) ||
-      (LsCONT_s_DriverInput->Pct_Amp_Elevator_Test > 0))
+      (LsCONT_s_DriverInput->Pct_Amp_Elevator_Test < 0))
   {
     /* Don't allow the elevator to progress downward if the limit switch is depressed */
     VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator] = LsCONT_s_DriverInput->Pct_Amp_Elevator_Test * KaDJ_Amp_k_TestPower[E_Amp_Elevator]; 
@@ -314,7 +318,7 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
                                                        VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                        LeAmp_DegS_WristRate);
 
-  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_Score];
+  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[LeDJ_Amp_e_CmndState];
 }
 
 /******************************************************************************

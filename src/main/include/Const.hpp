@@ -459,10 +459,11 @@ const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS 
 
 /* KaMAN_e_ControllingTable: Table that contains the commanded state of the manipulator and intake based on the current attained state and schedueld state. */
 const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Sched][Attnd]
-    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,    E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,  E_DJ_Amp_Intake,  E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Score,   E_DJ_Amp_Driving, E_DJ_Amp_Score}};
+    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,    E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,  E_DJ_Amp_Intake, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving, E_DJ_Amp_PreScore, E_DJ_Amp_PreScore},
+     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,   E_DJ_Amp_Driving, E_DJ_Amp_Score, E_DJ_Amp_Score}};
 
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
@@ -506,7 +507,7 @@ const double KaDJ_Amp_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
 /* KaDJ_Amp_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
 const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {0.10,  // E_Amp_Elevator 
                                                0.10,  // E_Amp_Wrist
-                                               0.10}; // E_Amp_Intake
+                                               0.40}; // E_Amp_Intake
 
 /* KeDJ_Amp_t_StateTimeOut: Sets transition time out. */
 const double KeDJ_Amp_t_StateTimeOut = 120.0; // Drop-off //NOTE - will need to be changed for new bot
@@ -521,44 +522,51 @@ const double KeAmp_t_IntakeOnTm = 0.5; //NOTE - set calibration time
 const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = {0.0,   // Sched - Init
                                                             0.0,   // Sched - Driving
                                                             -0.45, // Sched - Main Intake
+                                                            0.0,   // Sched - PreScore
                                                             0.45}; // Sched - Score
 
 /* KaDJ_Amp_Deg_WristAngle: sets Wrist final positons for each state */
-const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {0.00,  // Sched - Init
-                                                           0.00,  // Sched - Driving
-                                                           0.00,  // Sched -  Intake
-                                                           0.00}; // Sched - Score
+const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {  0.00,  // Sched - Init
+                                                            31.00,  // Sched - Driving
+                                                           122.00,  // Sched -  Intake
+                                                           95.00,  // Sched - PreScore
+                                                           95.00}; // Sched - Score
                                                                   // NOTE - need to be calibrated and set
 /* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
 const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched - Init
                                                                 0.0,  // Sched - Driving
                                                                 0.0,  // Sched - Intake
-                                                                0.0}; // Sched - Score
+                                                                12.32,  // Sched - PreScore
+                                                                12.32}; // Sched - Score
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
 const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
                                                         2.0,  // Sched - Driving
                                                         2.0,  // Sched - Intake
+                                                        2.0,  // Sched - PreScore
                                                         2.0}; // Sched - Score //NOTE - all these may need to be edited for comp bot
 
 /* KaDJ_Amp_In_ElevatorDb: Sets Elevator dead band. */
 const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
                                                           1.0,  // Sched - Driving
                                                           1.0,  // Sched - Intake
+                                                          1.0,  // Sched - PreScore
                                                           1.0}; // Sched - Score
 
 /* KaMAN_InS_LinearSlideRate: Table that contains the linear slide transition rate. */
 const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
-    {{2.0, 2.0, 2.0, 2.0},
-     {2.0, 2.0, 2.0, 2.0},
-     {2.0, 2.0, 2.0, 2.0},
-     {2.0, 2.0, 2.0, 2.0}};
+    {{1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1}};
 
 const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
-    {{1.0, 1.0, 1.0, 1.0},
-     {1.0, 1.0, 1.0, 1.0},
-     {1.0, 1.0, 1.0, 1.0},
-     {1.0, 1.0, 1.0, 1.0}};
+    {{0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 1.0, 0.3, 0.3},
+     {1.0, 1.0, 1.0, 1.0, 1.0},
+     {0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 0.3, 0.3, 0.3}};
 
 
 // Encoder / speed calculation related cals
@@ -711,20 +719,20 @@ const double KaCLMR_k_RightPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0};     // kAllErr
 
 /* KeCLMR_ins_LiftRate: Rate at which the arms will pull the robot up. */
-const double KeCLMR_ins_LiftRate = 1.0;
+const double KeCLMR_ins_LiftRate = 0.2;
 
 /* KeCLMR_ins_ExtendRate: Rate at which the arms will extend up. */
-const double KeCLMR_ins_ExtendRate = 6.0;
+const double KeCLMR_ins_ExtendRate = 0.6;
 
 /* KaCLMR_in_LeftPosition: Sets left climber position for each state */
 const double KaCLMR_in_LeftPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
-                                                            100.0,  // Sched - E_CLMR_Ctrl_MidClimb
-                                                            800.0}; // Sched - E_CLMR_Ctrl_FullExtend
+                                                            0.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                            13.50}; // Sched - E_CLMR_Ctrl_FullExtend
 
 /* KaCLMR_in_RightPosition: Sets right climber position for each state */
 const double KaCLMR_in_RightPosition[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - E_CLMR_Ctrl_Init
-                                                             100.0,  // Sched - E_CLMR_Ctrl_MidClimb
-                                                             800.0}; // Sched - E_CLMR_Ctrl_FullExtend
+                                                             0.0,  // Sched - E_CLMR_Ctrl_MidClimb
+                                                             13.5}; // Sched - E_CLMR_Ctrl_FullExtend
 
 /* KaCLMR_in_LeftDb: Sets left deadband */
 const double KaCLMR_in_LeftDb[E_SPK_Ctrl_StateSz] = {2.0,  // Sched - E_CLMR_Ctrl_Init
@@ -737,7 +745,7 @@ const double KaCLMR_in_RightDb[E_SPK_Ctrl_StateSz] = {2.0,  // Sched - E_CLMR_Ct
                                                       2.0}; // Sched - E_CLMR_Ctrl_FullExtend
 
 /* KeCLMR_t_StateTimeOut: Sets transition time out. */
-const double KeCLMR_t_StateTimeOut = 4.0;
+const double KeCLMR_t_StateTimeOut = 30.0;
 
 /* KaCLMR_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
 const double KaCLMR_k_TestPower[E_CLMR_m_Sz] = { 0.1, // E_CLMR_m_Left
@@ -758,6 +766,8 @@ const double KeSPK_t_ShooterOnTm = 0.5; //NOTE - set calibration time
 
 
 /////////////////*Vision configs*//////////////////////
-const double KeAmbiguityThreshold = 0.2;
-const double KeMaxY = 323.25;
-const double KeMaxX = 651.25;
+const double KeVIS_AmbiguityThreshold = 0.2;
+const double KeVIS_in_MaxY = 323.25;
+const double KeVIS_in_MaxX = 651.25;
+const double KeVIS_t_VisionTimeout = 6.0;
+const double KeVis_dIn_DeltaThreshold = 1.0;
