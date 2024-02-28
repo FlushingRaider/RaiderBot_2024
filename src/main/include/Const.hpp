@@ -193,8 +193,8 @@ const double K_SD_WheelSpeedPID_V2_Gx[E_PID_SparkMaxCalSz] = {0.000350, // kP
                                                               0.0};     // kAllErr
 
 /* K_SD_WheelAnglePID_Gx: PID gains for the angle of the swerve drive wheels.  PID control is within the RoboRio.  */
-const double K_SD_WheelAnglePID_Gx[E_PID_CalSz] = {0.0035,   // P Gx  0.002
-                                                   0.000001, // I Gx 0.000001
+const double K_SD_WheelAnglePID_Gx[E_PID_CalSz] = {0.003,   // P Gx  0.002
+                                                   0.000003, // I Gx 0.000001
                                                    0.000005, // D Gx 0.0000005
                                                    1.0,      // P UL 0.6
                                                    -1.0,     // P LL -0.4

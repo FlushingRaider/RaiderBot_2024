@@ -165,10 +165,10 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   double LeADAS_e_RequestedY = 0.0;
   double LeADAS_e_RequestedYaw = 0.0;
 
-  if (VsCONT_s_DriverInput.b_goToSpeaker == true)
-  {
-    VeADAS_b_SpeakerMoveActive = true; // this will be set to false when the state is compelete
-  }
+  // if (VsCONT_s_DriverInput.b_goToSpeaker == true)
+  // {
+  //   VeADAS_b_SpeakerMoveActive = true; // this will be set to false when the state is compelete
+  // }
 
   frc::SmartDashboard::PutNumber("auton sub feature", (int)LeADAS_e_ActiveFeature);
   frc::SmartDashboard::PutBoolean("State Complete", VeADAS_b_StateComplete);
@@ -181,21 +181,21 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   /* First, let's determine what we are going to do: */
   if (LeADAS_e_RobotState == E_Teleop)
   {
-    if (VeADAS_b_SpeakerMoveActive)
-    {
-      if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
-      {
-        LeADAS_e_RequestedX = C_in_RedSpeakerCoords.first;
-        LeADAS_e_RequestedY = C_in_RedSpeakerCoords.second;
-      }
-      else if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kBlue)
-      {
-        LeADAS_e_RequestedX = C_in_BlueSpeakerCoords.first;
-        LeADAS_e_RequestedY = C_in_BlueSpeakerCoords.second;
-      }
-      LeADAS_e_RequestedYaw = 0.0; // we wanna look straight at it
-      LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
-    }
+    // if (VeADAS_b_SpeakerMoveActive)
+    // {
+    //   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
+    //   {
+    //     LeADAS_e_RequestedX = C_in_RedSpeakerCoords.first;
+    //     LeADAS_e_RequestedY = C_in_RedSpeakerCoords.second;
+    //   }
+    //   else if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kBlue)
+    //   {
+    //     LeADAS_e_RequestedX = C_in_BlueSpeakerCoords.first;
+    //     LeADAS_e_RequestedY = C_in_BlueSpeakerCoords.second;
+    //   }
+    //   LeADAS_e_RequestedYaw = 0.0; // we wanna look straight at it
+    //   LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
+    // }
 
     LeADAS_e_ActiveFeature = AbortCriteria(LeADAS_b_Driver1_JoystickActive, LeADAS_e_ActiveFeature);
   }
