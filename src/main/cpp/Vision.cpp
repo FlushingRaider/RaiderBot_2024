@@ -23,16 +23,16 @@ photon::PhotonCamera L_RightCam = photon::PhotonCamera("RightCam");
 
 // define a Transform3d value for the camera position on the bot
 frc::Transform3d L_robotToFrontCam =
-    frc::Transform3d(frc::Translation3d(0_in, 0_in, 8.5_in),
-                     frc::Rotation3d(0_deg, 0_deg, 0_deg));
+    frc::Transform3d(frc::Translation3d(-0.5_in, 0.5_in, 22.24_in),
+                     frc::Rotation3d(0_deg, 75_deg, 0_deg));
 // TODO - setup Right and Left cam locations, once mounts are better defined
 frc::Transform3d L_robotToLeftCam =
-    frc::Transform3d(frc::Translation3d(0_in, 0_in, 9_in),
-                     frc::Rotation3d(0_deg, 0_deg, 0_deg));
+    frc::Transform3d(frc::Translation3d(4.55_in, 12.75_in, 9.84_in),
+                     frc::Rotation3d(-55_deg, 0_deg, 0_deg));
 
 frc::Transform3d L_robotToRightCam =
-    frc::Transform3d(frc::Translation3d(0_in, 0_in, 9_in),
-                     frc::Rotation3d(0_deg, 0_deg, 0_deg));
+    frc::Transform3d(frc::Translation3d(4.55_in, -11.75_in, 9.84_in),
+                     frc::Rotation3d(55_deg, 0_deg, 0_deg));
 
 std::optional<photon::EstimatedRobotPose> L_Vis_CurrentCamPose;
 
@@ -153,10 +153,10 @@ void VisionRun()
     L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
     L_outputY *= C_MeterToIn;
 
-    frc::SmartDashboard::PutNumber("vision out x", L_outputX);
+    // frc::SmartDashboard::PutNumber("vision out x", L_outputX);
 
-    frc::SmartDashboard::PutNumber("vision out y", L_outputY);
-    frc::SmartDashboard::PutNumber("vision out yaw", VeVis_deg_VisionYaw);
+    // frc::SmartDashboard::PutNumber("vision out y", L_outputY);
+    // frc::SmartDashboard::PutNumber("vision out yaw", VeVis_deg_VisionYaw);
     // we need to wait at least 2 seconds before centering, we're probably fine in those 2 seconds
     // or maybe we haven't centered at all
     if ((Ve_Vis_VisionCenteredCounter >= 2.0) || (Le_Vis_VisionCentered == false))
