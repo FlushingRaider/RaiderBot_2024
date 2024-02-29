@@ -78,10 +78,15 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Score;
     }
+    else if (VsCONT_s_DriverInput.b_Amp_Trade_Off == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Trade_Off;
+    }
   }
 
   /* Overrides go here: */
-  if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Score)
+  if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Score ||
+      VeADAS_e_Amp_SchedState == E_DJ_Amp_Trade_Off)
   {
     if (VsAmp_s_Sensors.b_Amp_ObjDetected == true)
     {

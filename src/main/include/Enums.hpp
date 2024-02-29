@@ -214,6 +214,7 @@ typedef enum T_DJ_Amp_States
   E_DJ_Amp_Intake,
   E_DJ_Amp_PreScore,
   E_DJ_Amp_Score,
+  E_DJ_Amp_Trade_Off,
   E_DJ_Amp_State_Sz
 } T_DJ_Amp_States;
 

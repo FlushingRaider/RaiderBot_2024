@@ -354,6 +354,11 @@ void UpdateAmp_hold_Actuator(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
     {
     LeDJ_Amp_k_TempCmnd = KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_Score];
     }
+  else if ((LeDJ_Amp_e_AttndState == E_DJ_Amp_Trade_Off) &&
+           (LeDJ_Amp_e_CmndState == E_DJ_Amp_Trade_Off)) 
+    {
+    LeDJ_Amp_k_TempCmnd = KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_Trade_Off];
+    }
 
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = LeDJ_Amp_k_TempCmnd;
 }

@@ -113,9 +113,10 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   VsCONT_s_DriverInput.b_Amp_PreScore                = LeCONT_b_Driver2ButtonA;
   VsCONT_s_DriverInput.b_Amp_Score                   = LeCONT_b_Driver2ButtonX;
   VsCONT_s_DriverInput.b_ResetEnocders               = LeCONT_b_Driver2ButtonStart; // controller 2 start button (8), (robot.cpp) Starts robot shooter speed based on distance
+  VsCONT_s_DriverInput.b_Amp_Trade_Off               = LeCONT_b_Driver2ButtonStart;
   // VsCONT_s_DriverInput.pct_RightHookDown_Test           = LeCont_Pct_Driver2AxisRB;
   // VsCONT_s_DriverInput.pct_LeftHookDown_Test            = LeCont_Pct_Driver2AxisLB;
-  VsCONT_s_DriverInput.b_CLMR_Init               = LeCONT_b_Driver2ButtonRB;   // Boolean is being written to float
+  VsCONT_s_DriverInput.b_CLMR_Init                   = LeCONT_b_Driver2ButtonRB;   // Boolean is being written to float
   VsCONT_s_DriverInput.b_CLMR_FullExtend             = LeCONT_b_Driver2ButtonLB; // Boolean is being written to float
   VsCONT_s_DriverInput.Pct_Shooter1_Test             = LeCONT_Pct_Driver2RightAxisX;
   VsCONT_s_DriverInput.Pct_Shooter2_Test             = LeCONT_Pct_Driver2LeftAxisY;
@@ -188,12 +189,12 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
 /* Manual Climb controls on the comp bot*/
   if (LeCont_Pct_Driver2AxisRB > KeCLMR_Pct_CntrlDb)
     {
-      LeCONT_Pct_Man_CLMR = -LeCont_Pct_Driver2AxisRB;
+      LeCONT_Pct_Man_CLMR = LeCont_Pct_Driver2AxisRB;
     }
 
   if (LeCont_Pct_Driver2AxisLB > KeCLMR_Pct_CntrlDb)
     {
-      LeCONT_Pct_Man_CLMR = LeCont_Pct_Driver2AxisLB;
+      LeCONT_Pct_Man_CLMR = -LeCont_Pct_Driver2AxisLB;
     }
 
   VsCONT_s_DriverInput.Pct_Manual_CLMR = LeCONT_Pct_Man_CLMR;
