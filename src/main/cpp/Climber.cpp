@@ -19,7 +19,7 @@
 
 TeCLMR_CtrlStates VeCLMR_e_CmndState  = E_CLMR_Ctrl_Init; // What is our next/current step?
 TeCLMR_CtrlStates VeCLMR_e_AttndState = E_CLMR_Ctrl_Init; // What is our desired end state?
-TeCLMR_CtrlStates VeCLMR_e_SchedStatePrev = E_CLMR_Ctrl_Init; // What is our previous schedueled state?
+TeCLMR_CtrlStates VeCLMR_e_CmndStatePrev = E_CLMR_Ctrl_Init; // What is our previous commanded state?
 
 TeCLMR_MotorControl      VsCLMR_s_Motors; // All of the motor commands for the speaker motors
 TeCLMR_MotorControl      VsCLMR_s_MotorsTemp; // Temporary commands for the motors, not the final output
@@ -172,7 +172,7 @@ void CLMR_ControlInit()
   {
   VeCLMR_e_CmndState  = E_CLMR_Ctrl_Init;
   VeCLMR_e_AttndState = E_CLMR_Ctrl_Init;
-  VeCLMR_e_SchedStatePrev = E_CLMR_Ctrl_Init;
+  VeCLMR_e_CmndStatePrev = E_CLMR_Ctrl_Init;
 
   VeCLMR_b_CriteriaMet = false;
   VeCLMR_t_TransitionTime = 0.0;
@@ -211,7 +211,8 @@ bool UpdateClimberCommandAttainedState(bool              LeCLMR_b_CriteriaMet,
   {
   TeCLMR_CtrlStates LeCLMR_e_CmndState = VeCLMR_e_CmndState;
 
-  if(LeCLMR_b_CriteriaMet == true)
+  if((LeCLMR_b_CriteriaMet == true) ||
+     (LeCLMR_e_SchedState == E_CLMR_Ctrl_MidClimb)) // Allow for schedueled aborts
     {
     VeCLMR_e_AttndState = LeCLMR_e_CmndState;
     LeCLMR_b_CriteriaMet = false;
@@ -219,14 +220,12 @@ bool UpdateClimberCommandAttainedState(bool              LeCLMR_b_CriteriaMet,
 
   if(((LeCLMR_e_SchedState != VeCLMR_e_AttndState) &&
       (VeCLMR_e_CmndState  == VeCLMR_e_AttndState)) ||
-      (LeCLMR_e_SchedState != VeCLMR_e_SchedStatePrev)) // Allow for schedueled aborts
+      (LeCLMR_e_SchedState == E_CLMR_Ctrl_MidClimb)) // Allow for schedueled aborts
     {
     LeCLMR_e_CmndState = KaCLMR_e_ControllingTable[LeCLMR_e_SchedState][VeCLMR_e_AttndState];
     }
 
   VeCLMR_e_CmndState = LeCLMR_e_CmndState;
-
-  VeCLMR_e_SchedStatePrev = LeCLMR_e_SchedState;
 
   return(LeCLMR_b_CriteriaMet);
   }
@@ -284,6 +283,11 @@ void UpdateCLMR_Actuators(TeCLMR_CtrlStates LeCLMR_e_CmndState,
 
   if (LeCLMR_e_CmndState == E_CLMR_Ctrl_MidClimb)
     {
+      if (VeCLMR_e_CmndStatePrev != E_CLMR_Ctrl_MidClimb)
+        {
+          // Ok, we are coming from something that wasn't mid, we need to capture the current lift height
+          VeCLMR_in_DesiredHeight = (VsCLMR_s_Sensors.in_Right + VsCLMR_s_Sensors.in_Left) / 2; // Take the average of the two climbers
+        }
       VeCLMR_in_DesiredHeight += VsCONT_s_DriverInput.Pct_Manual_CLMR * KeCLMR_k_CntrlGx;
       if (VeCLMR_in_DesiredHeight <= KaCLMR_in_Position[E_CLMR_Ctrl_Init])
       {
@@ -298,6 +302,8 @@ void UpdateCLMR_Actuators(TeCLMR_CtrlStates LeCLMR_e_CmndState,
     {
       VeCLMR_in_DesiredHeight = KaCLMR_in_Position[LeCLMR_e_CmndState];
     }
+
+  VeCLMR_e_CmndStatePrev = LeCLMR_e_CmndState;
 
   VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left] = RampTo(VeCLMR_in_DesiredHeight / KeENC_k_CLMR_LeftRatio, 
                                                             VsCLMR_s_MotorsTemp.k_MotorCmnd[E_CLMR_m_Left],

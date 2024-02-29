@@ -389,12 +389,12 @@ const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.00020, // P Gx
                                                         -0.4};   // Max lower
 
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
-const double KeADAS_t_DM_PathFollowDebounceTime = 0.045;
+const double KeADAS_t_DM_PathFollowDebounceTime = 0.035; // 0.045
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
-const double K_ADAS_DM_RotateDeadbandAngle = 3.0;
+const double K_ADAS_DM_RotateDeadbandAngle = 6.0;  // 3.0
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
-const double K_ADAS_DM_XY_Deadband = 3.0;
+const double K_ADAS_DM_XY_Deadband = 4.0; // 3.0
 
 /*  Auto Rotation calibrations */
 /* K_DesiredRotateSpeedAxis - This is the effective command axis, function of error calculation, in degrees */
@@ -655,8 +655,8 @@ const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
 const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
                                                          -100.0,  // Sched - Intake
-                                                          2800.0,  // Sched - PreScore
-                                                          2800.0}; // Sched - Score
+                                                          3000.0,  // Sched - PreScore
+                                                          3000.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter2: Sets shooter 2 final speed for each state */
 const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init

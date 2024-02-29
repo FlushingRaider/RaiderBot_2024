@@ -359,7 +359,7 @@ void Robot::AutonomousInit()
   VeROBO_e_RobotState = E_Auton;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
 
-  GyroInit();
+  //GyroInit();
 
   DriveControlInit();
 

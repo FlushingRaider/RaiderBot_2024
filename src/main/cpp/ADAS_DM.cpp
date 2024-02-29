@@ -64,7 +64,22 @@ bool V_GyroFlipNeg;
 bool V_GyroFlipPos;
 double V_OffsettedGyro;
 
-// TODO - cleanup function for 2024
+/******************************************************************************
+ * Function:     ADAS_DM_Reset
+ *
+ * Description:  Reset all applicable DM variables.
+ ******************************************************************************/
+void ADAS_DM_Reset(void)
+{
+  VeADAS_b_DM_StateInit = false;
+  VeADAS_l_DM_X_StartPosition = 0;
+  VeADAS_l_DM_Y_StartPosition = 0;
+  VeADAS_l_DM_X_TargetStartPosition = 0;
+  VeADAS_l_DM_Y_TargetStartPosition = 0;
+  VeADAS_Deg_DM_StartAng = 0;
+  VeADAS_Deg_DM_TargetStartAng = 0;
+}
+
 /******************************************************************************
  * Function:     ADAS_DM_PathFollower
  *
@@ -129,12 +144,24 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     L_lookupOut.L_valY -= VeADAS_l_DM_Y_TargetStartPosition;
     L_lookupOut.L_valDeg -= VeADAS_Deg_DM_TargetStartAng;
 
+    L_lookupOut.L_valDeg *= -1;
+    L_lookupOut.L_valY *= -1;
+
     LeADAS_l_RelativePosX = LeADAS_l_X_FieldPos - VeADAS_l_DM_X_StartPosition;
     LeADAS_l_RelativePosY = LeADAS_l_Y_FieldPos - VeADAS_l_DM_Y_StartPosition;
     LeADAS_Deg_RelativeAng = LeADAS_Deg_GyroAngle - VeADAS_Deg_DM_StartAng;
 
     LeADAS_l_X_Error = fabs(L_lookupOut.L_valX - LeADAS_l_RelativePosX);
     LeADAS_l_Y_Error = fabs(L_lookupOut.L_valY - LeADAS_l_RelativePosY);
+
+    frc::SmartDashboard::PutNumber("LeADAS_l_X_Error", LeADAS_l_X_Error);
+    frc::SmartDashboard::PutNumber("LeADAS_l_Y_Error", LeADAS_l_Y_Error);
+
+    frc::SmartDashboard::PutNumber("L_lookupOut.L_valX", L_lookupOut.L_valX);
+    frc::SmartDashboard::PutNumber("L_lookupOut.L_valY", L_lookupOut.L_valY);
+    frc::SmartDashboard::PutNumber("L_lookupOut.L_valDeg", L_lookupOut.L_valDeg);
+
+
     // LeADAS_Deg_RotateError = fabs(L_lookupOut.L_valDeg - LeADAS_Deg_RelativeAng);
     LeADAS_Deg_RotateErrorRaw = L_lookupOut.L_valDeg - LeADAS_Deg_RelativeAng;
 
@@ -189,7 +216,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
     if (LeADAS_b_DM_StateComplete == false)
     {
-        *LeADAS_Pct_Strafe = -Control_PID(L_lookupOut.L_valX,
+        *LeADAS_Pct_Strafe =  Control_PID(L_lookupOut.L_valX,
                                           LeADAS_l_RelativePosX,
                                           &V_ADAS_DM_X_ErrorPrev,
                                           &V_ADAS_DM_X_Integral,
@@ -248,11 +275,11 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
         VeADAS_t_DM_Debounce = 0;
         VeADAS_t_DM_StateTimer = 0;
         LeADAS_b_DM_StateComplete = true;
-        VeADAS_b_DM_StateInit = false;
-        VeADAS_l_DM_X_StartPosition = 0;
-        VeADAS_l_DM_Y_StartPosition = 0;
-        VeADAS_l_DM_X_TargetStartPosition = 0;
-        VeADAS_l_DM_Y_TargetStartPosition = 0;
+        // VeADAS_b_DM_StateInit = false;
+        // VeADAS_l_DM_X_StartPosition = 0;
+        // VeADAS_l_DM_Y_StartPosition = 0;
+        // VeADAS_l_DM_X_TargetStartPosition = 0;
+        // VeADAS_l_DM_Y_TargetStartPosition = 0;
         V_ADAS_DM_X_ErrorPrev = 0;
         V_ADAS_DM_X_Integral = 0;
         V_ADAS_DM_Y_ErrorPrev = 0;

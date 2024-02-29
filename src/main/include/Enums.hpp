@@ -92,6 +92,9 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt1Path1,
   E_ADAS_DM_DJ_Opt1Path2,
   E_ADAS_DM_DJ_Opt1Path3,
+  E_ADAS_DM_DJ_Opt1Path4,
+  E_ADAS_DM_DJ_Opt1Path5,
+  E_ADAS_DM_DJ_Opt1Path6,
   E_ADAS_DM_DJ_Opt2Path1,
   E_ADAS_DM_DJ_Opt2Path2,
   E_ADAS_DM_DJ_Opt2Path3,
@@ -99,7 +102,8 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt3Path2,
   E_ADAS_DM_DJ_Opt3Path3,
   E_ADAS_DM_DJ_Opt3Path4,
-  E_ADAS_DM_DJ_Opt3Path5
+  E_ADAS_DM_DJ_Opt3Path5,
+  E_ADAS_DM_DJ_Opt3Path6
 } T_ADAS_ActiveFeature;
 
 typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call, enumurated for you convience!

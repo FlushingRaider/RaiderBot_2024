@@ -41,6 +41,9 @@
 #include "OptPaths/Opt1Path1.hpp"
 #include "OptPaths/Opt1Path2.hpp"
 #include "OptPaths/Opt1Path3.hpp"
+#include "OptPaths/Opt1Path4.hpp"
+#include "OptPaths/Opt1Path5.hpp"
+#include "OptPaths/Opt1Path6.hpp"
 #include "OptPaths/Opt2Path1.hpp"
 #include "OptPaths/Opt2Path2.hpp"
 #include "OptPaths/Opt2Path3.hpp"
@@ -49,6 +52,7 @@
 #include "OptPaths/Opt3Path3.hpp"
 #include "OptPaths/Opt3Path4.hpp"
 #include "OptPaths/Opt3Path5.hpp"
+#include "OptPaths/Opt3Path6.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /******************************************************************************
@@ -459,6 +463,8 @@ CalcedPathVals LoadPathHeader(double LeLU_s_AutonTime,
   L_TimeRemSize = (int)L_PathTimeRemaining.size();
 
 
+  
+
   LeLU_l_X_Loc = LookUp1D_Table(L_PathTime,
                                 L_PathX,
                                 LeLU_Int_TimeSize,
@@ -482,6 +488,11 @@ CalcedPathVals LoadPathHeader(double LeLU_s_AutonTime,
                                         LeLU_Int_TimeSize,
                                         L_TimeRemSize,
                                         LeLU_s_AutonTime);
+
+  frc::SmartDashboard::PutNumber("LeLU_l_X_Loc", LeLU_l_X_Loc);
+  frc::SmartDashboard::PutNumber("LeLU_l_Y_Loc", LeLU_l_Y_Loc);
+  frc::SmartDashboard::PutNumber("LeLU_Deg_Ang", LeLU_Deg_Ang);
+  frc::SmartDashboard::PutNumber("LeLU_t_TimeRemaining", LeLU_t_TimeRemaining);
 
   L_PathCalcedVals.L_valX = LeLU_l_X_Loc;
   L_PathCalcedVals.L_valY = LeLU_l_Y_Loc;
@@ -740,9 +751,10 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt1Path1,
                                        KaADAS_t_Opt1Path1Remaining,
-                                       KaADAS_Deg_Opt1Path1,
                                        KaADAS_l_Opt1Path1_X,
-                                       KaADAS_l_Opt1Path1_Y);
+                                       KaADAS_l_Opt1Path1_Y,
+                                       KaADAS_Deg_Opt1Path1);
+
     if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path1[KnADAS_t_Opt1Path1.size() - 1])
     {
       L_output.L_timeEndReached = true;
@@ -752,9 +764,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt1Path2,
                                        KaADAS_t_Opt1Path2Remaining,
-                                       KaADAS_Deg_Opt1Path2,
                                        KaADAS_l_Opt1Path2_X,
-                                       KaADAS_l_Opt1Path2_Y);
+                                       KaADAS_l_Opt1Path2_Y,
+                                       KaADAS_Deg_Opt1Path2);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path2[KnADAS_t_Opt1Path2.size() - 1])
     {
@@ -765,11 +777,50 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt1Path3,
                                        KaADAS_t_Opt1Path3Remaining,
-                                       KaADAS_Deg_Opt1Path3,
                                        KaADAS_l_Opt1Path3_X,
-                                       KaADAS_l_Opt1Path3_Y);
+                                       KaADAS_l_Opt1Path3_Y,
+                                       KaADAS_Deg_Opt1Path3);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path3[KnADAS_t_Opt1Path3.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt1Path4:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path4,
+                                       KaADAS_t_Opt1Path4Remaining,
+                                       KaADAS_l_Opt1Path4_X,
+                                       KaADAS_l_Opt1Path4_Y,
+                                       KaADAS_Deg_Opt1Path4);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path4[KnADAS_t_Opt1Path4.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt1Path5:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path5,
+                                       KaADAS_t_Opt1Path5Remaining,
+                                       KaADAS_l_Opt1Path5_X,
+                                       KaADAS_l_Opt1Path5_Y,
+                                       KaADAS_Deg_Opt1Path5);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path5[KnADAS_t_Opt1Path5.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt1Path6:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path6,
+                                       KaADAS_t_Opt1Path6Remaining,
+                                       KaADAS_l_Opt1Path6_X,
+                                       KaADAS_l_Opt1Path6_Y,
+                                       KaADAS_Deg_Opt1Path6);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path6[KnADAS_t_Opt1Path6.size() - 1])
     {
       L_output.L_timeEndReached = true;
     }
@@ -779,9 +830,10 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt2Path1,
                                        KaADAS_t_Opt2Path1Remaining,
-                                       KaADAS_Deg_Opt2Path1,
                                        KaADAS_l_Opt2Path1_X,
-                                       KaADAS_l_Opt2Path1_Y);
+                                       KaADAS_l_Opt2Path1_Y,
+                                       KaADAS_Deg_Opt2Path1);
+                                       
     if (LeLU_s_AutonTime >= KnADAS_t_Opt2Path1[KnADAS_t_Opt2Path1.size() - 1])
     {
       L_output.L_timeEndReached = true;
@@ -791,9 +843,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt2Path2,
                                        KaADAS_t_Opt2Path2Remaining,
-                                       KaADAS_Deg_Opt2Path2,
                                        KaADAS_l_Opt2Path2_X,
-                                       KaADAS_l_Opt2Path2_Y);
+                                       KaADAS_l_Opt2Path2_Y,
+                                       KaADAS_Deg_Opt2Path2);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt2Path2[KnADAS_t_Opt2Path2.size() - 1])
     {
@@ -804,9 +856,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt2Path3,
                                        KaADAS_t_Opt2Path3Remaining,
-                                       KaADAS_Deg_Opt2Path3,
                                        KaADAS_l_Opt2Path3_X,
-                                       KaADAS_l_Opt2Path3_Y);
+                                       KaADAS_l_Opt2Path3_Y,
+                                       KaADAS_Deg_Opt2Path3);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt2Path3[KnADAS_t_Opt2Path3.size() - 1])
     {
@@ -818,9 +870,10 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt3Path1,
                                        KaADAS_t_Opt3Path1Remaining,
-                                       KaADAS_Deg_Opt3Path1,
                                        KaADAS_l_Opt3Path1_X,
-                                       KaADAS_l_Opt3Path1_Y);
+                                       KaADAS_l_Opt3Path1_Y,
+                                       KaADAS_Deg_Opt3Path1);
+
     if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path1[KnADAS_t_Opt3Path1.size() - 1])
     {
       L_output.L_timeEndReached = true;
@@ -830,9 +883,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt3Path2,
                                        KaADAS_t_Opt3Path2Remaining,
-                                       KaADAS_Deg_Opt3Path2,
                                        KaADAS_l_Opt3Path2_X,
-                                       KaADAS_l_Opt3Path2_Y);
+                                       KaADAS_l_Opt3Path2_Y,
+                                       KaADAS_Deg_Opt3Path2);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path2[KnADAS_t_Opt3Path2.size() - 1])
     {
@@ -843,9 +896,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt3Path3,
                                        KaADAS_t_Opt3Path3Remaining,
-                                       KaADAS_Deg_Opt3Path3,
                                        KaADAS_l_Opt3Path3_X,
-                                       KaADAS_l_Opt3Path3_Y);
+                                       KaADAS_l_Opt3Path3_Y,
+                                       KaADAS_Deg_Opt3Path3);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path3[KnADAS_t_Opt3Path3.size() - 1])
     {
@@ -856,9 +909,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt3Path4,
                                        KaADAS_t_Opt3Path4Remaining,
-                                       KaADAS_Deg_Opt3Path4,
                                        KaADAS_l_Opt3Path4_X,
-                                       KaADAS_l_Opt3Path4_Y);
+                                       KaADAS_l_Opt3Path4_Y,
+                                       KaADAS_Deg_Opt3Path4);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path4[KnADAS_t_Opt3Path4.size() - 1])
     {
@@ -869,11 +922,24 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
                                        KnADAS_t_Opt3Path5,
                                        KaADAS_t_Opt3Path5Remaining,
-                                       KaADAS_Deg_Opt3Path5,
                                        KaADAS_l_Opt3Path5_X,
-                                       KaADAS_l_Opt3Path5_Y);
+                                       KaADAS_l_Opt3Path5_Y,
+                                       KaADAS_Deg_Opt3Path5);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path5[KnADAS_t_Opt3Path5.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt3Path6:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path6,
+                                       KaADAS_t_Opt3Path6Remaining,
+                                       KaADAS_l_Opt3Path6_X,
+                                       KaADAS_l_Opt3Path6_Y,
+                                       KaADAS_Deg_Opt3Path6);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path6[KnADAS_t_Opt3Path6.size() - 1])
     {
       L_output.L_timeEndReached = true;
     }

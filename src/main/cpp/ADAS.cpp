@@ -73,13 +73,13 @@ void ADAS_Main_Init(void)
 
   std::string_view LeADAS_Str_AutonSelectorName = "Auton";
   VeADAS_e_AutonChooser.AddOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
-  VeADAS_e_AutonChooser.AddOption("L_Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath1);
-  VeADAS_e_AutonChooser.AddOption("LR_Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath2);
-  VeADAS_e_AutonChooser.AddOption("R_Preload1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath3);
-  VeADAS_e_AutonChooser.AddOption("R_Preload2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath4);
-  VeADAS_e_AutonChooser.AddOption("R_Preload3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath5);
-  VeADAS_e_AutonChooser.AddOption("LR_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath6);
-  VeADAS_e_AutonChooser.AddOption("L_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath7);
+  // VeADAS_e_AutonChooser.AddOption("L_Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath1);
+  // VeADAS_e_AutonChooser.AddOption("LR_Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath2);
+  // VeADAS_e_AutonChooser.AddOption("R_Preload1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath3);
+  // VeADAS_e_AutonChooser.AddOption("R_Preload2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath4);
+  // VeADAS_e_AutonChooser.AddOption("R_Preload3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath5);
+  // VeADAS_e_AutonChooser.AddOption("LR_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath6);
+  // VeADAS_e_AutonChooser.AddOption("L_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath7);
   VeADAS_e_AutonChooser.AddOption("Option 1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt1);
   VeADAS_e_AutonChooser.AddOption("Option 2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
   VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);
@@ -119,6 +119,7 @@ void ADAS_Main_Reset(void)
   VeADAS_b_AutonOncePerTrigger = false;
 
   VeADAS_t_DM_StateTimer = 0.0; // ToDo: Originally in ADAS_DM_Reset, do we want this back?
+  ADAS_DM_Reset();
   /* Trigger the resets for all of the sub tasks/functions as well: */
 }
 
@@ -362,25 +363,41 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     case E_ADAS_AutonOpt1:
       if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
-      }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
-      {
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path1;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path1) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path2;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path2) && (VeADAS_b_StateComplete == true))
       {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path3;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path3) && (VeADAS_b_StateComplete == true))
+      {
         LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote2;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote2) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path3;
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path4;
       }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path3) && (VeADAS_b_StateComplete == true))
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path4) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path5;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path5) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote3;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote3) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path6;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path6) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
@@ -420,37 +437,41 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     case E_ADAS_AutonOpt3:
       if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
-      }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
-      {
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path1;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path1) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path2;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path2) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote2;
-      }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote2) && (VeADAS_b_StateComplete == true))
-      {
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path3;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path3) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote2;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote2) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path4;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path4) && (VeADAS_b_StateComplete == true))
       {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path5;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path5) && (VeADAS_b_StateComplete == true))
+      {
         LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote3;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote3) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path5;
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path6;
       }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path5) && (VeADAS_b_StateComplete == true))
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path6) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
@@ -521,6 +542,9 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt1Path1:
   case E_ADAS_DM_DJ_Opt1Path2:
   case E_ADAS_DM_DJ_Opt1Path3:
+  case E_ADAS_DM_DJ_Opt1Path4:
+  case E_ADAS_DM_DJ_Opt1Path5:
+  case E_ADAS_DM_DJ_Opt1Path6:
   case E_ADAS_DM_DJ_Opt2Path1:
   case E_ADAS_DM_DJ_Opt2Path2:
   case E_ADAS_DM_DJ_Opt2Path3:
@@ -528,6 +552,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt3Path2:
   case E_ADAS_DM_DJ_Opt3Path4:
   case E_ADAS_DM_DJ_Opt3Path5:
+  case E_ADAS_DM_DJ_Opt3Path6:
     VeADAS_b_State1Complete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                    L_Pct_Strafe,
                                                    L_Pct_Rotate,

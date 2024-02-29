@@ -91,7 +91,7 @@ void DtrmnSwerveBotLocation(double  LeODO_Rad_Gyro,
 
   // apply to our running counter (global), these are the numbers every other fxn will use
   VeODO_In_RobotDisplacementX += LeODO_In_TotalDeltaX;
-  VeODO_In_RobotDisplacementY += LeODO_In_TotalDeltaY;
+  VeODO_In_RobotDisplacementY -= LeODO_In_TotalDeltaY;
 
   
   VeODO_In_DeltaX = LeODO_In_TotalDeltaX;
