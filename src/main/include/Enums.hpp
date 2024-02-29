@@ -157,6 +157,7 @@ struct RobotUserInput
   bool b_Amp_IntakeForward_Test = false;
   bool b_Amp_PreScore = false;
   bool b_Amp_Score = false;
+  bool b_Amp_Trade_Off = false; 
   bool b_SPK_DrivingPosition = false;
   bool b_SPK_Intake = false;
   bool b_SPK_PreScore = false;
@@ -165,6 +166,7 @@ struct RobotUserInput
   bool b_CLMR_FullExtend = false;
   bool b_CLMR_Init = false;
   double Pct_Manual_CLMR = 0.0;
+  
 
 
   bool b_goToSpeaker = false;
