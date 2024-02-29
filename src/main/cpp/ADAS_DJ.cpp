@@ -290,7 +290,7 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   {
   case E_ADAS_Disabled:
   default:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
@@ -298,33 +298,37 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   case E_ADAS_DJ_ShootNote1:
   case E_ADAS_DJ_ShootNote2:
   case E_ADAS_DJ_ShootNote3:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Score;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
-  case E_ADAS_DM_DJ_Opt1Path3:
+  case E_ADAS_DM_DJ_Opt1Path6:
   case E_ADAS_DM_DJ_Opt2Path3:
-  case E_ADAS_DM_DJ_Opt3Path5:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+  case E_ADAS_DM_DJ_Opt3Path6:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
- case E_ADAS_DM_DJ_Opt1Path1:
+ case E_ADAS_DM_DJ_Opt1Path2:
+ case E_ADAS_DM_DJ_Opt1Path4:
  case E_ADAS_DM_DJ_Opt2Path1:
- case E_ADAS_DM_DJ_Opt3Path1:
- case E_ADAS_DM_DJ_Opt3Path3:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+ case E_ADAS_DM_DJ_Opt3Path2:
+ case E_ADAS_DM_DJ_Opt3Path4:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Intake;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
- case E_ADAS_DM_DJ_Opt1Path2:
+ case E_ADAS_DM_DJ_Opt1Path1:
+ case E_ADAS_DM_DJ_Opt1Path3:
+ case E_ADAS_DM_DJ_Opt1Path5:
  case E_ADAS_DM_DJ_Opt2Path2:
- case E_ADAS_DM_DJ_Opt3Path2:
- case E_ADAS_DM_DJ_Opt3Path4:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Driving;
+ case E_ADAS_DM_DJ_Opt3Path1:
+ case E_ADAS_DM_DJ_Opt3Path3:
+ case E_ADAS_DM_DJ_Opt3Path5:
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_PreScore;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
