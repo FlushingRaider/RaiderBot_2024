@@ -297,10 +297,10 @@ void Robot::RobotPeriodic()
   log_swerve_WheelSpeedCmnd.Append(VaDRC_RPM_WheelSpeedCmnd);
   log_swerve_WheelAngleCmnd.Append(VaDRC_Pct_WheelAngleCmnd);
 
-  frc::SmartDashboard::PutNumberArray("swerve_WheelAngleFwd", VaENC_Deg_WheelAngleFwd);
-  frc::SmartDashboard::PutNumberArray("swerve_WheelAngleRev", VaENC_Deg_WheelAngleRev);
-  frc::SmartDashboard::PutNumberArray("swerve_WheelSpeedCmnd", VaDRC_RPM_WheelSpeedCmnd);
-  frc::SmartDashboard::PutNumberArray("swerve_WheelAngleCmnd", VaDRC_Pct_WheelAngleCmnd);
+  // frc::SmartDashboard::PutNumberArray("swerve_WheelAngleFwd", VaENC_Deg_WheelAngleFwd);
+  // frc::SmartDashboard::PutNumberArray("swerve_WheelAngleRev", VaENC_Deg_WheelAngleRev);
+  // frc::SmartDashboard::PutNumberArray("swerve_WheelSpeedCmnd", VaDRC_RPM_WheelSpeedCmnd);
+  // frc::SmartDashboard::PutNumberArray("swerve_WheelAngleCmnd", VaDRC_Pct_WheelAngleCmnd);
 
   frc::SmartDashboard::PutNumber("GyroYaw", -VeGRY_Deg_GyroYawAngleDegrees);
 
