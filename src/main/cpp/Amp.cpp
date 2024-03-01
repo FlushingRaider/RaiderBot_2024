@@ -35,6 +35,7 @@ bool VeAmp_b_CriteriaMet = false;
 double VeAmp_t_TransitionTime = 0;
 TeAMP_e_WristReset VeAmp_e_WristResetSt = E_AMP_WristReseted;
 double VeAmp_t_WristResetTimer = 0;
+double VeAmp_t_WristResetTimer2 = 0;
 bool VeAmp_b_WristEncoderReset = false;
 bool VeAmp_b_Hold = false; // Used for the holding power.
 double VeAmp_t_HoldTime = 0;
@@ -213,6 +214,7 @@ void Amp_ControlInit()
   VeAmp_t_WristResetTimer = 0.0;
   VeAmp_e_WristResetSt = E_AMP_WristReseted;
   VeAmp_b_WristEncoderReset = false;
+  VeAmp_t_WristResetTimer2 = 0.0;
 }
 
 /******************************************************************************
@@ -320,44 +322,61 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
 
   /* Additional logic for wrist is to allow it to be reseted.  This is to account for cases where the belt has 
      slipped and the wrist is no longer in the expected location. */
-  if (VeAmp_b_WristEncoderReset == true)
-  {
-    /* We only want to allow the reset to be true for one loop.  Don't want to continously reset the encoder */
-    VeAmp_b_WristEncoderReset = false;
-  }
+//   if (VeAmp_b_WristEncoderReset == true && VeAmp_t_WristResetTimer2 >= KeSPK_t_WristResetTime2 || LeDJ_Amp_e_CmndState != E_DJ_Amp_Init)
+//   {
+//     /* We only want to allow the reset to be true for one loop.  Don't want to continously reset the encoder */
+//     VeAmp_b_WristEncoderReset = false;
+//     VeAmp_t_WristResetTimer2 = 0.0;
+//   }
+//   else
+//   {
+//     VeAmp_t_WristResetTimer2 += C_ExeTime;
+//   }
 
-  if (VeAmp_t_WristResetTimer >= KeSPK_t_WristResetTime)
-  {
-    VeAmp_e_WristResetSt = E_AMP_WristReseted;
-    VeAmp_t_WristResetTimer = 0;
-    VeAmp_b_WristEncoderReset = true;
-  }
+//   if (VeAmp_t_WristResetTimer >= KeSPK_t_WristResetTime)
+//   {
+//     VeAmp_e_WristResetSt = E_AMP_WristReseted;
+//     VeAmp_t_WristResetTimer = 0;
+//     VeAmp_b_WristEncoderReset = true;
+//     VeAmp_t_WristResetTimer2 = 0.0;
+//   }
 
-  if (LeDJ_Amp_e_AttndState != E_DJ_Amp_Init ||
-      VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
-  {
-    VeAmp_e_WristResetSt = E_AMP_WristNeedsReset;
-    VeAmp_t_WristResetTimer = 0;
-  }
+//   if (LeDJ_Amp_e_AttndState != E_DJ_Amp_Init ||
+//       VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
+//   {
+//     VeAmp_e_WristResetSt = E_AMP_WristNeedsReset;
+//     VeAmp_t_WristResetTimer = 0;
+//   }
+// bool LeTest = false;
+//   if ((LeDJ_Amp_e_CmndState == E_DJ_Amp_Init) && 
+//       (LeDJ_Amp_e_AttndState == E_DJ_Amp_Init) &&
+//       ((VeAmp_e_WristResetSt == E_AMP_WristNeedsReset) || (VeAmp_e_WristResetSt == E_AMP_WristResetInProc)))
+//   {
+//     VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = KeSPK_k_WristResetPwr;
+//     VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPctCmnd;
+//     VeAmp_t_WristResetTimer += C_ExeTime;
+//     LeTest = true;
+//   }
+//   else
+//   {
+//   LeAmp_DegS_WristRate = KaDJ_Amp_DegS_WristRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
 
-  if ((LeDJ_Amp_e_CmndState == E_DJ_Amp_Init) && 
-      (LeDJ_Amp_e_AttndState == E_DJ_Amp_Init) &&
-      ((VeAmp_e_WristResetSt == E_AMP_WristNeedsReset) || (VeAmp_e_WristResetSt == E_AMP_WristResetInProc)))
-  {
-    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = KeSPK_k_WristResetPwr;
-    VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPctCmnd;
-    VeAmp_t_WristResetTimer += C_ExeTime;
-  }
-  else
-  {
+//   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_WristRatio,
+//                                                        VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
+//                                                        LeAmp_DegS_WristRate);
+//   VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPosition;
+//   }
+
   LeAmp_DegS_WristRate = KaDJ_Amp_DegS_WristRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
 
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_WristRatio,
                                                        VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
                                                        LeAmp_DegS_WristRate);
   VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPosition;
-  }
 
+frc::SmartDashboard::PutNumber("VeAmp_e_CmndState", float(VeAmp_e_CmndState));
+frc::SmartDashboard::PutNumber("VeAmp_e_AttndState", float(VeAmp_e_AttndState));
+frc::SmartDashboard::PutNumber("WristAttndState", float(LeDJ_Amp_e_AttndState));
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[LeDJ_Amp_e_CmndState];
 }
 

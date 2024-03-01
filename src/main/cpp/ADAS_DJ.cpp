@@ -108,7 +108,7 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     else if ((VeADAS_t_AMP_ReleaseTm >= KeAmp_t_IntakeOnTm))
     {
       VeADAS_t_AMP_ReleaseTm = 0.0;
-      VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;
     }
   }
   else if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Intake ||
@@ -117,8 +117,12 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     VeADAS_t_AMP_ReleaseTm = 0;
     if (VsAmp_s_Sensors.b_Amp_ObjDetected == true)
     {
-      VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;
     }
+  }
+  else if (VeADAS_e_SPK_SchedState != E_SPK_Ctrl_Intake && VeADAS_e_Amp_SchedState == E_DJ_Amp_iAssist)
+  {
+    VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;
   }
   else
   {
@@ -343,12 +347,12 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   break;
   }
 
-  LeADAS_b_AMP_Complete = ScheduelerAMP(L_RobotState,
-                                        LeADAS_e_AutonRequestStateAMP,
-                                        LeADAS_b_AutonTransition);
-
   LeADAS_b_SPK_Complete = ScheduelerSPK(L_RobotState,
                                         LeADAS_e_AutonRequestStateSPK,
+                                        LeADAS_b_AutonTransition);
+
+  LeADAS_b_AMP_Complete = ScheduelerAMP(L_RobotState,
+                                        LeADAS_e_AutonRequestStateAMP,
                                         LeADAS_b_AutonTransition);
 
   LeADAS_b_CLMR_Complete = ScheduelerCLMR(L_RobotState,

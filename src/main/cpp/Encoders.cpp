@@ -238,7 +238,7 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
 
   frc::SmartDashboard::PutBoolean("AMP Note Detected",    VsAmp_s_Sensors.b_Amp_ObjDetected);
   frc::SmartDashboard::PutBoolean("AMP Elevator Switch",  VsAmp_s_Sensors.b_ElevatorSwitch);
-  // frc::SmartDashboard::PutNumber("AMP Wrist Angle",       VsAmp_s_Sensors.Deg_Wrist);
+  frc::SmartDashboard::PutNumber("AMP Wrist Angle",       VsAmp_s_Sensors.Deg_Wrist);
   frc::SmartDashboard::PutNumber("AMP Elevator",          VsAmp_s_Sensors.In_Elevator);
   // frc::SmartDashboard::PutNumber("AMP Intake",            VsAmp_s_Sensors.RPM_AmpRollers);
   frc::SmartDashboard::PutBoolean("SPK Note Detected",    VsSPK_s_Sensors.b_NoteDetected);
