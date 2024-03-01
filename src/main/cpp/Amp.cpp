@@ -333,7 +333,8 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
     VeAmp_b_WristEncoderReset = true;
   }
 
-  if (LeDJ_Amp_e_AttndState != E_DJ_Amp_Init)
+  if (LeDJ_Amp_e_AttndState != E_DJ_Amp_Init ||
+      VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
   {
     VeAmp_e_WristResetSt = E_AMP_WristNeedsReset;
     VeAmp_t_WristResetTimer = 0;

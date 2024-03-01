@@ -114,6 +114,7 @@ void Joystick2_robot_mapping(bool LeCONT_b_Driver2ButtonA,
   VsCONT_s_DriverInput.b_Amp_Score                   = LeCONT_b_Driver2ButtonX;
   VsCONT_s_DriverInput.b_ResetEnocders               = LeCONT_b_Driver2ButtonStart; // controller 2 start button (8), (robot.cpp) Starts robot shooter speed based on distance
   VsCONT_s_DriverInput.b_Amp_Trade_Off               = LeCONT_b_Driver2ButtonStart;
+  VsCONT_s_DriverInput.b_SourcePickup                = LeCONT_b_Driver2ButtonBack;
   // VsCONT_s_DriverInput.pct_RightHookDown_Test           = LeCont_Pct_Driver2AxisRB;
   // VsCONT_s_DriverInput.pct_LeftHookDown_Test            = LeCont_Pct_Driver2AxisLB;
   VsCONT_s_DriverInput.b_CLMR_Init                   = LeCONT_b_Driver2ButtonRB;   // Boolean is being written to float

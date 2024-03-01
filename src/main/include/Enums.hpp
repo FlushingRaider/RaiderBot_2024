@@ -175,6 +175,7 @@ struct RobotUserInput
   bool b_CLMR_Init = false;
   double Pct_Manual_CLMR = 0.0;
   bool b_goToSpeaker = false;
+  bool b_SourcePickup = false;
 };
 
 struct TsAmp_Sensor
@@ -228,6 +229,7 @@ typedef enum T_DJ_Amp_States
   E_DJ_Amp_Score,
   E_DJ_Amp_Trade_Off,
   E_DJ_Amp_iAssist,
+  E_DJ_Amp_Source,
   E_DJ_Amp_State_Sz
 } T_DJ_Amp_States;
 

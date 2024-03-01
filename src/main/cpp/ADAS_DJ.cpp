@@ -86,6 +86,10 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Trade_Off;
     }
+    else if (VsCONT_s_DriverInput.b_SourcePickup == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Source;
+    }
   }
 
   /* Overrides go here: */
@@ -107,7 +111,8 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
     }
   }
-  else if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Intake)
+  else if (VeADAS_e_Amp_SchedState == E_DJ_Amp_Intake ||
+            VeADAS_e_Amp_SchedState == E_DJ_Amp_Source)
   {
     VeADAS_t_AMP_ReleaseTm = 0;
     if (VsAmp_s_Sensors.b_Amp_ObjDetected == true)
