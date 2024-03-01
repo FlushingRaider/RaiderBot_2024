@@ -62,11 +62,11 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
   }
   else if (LeADAS_e_RobotState == E_Teleop)
   {
-    if (VsCONT_s_DriverInput.b_SPK_Intake == true)
-    {
-      VeADAS_e_Amp_SchedState = E_DJ_Amp_iAssist;
-    }
-    else if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
+    // if (VsCONT_s_DriverInput.b_SPK_Intake == true)
+    // {
+    //   VeADAS_e_Amp_SchedState = E_DJ_Amp_iAssist;
+    // }
+    if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;  //E_DJ_Amp_Driving
     }

@@ -551,7 +551,7 @@ const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {  0.00,  // Sched - I
                                                              85.00, // Sched - Score
                                                              50.00, // Sched - Trade_Off
                                                              110.00, // Sched - iAssist
-                                                             37.0}; // Sched - Source
+                                                             22.10}; // Sched - Source
 
 /* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
 const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched - Init
@@ -561,7 +561,7 @@ const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched -
                                                                 12.32, // Sched - Score
                                                                 0.0,  // Sched - Trade_Off
                                                                 0.0, // Sched - iAssist
-                                                                9.0};// Sched - Source
+                                                                7.40};// Sched - Source
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
 const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
@@ -672,7 +672,7 @@ const double KeSPK_RPMs_Shooter2Rate = 75.0;
 /* KaSPK_k_Intake: Sets intake final power for each state */
 const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                     0.0,  // Sched - Driving
-                                                   -0.45,  // Sched - Intake
+                                                   -0.40,  // Sched - Intake
                                                     0.0,  // Sched - PreScore
                                                    -0.45}; // Sched - Score
 

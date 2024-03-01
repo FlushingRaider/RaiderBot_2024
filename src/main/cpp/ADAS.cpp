@@ -83,7 +83,8 @@ void ADAS_Main_Init(void)
   VeADAS_e_AutonChooser.AddOption("Option 1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt1);
   VeADAS_e_AutonChooser.AddOption("Option 2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
   VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);
-  VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
+  VeADAS_e_AutonChooser.AddOption("Option 4", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
+  VeADAS_e_AutonChooser.AddOption("Option 5", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   // VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1);
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
@@ -496,6 +497,20 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt2Path2;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt2Path2) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
+      }
+      break;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case E_ADAS_AutonOpt5:
+      /*Opt5 is basically Opt2, but doesn't attempt to shoot a second note, nor will it drive */
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
