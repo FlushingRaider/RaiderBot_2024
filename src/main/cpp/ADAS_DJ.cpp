@@ -62,9 +62,13 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
   }
   else if (LeADAS_e_RobotState == E_Teleop)
   {
-    if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
+    if (VsCONT_s_DriverInput.b_SPK_Intake == true)
     {
-      VeADAS_e_Amp_SchedState = E_DJ_Amp_Driving;
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_iAssist;
+    }
+    else if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
+    {
+      VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;  //E_DJ_Amp_Driving
     }
     else if (VsCONT_s_DriverInput.b_Amp_Intake == true)
     {
@@ -291,7 +295,7 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   case E_ADAS_Disabled:
   default:
     LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
-    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
+    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Init;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
@@ -316,7 +320,7 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
  case E_ADAS_DM_DJ_Opt2Path1:
  case E_ADAS_DM_DJ_Opt3Path2:
  case E_ADAS_DM_DJ_Opt3Path4:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
+    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_iAssist;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Intake;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;

@@ -286,7 +286,7 @@ void UpdateCLMR_Actuators(TeCLMR_CtrlStates LeCLMR_e_CmndState,
       if (VeCLMR_e_CmndStatePrev != E_CLMR_Ctrl_MidClimb)
         {
           // Ok, we are coming from something that wasn't mid, we need to capture the current lift height
-          VeCLMR_in_DesiredHeight = (VsCLMR_s_Sensors.in_Right + VsCLMR_s_Sensors.in_Left) / 2; // Take the average of the two climbers
+          VeCLMR_in_DesiredHeight = VsCLMR_s_Sensors.in_Right; // Take the average of the two climbers
         }
       VeCLMR_in_DesiredHeight += VsCONT_s_DriverInput.Pct_Manual_CLMR * KeCLMR_k_CntrlGx;
       if (VeCLMR_in_DesiredHeight <= KaCLMR_in_Position[E_CLMR_Ctrl_Init])

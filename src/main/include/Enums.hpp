@@ -103,7 +103,9 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt3Path3,
   E_ADAS_DM_DJ_Opt3Path4,
   E_ADAS_DM_DJ_Opt3Path5,
-  E_ADAS_DM_DJ_Opt3Path6
+  E_ADAS_DM_DJ_Opt3Path6,
+  E_ADAS_DM_DJ_Test1,
+  E_ADAS_DM_DJ_Test2
 } T_ADAS_ActiveFeature;
 
 typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call, enumurated for you convience!
@@ -118,7 +120,9 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonDrivePath7,
   E_ADAS_AutonOpt1,
   E_ADAS_AutonOpt2,
-  E_ADAS_AutonOpt3
+  E_ADAS_AutonOpt3,
+  E_ADAS_AutonOpt4,
+  E_ADAS_AutonOptTest1
 } T_ADAS_ActiveAutonFeature;
 
 // a big ol' object ti carry the various inputs from the driver in one place
@@ -170,12 +174,7 @@ struct RobotUserInput
   bool b_CLMR_FullExtend = false;
   bool b_CLMR_Init = false;
   double Pct_Manual_CLMR = 0.0;
-  
-
-
   bool b_goToSpeaker = false;
-
-
 };
 
 struct TsAmp_Sensor
@@ -205,6 +204,13 @@ typedef enum TeDJ_Amp_e_AmpActuator
   E_Amp_Sz
 } TeDJ_Amp_e_AmpActuator;
 
+typedef enum TeAMP_e_WristReset
+{
+  E_AMP_WristReseted,
+  E_AMP_WristResetInProc,
+  E_AMP_WristNeedsReset
+} TeAMP_e_WristReset;
+
 typedef enum T_DJ_Amp_Motors
 {
   E_DJ_Amp_m_Elevator,
@@ -221,6 +227,7 @@ typedef enum T_DJ_Amp_States
   E_DJ_Amp_PreScore,
   E_DJ_Amp_Score,
   E_DJ_Amp_Trade_Off,
+  E_DJ_Amp_iAssist,
   E_DJ_Amp_State_Sz
 } T_DJ_Amp_States;
 

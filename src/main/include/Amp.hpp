@@ -15,6 +15,7 @@ extern T_DJ_Amp_States VeAmp_e_CmndState;
 extern TeAmp_MotorControl VsAmp_s_MotorsTest;
 extern TeAmp_MotorControl VsAmp_s_MotorsTemp;
 extern TsAmp_Sensor VsAmp_s_Sensors;
+extern bool VeAmp_b_WristEncoderReset;
 
 
 void Amp_MotorConfigsCal(rev::SparkMaxPIDController m_ElevatorPID,

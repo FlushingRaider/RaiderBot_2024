@@ -144,8 +144,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     L_lookupOut.L_valY -= VeADAS_l_DM_Y_TargetStartPosition;
     L_lookupOut.L_valDeg -= VeADAS_Deg_DM_TargetStartAng;
 
-    L_lookupOut.L_valDeg *= -1;
-    L_lookupOut.L_valY *= -1;
+    // L_lookupOut.L_valDeg *= -1;
+    // L_lookupOut.L_valY *= -1;
 
     LeADAS_l_RelativePosX = LeADAS_l_X_FieldPos - VeADAS_l_DM_X_StartPosition;
     LeADAS_l_RelativePosY = LeADAS_l_Y_FieldPos - VeADAS_l_DM_Y_StartPosition;

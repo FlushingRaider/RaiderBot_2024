@@ -53,6 +53,8 @@
 #include "OptPaths/Opt3Path4.hpp"
 #include "OptPaths/Opt3Path5.hpp"
 #include "OptPaths/Opt3Path6.hpp"
+#include "OptPaths/TestPath1.hpp"
+#include "OptPaths/TestPath2.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /******************************************************************************
@@ -944,6 +946,35 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
       L_output.L_timeEndReached = true;
     }
     break;
+
+  case E_ADAS_DM_DJ_Test1:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_TestPath1,
+                                       KaADAS_t_TestPath1Remaining,
+                                       KaADAS_l_TestPath1_X,
+                                       KaADAS_l_TestPath1_Y,
+                                       KaADAS_Deg_TestPath1);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_TestPath1[KnADAS_t_TestPath1.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
+  case E_ADAS_DM_DJ_Test2:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_TestPath2,
+                                       KaADAS_t_TestPath1Remaining,
+                                       KaADAS_l_TestPath2_X,
+                                       KaADAS_l_TestPath2_Y,
+                                       KaADAS_Deg_TestPath2);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_TestPath2[KnADAS_t_TestPath2.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
 
     default:
       LaLU_d_CalcedVals.L_valX = 0;

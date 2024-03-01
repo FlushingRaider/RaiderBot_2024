@@ -459,15 +459,22 @@ const units::second_t KeGRY_ms_GyroTimeoutMs = 30_s; // Waits and reports to DS 
 
 /* KaMAN_e_ControllingTable: Table that contains the commanded state of the manipulator and intake based on the current attained state and schedueld state. */
 const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Sched][Attnd]
-    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,      E_DJ_Amp_Driving,   E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Driving,   E_DJ_Amp_Driving,   E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,    E_DJ_Amp_Intake,    E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving,   E_DJ_Amp_PreScore, E_DJ_Amp_PreScore, E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving,   E_DJ_Amp_Score,    E_DJ_Amp_Score,    E_DJ_Amp_Driving},
-     {E_DJ_Amp_Driving, E_DJ_Amp_Trade_Off, E_DJ_Amp_Trade_Off, E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Trade_Off}};
+    {{E_DJ_Amp_Init,    E_DJ_Amp_Init,      E_DJ_Amp_Init,      E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Init,    E_DJ_Amp_Init,      E_DJ_Amp_Init,      E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Intake,    E_DJ_Amp_Intake,    E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Driving, E_DJ_Amp_Intake},
+     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving,   E_DJ_Amp_PreScore, E_DJ_Amp_PreScore, E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_PreScore,  E_DJ_Amp_Driving,   E_DJ_Amp_Score,    E_DJ_Amp_Score,    E_DJ_Amp_Driving, E_DJ_Amp_Driving},
+     {E_DJ_Amp_Driving, E_DJ_Amp_Trade_Off, E_DJ_Amp_Trade_Off, E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_Trade_Off, E_DJ_Amp_Trade_Off},
+     {E_DJ_Amp_Driving, E_DJ_Amp_iAssist,   E_DJ_Amp_iAssist,   E_DJ_Amp_Driving,  E_DJ_Amp_Driving,  E_DJ_Amp_iAssist, E_DJ_Amp_iAssist}};
 
 /* KeSPK_I_WristCurrentLimit: Max allowed current going to wrist motor. */
-const double KeSPK_I_WristCurrentLimit = 25;
+const double KeSPK_I_WristCurrentLimit = 20;
+
+/* KeSPK_t_WristResetTime: Amount of time allowed to reset wrist when commanded to init. */
+const double KeSPK_t_WristResetTime = 20;
+
+/* KeSPK_k_WristResetPwr: Amount of power commanded to reset wrist. */
+const double KeSPK_k_WristResetPwr = 0.08;
 
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
@@ -528,7 +535,8 @@ const double KaDJ_Amp_RPM_IntakePower[E_DJ_Amp_State_Sz] = { 0.0,   // Sched - I
                                                             -0.45, // Sched - Main Intake
                                                              0.0,   // Sched - PreScore
                                                              0.45,  // Sched - Score
-                                                             0.30}; // Sched - Trade_Off
+                                                             0.30,  // Sched - Trade_Off
+                                                             0.30}; // Sched - iAssist
 
 /* KaDJ_Amp_Deg_WristAngle: sets Wrist final positons for each state */
 const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {  0.00,  // Sched - Init
@@ -536,7 +544,8 @@ const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {  0.00,  // Sched - I
                                                              124.00,  // Sched -  Intake
                                                              95.00,  // Sched - PreScore
                                                              95.00, // Sched - Score
-                                                             50.00}; // Sched - Trade_Off // NOTE - need to be calibrated and set
+                                                             50.00, // Sched - Trade_Off
+                                                             115.00 }; // Sched - iAssist
 
 /* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
 const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched - Init
@@ -544,7 +553,8 @@ const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched -
                                                                 0.0,  // Sched - Intake
                                                                 12.32,  // Sched - PreScore
                                                                 12.32, // Sched - Score
-                                                                0.0}; // Sched - Trade_Off
+                                                                0.0,  // Sched - Trade_Off
+                                                                0.0};// Sched - iAssist
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
 const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
@@ -552,7 +562,8 @@ const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
                                                         2.0,  // Sched - Intake
                                                         2.0,  // Sched - PreScore
                                                         2.0, // Sched - Score
-                                                        2.0}; // Sched - Trade_off //NOTE - all these may need to be edited for comp bot
+                                                        2.0,  // Sched - Trade_off
+                                                        2.0}; // Sched - iAssist
 
 /* KaDJ_Amp_In_ElevatorDb: Sets Elevator dead band. */
 const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
@@ -560,24 +571,27 @@ const double KaDJ_Amp_In_ElevatorDb[E_DJ_Amp_State_Sz] = {1.0,  // Sched - Init
                                                           1.0,  // Sched - Intake
                                                           1.0,  // Sched - PreScore
                                                           1.0,  // Sched - Score
-                                                          1.0}; // Sched - Trade_Off
+                                                          1.0,  // Sched - Trade_Off
+                                                          1.0}; // Sched - iAssist
 
 /* KaMAN_InS_LinearSlideRate: Table that contains the linear slide transition rate. */
 const double KaDJ_Amp_InS_ElevatorRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
-    {{1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
-     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1}};
+    {{1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1},
+     {1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1}};
 
 const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // [Cmnd][Attnd]
-    {{0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
-     {0.3, 0.3, 1.0, 0.3, 0.3, 0.3},
-     {1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
-     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
-     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
-     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3}};
+    {{0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 1.0, 0.3, 0.3, 0.3, 0.3},
+     {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
+     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3},
+     {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}};
 
 
 // Encoder / speed calculation related cals

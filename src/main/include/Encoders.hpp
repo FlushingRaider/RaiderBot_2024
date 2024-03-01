@@ -44,6 +44,9 @@ void Encoders_AMP_SPK_CLMR_Init( rev::SparkMaxRelativeEncoder m_encoderElevator,
                                  rev::SparkMaxRelativeEncoder m_encoderShooter1,
                                  rev::SparkMaxRelativeEncoder m_encoderShooter2);
 
+void Encoders_AMP_ResetWrist(rev::SparkMaxRelativeEncoder m_encoderWrist,
+                             bool LeENC_b_ResetReq);
+
 void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeLimit,
                                 bool                         LeENC_b_AMP_ElevatorLimit,
                                 bool                         LeENC_b_SPK_IntakeLimit,
