@@ -81,10 +81,10 @@ void ADAS_Main_Init(void)
   // VeADAS_e_AutonChooser.AddOption("LR_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath6);
   // VeADAS_e_AutonChooser.AddOption("L_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath7);
   VeADAS_e_AutonChooser.AddOption("Option 1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt1);
-  VeADAS_e_AutonChooser.AddOption("Option 2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
-  VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);
-  VeADAS_e_AutonChooser.AddOption("Option 4", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
-  VeADAS_e_AutonChooser.AddOption("Option 5", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
+  VeADAS_e_AutonChooser.AddOption("Double", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
+  // VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);
+  VeADAS_e_AutonChooser.AddOption("Leave", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
+  VeADAS_e_AutonChooser.AddOption("Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   // VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1);
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
