@@ -552,6 +552,17 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_PathFollower4:
   case E_ADAS_DM_PathFollower5:
   case E_ADAS_DM_PathFollower6:
+  case E_ADAS_DM_PathFollower7:
+  case E_ADAS_DM_PathFollower8:
+  case E_ADAS_DM_PathFollower9:
+  case E_ADAS_DM_PathFollower10:
+  case E_ADAS_DM_PathFollower11:
+  case E_ADAS_DM_PathFollower12:
+  case E_ADAS_DM_PathFollower13:
+  case E_ADAS_DM_PathFollower14:
+  case E_ADAS_DM_PathFollower15:
+  case E_ADAS_DM_PathFollower16:
+  case E_ADAS_DM_PathFollower17:
     VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                   L_Pct_Strafe,
                                                   L_Pct_Rotate,
