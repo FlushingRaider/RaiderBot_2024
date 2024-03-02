@@ -211,7 +211,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   else if (LeADAS_e_RobotState == E_Auton)
   {
 
-    VeVis_CenteringEnable = false;
+    // VeVis_CenteringEnable = false;
 
     // auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)
@@ -565,15 +565,15 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     break;
 
   case E_ADAS_MoveGlobal:
-    VeADAS_b_StateComplete = ADAS_DM_MoveWithGlobalCoords(L_Pct_FwdRev,
-                                                          L_Pct_Strafe,
-                                                          L_Pct_Rotate,
-                                                          VeODO_In_RobotDisplacementX,
-                                                          VeODO_In_RobotDisplacementY,
-                                                          VeVis_deg_VisionYaw,
-                                                          LeADAS_e_RequestedX,
-                                                          LeADAS_e_RequestedY,
-                                                          LeADAS_e_RequestedYaw);
+    // VeADAS_b_StateComplete = ADAS_DM_MoveWithGlobalCoords(L_Pct_FwdRev,
+    //                                                       L_Pct_Strafe,
+    //                                                       L_Pct_Rotate,
+    //                                                       VeODO_In_RobotDisplacementX,
+    //                                                       VeODO_In_RobotDisplacementY,
+    //                                                       VeVis_deg_VisionYaw,
+    //                                                       LeADAS_e_RequestedX,
+    //                                                       LeADAS_e_RequestedY,
+    //                                                       LeADAS_e_RequestedYaw);
 
     if (VeADAS_b_StateComplete) // telop adas features need to manually set to false
     {

@@ -389,12 +389,12 @@ const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.00020, // P Gx
                                                         -0.4};   // Max lower
 
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
-const double KeADAS_t_DM_PathFollowDebounceTime = 0.035; // 0.045
+const double KeADAS_t_DM_PathFollowDebounceTime = 0.045; // 0.045
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
 const double K_ADAS_DM_RotateDeadbandAngle = 6.0;  // 3.0
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
-const double K_ADAS_DM_XY_Deadband = 4.0; // 3.0
+const double K_ADAS_DM_XY_Deadband = 3.0; // 3.0
 
 /*  Auto Rotation calibrations */
 /* K_DesiredRotateSpeedAxis - This is the effective command axis, function of error calculation, in degrees */
@@ -475,7 +475,7 @@ const double KeSPK_I_WristCurrentLimit = 40;
 const double KeSPK_t_WristResetTime = 0.5;
 
 /* KeSPK_t_WristResetTime: Amount of time allowed to reset wrist when commanded to init. */
-const double KeSPK_t_WristResetTime2 = 1.5;
+const double KeSPK_t_WristResetTime2 = 2;
 
 /* KeSPK_k_WristResetPwr: Amount of power commanded to reset wrist. */
 const double KeSPK_k_WristResetPwr = -0.2;
@@ -525,7 +525,7 @@ const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {0.10,  // E_Amp_Elevator
                                                0.40}; // E_Amp_Intake
 
 /* KeDJ_Amp_t_StateTimeOut: Sets transition time out. */
-const double KeDJ_Amp_t_StateTimeOut = 5.0; // Drop-off //NOTE - will need to be changed for new bot
+const double KeDJ_Amp_t_StateTimeOut = 2.0; // Drop-off //NOTE - will need to be changed for new bot
 
 /* KeDJ_Amp_k_HoldNote: Sets rollers to hold note. */
 const double KeDJ_Amp_k_HoldNote = -0.1;
@@ -672,7 +672,7 @@ const double KeSPK_RPMs_Shooter2Rate = 75.0;
 /* KaSPK_k_Intake: Sets intake final power for each state */
 const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                     0.0,  // Sched - Driving
-                                                   -0.40,  // Sched - Intake
+                                                   -0.38,  // Sched - Intake
                                                     0.0,  // Sched - PreScore
                                                    -0.45}; // Sched - Score
 

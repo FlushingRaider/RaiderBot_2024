@@ -79,16 +79,16 @@ void Robot::RobotMotorCommands()
 
 frc::SmartDashboard::PutNumber("WristCmndType", float(VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist]));
 
-m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
+// m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
 
-  // if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
-  // {
-  //   m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
-  // }
-  // else
-  // {
-  //   m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
-  // }
+  if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
+  {
+    m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
+  }
+  else
+  {
+    m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
+  }
 #else
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
@@ -126,7 +126,7 @@ void Robot::RobotInit()
 
   GyroInit();
 
-  VisionInit();
+  // VisionInit();
 
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -260,7 +260,7 @@ void Robot::RobotPeriodic()
 
 
 
-  VisionRun();
+  // VisionRun();
 
   ADAS_DetermineMode();
 
