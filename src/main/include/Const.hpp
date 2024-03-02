@@ -691,18 +691,18 @@ const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           3000.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
-const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
-                                                         10.0,  // Sched - Driving
-                                                         10.0,  // Sched - Intake
-                                                         10.0,  // Sched - PreScore
-                                                         10.0}; // Sched - Score
+const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {20.0,  // Sched - Init
+                                                         20.0,  // Sched - Driving
+                                                         20.0,  // Sched - Intake
+                                                         20.0,  // Sched - PreScore
+                                                         20.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter2Db: Sets shooter 2 deadband */
-const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
-                                                         10.0,  // Sched - Driving
-                                                         10.0,  // Sched - Intake
-                                                         10.0,  // Sched - PreScore
-                                                         10.0}; // Sched - Score
+const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {20.0,  // Sched - Init
+                                                         20.0,  // Sched - Driving
+                                                         20.0,  // Sched - Intake
+                                                         20.0,  // Sched - PreScore
+                                                         20.0}; // Sched - Score
 
 /* KeSPK_t_StateTimeOut: Sets transition time out. */
 const double KeSPK_t_StateTimeOut = 1.5;
