@@ -494,10 +494,6 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt2Path1) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt2Path2;
-      }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt2Path2) && (VeADAS_b_StateComplete == true))
-      {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
         VeADAS_b_AutonOncePerTrigger = true;

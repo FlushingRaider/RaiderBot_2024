@@ -119,6 +119,24 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     DtrmnSwerveBotLocationOut L_lookupOut;
 
     /* Set the things we are not using to off: */
+    /* Most paths are straight, so lets use robot oriented.  
+       Set to false for things that have curved paths, but need to have bot start straight. */
+
+//   switch (LeADAS_e_ActiveFeature)
+//     {
+//     case E_ADAS_DM_DJ_Opt1Path1:
+//     case E_ADAS_DM_DJ_Opt1Path2:
+//     case E_ADAS_DM_DJ_Opt1Path3:
+//     case E_ADAS_DM_DJ_Opt1Path4:
+//     case E_ADAS_DM_DJ_Opt1Path5:
+//     case E_ADAS_DM_DJ_Opt1Path6:
+//       *LeADAS_b_SD_RobotOriented = false;
+//       break;
+//     default:
+//       *LeADAS_b_SD_RobotOriented = true;
+//       break;
+//     }
+
     *LeADAS_b_SD_RobotOriented = false;
 
     /* Look up the desired target location point: */

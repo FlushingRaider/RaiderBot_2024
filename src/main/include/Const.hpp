@@ -85,6 +85,10 @@ const double KeENC_In_WheelCircumfrence = 12.566;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
 const double K_SD_SteerMotorCurrentLimit = 25;
+
+/* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
+const double K_SD_DriveMotorCurrentLimit = 60;
+
 #ifdef Bot2023
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
    reading from the absolute encoder that is indicated in order for the wheel to point straight. */
