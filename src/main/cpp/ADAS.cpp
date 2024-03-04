@@ -86,7 +86,7 @@ void ADAS_Main_Init(void)
   VeADAS_e_AutonChooser.AddOption("Leave", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
   VeADAS_e_AutonChooser.AddOption("Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   VeADAS_e_AutonChooser.AddOption("2 Piece", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt6);
-  // VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1);
+  VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1);
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
 }
@@ -638,10 +638,14 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DJ_ShootNote2:
   case E_ADAS_DJ_ShootNote3:
     /* We are just attempting to shoot the note. No need to path follower. */
-    VeADAS_b_State1Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
+    VeADAS_b_State1Complete = ADAS_DM_Stop(L_Pct_FwdRev,
+                                           L_Pct_Strafe,
+                                           L_Pct_Rotate);
+
+    VeADAS_b_State2Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
                                            LeADAS_e_ActiveFeature);
 
-    VeADAS_b_StateComplete = VeADAS_b_State1Complete;
+    VeADAS_b_StateComplete = (VeADAS_b_State1Complete == true && VeADAS_b_State2Complete == true);
     if (VeADAS_b_StateComplete == true)
     {
       VeADAS_b_State1Complete = false;

@@ -64,7 +64,6 @@ void ReadGyro2(bool LeGRY_b_Cmd_DriverZeroGyroCmnd)
   LeGRY_Deg_GyroPitchAngleDegrees = bingus.GetPitch().GetValueAsDouble();
   LeGRY_Deg_GyroRollAngleDegrees = bingus.GetRoll().GetValueAsDouble();
 
-  // frc::SmartDashboard::PutNumber("bingus Yaw", -LeGRY_Deg_GyroYawAngleRawDegrees);
   // frc::SmartDashboard::PutNumber("bingus Pitch", LeGRY_Deg_GyroPitchAngleDegrees);
   // frc::SmartDashboard::PutNumber("bingus Roll", LeGRY_Deg_GyroPitchAngleDegrees);
 
@@ -87,4 +86,6 @@ void ReadGyro2(bool LeGRY_b_Cmd_DriverZeroGyroCmnd)
 
   VeGRY_Deg_GyroPitchAngleDegrees = LeGRY_Deg_GyroPitchAngleDegrees;
   VeGRY_Deg_GyroRollAngleDegrees = LeGRY_Deg_GyroRollAngleDegrees;
+
+  frc::SmartDashboard::PutNumber("GyroYaw", -VeGRY_Deg_GyroYawAngleDegrees);
   }

@@ -405,6 +405,13 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     frc::SmartDashboard::PutNumber("L_lookupOut.L_valX", L_lookupOut.L_valX);
     frc::SmartDashboard::PutNumber("L_lookupOut.L_valY", L_lookupOut.L_valY);
     frc::SmartDashboard::PutNumber("L_lookupOut.L_valDeg", L_lookupOut.L_valDeg);
+
+    frc::SmartDashboard::PutNumber("LeADAS_Pct_FwdRev", *LeADAS_Pct_FwdRev);
+    frc::SmartDashboard::PutNumber("LeADAS_Pct_Strafe", *LeADAS_Pct_Strafe);
+    frc::SmartDashboard::PutNumber("LeADAS_Pct_Rotate", *LeADAS_Pct_Rotate);
+
+    frc::SmartDashboard::PutNumber("VeADAS_t_DM_Debounce", VeADAS_t_DM_Debounce);
+
     // frc::SmartDashboard::PutNumber("DM Timer", VeADAS_t_DM_StateTimer);
     // frc::SmartDashboard::PutNumber("X Cmnd",   L_lookupOut.L_valX);
     // // frc::SmartDashboard::PutNumber("X Act",    LeADAS_l_RelativePosX);
@@ -419,6 +426,24 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     frc::SmartDashboard::PutBoolean("path complete", LeADAS_b_DM_StateComplete);
 
     return (LeADAS_b_DM_StateComplete);
+}
+
+/******************************************************************************
+ * Function:     ADAS_DM_Stop
+ *
+ * Description:  Call this function when in auton and expecting the robot to be 
+ *               stopped.  Ideally used in steps where robot is performing some
+ *               action while not moving.
+ ******************************************************************************/
+bool ADAS_DM_Stop(double *LeADAS_Pct_FwdRev,
+                  double *LeADAS_Pct_Strafe,
+                  double *LeADAS_Pct_Rotate)
+{
+    *LeADAS_Pct_FwdRev = 0;
+    *LeADAS_Pct_Strafe = 0;
+    *LeADAS_Pct_Rotate = 0;
+
+    return (true);
 }
 
 /******************************************************************************

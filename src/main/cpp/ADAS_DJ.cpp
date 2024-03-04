@@ -9,8 +9,6 @@
     - Schedules states in a non-linear state machine
  */
 
-// #include <frc/smartdashboard/SmartDashboard.h>
-// #include <frc/DriverStation.h>
 #include "Const.hpp"
 #include "Driver_inputs.hpp"
 #include "Amp.hpp"
