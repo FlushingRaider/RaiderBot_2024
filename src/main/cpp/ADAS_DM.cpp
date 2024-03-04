@@ -37,24 +37,13 @@ double VeADAS_Deg_DM_StartAng = 0;
 double VeADAS_Deg_DM_TargetStartAng = 0;
 double VeADAS_l_DM_X_TargetStartPosition = 0;
 double VeADAS_l_DM_Y_TargetStartPosition = 0;
-double V_ADAS_DM_TargetAngle;
-double V_ADAS_DM_GyroPrevious;
-bool V_ADAS_DM_GyroFlipNeg;
-bool V_ADAS_DM_GyroFlipPos;
-
-bool VeADAS_b_DM_AutoBalanceInit = false;
-bool VeADAS_b_DM_AutoBalancePositive = false;
-bool VeADAS_b_DM_AutoBalanceFastSearch = false;
-double VeADAS_t_DM_AutoBalanceDbTm = 0.0;
-double VeADAS_t_DM_AutoBalanceHoldTm = 0.0;
-double VeADAS_Deg_DM_AutoBalanceErrorPrev = 0;
-double VeADAS_Deg_DM_AutoBalanceIntegral = 0;
-
-double VeADAS_t_DM_AutoMountDbTime = 0;
 
 // For calibration:
 double VaADAS_k_AutonXY_PID_Gx[E_PID_CalSz];
 double VaADAS_k_AutonRotatePID_Gx[E_PID_CalSz];
+double VeADAS_Deg_DM_RotateDeadbandAngle = 0;
+double VeADAS_Deg_DM_XY_Deadband = 0;
+double VeADAS_t_DM_PathFollowDebounceTime = 0;
 
 double VeADAS_t_DM_DebounceTime = 0;
 
@@ -63,6 +52,116 @@ double V_GyroPrevious;
 bool V_GyroFlipNeg;
 bool V_GyroFlipPos;
 double V_OffsettedGyro;
+
+
+/******************************************************************************
+ * Function:     ADAS_DM_ConfigsInit
+ *
+ * Description:  Contains the configurations for ADAS DM.
+ ******************************************************************************/
+void ADAS_DM_ConfigsInit()
+{
+  VaADAS_k_AutonXY_PID_Gx[E_P_Gx]   = KaADAS_k_AutonXY_PID_Gx[E_P_Gx];
+  VaADAS_k_AutonXY_PID_Gx[E_I_Gx]   = KaADAS_k_AutonXY_PID_Gx[E_I_Gx];
+  VaADAS_k_AutonXY_PID_Gx[E_D_Gx]   = KaADAS_k_AutonXY_PID_Gx[E_D_Gx];
+  VaADAS_k_AutonXY_PID_Gx[E_P_Ul]   = KaADAS_k_AutonXY_PID_Gx[E_P_Ul];
+  VaADAS_k_AutonXY_PID_Gx[E_P_Ll]   = KaADAS_k_AutonXY_PID_Gx[E_P_Ll];
+  VaADAS_k_AutonXY_PID_Gx[E_I_Ul]   = KaADAS_k_AutonXY_PID_Gx[E_I_Ul];
+  VaADAS_k_AutonXY_PID_Gx[E_I_Ll]   = KaADAS_k_AutonXY_PID_Gx[E_I_Ll];
+  VaADAS_k_AutonXY_PID_Gx[E_D_Ul]   = KaADAS_k_AutonXY_PID_Gx[E_D_Ul];
+  VaADAS_k_AutonXY_PID_Gx[E_D_Ll]   = KaADAS_k_AutonXY_PID_Gx[E_D_Ll];
+  VaADAS_k_AutonXY_PID_Gx[E_Max_Ul] = KaADAS_k_AutonXY_PID_Gx[E_Max_Ul];
+  VaADAS_k_AutonXY_PID_Gx[E_Max_Ll] = KaADAS_k_AutonXY_PID_Gx[E_Max_Ll];
+
+  VaADAS_k_AutonRotatePID_Gx[E_P_Gx]   = KaADAS_k_AutonRotatePID_Gx[E_P_Gx];
+  VaADAS_k_AutonRotatePID_Gx[E_I_Gx]   = KaADAS_k_AutonRotatePID_Gx[E_I_Gx];
+  VaADAS_k_AutonRotatePID_Gx[E_D_Gx]   = KaADAS_k_AutonRotatePID_Gx[E_D_Gx];
+  VaADAS_k_AutonRotatePID_Gx[E_P_Ul]   = KaADAS_k_AutonRotatePID_Gx[E_P_Ul];
+  VaADAS_k_AutonRotatePID_Gx[E_P_Ll]   = KaADAS_k_AutonRotatePID_Gx[E_P_Ll];
+  VaADAS_k_AutonRotatePID_Gx[E_I_Ul]   = KaADAS_k_AutonRotatePID_Gx[E_I_Ul];
+  VaADAS_k_AutonRotatePID_Gx[E_I_Ll]   = KaADAS_k_AutonRotatePID_Gx[E_I_Ll];
+  VaADAS_k_AutonRotatePID_Gx[E_D_Ul]   = KaADAS_k_AutonRotatePID_Gx[E_D_Ul];
+  VaADAS_k_AutonRotatePID_Gx[E_D_Ll]   = KaADAS_k_AutonRotatePID_Gx[E_D_Ll];
+  VaADAS_k_AutonRotatePID_Gx[E_Max_Ul] = KaADAS_k_AutonRotatePID_Gx[E_Max_Ul];
+  VaADAS_k_AutonRotatePID_Gx[E_Max_Ll] = KaADAS_k_AutonRotatePID_Gx[E_Max_Ll];
+
+  VeADAS_Deg_DM_RotateDeadbandAngle  = K_ADAS_DM_RotateDeadbandAngle;
+  VeADAS_Deg_DM_XY_Deadband          = K_ADAS_DM_XY_Deadband;
+  VeADAS_t_DM_PathFollowDebounceTime = KeADAS_t_DM_PathFollowDebounceTime;
+
+  #ifdef ADAS_DM_Test
+  // display PID coefficients on SmartDashboard
+   frc::SmartDashboard::PutNumber("P Gain - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_P_Gx]);
+   frc::SmartDashboard::PutNumber("I Gain - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_I_Gx]);
+   frc::SmartDashboard::PutNumber("D Gain - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_D_Gx]);
+   frc::SmartDashboard::PutNumber("P UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_P_Ul]);
+   frc::SmartDashboard::PutNumber("P LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_P_Ll]);
+   frc::SmartDashboard::PutNumber("I UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_I_Ul]);
+   frc::SmartDashboard::PutNumber("I LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_I_Ll]);
+   frc::SmartDashboard::PutNumber("D UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_D_Ul]);
+   frc::SmartDashboard::PutNumber("D LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_D_Ll]);
+   frc::SmartDashboard::PutNumber("Max UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_Max_Ul]);
+   frc::SmartDashboard::PutNumber("Max LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
+
+   frc::SmartDashboard::PutNumber("P Gain - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_P_Gx]);
+   frc::SmartDashboard::PutNumber("I Gain - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_I_Gx]);
+   frc::SmartDashboard::PutNumber("D Gain - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_D_Gx]);
+   frc::SmartDashboard::PutNumber("P UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_P_Ul]);
+   frc::SmartDashboard::PutNumber("P LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_P_Ll]);
+   frc::SmartDashboard::PutNumber("I UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_I_Ul]);
+   frc::SmartDashboard::PutNumber("I LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_I_Ll]);
+   frc::SmartDashboard::PutNumber("D UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_D_Ul]);
+   frc::SmartDashboard::PutNumber("D LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_D_Ll]);
+   frc::SmartDashboard::PutNumber("Max UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_Max_Ul]);
+   frc::SmartDashboard::PutNumber("Max LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_Max_Ll]);
+
+   frc::SmartDashboard::PutNumber("Rotate Db", K_ADAS_DM_RotateDeadbandAngle);
+   frc::SmartDashboard::PutNumber("XY Db", K_ADAS_DM_XY_Deadband);
+   frc::SmartDashboard::PutNumber("Debounce Time", KeADAS_t_DM_PathFollowDebounceTime);
+  #endif
+}
+
+
+/******************************************************************************
+ * Function:     ADAS_DM_ConfigsCal
+ *
+ * Description:  Contains the configurations for ADAS DM.  This
+ *               allows for rapid calibration, but must not be used for comp.
+ ******************************************************************************/
+void ADAS_DM_ConfigsCal()
+{
+// read coefficients from SmartDashboard
+#ifdef ADAS_DM_Test
+VaADAS_k_AutonXY_PID_Gx[E_P_Gx]   = frc::SmartDashboard::GetNumber("P Gain - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_P_Gx]);
+VaADAS_k_AutonXY_PID_Gx[E_I_Gx]   = frc::SmartDashboard::GetNumber("I Gain - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_I_Gx]);
+VaADAS_k_AutonXY_PID_Gx[E_D_Gx]   = frc::SmartDashboard::GetNumber("D Gain - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_D_Gx]);
+VaADAS_k_AutonXY_PID_Gx[E_P_Ul]   = frc::SmartDashboard::GetNumber("P UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_P_Ul]);
+VaADAS_k_AutonXY_PID_Gx[E_P_Ll]   = frc::SmartDashboard::GetNumber("P LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_P_Ll]);
+VaADAS_k_AutonXY_PID_Gx[E_I_Ul]   = frc::SmartDashboard::GetNumber("I UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_I_Ul]);
+VaADAS_k_AutonXY_PID_Gx[E_I_Ll]   = frc::SmartDashboard::GetNumber("I LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_I_Ll]);
+VaADAS_k_AutonXY_PID_Gx[E_D_Ul]   = frc::SmartDashboard::GetNumber("D UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_D_Ul]);
+VaADAS_k_AutonXY_PID_Gx[E_D_Ll]   = frc::SmartDashboard::GetNumber("D LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_D_Ll]);
+VaADAS_k_AutonXY_PID_Gx[E_Max_Ul] = frc::SmartDashboard::GetNumber("Max UpperLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_Max_Ul]);
+VaADAS_k_AutonXY_PID_Gx[E_Max_Ll] = frc::SmartDashboard::GetNumber("Max LowerLim - XY PathFollower", KaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
+
+VaADAS_k_AutonRotatePID_Gx[E_P_Gx]   = frc::SmartDashboard::GetNumber("P Gain - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_P_Gx]);
+VaADAS_k_AutonRotatePID_Gx[E_I_Gx]   = frc::SmartDashboard::GetNumber("I Gain - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_I_Gx]);
+VaADAS_k_AutonRotatePID_Gx[E_D_Gx]   = frc::SmartDashboard::GetNumber("D Gain - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_D_Gx]);
+VaADAS_k_AutonRotatePID_Gx[E_P_Ul]   = frc::SmartDashboard::GetNumber("P UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_P_Ul]);
+VaADAS_k_AutonRotatePID_Gx[E_P_Ll]   = frc::SmartDashboard::GetNumber("P LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_P_Ll]);
+VaADAS_k_AutonRotatePID_Gx[E_I_Ul]   = frc::SmartDashboard::GetNumber("I UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_I_Ul]);
+VaADAS_k_AutonRotatePID_Gx[E_I_Ll]   = frc::SmartDashboard::GetNumber("I LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_I_Ll]);
+VaADAS_k_AutonRotatePID_Gx[E_D_Ul]   = frc::SmartDashboard::GetNumber("D UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_D_Ul]);
+VaADAS_k_AutonRotatePID_Gx[E_D_Ll]   = frc::SmartDashboard::GetNumber("D LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_D_Ll]);
+VaADAS_k_AutonRotatePID_Gx[E_Max_Ul] = frc::SmartDashboard::GetNumber("Max UpperLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_Max_Ul]);
+VaADAS_k_AutonRotatePID_Gx[E_Max_Ll] = frc::SmartDashboard::GetNumber("Max LowerLim - Rotate PathFollower", KaADAS_k_AutonRotatePID_Gx[E_Max_Ll]);
+
+VeADAS_Deg_DM_RotateDeadbandAngle  = frc::SmartDashboard::GetNumber("Rotate Db", K_ADAS_DM_RotateDeadbandAngle);
+VeADAS_Deg_DM_XY_Deadband          = frc::SmartDashboard::GetNumber("XY Db", K_ADAS_DM_XY_Deadband);
+VeADAS_t_DM_PathFollowDebounceTime = frc::SmartDashboard::GetNumber("Debounce Time", KeADAS_t_DM_PathFollowDebounceTime);
+#endif
+}
+
 
 /******************************************************************************
  * Function:     ADAS_DM_Reset
@@ -79,6 +178,7 @@ void ADAS_DM_Reset(void)
   VeADAS_Deg_DM_StartAng = 0;
   VeADAS_Deg_DM_TargetStartAng = 0;
 }
+
 
 /******************************************************************************
  * Function:     ADAS_DM_PathFollower
@@ -171,15 +271,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
 
     LeADAS_l_X_Error = fabs(L_lookupOut.L_valX - LeADAS_l_RelativePosX);
     LeADAS_l_Y_Error = fabs(L_lookupOut.L_valY - LeADAS_l_RelativePosY);
-
-    frc::SmartDashboard::PutNumber("LeADAS_l_X_Error", LeADAS_l_X_Error);
-    frc::SmartDashboard::PutNumber("LeADAS_l_Y_Error", LeADAS_l_Y_Error);
-
-    frc::SmartDashboard::PutNumber("L_lookupOut.L_valX", L_lookupOut.L_valX);
-    frc::SmartDashboard::PutNumber("L_lookupOut.L_valY", L_lookupOut.L_valY);
-    frc::SmartDashboard::PutNumber("L_lookupOut.L_valDeg", L_lookupOut.L_valDeg);
-
-
+    
     // LeADAS_Deg_RotateError = fabs(L_lookupOut.L_valDeg - LeADAS_Deg_RelativeAng);
     LeADAS_Deg_RotateErrorRaw = L_lookupOut.L_valDeg - LeADAS_Deg_RelativeAng;
 
@@ -210,23 +302,23 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     }
 
     /* Exit criteria: */
-    if (LeADAS_Deg_RotateError <= K_ADAS_DM_RotateDeadbandAngle &&
-        LeADAS_l_X_Error <= K_ADAS_DM_XY_Deadband &&
-        LeADAS_l_Y_Error <= K_ADAS_DM_XY_Deadband &&
-        VeADAS_t_DM_Debounce < KeADAS_t_DM_PathFollowDebounceTime &&
+    if (LeADAS_Deg_RotateError <= VeADAS_Deg_DM_RotateDeadbandAngle &&
+        LeADAS_l_X_Error <= VeADAS_Deg_DM_XY_Deadband &&
+        LeADAS_l_Y_Error <= VeADAS_Deg_DM_XY_Deadband &&
+        VeADAS_t_DM_Debounce < VeADAS_t_DM_PathFollowDebounceTime &&
         L_lookupOut.L_timeEndReached == true)
     {
         VeADAS_t_DM_Debounce += C_ExeTime;
     }
-    else if (VeADAS_t_DM_Debounce >= KeADAS_t_DM_PathFollowDebounceTime)
+    else if (VeADAS_t_DM_Debounce >= VeADAS_t_DM_PathFollowDebounceTime)
     {
         /* Reset the time, proceed to next state. */
         LeADAS_b_DM_StateComplete = true;
         VeADAS_t_DM_Debounce = 0;
     }
-    else if (LeADAS_Deg_RotateError > K_ADAS_DM_RotateDeadbandAngle ||
-             LeADAS_l_X_Error > K_ADAS_DM_XY_Deadband ||
-             LeADAS_l_Y_Error > K_ADAS_DM_XY_Deadband)
+    else if (LeADAS_Deg_RotateError > VeADAS_Deg_DM_RotateDeadbandAngle ||
+             LeADAS_l_X_Error > VeADAS_Deg_DM_XY_Deadband ||
+             LeADAS_l_Y_Error > VeADAS_Deg_DM_XY_Deadband)
     {
         /* Reset the timer, we have gone out of bounds */
         VeADAS_t_DM_Debounce = 0;
@@ -238,49 +330,49 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                                           LeADAS_l_RelativePosX,
                                           &V_ADAS_DM_X_ErrorPrev,
                                           &V_ADAS_DM_X_Integral,
-                                          KaADAS_k_AutonXY_PID_Gx[E_P_Gx],
-                                          KaADAS_k_AutonXY_PID_Gx[E_I_Gx],
-                                          KaADAS_k_AutonXY_PID_Gx[E_D_Gx],
-                                          KaADAS_k_AutonXY_PID_Gx[E_P_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_P_Ll],
-                                          KaADAS_k_AutonXY_PID_Gx[E_I_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_I_Ll],
-                                          KaADAS_k_AutonXY_PID_Gx[E_D_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_D_Ll],
-                                          KaADAS_k_AutonXY_PID_Gx[E_Max_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
+                                          VaADAS_k_AutonXY_PID_Gx[E_P_Gx],
+                                          VaADAS_k_AutonXY_PID_Gx[E_I_Gx],
+                                          VaADAS_k_AutonXY_PID_Gx[E_D_Gx],
+                                          VaADAS_k_AutonXY_PID_Gx[E_P_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_P_Ll],
+                                          VaADAS_k_AutonXY_PID_Gx[E_I_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_I_Ll],
+                                          VaADAS_k_AutonXY_PID_Gx[E_D_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_D_Ll],
+                                          VaADAS_k_AutonXY_PID_Gx[E_Max_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
 
         *LeADAS_Pct_FwdRev = -Control_PID(L_lookupOut.L_valY,
                                           LeADAS_l_RelativePosY,
                                           &V_ADAS_DM_Y_ErrorPrev,
                                           &V_ADAS_DM_Y_Integral,
-                                          KaADAS_k_AutonXY_PID_Gx[E_P_Gx],
-                                          KaADAS_k_AutonXY_PID_Gx[E_I_Gx],
-                                          KaADAS_k_AutonXY_PID_Gx[E_D_Gx],
-                                          KaADAS_k_AutonXY_PID_Gx[E_P_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_P_Ll],
-                                          KaADAS_k_AutonXY_PID_Gx[E_I_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_I_Ll],
-                                          KaADAS_k_AutonXY_PID_Gx[E_D_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_D_Ll],
-                                          KaADAS_k_AutonXY_PID_Gx[E_Max_Ul],
-                                          KaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
+                                          VaADAS_k_AutonXY_PID_Gx[E_P_Gx],
+                                          VaADAS_k_AutonXY_PID_Gx[E_I_Gx],
+                                          VaADAS_k_AutonXY_PID_Gx[E_D_Gx],
+                                          VaADAS_k_AutonXY_PID_Gx[E_P_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_P_Ll],
+                                          VaADAS_k_AutonXY_PID_Gx[E_I_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_I_Ll],
+                                          VaADAS_k_AutonXY_PID_Gx[E_D_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_D_Ll],
+                                          VaADAS_k_AutonXY_PID_Gx[E_Max_Ul],
+                                          VaADAS_k_AutonXY_PID_Gx[E_Max_Ll]);
 
         *LeADAS_Pct_Rotate = Control_PID(L_lookupOut.L_valDeg,
                                          LeADAS_Deg_RelativeAng,
                                          &VeADAS_Deg_DM_AngleErrorPrev,
                                          &VeADAS_Deg_DM_AngleIntegral,
-                                         KaADAS_k_AutonRotatePID_Gx[E_P_Gx],
-                                         KaADAS_k_AutonRotatePID_Gx[E_I_Gx],
-                                         KaADAS_k_AutonRotatePID_Gx[E_D_Gx],
-                                         KaADAS_k_AutonRotatePID_Gx[E_P_Ul],
-                                         KaADAS_k_AutonRotatePID_Gx[E_P_Ll],
-                                         KaADAS_k_AutonRotatePID_Gx[E_I_Ul],
-                                         KaADAS_k_AutonRotatePID_Gx[E_I_Ll],
-                                         KaADAS_k_AutonRotatePID_Gx[E_D_Ul],
-                                         KaADAS_k_AutonRotatePID_Gx[E_D_Ll],
-                                         KaADAS_k_AutonRotatePID_Gx[E_Max_Ul],
-                                         KaADAS_k_AutonRotatePID_Gx[E_Max_Ll]);
+                                         VaADAS_k_AutonRotatePID_Gx[E_P_Gx],
+                                         VaADAS_k_AutonRotatePID_Gx[E_I_Gx],
+                                         VaADAS_k_AutonRotatePID_Gx[E_D_Gx],
+                                         VaADAS_k_AutonRotatePID_Gx[E_P_Ul],
+                                         VaADAS_k_AutonRotatePID_Gx[E_P_Ll],
+                                         VaADAS_k_AutonRotatePID_Gx[E_I_Ul],
+                                         VaADAS_k_AutonRotatePID_Gx[E_I_Ll],
+                                         VaADAS_k_AutonRotatePID_Gx[E_D_Ul],
+                                         VaADAS_k_AutonRotatePID_Gx[E_D_Ll],
+                                         VaADAS_k_AutonRotatePID_Gx[E_Max_Ul],
+                                         VaADAS_k_AutonRotatePID_Gx[E_Max_Ll]);
 
         *LeADAS_Deg_DesiredPose = L_lookupOut.L_valDeg;
     }
@@ -306,6 +398,13 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
         VeADAS_Deg_DM_AngleIntegral = 0;
     }
 
+    frc::SmartDashboard::PutNumber("LeADAS_l_X_Error", LeADAS_l_X_Error);
+    frc::SmartDashboard::PutNumber("LeADAS_l_Y_Error", LeADAS_l_Y_Error);
+    frc::SmartDashboard::PutNumber("LeADAS_Deg_RotateError", LeADAS_Deg_RotateError);
+
+    frc::SmartDashboard::PutNumber("L_lookupOut.L_valX", L_lookupOut.L_valX);
+    frc::SmartDashboard::PutNumber("L_lookupOut.L_valY", L_lookupOut.L_valY);
+    frc::SmartDashboard::PutNumber("L_lookupOut.L_valDeg", L_lookupOut.L_valDeg);
     // frc::SmartDashboard::PutNumber("DM Timer", VeADAS_t_DM_StateTimer);
     // frc::SmartDashboard::PutNumber("X Cmnd",   L_lookupOut.L_valX);
     // // frc::SmartDashboard::PutNumber("X Act",    LeADAS_l_RelativePosX);
@@ -387,7 +486,7 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
             else{
                 *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
             }
-            
+
         }
     }
     else

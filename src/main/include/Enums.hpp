@@ -95,6 +95,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt1Path4,
   E_ADAS_DM_DJ_Opt1Path5,
   E_ADAS_DM_DJ_Opt1Path6,
+  E_ADAS_DM_DJ_Opt1Path7,
   E_ADAS_DM_DJ_Opt2Path1,
   E_ADAS_DM_DJ_Opt2Path2,
   E_ADAS_DM_DJ_Opt2Path3,
@@ -104,6 +105,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt3Path4,
   E_ADAS_DM_DJ_Opt3Path5,
   E_ADAS_DM_DJ_Opt3Path6,
+  E_ADAS_DM_DJ_Opt3Path7,
   E_ADAS_DM_DJ_Test1,
   E_ADAS_DM_DJ_Test2
 } T_ADAS_ActiveFeature;

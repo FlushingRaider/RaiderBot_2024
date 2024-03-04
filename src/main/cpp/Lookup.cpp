@@ -44,6 +44,7 @@
 #include "OptPaths/Opt1Path4.hpp"
 #include "OptPaths/Opt1Path5.hpp"
 #include "OptPaths/Opt1Path6.hpp"
+#include "OptPaths/Opt1Path7.hpp"
 #include "OptPaths/Opt2Path1.hpp"
 #include "OptPaths/Opt2Path2.hpp"
 #include "OptPaths/Opt2Path3.hpp"
@@ -53,6 +54,7 @@
 #include "OptPaths/Opt3Path4.hpp"
 #include "OptPaths/Opt3Path5.hpp"
 #include "OptPaths/Opt3Path6.hpp"
+#include "OptPaths/Opt3Path7.hpp"
 #include "OptPaths/TestPath1.hpp"
 #include "OptPaths/TestPath2.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -827,6 +829,19 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
       L_output.L_timeEndReached = true;
     }
     break;
+  case E_ADAS_DM_DJ_Opt1Path7:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt1Path7,
+                                       KaADAS_t_Opt1Path7Remaining,
+                                       KaADAS_l_Opt1Path7_X,
+                                       KaADAS_l_Opt1Path7_Y,
+                                       KaADAS_Deg_Opt1Path7);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt1Path7[KnADAS_t_Opt1Path7.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
 
   case E_ADAS_DM_DJ_Opt2Path1:
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
@@ -942,6 +957,19 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
                                        KaADAS_Deg_Opt3Path6);
 
     if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path6[KnADAS_t_Opt3Path6.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+  case E_ADAS_DM_DJ_Opt3Path7:
+    LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                       KnADAS_t_Opt3Path7,
+                                       KaADAS_t_Opt3Path7Remaining,
+                                       KaADAS_l_Opt3Path7_X,
+                                       KaADAS_l_Opt3Path7_Y,
+                                       KaADAS_Deg_Opt3Path7);
+
+    if (LeLU_s_AutonTime >= KnADAS_t_Opt3Path7[KnADAS_t_Opt3Path7.size() - 1])
     {
       L_output.L_timeEndReached = true;
     }

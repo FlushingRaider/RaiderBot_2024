@@ -399,7 +399,8 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
     VeDRC_Deg_AutoCorrectDesired = 180;
     }
   
-  if (fabs(L_FWD) >= K_SD_RotateDeadBand || fabs(L_STR) >= K_SD_RotateDeadBand || fabs(L_RCW) >= K_SD_RotateDeadBand)
+  if ((LeDRC_e_ADAS_ActiveFeature <= E_ADAS_Disabled) && 
+      (fabs(L_FWD) >= K_SD_RotateDeadBand || fabs(L_STR) >= K_SD_RotateDeadBand || fabs(L_RCW) >= K_SD_RotateDeadBand))
     {
     Le_b_SD_Active = true;
     }
@@ -513,7 +514,7 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
 
   if (L_k_SD_Gain >= K_SD_MaxGain)
     {
-    L_k_SD_Gain = K_SD_MaxGain;
+    L_k_SD_Gain = K_SD_MaxGain;  // ToDo: Bumped from 0.7 to 0.9 to try and speed up auton.  May need to modify for teleop.
     }
 
   if (L_ROBO_e_RobotState == E_Teleop){

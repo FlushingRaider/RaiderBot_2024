@@ -402,6 +402,10 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path6) && (VeADAS_b_StateComplete == true))
       {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path7;  // This is return to start position, to try and speed up cal efforts.
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path7) && (VeADAS_b_StateComplete == true))
+      {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
         VeADAS_b_AutonOncePerTrigger = true;
@@ -475,6 +479,10 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path6;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path6) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path7;   // This is return to start position, to try and speed up cal efforts.
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path7) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
@@ -608,6 +616,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt1Path4:
   case E_ADAS_DM_DJ_Opt1Path5:
   case E_ADAS_DM_DJ_Opt1Path6:
+  case E_ADAS_DM_DJ_Opt1Path7:
   case E_ADAS_DM_DJ_Opt2Path1:
   case E_ADAS_DM_DJ_Opt2Path2:
   case E_ADAS_DM_DJ_Opt2Path3:
@@ -616,6 +625,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt3Path4:
   case E_ADAS_DM_DJ_Opt3Path5:
   case E_ADAS_DM_DJ_Opt3Path6:
+  case E_ADAS_DM_DJ_Opt3Path7:
   case E_ADAS_DM_DJ_Test1:
   case E_ADAS_DM_DJ_Test2:
     VeADAS_b_State1Complete = ADAS_DM_PathFollower(L_Pct_FwdRev,

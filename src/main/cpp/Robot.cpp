@@ -16,6 +16,7 @@
 #include "DriveControl.hpp"
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
+#include "ADAS_DM.hpp"
 #include "Odometry.hpp"
 #include "Amp.hpp"
 #include "SpeakerCntrl.hpp"
@@ -167,6 +168,7 @@ void Robot::RobotInit()
 
   ADAS_Main_Init();
   ADAS_Main_Reset();
+  ADAS_DM_ConfigsInit();
 #ifdef Bot2024 
   Amp_MotorConfigsInit(m_ElevatorPID,
                        m_WristPID,
@@ -270,6 +272,8 @@ void Robot::RobotPeriodic()
   ADAS_DetermineMode();
 
   frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
+
+  ADAS_DM_ConfigsCal();
 
   VeADAS_e_ActiveFeature = ADAS_ControlMain(&VeADAS_Pct_SD_FwdRev,
                                             &VeADAS_Pct_SD_Strafe,

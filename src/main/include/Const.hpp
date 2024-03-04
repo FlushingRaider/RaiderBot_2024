@@ -5,7 +5,7 @@
 
 // Define the desired rotob state here: Bot2024, Bot2023
 #define Bot2024
-// Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest
+// Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
 // #define SPK_Test
 
 // Numerical constants
@@ -118,7 +118,7 @@ const double K_SD_WheelGx[E_RobotCornerSz] = {-1.0,  // E_FrontLeft
 const double KeDRC_k_SD_MinGain = 0.2;
 
 /* K_SD_MaxGain: Max gain allowed for swerve drive control. */
-const double K_SD_MaxGain = 0.7;
+const double K_SD_MaxGain = 0.9;
 
 /* KeDRC_k_SD_AutonGain: Gain applied to the auton commands coming in for swerve drive. */
 const double KeDRC_k_SD_AutonGain = 0.9;

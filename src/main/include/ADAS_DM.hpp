@@ -14,6 +14,8 @@ extern double V_ADAS_DM_InitGyroAngle;
 extern double VeADAS_t_DM_AutoMountDbTime;
 extern double VeADAS_t_DM_StateTimer;
 
+void ADAS_DM_ConfigsCal(void);
+void ADAS_DM_ConfigsInit(void);
 void ADAS_DM_Reset(void);
 
 bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
