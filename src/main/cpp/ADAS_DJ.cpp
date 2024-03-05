@@ -338,6 +338,7 @@ case E_ADAS_DM_DJ_Opt4Path3:
 case E_ADAS_DM_DJ_Opt4Path4:
   LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
   LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Intake;
+  LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
  case E_ADAS_DM_DJ_Opt1Path1:
