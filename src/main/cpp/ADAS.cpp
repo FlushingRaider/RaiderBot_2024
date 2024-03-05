@@ -404,10 +404,6 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path6) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path7;  // This is return to start position, to try and speed up cal efforts.
-      }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path7) && (VeADAS_b_StateComplete == true))
-      {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
         VeADAS_b_AutonOncePerTrigger = true;

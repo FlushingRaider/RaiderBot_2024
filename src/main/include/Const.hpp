@@ -87,7 +87,7 @@ const double KeENC_In_WheelCircumfrence = 12.566;
 const double K_SD_SteerMotorCurrentLimit = 25;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
-const double K_SD_DriveMotorCurrentLimit = 60;
+const double K_SD_DriveMotorCurrentLimit = 55;
 
 #ifdef Bot2023
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
@@ -368,34 +368,34 @@ const double KtLU_k_SD_DesiredAccel[20] = {-1.00, //-1
                                            1.00}; // 0.95
 
 /* ADAS DM cals*/
-const double KaADAS_k_AutonXY_PID_Gx[E_PID_CalSz] = {0.050,   // P Gx
-                                                     0.00060, // I Gx 0.000001
+const double KaADAS_k_AutonXY_PID_Gx[E_PID_CalSz] = {0.05,   // P Gx
+                                                     0.00003, // I Gx 0.000001
                                                      0.00007, // D Gx
-                                                     0.60,    // P UL
-                                                     -0.60,   // P LL
-                                                     0.3,     // I UL
-                                                     -0.3,    // I LL
+                                                     0.75,    // P UL
+                                                     -0.75,   // P LL
+                                                     0.05,     // I UL
+                                                     -0.05,    // I LL
                                                      0.5,     // D UL
                                                      -0.5,    // D LL
                                                      1.0,     // Max upper
                                                      -1.0};   // Max lower
 
-const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.00020, // P Gx
-                                                        0.00020, // I Gx
+const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.0045, // P Gx
+                                                        0.00000000005, // I Gx
                                                         0.00007, // D Gx
-                                                        0.29,    // P UL
-                                                        -0.29,   // P LL
-                                                        0.175,   // I UL
-                                                        -0.175,  // I LL
-                                                        0.16,    // D UL
-                                                        -0.16,   // D LL
+                                                        0.25,    // P UL
+                                                        -0.25,   // P LL
+                                                        0.04,   // I UL
+                                                        -0.04,  // I LL
+                                                        0.00007,    // D UL
+                                                        -0.00007,   // D LL
                                                         0.4,     // Max upper
                                                         -0.4};   // Max lower
 
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
-const double KeADAS_t_DM_PathFollowDebounceTime = 0.045; // 0.045
+const double KeADAS_t_DM_PathFollowDebounceTime = 0.065; // 0.045
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
-const double K_ADAS_DM_RotateDeadbandAngle = 6.0;  // 3.0
+const double K_ADAS_DM_RotateDeadbandAngle = 5.0;  // 3.0
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
 const double K_ADAS_DM_XY_Deadband = 3.0; // 3.0

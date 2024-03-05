@@ -423,6 +423,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     // // frc::SmartDashboard::PutNumber("Rot Act",  LeADAS_Deg_RelativeAng);
     // frc::SmartDashboard::PutNumber("Rot Err", LeADAS_Deg_RotateError);
     // // frc::SmartDashboard::PutNumber("X start position", VeADAS_l_DM_X_TargetStartPosition);
+    frc::SmartDashboard::PutNumber("LeADAS_e_ActiveFeature", float(LeADAS_e_ActiveFeature));
+    
     frc::SmartDashboard::PutBoolean("path complete", LeADAS_b_DM_StateComplete);
 
     return (LeADAS_b_DM_StateComplete);
