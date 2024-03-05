@@ -16,6 +16,7 @@
 #include "DriveControl.hpp"
 #include "Driver_inputs.hpp"
 #include "ADAS.hpp"
+#include "ADAS_DM.hpp"
 #include "Odometry.hpp"
 #include "Amp.hpp"
 #include "SpeakerCntrl.hpp"
@@ -79,16 +80,16 @@ void Robot::RobotMotorCommands()
 
 frc::SmartDashboard::PutNumber("WristCmndType", float(VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist]));
 
-m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
+// m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
 
-  // if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
-  // {
-  //   m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
-  // }
-  // else
-  // {
-  //   m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
-  // }
+  if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
+  {
+    m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
+  }
+  else
+  {
+    m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
+  }
 #else
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
@@ -126,12 +127,17 @@ void Robot::RobotInit()
 
   GyroInit();
 
-  VisionInit();
+  // VisionInit();
 
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_rearLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_rearRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
+
+  m_frontLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
+  m_frontRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
+  m_rearLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
+  m_rearRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
 
   m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
@@ -162,6 +168,7 @@ void Robot::RobotInit()
 
   ADAS_Main_Init();
   ADAS_Main_Reset();
+  ADAS_DM_ConfigsInit();
 #ifdef Bot2024 
   Amp_MotorConfigsInit(m_ElevatorPID,
                        m_WristPID,
@@ -260,11 +267,13 @@ void Robot::RobotPeriodic()
 
 
 
-  VisionRun();
+  // VisionRun();
 
   ADAS_DetermineMode();
 
   frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
+
+  ADAS_DM_ConfigsCal();
 
   VeADAS_e_ActiveFeature = ADAS_ControlMain(&VeADAS_Pct_SD_FwdRev,
                                             &VeADAS_Pct_SD_Strafe,
@@ -377,8 +386,6 @@ void Robot::AutonomousInit()
 
   VeROBO_e_RobotState = E_Auton;
   VeROBO_e_AllianceColor = frc::DriverStation::GetAlliance();
-
-  //GyroInit();
 
   DriveControlInit();
 

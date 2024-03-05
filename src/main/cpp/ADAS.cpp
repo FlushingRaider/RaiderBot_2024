@@ -81,9 +81,10 @@ void ADAS_Main_Init(void)
   // VeADAS_e_AutonChooser.AddOption("LR_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath6);
   // VeADAS_e_AutonChooser.AddOption("L_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath7);
   VeADAS_e_AutonChooser.AddOption("Option 1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt1);
-  VeADAS_e_AutonChooser.AddOption("Option 2", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
-  VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);
-  VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
+  VeADAS_e_AutonChooser.AddOption("Double", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
+  // VeADAS_e_AutonChooser.AddOption("Option 3", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);
+  VeADAS_e_AutonChooser.AddOption("Leave", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
+  VeADAS_e_AutonChooser.AddOption("Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   // VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1);
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
@@ -210,7 +211,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   else if (LeADAS_e_RobotState == E_Auton)
   {
 
-    VeVis_CenteringEnable = false;
+    // VeVis_CenteringEnable = false;
 
     // auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)
@@ -401,6 +402,10 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path6) && (VeADAS_b_StateComplete == true))
       {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt1Path7;  // This is return to start position, to try and speed up cal efforts.
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt1Path7) && (VeADAS_b_StateComplete == true))
+      {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
         VeADAS_b_AutonOncePerTrigger = true;
@@ -475,6 +480,10 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path6) && (VeADAS_b_StateComplete == true))
       {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path7;   // This is return to start position, to try and speed up cal efforts.
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path7) && (VeADAS_b_StateComplete == true))
+      {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
         VeADAS_b_AutonOncePerTrigger = true;
@@ -493,9 +502,19 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt2Path1) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt2Path2;
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
       }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt2Path2) && (VeADAS_b_StateComplete == true))
+      break;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case E_ADAS_AutonOpt5:
+      /*Opt5 is basically Opt2, but doesn't attempt to shoot a second note, nor will it drive */
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_Disabled;
         VeADAS_b_StateComplete = true;
@@ -537,6 +556,17 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_PathFollower4:
   case E_ADAS_DM_PathFollower5:
   case E_ADAS_DM_PathFollower6:
+  case E_ADAS_DM_PathFollower7:
+  case E_ADAS_DM_PathFollower8:
+  case E_ADAS_DM_PathFollower9:
+  case E_ADAS_DM_PathFollower10:
+  case E_ADAS_DM_PathFollower11:
+  case E_ADAS_DM_PathFollower12:
+  case E_ADAS_DM_PathFollower13:
+  case E_ADAS_DM_PathFollower14:
+  case E_ADAS_DM_PathFollower15:
+  case E_ADAS_DM_PathFollower16:
+  case E_ADAS_DM_PathFollower17:
     VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                   L_Pct_Strafe,
                                                   L_Pct_Rotate,
@@ -550,15 +580,15 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     break;
 
   case E_ADAS_MoveGlobal:
-    VeADAS_b_StateComplete = ADAS_DM_MoveWithGlobalCoords(L_Pct_FwdRev,
-                                                          L_Pct_Strafe,
-                                                          L_Pct_Rotate,
-                                                          VeODO_In_RobotDisplacementX,
-                                                          VeODO_In_RobotDisplacementY,
-                                                          VeVis_deg_VisionYaw,
-                                                          LeADAS_e_RequestedX,
-                                                          LeADAS_e_RequestedY,
-                                                          LeADAS_e_RequestedYaw);
+    // VeADAS_b_StateComplete = ADAS_DM_MoveWithGlobalCoords(L_Pct_FwdRev,
+    //                                                       L_Pct_Strafe,
+    //                                                       L_Pct_Rotate,
+    //                                                       VeODO_In_RobotDisplacementX,
+    //                                                       VeODO_In_RobotDisplacementY,
+    //                                                       VeVis_deg_VisionYaw,
+    //                                                       LeADAS_e_RequestedX,
+    //                                                       LeADAS_e_RequestedY,
+    //                                                       LeADAS_e_RequestedYaw);
 
     if (VeADAS_b_StateComplete) // telop adas features need to manually set to false
     {
@@ -586,6 +616,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt1Path4:
   case E_ADAS_DM_DJ_Opt1Path5:
   case E_ADAS_DM_DJ_Opt1Path6:
+  case E_ADAS_DM_DJ_Opt1Path7:
   case E_ADAS_DM_DJ_Opt2Path1:
   case E_ADAS_DM_DJ_Opt2Path2:
   case E_ADAS_DM_DJ_Opt2Path3:
@@ -594,6 +625,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt3Path4:
   case E_ADAS_DM_DJ_Opt3Path5:
   case E_ADAS_DM_DJ_Opt3Path6:
+  case E_ADAS_DM_DJ_Opt3Path7:
   case E_ADAS_DM_DJ_Test1:
   case E_ADAS_DM_DJ_Test2:
     VeADAS_b_State1Complete = ADAS_DM_PathFollower(L_Pct_FwdRev,

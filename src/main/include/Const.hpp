@@ -5,7 +5,7 @@
 
 // Define the desired rotob state here: Bot2024, Bot2023
 #define Bot2024
-// Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest
+// Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
 // #define SPK_Test
 
 // Numerical constants
@@ -85,6 +85,10 @@ const double KeENC_In_WheelCircumfrence = 12.566;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
 const double K_SD_SteerMotorCurrentLimit = 25;
+
+/* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
+const double K_SD_DriveMotorCurrentLimit = 60;
+
 #ifdef Bot2023
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
    reading from the absolute encoder that is indicated in order for the wheel to point straight. */
@@ -114,7 +118,7 @@ const double K_SD_WheelGx[E_RobotCornerSz] = {-1.0,  // E_FrontLeft
 const double KeDRC_k_SD_MinGain = 0.2;
 
 /* K_SD_MaxGain: Max gain allowed for swerve drive control. */
-const double K_SD_MaxGain = 0.7;
+const double K_SD_MaxGain = 0.9;
 
 /* KeDRC_k_SD_AutonGain: Gain applied to the auton commands coming in for swerve drive. */
 const double KeDRC_k_SD_AutonGain = 0.9;
@@ -389,12 +393,12 @@ const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.00020, // P Gx
                                                         -0.4};   // Max lower
 
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
-const double KeADAS_t_DM_PathFollowDebounceTime = 0.035; // 0.045
+const double KeADAS_t_DM_PathFollowDebounceTime = 0.045; // 0.045
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
 const double K_ADAS_DM_RotateDeadbandAngle = 6.0;  // 3.0
 
 /* K_ADAS_DM_XY_Deadband: This is the deband position for the DM XY drive state. [meters] */
-const double K_ADAS_DM_XY_Deadband = 4.0; // 3.0
+const double K_ADAS_DM_XY_Deadband = 3.0; // 3.0
 
 /*  Auto Rotation calibrations */
 /* K_DesiredRotateSpeedAxis - This is the effective command axis, function of error calculation, in degrees */
@@ -475,7 +479,7 @@ const double KeSPK_I_WristCurrentLimit = 40;
 const double KeSPK_t_WristResetTime = 0.5;
 
 /* KeSPK_t_WristResetTime: Amount of time allowed to reset wrist when commanded to init. */
-const double KeSPK_t_WristResetTime2 = 1.5;
+const double KeSPK_t_WristResetTime2 = 2;
 
 /* KeSPK_k_WristResetPwr: Amount of power commanded to reset wrist. */
 const double KeSPK_k_WristResetPwr = -0.2;
@@ -525,7 +529,7 @@ const double KaDJ_Amp_k_TestPower[E_Amp_Sz] = {0.10,  // E_Amp_Elevator
                                                0.40}; // E_Amp_Intake
 
 /* KeDJ_Amp_t_StateTimeOut: Sets transition time out. */
-const double KeDJ_Amp_t_StateTimeOut = 5.0; // Drop-off //NOTE - will need to be changed for new bot
+const double KeDJ_Amp_t_StateTimeOut = 2.0; // Drop-off //NOTE - will need to be changed for new bot
 
 /* KeDJ_Amp_k_HoldNote: Sets rollers to hold note. */
 const double KeDJ_Amp_k_HoldNote = -0.1;
@@ -551,7 +555,7 @@ const double KaDJ_Amp_Deg_WristAngle[E_DJ_Amp_State_Sz] = {  0.00,  // Sched - I
                                                              85.00, // Sched - Score
                                                              50.00, // Sched - Trade_Off
                                                              110.00, // Sched - iAssist
-                                                             37.0}; // Sched - Source
+                                                             22.10}; // Sched - Source
 
 /* KaDJ_Amp_In_ElevatorPosition: sets Elevator final positons for each state */
 const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched - Init
@@ -561,7 +565,7 @@ const double KaDJ_Amp_In_ElevatorPosition[E_DJ_Amp_State_Sz] = {0.0,  // Sched -
                                                                 12.32, // Sched - Score
                                                                 0.0,  // Sched - Trade_Off
                                                                 0.0, // Sched - iAssist
-                                                                9.0};// Sched - Source
+                                                                7.40};// Sched - Source
 
 /* KaDJ_Amp_Deg_WristDb: Sets Wrist dead band. */
 const double KaDJ_Amp_Deg_WristDb[E_DJ_Amp_State_Sz] = {2.0,  // Sched - Init
@@ -672,7 +676,7 @@ const double KeSPK_RPMs_Shooter2Rate = 75.0;
 /* KaSPK_k_Intake: Sets intake final power for each state */
 const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                     0.0,  // Sched - Driving
-                                                   -0.45,  // Sched - Intake
+                                                   -0.38,  // Sched - Intake
                                                     0.0,  // Sched - PreScore
                                                    -0.45}; // Sched - Score
 
@@ -691,18 +695,18 @@ const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           3000.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
-const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
-                                                         10.0,  // Sched - Driving
-                                                         10.0,  // Sched - Intake
-                                                         10.0,  // Sched - PreScore
-                                                         10.0}; // Sched - Score
+const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {20.0,  // Sched - Init
+                                                         20.0,  // Sched - Driving
+                                                         20.0,  // Sched - Intake
+                                                         20.0,  // Sched - PreScore
+                                                         20.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter2Db: Sets shooter 2 deadband */
-const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {10.0,  // Sched - Init
-                                                         10.0,  // Sched - Driving
-                                                         10.0,  // Sched - Intake
-                                                         10.0,  // Sched - PreScore
-                                                         10.0}; // Sched - Score
+const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {20.0,  // Sched - Init
+                                                         20.0,  // Sched - Driving
+                                                         20.0,  // Sched - Intake
+                                                         20.0,  // Sched - PreScore
+                                                         20.0}; // Sched - Score
 
 /* KeSPK_t_StateTimeOut: Sets transition time out. */
 const double KeSPK_t_StateTimeOut = 1.5;

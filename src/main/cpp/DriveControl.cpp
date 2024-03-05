@@ -302,7 +302,7 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
                       bool                     L_JoyStick1_ResetDesiredAngle, // auto correct reset angle
                       bool                     LeDRC_b_X_ModeReq,  // When requested, move all wheels into an X configuration, meant to hold robot still
                       bool                     LeDRC_b_X_ModeReqTeleop,
-                      T_RobotState L_ROBO_e_RobotState,
+                      T_RobotState             L_ROBO_e_RobotState,
                       T_ADAS_ActiveFeature     LeDRC_e_ADAS_ActiveFeature,
                       double                   L_ADAS_Pct_SD_FwdRev,
                       double                   L_ADAS_Pct_SD_Strafe,
@@ -342,7 +342,6 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
   double        Le_k_SD_RotateCorrectionGx = 0;
   bool          LeDRC_b_X_ModeReqActive = false;
   bool          LeDRC_b_AutoCenterEnabled = true; // force autocorrect to always be enabled when driver is running or ADAS is NOT in robot oriented control
-  double        LeDRC_k_ArmExtendScaler = 1.0;
   double        LeDRC_k_SpeedGain = 0.0;
   double        L_k_ChosenWheelMax = 0.0;
 
@@ -368,9 +367,9 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
     {
     /* ADAS is disabled, use the driver joysticks */
 
-    L_FWD = -L_JoyStick1Axis1Y * LeDRC_k_ArmExtendScaler;
-    L_STR = L_JoyStick1Axis1X * LeDRC_k_ArmExtendScaler;
-    L_RCW = L_JoyStick1Axis2X * LeDRC_k_ArmExtendScaler;
+    L_FWD = -L_JoyStick1Axis1Y;
+    L_STR = L_JoyStick1Axis1X;
+    L_RCW = L_JoyStick1Axis2X;
     LeDRC_b_X_ModeReqActive = LeDRC_b_X_ModeReqTeleop;
     LeDRC_k_SpeedGain = L_JoyStick1Axis3;
     if (fabs(L_STR) >= KeDRC_Pct_SD_StrafeDB)  // Temporary workaround till we can figure out why auto correct doesn't work in strafe
@@ -400,7 +399,8 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
     VeDRC_Deg_AutoCorrectDesired = 180;
     }
   
-  if (fabs(L_FWD) >= K_SD_RotateDeadBand || fabs(L_STR) >= K_SD_RotateDeadBand || fabs(L_RCW) >= K_SD_RotateDeadBand)
+  if ((LeDRC_e_ADAS_ActiveFeature <= E_ADAS_Disabled) && 
+      (fabs(L_FWD) >= K_SD_RotateDeadBand || fabs(L_STR) >= K_SD_RotateDeadBand || fabs(L_RCW) >= K_SD_RotateDeadBand))
     {
     Le_b_SD_Active = true;
     }
@@ -514,12 +514,8 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
 
   if (L_k_SD_Gain >= K_SD_MaxGain)
     {
-    L_k_SD_Gain = K_SD_MaxGain;
+    L_k_SD_Gain = K_SD_MaxGain;  // ToDo: Bumped from 0.7 to 0.9 to try and speed up auton.  May need to modify for teleop.
     }
-
-
-  
-
 
   if (L_ROBO_e_RobotState == E_Teleop){
     L_k_ChosenWheelMax = K_SD_TeleWheelMaxSpeed;
