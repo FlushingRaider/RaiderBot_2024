@@ -4,10 +4,10 @@ import pdb
 #open our file
 
 #pdb.set_trace()
-working_path = "C:/Users/cbowe/Documents/GitHub/RaiderBot_2024/src/main/include/OptPaths/"
-working_name = "Opt4Path4"
+working_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
+working_name = "Opt1Path7"
 
-output_path = "C:/Users/cbowe/Documents/GitHub/RaiderBot_2024/src/main/include/OptPaths/"
+output_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
 output_name = working_name + ".hpp"
 
 json_file = working_path + working_name + ".wpilib.json"
@@ -81,7 +81,7 @@ y_foot = "};"
 
 y_output = y_head + y_data + y_foot
 
-with open(output_path + output_name, "a") as f:
+with open(output_path + output_name, "w") as f:
     print("#include <vector>\n\n\n", file=f)
     print(time_output, file=f)
     print(rot_time_output, file=f)
