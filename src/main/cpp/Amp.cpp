@@ -374,9 +374,9 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   //                                                      LeAmp_DegS_WristRate);
   // VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPosition;
 
-frc::SmartDashboard::PutNumber("VeAmp_e_CmndState", float(VeAmp_e_CmndState));
-frc::SmartDashboard::PutNumber("VeAmp_e_AttndState", float(VeAmp_e_AttndState));
-frc::SmartDashboard::PutNumber("WristAttndState", float(LeDJ_Amp_e_AttndState));
+// frc::SmartDashboard::PutNumber("VeAmp_e_CmndState", float(VeAmp_e_CmndState));
+// frc::SmartDashboard::PutNumber("VeAmp_e_AttndState", float(VeAmp_e_AttndState));
+// frc::SmartDashboard::PutNumber("WristAttndState", float(LeDJ_Amp_e_AttndState));
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[LeDJ_Amp_e_CmndState];
 }
 

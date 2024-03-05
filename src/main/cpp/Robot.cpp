@@ -78,10 +78,6 @@ void Robot::RobotMotorCommands()
   m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
   m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
 
-frc::SmartDashboard::PutNumber("WristCmndType", float(VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist]));
-
-// m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
-
   if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
   {
     m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
@@ -323,8 +319,6 @@ void Robot::RobotPeriodic()
   // frc::SmartDashboard::PutNumberArray("swerve_WheelSpeedCmnd", VaDRC_RPM_WheelSpeedCmnd);
   // frc::SmartDashboard::PutNumberArray("swerve_WheelAngleCmnd", VaDRC_Pct_WheelAngleCmnd);
 
-  frc::SmartDashboard::PutNumber("GyroYaw", -VeGRY_Deg_GyroYawAngleDegrees);
-
 #ifdef Bot2024
   Encoders_AMP_SPK_CLMR_Run(m_WristreverseLimit.Get(),
                             m_ElevatorLimitSwitch.Get(),
@@ -358,12 +352,8 @@ void Robot::RobotPeriodic()
   CLMR_SpeakerControlMain(VeADAS_e_CLMR_SchedState,
                           VeROBO_b_TestState);
 
-  frc::SmartDashboard::PutBoolean("WristReset", VeAmp_b_WristEncoderReset);
-
   Encoders_AMP_ResetWrist(m_encoderWrist,
                           VeAmp_b_WristEncoderReset);
-
-
 #endif
 }
 
