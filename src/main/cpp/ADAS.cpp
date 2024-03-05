@@ -87,6 +87,7 @@ void ADAS_Main_Init(void)
   VeADAS_e_AutonChooser.AddOption("Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   VeADAS_e_AutonChooser.AddOption("2 Piece", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt6);
   VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1);
+  VeADAS_e_AutonChooser.AddOption("Demo chain move", T_ADAS_ActiveAutonFeature::E_ADAS_DemoChainMove);
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
   frc::SmartDashboard::PutData(LeADAS_Str_AutonSelectorName, &VeADAS_e_AutonChooser);
 }
@@ -212,7 +213,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   else if (LeADAS_e_RobotState == E_Auton)
   {
 
-    // VeVis_CenteringEnable = false;
+    VeVis_CenteringEnable = true;
 
     // auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)
@@ -576,6 +577,39 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
         VeADAS_b_AutonOncePerTrigger = true;
       }
       break;
+    case E_ADAS_DemoChainMove:
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_RequestedX = 0.0;
+        LeADAS_e_RequestedY = 0.0;
+        LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_MoveGlobal) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_RequestedX = 30.0;
+        LeADAS_e_RequestedY = 20.0;
+        // LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_MoveGlobal) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_RequestedX = 0.0;
+        LeADAS_e_RequestedY = 30.0;
+        LeADAS_e_RequestedYaw = 45.0;
+        // LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_MoveGlobal) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_RequestedX = 0.0;
+        LeADAS_e_RequestedY = 0.0;
+        // LeADAS_e_ActiveFeature = E_ADAS_MoveGlobal;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_MoveGlobal) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
+      }
+      break;
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     case E_ADAS_AutonDisabled:
     default:
@@ -630,6 +664,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
 
     if (VeADAS_b_StateComplete) // telop adas features need to manually set to false
     {
+
       VeADAS_b_SpeakerMoveActive = false; // we done
     }
     break;

@@ -466,7 +466,7 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
 
     double K_ADAS_DM_MinimumError = 5.0; // the amount of error (in inches) we're cool with
 
-    double K_ADAS_DM_SlowDownError = 20.0; // with this much error or less we need to be more percise
+    double K_ADAS_DM_SlowDownError = 35.0; // with this much error or less we need to be more percise
 
     double L_ADAS_DM_SlopSpeeed = 0.0; // how fast we're gonna come at it
 
@@ -498,41 +498,35 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
     if (fabs(L_YawError) > 5.0)
     {
 
-        if (fabs(L_YawError) < 20.0)
-        {
-            
-            // *LeADAS_Pct_Rotate = 0.2 * DesiredAutoRotateSpeed(L_YawError);
-        }
-        else
-        {
-            if((L_YawError > 0.0) && (L_YawErrorRaw > 0.0)){
+            if ((L_YawError > 0.0) && (L_YawErrorRaw > 0.0))
+            {
                 *LeADAS_Pct_Rotate = -DesiredAutoRotateSpeed(L_YawError);
             }
-            else{
+            else
+            {
                 *LeADAS_Pct_Rotate = DesiredAutoRotateSpeed(L_YawError);
             }
 
-        }
     }
     else
     {
         *LeADAS_Pct_Rotate = 0.0;
     }
 
+    // if our X and Y our both pretty close we gotta slowdown
+    if ((fabs(L_XError) <= K_ADAS_DM_SlowDownError) || (fabs(L_YError) <= K_ADAS_DM_SlowDownError))
+    {
+        L_ADAS_DM_SlopSpeeed = 0.02;
+    }
+    else
+    {
+        L_ADAS_DM_SlopSpeeed = 0.2;
+    }
+
     // check if our error is big enough to bother moving
     if (fabs(L_XError) > K_ADAS_DM_MinimumError)
     {
-
-        if (fabs(L_XError) < K_ADAS_DM_SlowDownError)
-        {
-            L_ADAS_DM_SlopSpeeed = 0.02; // TODO - arbitrary, change later
-        }
-        else
-        {
-            L_ADAS_DM_SlopSpeeed = 0.2;
-        }
-
-        *LeADAS_Pct_Strafe = 0.02 * L_XError;
+        *LeADAS_Pct_Strafe = L_ADAS_DM_SlopSpeeed * L_XError;
     }
     else
     {
@@ -540,15 +534,6 @@ bool ADAS_DM_MoveWithGlobalCoords(double *LeADAS_Pct_FwdRev,
     }
     if (fabs(L_YError) > K_ADAS_DM_MinimumError)
     {
-
-        if (fabs(L_YError) < K_ADAS_DM_SlowDownError)
-        {
-            L_ADAS_DM_SlopSpeeed = 0.02; // TODO - arbitrary, change later
-        }
-        else
-        {
-            L_ADAS_DM_SlopSpeeed = .2;
-        }
 
         *LeADAS_Pct_FwdRev = L_ADAS_DM_SlopSpeeed * L_YError;
     }
