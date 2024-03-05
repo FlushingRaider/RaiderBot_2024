@@ -123,7 +123,7 @@ void Robot::RobotInit()
 
   GyroInit();
 
-  // VisionInit();
+  VisionInit();
 
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -263,7 +263,7 @@ void Robot::RobotPeriodic()
 
 
 
-  // VisionRun();
+  VisionRun();
 
   ADAS_DetermineMode();
 

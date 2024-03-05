@@ -61,9 +61,9 @@ std::vector<photon::PhotonPoseEstimator> Estimators{
     LeftPoseEstimator};
 
 const frc::Pose3d BlankPose = frc::Pose3d(0.0_m, 0.0_m, 0.0_m, frc::Rotation3d(0.0_rad, 0.0_rad, 0.0_rad));
-
 // stores (found pose, )
 std::vector<std::pair<frc::Pose3d, double>> L_VisCamResults = {};
+
 
 double Ve_Vis_VisionCenteredCounter = 0.0;
 bool Le_Vis_VisionCentered = false;
@@ -81,15 +81,12 @@ void VisionInit()
     L_VisCamResults.assign(Estimators.size(), std::make_pair(BlankPose, std::numeric_limits<double_t>::max()));
 }
 
-// a debug value to see how many checks have passed
-
 void VisionRun()
 {
     int Debug_tests_passed = 0;
     double L_outputX = 0.0;
     double L_outputY = 0.0;
     bool L_foundTargets = false;
-
 
     // time how long it's been since we had a good centering;
     if (Le_Vis_VisionCentered)
@@ -108,7 +105,7 @@ void VisionRun()
 
     // frc::SmartDashboard::PutNumber("slot #", L_VisCamResults.size());
     // frc::SmartDashboard::PutNumber("cam #", Estimators.size());
-    // frc::SmartDashboard::PutBoolean("emtpy lists", Estimators.empty());
+    // frc::SmartDashboard::PutBoolean("emtpy lists", Estimators.empty());;
 
     // loop through our list of cameras
     for (unsigned L_CamIndex = 0; L_CamIndex < Estimators.size(); ++L_CamIndex)
@@ -178,21 +175,37 @@ void VisionRun()
                 && (L_outputY < KeVIS_in_MaxY))
             {
                 Debug_tests_passed++;
-
-                // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
-                //  we probably have to be a little below max speed to trust cam updating
-                if ((fabs(VeODO_In_DeltaX) < KeVis_dIn_DeltaThreshold) && (fabs(VeODO_In_DeltaY) < KeVis_dIn_DeltaThreshold))
+                if ((L_outputX > 0.0) && (L_outputY > 0.0) && (L_outputX < KeVIS_in_MaxX) // sanity check theat we are in the bounds of the field
+                    && (L_outputY < KeVIS_in_MaxY))
                 {
                     Debug_tests_passed++;
 
-                    // even if everything passes we can manually say no
-                    if (VeVis_CenteringEnable)
+                    // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
+                    //  we probably have to be a little below max speed to trust cam updating
+                    if ((fabs(VeODO_In_DeltaX) < KeVis_dIn_DeltaThreshold) && (fabs(VeODO_In_DeltaY) < KeVis_dIn_DeltaThreshold))
                     {
                         Debug_tests_passed++;
+                        // NOTE - at maximum speed we get a delta X of about 2.0, chose half that
+                        //  we probably have to be a little below max speed to trust cam updating
+                        if ((fabs(VeODO_In_DeltaX) < KeVis_dIn_DeltaThreshold) && (fabs(VeODO_In_DeltaY) < KeVis_dIn_DeltaThreshold))
+                        {
+                            Debug_tests_passed++;
 
-                        // OdometryInitToArgs(L_outputX, L_outputY);
+                            // even if everything passes we can manually say no
+                            if (VeVis_CenteringEnable)
+                            {
+                                Debug_tests_passed++;
+                                // even if everything passes we can manually say no
+                                if (VeVis_CenteringEnable)
+                                {
+                                    Debug_tests_passed++;
 
-                        Le_Vis_VisionCentered = true;
+                                    // OdometryInitToArgs(L_outputX, L_outputY);
+
+                                    Le_Vis_VisionCentered = true;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -6,7 +6,7 @@
 // Define the desired rotob state here: Bot2024, Bot2023
 #define Bot2024
 // Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-// #define SPK_Test
+#define ADAS_DM_Test
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;

@@ -1013,6 +1013,9 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     break;
   }
 
+  LaLU_d_CalcedVals.L_valX *= -1;
+  LaLU_d_CalcedVals.L_valDeg *= -1;
+
   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
   {
     // Need to flip X and Angle for Red side:

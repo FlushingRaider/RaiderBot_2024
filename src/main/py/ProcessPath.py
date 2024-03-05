@@ -4,10 +4,10 @@ import pdb
 #open our file
 
 #pdb.set_trace()
-working_path = "C:/Users/cbowe/Documents/GitHub/RaiderBot_2024/src/main/include/OptPaths/"
-working_name = "Opt4Path4"
+working_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
+working_name = "TestPath2"
 
-output_path = "C:/Users/cbowe/Documents/GitHub/RaiderBot_2024/src/main/include/OptPaths/"
+output_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
 output_name = working_name + ".hpp"
 
 json_file = working_path + working_name + ".wpilib.json"
