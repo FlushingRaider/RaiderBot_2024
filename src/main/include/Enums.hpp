@@ -106,6 +106,10 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt3Path5,
   E_ADAS_DM_DJ_Opt3Path6,
   E_ADAS_DM_DJ_Opt3Path7,
+  E_ADAS_DM_DJ_Opt4Path1,
+  E_ADAS_DM_DJ_Opt4Path2,
+  E_ADAS_DM_DJ_Opt4Path3,
+  E_ADAS_DM_DJ_Opt4Path4,
   E_ADAS_DM_DJ_Test1,
   E_ADAS_DM_DJ_Test2
 } T_ADAS_ActiveFeature;
@@ -125,6 +129,7 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonOpt3,
   E_ADAS_AutonOpt4, // Shoot, drive straight out and then come back
   E_ADAS_AutonOpt5, // Shoot, don't drive
+  E_ADAS_AutonOpt6, // Shoot, Drive to note, drive back, shoot, drive to second note, drive, shoot
   E_ADAS_AutonOptTest1
 } T_ADAS_ActiveAutonFeature;
 
