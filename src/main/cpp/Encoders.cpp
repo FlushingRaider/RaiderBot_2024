@@ -170,6 +170,7 @@ void Encoders_AMP_SPK_CLMR_Init( rev::SparkMaxRelativeEncoder m_encoderElevator,
                                  rev::SparkMaxRelativeEncoder m_encoderWrist,
                                  rev::SparkMaxRelativeEncoder m_encoderIntake,
                                  rev::SparkMaxRelativeEncoder m_encoderUnderbelly,
+                                 rev::SparkMaxRelativeEncoder m_encoderIAssist,
                                  rev::SparkMaxRelativeEncoder m_encoderShooter1,
                                  rev::SparkMaxRelativeEncoder m_encoderShooter2)
   {
@@ -177,6 +178,7 @@ void Encoders_AMP_SPK_CLMR_Init( rev::SparkMaxRelativeEncoder m_encoderElevator,
   m_encoderElevator.SetPosition(0);
   m_encoderIntake.SetPosition(0);
   m_encoderUnderbelly.SetPosition(0);
+  m_encoderIAssist.SetPosition(0);
   m_encoderShooter1.SetPosition(0);
   m_encoderShooter2.SetPosition(0);
   m_encoderClimberLeft.SetPosition(0);
@@ -210,6 +212,7 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
                                 rev::SparkMaxRelativeEncoder m_encoderClimberRight,
                                 rev::SparkMaxRelativeEncoder m_encoderWrist,
                                 rev::SparkMaxRelativeEncoder m_encoderIntake,
+                                rev::SparkMaxRelativeEncoder m_encoderIAssist,
                                 rev::SparkMaxRelativeEncoder m_encoderUnderbelly,
                                 rev::SparkMaxRelativeEncoder m_encoderShooter1,
                                 rev::SparkMaxRelativeEncoder m_encoderShooter2)
@@ -227,6 +230,8 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
   VsSPK_s_Sensors.b_NoteDetected = !LeENC_b_SPK_IntakeLimit;
 
   VsSPK_s_Sensors.RPM_Intake = m_encoderUnderbelly.GetVelocity() * KeENC_k_SPK_IntakeRatio;
+
+  VsSPK_s_Sensors.RPM_IAssist = m_encoderIAssist.GetVelocity() * KeENC_k_SPK_IAssistRatio;
 
   VsSPK_s_Sensors.RPM_Shooter1 = m_encoderShooter1.GetVelocity() * KeENC_k_SPK_Shooter1Ratio;
 

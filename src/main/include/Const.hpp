@@ -642,16 +642,17 @@ const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0,      // kMaxAcc
                                                            0.0};     // kAllErr
 
-const double KaSPK_k_IAssistPID_Gx[E_PID_SparkMaxCalSz] = { 0.0,    //kp
-                                                            0.0,    //kI
-                                                            0.0,    //kD
-                                                            0.0,    //kIz
-                                                            0.0,    //
-                                                            0.0,
-                                                            0.0,
-                                                            0.0,
-                                                            0.0,
-                                                            0.0};
+const double KaSPK_k_IAssistPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
+                                                           0.000001, // kI
+                                                           0.002000, // kD
+                                                           0.0,      // kIz
+                                                           0.0,      // kFF
+                                                           1.0,      // kMaxOut
+                                                          -1.0,      // kMinOut
+                                                           1.05,     // kMaxVel
+                                                           0.5,      // kMinVel
+                                                           0.0,      // kMaxAcc
+                                                           0.0};     // kAllErr
 
 /* KaSPK_k_Shooter1PID_Gx: PID gains for the shooter 1 control. */
 const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
@@ -692,6 +693,13 @@ const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                     0.0,  // Sched - PreScore
                                                    -0.45}; // Sched - Score
 
+/* KaSPK_k_IAssist: Sets IAssist final power for each state */
+const double KaSPK_k_IAssist[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
+                                                     0.0,  // Sched - Driving
+                                                    -0.38,  // Sched - Intake
+                                                     0.0,  // Sched - PreScore
+                                                     0.0}; // Sched - Score
+
 /* KaSPK_RPM_Shooter1: Sets shooter 1 final speed for each state */
 const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
@@ -725,11 +733,15 @@ const double KeSPK_t_StateTimeOut = 1.5;
 
 /* KaSPK_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
 const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake
+                                               0.5, // E_SPK_m_IAssist
                                                0.5, // E_SPK_m_Shooter1
                                                0.5}; // E_SPK_m_Shooter2
 
 /* KeENC_k_SPK_IntakeRatio: Ratio to convert encoder counts to intake. */
 const double KeENC_k_SPK_IntakeRatio = 1.0;
+
+/* KeENC_k_SPK_IAssistRatio: Ratio to convert encoder counts to IAssist. */
+const double KeENC_k_SPK_IAssistRatio = 1.0;
 
 /* KeENC_k_SPK_Shooter1Ratio: Ratio to convert shooter 1 encoder counts to RPM. */
 const double KeENC_k_SPK_Shooter1Ratio = 1.0;

@@ -29,6 +29,7 @@ TsSPK_Sensor            VsSPK_s_Sensors; // All of the sensor values for the spe
 double                  VeSPK_t_TransitionTime = 0;
 
 double                  VaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz];
+double                  VaSPK_k_IAssistPID_Gx[E_PID_SparkMaxCalSz];
 double                  VaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz];
 double                  VaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz];
 
@@ -103,6 +104,7 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
        LeSPK_i_Index2 = T_PID_SparkMaxCal(int(LeSPK_i_Index2) + 1))
     {
     VaSPK_k_IntakePID_Gx[LeSPK_i_Index2] = KaSPK_k_IntakePID_Gx[LeSPK_i_Index2];
+    VaSPK_k_IAssistPID_Gx[LeSPK_i_Index2] = KaSPK_k_IAssistPID_Gx[LeSPK_i_Index2];
     VaSPK_k_Shooter1PID_Gx[LeSPK_i_Index2] = KaSPK_k_Shooter1PID_Gx[LeSPK_i_Index2];
     VaSPK_k_Shooter2PID_Gx[LeSPK_i_Index2] = KaSPK_k_Shooter2PID_Gx[LeSPK_i_Index2];
     }
@@ -114,6 +116,13 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
   frc::SmartDashboard::PutNumber("I Zone - Intake", KaSPK_k_IntakePID_Gx[E_kIz]);
   frc::SmartDashboard::PutNumber("Max Output - Intake", KaSPK_k_IntakePID_Gx[E_kMaxOutput]);
   frc::SmartDashboard::PutNumber("Min Output - Intake", KaSPK_k_IntakePID_Gx[E_kMinOutput]);
+
+  frc::SmartDashboard::PutNumber("P Gain - IAssist", KaSPK_k_IAssistPID_Gx[E_kP]);
+  frc::SmartDashboard::PutNumber("I Gain - IAssist", KaSPK_k_IAssistPID_Gx[E_kI]);
+  frc::SmartDashboard::PutNumber("D Gain - IAssist", KaSPK_k_IAssistPID_Gx[E_kD]);
+  frc::SmartDashboard::PutNumber("I Zone - IAssist", KaSPK_k_IAssistPID_Gx[E_kIz]);
+  frc::SmartDashboard::PutNumber("Max Output - IAssist", KaSPK_k_IAssistPID_Gx[E_kMaxOutput]);
+  frc::SmartDashboard::PutNumber("Min Output - IAssist", KaSPK_k_IAssistPID_Gx[E_kMinOutput]);
 
   frc::SmartDashboard::PutNumber("P Gain - Shooter1", KaSPK_k_Shooter1PID_Gx[E_kP]);
   frc::SmartDashboard::PutNumber("I Gain - Shooter1", KaSPK_k_Shooter1PID_Gx[E_kI]);
@@ -135,6 +144,7 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
 
   // display target positions/speeds
   frc::SmartDashboard::PutNumber("Set Intake Power",   0);
+  frc::SmartDashboard::PutNumber("Set IAssist Power",  0);
   frc::SmartDashboard::PutNumber("Set Shooter1 Speed", 0);
   frc::SmartDashboard::PutNumber("Set Shooter2 Speed", 0);
   #endif
@@ -161,6 +171,13 @@ void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
   double L_max_Intake = frc::SmartDashboard::GetNumber("Max Output - Intake", KaSPK_k_IntakePID_Gx[E_kMaxOutput]);
   double L_min_Intake = frc::SmartDashboard::GetNumber("Min Output - Intake", KaSPK_k_IntakePID_Gx[E_kMinOutput]);
 
+  double L_p_IAssist   = frc::SmartDashboard::GetNumber("P Gain - IAssist", KaSPK_k_IAssistPID_Gx[E_kP]);
+  double L_i_IAssist   = frc::SmartDashboard::GetNumber("I Gain - IAssist", KaSPK_k_IAssistPID_Gx[E_kI]);
+  double L_d_IAssist   = frc::SmartDashboard::GetNumber("D Gain - IAssist", KaSPK_k_IAssistPID_Gx[E_kD]);
+  double L_iz_IAssist  = frc::SmartDashboard::GetNumber("I Zone - IAssist", KaSPK_k_IAssistPID_Gx[E_kIz]);
+  double L_max_IAssist = frc::SmartDashboard::GetNumber("Max Output - IAssist", KaSPK_k_IAssistPID_Gx[E_kMaxOutput]);
+  double L_min_IAssist = frc::SmartDashboard::GetNumber("Min Output - IAssist", KaSPK_k_IAssistPID_Gx[E_kMinOutput]);
+
   double L_p_Shooter1   = frc::SmartDashboard::GetNumber("P Gain - Shooter1", KaSPK_k_Shooter1PID_Gx[E_kP]);
   double L_i_Shooter1   = frc::SmartDashboard::GetNumber("I Gain - Shooter1", KaSPK_k_Shooter1PID_Gx[E_kI]);
   double L_d_Shooter1   = frc::SmartDashboard::GetNumber("D Gain - Shooter1", KaSPK_k_Shooter1PID_Gx[E_kD]);
@@ -176,6 +193,7 @@ void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
   double L_min_Shooter2 = frc::SmartDashboard::GetNumber("Min Output - Shooter2", KaSPK_k_Shooter2PID_Gx[E_kMinOutput]);
 
   VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake]   = frc::SmartDashboard::GetNumber("Set Intake Power", 0);
+  VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_IAssist]  = frc::SmartDashboard::GetNumber("Set IAssist Power", 0);
   VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1] = frc::SmartDashboard::GetNumber("Set Shooter1 Speed", 0);
   VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2] = frc::SmartDashboard::GetNumber("Set Shooter2 Speed", 0);
 
@@ -184,6 +202,12 @@ void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
   if(L_d_Intake != VaSPK_k_IntakePID_Gx[E_kD])   { m_UnderbellyPID.SetD(L_d_Intake); VaSPK_k_IntakePID_Gx[E_kD] = L_d_Intake; }
   if(L_iz_Intake != VaSPK_k_IntakePID_Gx[E_kIz]) { m_UnderbellyPID.SetIZone(L_iz_Intake); VaSPK_k_IntakePID_Gx[E_kIz] = L_iz_Intake; }
   if((L_max_Intake != VaSPK_k_IntakePID_Gx[E_kMaxOutput]) || (L_min_Intake != VaSPK_k_IntakePID_Gx[E_kMinOutput])) { m_UnderbellyPID.SetOutputRange(L_min_Intake, L_max_Intake); VaSPK_k_IntakePID_Gx[E_kMinOutput] = L_min_Intake; VaSPK_k_IntakePID_Gx[E_kMaxOutput] = L_max_Intake; }
+
+  if(L_p_IAssist != VaSPK_k_IAssistPID_Gx[E_kP])   { m_UnderbellyPID.SetP(L_p_IAssist); VaSPK_k_IAssistPID_Gx[E_kP] = L_p_IAssist; }
+  if(L_i_IAssist != VaSPK_k_IAssistPID_Gx[E_kI])   { m_UnderbellyPID.SetI(L_i_IAssist); VaSPK_k_IAssistPID_Gx[E_kI] = L_i_IAssist; }
+  if(L_d_IAssist != VaSPK_k_IAssistPID_Gx[E_kD])   { m_UnderbellyPID.SetD(L_d_IAssist); VaSPK_k_IAssistPID_Gx[E_kD] = L_d_IAssist; }
+  if(L_iz_IAssist != VaSPK_k_IAssistPID_Gx[E_kIz]) { m_UnderbellyPID.SetIZone(L_iz_IAssist); VaSPK_k_IAssistPID_Gx[E_kIz] = L_iz_IAssist; }
+  if((L_max_IAssist != VaSPK_k_IAssistPID_Gx[E_kMaxOutput]) || (L_min_IAssist != VaSPK_k_IAssistPID_Gx[E_kMinOutput])) { m_UnderbellyPID.SetOutputRange(L_min_IAssist, L_max_IAssist); VaSPK_k_IAssistPID_Gx[E_kMinOutput] = L_min_IAssist; VaSPK_k_IAssistPID_Gx[E_kMaxOutput] = L_max_IAssist; }
 
   if(L_p_Shooter1 != VaSPK_k_Shooter1PID_Gx[E_kP])   { m_Shooter1PID.SetP(L_p_Shooter1); VaSPK_k_Shooter1PID_Gx[E_kP] = L_p_Shooter1; }
   if(L_i_Shooter1 != VaSPK_k_Shooter1PID_Gx[E_kI])   { m_Shooter1PID.SetI(L_i_Shooter1); VaSPK_k_Shooter1PID_Gx[E_kI] = L_i_Shooter1; }
@@ -237,10 +261,12 @@ void SPK_ControlManualOverride(RobotUserInput *LsCONT_s_DriverInput)
   if (LsCONT_s_DriverInput->b_Spk_IntakeForward_Test == true)
     {
     VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake] = KaSPK_k_TestPower[E_SPK_m_Intake];
+    VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_IAssist] = KaSPK_k_TestPower[E_SPK_m_IAssist];
     }
   else if (LsCONT_s_DriverInput->b_Spk_IntakeBackward_Test == true)
     {
     VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake] = -KaSPK_k_TestPower[E_SPK_m_Intake];
+    VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_IAssist] = -KaSPK_k_TestPower[E_SPK_m_IAssist];
     }
 
   VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1] = LsCONT_s_DriverInput->Pct_Shooter1_Test * KaSPK_k_TestPower[E_SPK_m_Shooter1];
@@ -314,6 +340,8 @@ void UpdateSPK_Actuators(TeSPK_CtrlStates LeSPK_e_CmndState,
   {
   VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = KaSPK_k_Intake[LeSPK_e_CmndState];
 
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_IAssist] = KaSPK_k_IAssist[LeSPK_e_CmndState];
+
   VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(KaSPK_RPM_Shooter1[LeSPK_e_CmndState] / KeENC_k_SPK_Shooter1Ratio, 
                                                             VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
                                                             KeSPK_RPMs_Shooter1Rate);
@@ -334,6 +362,8 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
   {
   double LeMAN_Deg_Error = 0.0;
   double LeMAN_k_P_Gain = 0.0;
+  double LeSPK_k_IntakePower = 0.0;
+  double LeSPK_k_IAssistPower = 0.0;
 
   if (LeSPK_b_TestPowerOverride == true)
     {
@@ -342,13 +372,16 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
   else if (VeSPK_b_TestState == true)
     {
     /* Only used for testing/calibration. */
-    double LeSPK_k_Power = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake];
-    if (VsSPK_s_Sensors.b_NoteDetected == true)
+    
+    if (VsSPK_s_Sensors.b_NoteDetected == false)
     {
-      LeSPK_k_Power = 0;
+      LeSPK_k_IntakePower = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Intake];
+      LeSPK_k_IAssistPower = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_IAssist];
     }
     
-    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = LeSPK_k_Power;
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = LeSPK_k_IntakePower;
+
+    VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_IAssist] = LeSPK_k_IAssistPower;
 
     VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1] / KeENC_k_SPK_Shooter1Ratio, 
                                                               VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
@@ -375,6 +408,8 @@ void SPK_SpeakerControlMain(TeSPK_CtrlStates LeSPK_e_SchedState,
 
     /* Final output to the motor command that will be sent to the motor controller: */
     VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake];
+
+    VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_IAssist] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_IAssist];
 
     VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1] = VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1];
 

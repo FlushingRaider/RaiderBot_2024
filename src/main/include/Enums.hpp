@@ -261,7 +261,6 @@ typedef enum TeSPK_Actuators
   E_SPK_m_Shooter1,
   E_SPK_m_Shooter2,
   E_SPK_m_Sz,
-  E_SPK_m_IAssist
 } TeSPK_Actuators;
 
 typedef enum TeSPK_CtrlStates
@@ -269,7 +268,6 @@ typedef enum TeSPK_CtrlStates
   E_SPK_Ctrl_Init,
   E_SPK_Ctrl_Driving,
   E_SPK_Ctrl_Intake,
-  E_SPK_Ctrl_IAssist,
   E_SPK_Ctrl_PreScore,
   E_SPK_Ctrl_Score,
   E_SPK_Ctrl_StateSz
