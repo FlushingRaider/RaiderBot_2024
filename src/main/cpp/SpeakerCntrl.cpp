@@ -46,6 +46,7 @@ bool                    VeSPK_b_TestState = false;
  * Description:  Contains the motor configurations for the intake and shooter.
  ******************************************************************************/
 void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
+                          rev::SparkMaxPIDController m_IAssistPID,
                           rev::SparkMaxPIDController m_Shooter1PID,
                           rev::SparkMaxPIDController m_Shooter2PID)
   {
@@ -59,6 +60,13 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
   m_UnderbellyPID.SetIZone(KaSPK_k_IntakePID_Gx[E_kIz]);
   m_UnderbellyPID.SetFF(KaSPK_k_IntakePID_Gx[E_kFF]);
   m_UnderbellyPID.SetOutputRange(KaSPK_k_IntakePID_Gx[E_kMinOutput], KaSPK_k_IntakePID_Gx[E_kMaxOutput]);
+
+  m_IAssistPID.SetP(KaSPK_k_IAssistPID_Gx[E_kP]);
+  m_IAssistPID.SetI(KaSPK_k_IAssistPID_Gx[E_kI]);
+  m_IAssistPID.SetD(KaSPK_k_IAssistPID_Gx[E_kD]);
+  m_IAssistPID.SetIZone(KaSPK_k_IAssistPID_Gx[E_kIz]);
+  m_IAssistPID.SetFF(KaSPK_k_IAssistPID_Gx[E_kFF]);
+  m_IAssistPID.SetOutputRange(KaSPK_k_IAssistPID_Gx[E_kMinOutput], KaSPK_k_IAssistPID_Gx[E_kMaxOutput]);
 
   m_Shooter1PID.SetP(KaSPK_k_Shooter1PID_Gx[E_kP]);
   m_Shooter1PID.SetI(KaSPK_k_Shooter1PID_Gx[E_kI]);
@@ -141,7 +149,8 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
  ******************************************************************************/
 void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
                          rev::SparkMaxPIDController m_Shooter1PID,
-                         rev::SparkMaxPIDController m_Shooter2PID)
+                         rev::SparkMaxPIDController m_Shooter2PID,
+                         rev::SparkMaxPIDController m_IAssistPID)
   {
   // read PID coefficients from SmartDashboard
   #ifdef SPK_Test

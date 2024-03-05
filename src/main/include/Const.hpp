@@ -33,6 +33,7 @@ static const int KeEnc_i_WheelAngleRL = 20;
 static const int KeEnc_i_WheelAngleRR = 19;
 static const int KeCLMR_i_ClimberArm1 = 21;
 static const int KeCLMR_i_ClimberArm2 = 22;
+static const int KeDJ_Spk_i_IAssist = 23;
 
 // DIO Device IDs:
 static const int KeSPK_i_BreakBeamIO  = 0;
@@ -640,6 +641,17 @@ const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.5,      // kMinVel
                                                            0.0,      // kMaxAcc
                                                            0.0};     // kAllErr
+
+const double KaSPK_k_IAssistPID_Gx[E_PID_SparkMaxCalSz] = { 0.0,    //kp
+                                                            0.0,    //kI
+                                                            0.0,    //kD
+                                                            0.0,    //kIz
+                                                            0.0,    //
+                                                            0.0,
+                                                            0.0,
+                                                            0.0,
+                                                            0.0,
+                                                            0.0};
 
 /* KaSPK_k_Shooter1PID_Gx: PID gains for the shooter 1 control. */
 const double KaSPK_k_Shooter1PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP

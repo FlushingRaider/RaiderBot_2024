@@ -73,6 +73,7 @@ void Robot::RobotMotorCommands()
   m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
   m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
+  m_IAssist.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
   m_Shooter1PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter1], rev::ControlType::kVelocity);
   m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
   m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
@@ -91,6 +92,7 @@ void Robot::RobotMotorCommands()
   m_Wrist.Set(0.0);
   m_Underbelly.Set(0.0);
   m_LinearSlide.Set(0.0);
+  m_IAssist.Set(0.0);
 #endif
 }
 
@@ -152,6 +154,7 @@ void Robot::RobotInit()
   m_Wrist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Intake.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Underbelly.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_IAssist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
@@ -172,7 +175,8 @@ void Robot::RobotInit()
 
   SPK_MotorConfigsInit(m_UnderbellyPID,
                        m_Shooter1PID,
-                       m_Shooter2PID);
+                       m_Shooter2PID,
+                       m_IAssistPID);
 
   CLMR_MotorConfigsInit(m_ClimberLeftPID,
                         m_ClimberRightPID);
@@ -338,7 +342,8 @@ void Robot::RobotPeriodic()
 
   SPK_MotorConfigsCal(m_UnderbellyPID,
                       m_Shooter1PID,
-                      m_Shooter2PID);
+                      m_Shooter2PID,
+                      m_IAssistPID);
 
   CLMR_MotorConfigsCal(m_ClimberLeftPID,
                        m_ClimberRightPID);
@@ -514,6 +519,7 @@ void Robot::TestPeriodic()
 
 #ifdef Bot2024
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake]);
+  m_IAssist.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Intake]);
   m_Shooter1.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter1]);
   m_Shooter2.Set(VsSPK_s_Motors.k_MotorTestPower[E_SPK_m_Shooter2]);
   m_Elevator.Set(VsAmp_s_Motors.k_MotorTestPower[E_Amp_Elevator]);

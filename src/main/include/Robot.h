@@ -87,6 +87,7 @@ class Robot : public frc::TimedRobot {
   rev::CANSparkMax                           m_Underbelly          {KeDJ_Spk_i_Underbelly,          rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Shooter1            {KeDJ_Spk_i_Shooter1,            rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_Shooter2            {KeDJ_Spk_i_Shooter2,            rev::CANSparkMax::MotorType::kBrushless};
+  rev::CANSparkMax                           m_IAssist             {KeDJ_Spk_i_IAssist,             rev::CANSparkMax::MotorType::kBrushless};
 #ifdef Bot2024
   rev::SparkRelativeEncoder                  m_encoderElevator     = m_Elevator.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder                  m_encoderClimberLeft  = m_ClimberLeft.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
@@ -96,6 +97,7 @@ class Robot : public frc::TimedRobot {
   rev::SparkRelativeEncoder                  m_encoderUnderbelly   = m_Underbelly.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder                  m_encoderShooter1     = m_Shooter1.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
   rev::SparkRelativeEncoder                  m_encoderShooter2     = m_Shooter2.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
+  rev::SparkRelativeEncoder                  m_encoderIAssist      = m_IAssist.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor,42);
 
   rev::SparkMaxPIDController                 m_ElevatorPID         = m_Elevator.GetPIDController();
   rev::SparkMaxPIDController                 m_ClimberLeftPID      = m_ClimberLeft.GetPIDController();
@@ -106,6 +108,7 @@ class Robot : public frc::TimedRobot {
   rev::SparkMaxPIDController                 m_UnderbellyPID       = m_Underbelly.GetPIDController();
   rev::SparkMaxPIDController                 m_Shooter1PID         = m_Shooter1.GetPIDController();
   rev::SparkMaxPIDController                 m_Shooter2PID         = m_Shooter2.GetPIDController();
+  rev::SparkMaxPIDController                 m_IAssistPID          = m_IAssist.GetPIDController();
   #ifdef Bot2024
   frc::DigitalInput                          breakbeam_shooter{KeSPK_i_BreakBeamIO};
   frc::DigitalInput                          m_ElevatorLimitSwitch{KeSPK_i_ElevatorSwitchIO};

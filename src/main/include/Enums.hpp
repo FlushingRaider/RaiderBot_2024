@@ -257,7 +257,8 @@ typedef enum TeSPK_Actuators
   E_SPK_m_Intake,
   E_SPK_m_Shooter1,
   E_SPK_m_Shooter2,
-  E_SPK_m_Sz
+  E_SPK_m_Sz,
+  E_SPK_m_IAssist
 } TeSPK_Actuators;
 
 typedef enum TeSPK_CtrlStates

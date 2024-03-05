@@ -15,11 +15,13 @@ extern TsSPK_Sensor       VsSPK_s_Sensors;
 
 void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
                          rev::SparkMaxPIDController m_Shooter1PID,
-                         rev::SparkMaxPIDController m_Shooter2PID);
+                         rev::SparkMaxPIDController m_Shooter2PID,
+                         rev::SparkMaxPIDController m_IAssistPID);
 
 void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
                           rev::SparkMaxPIDController m_Shooter1PID,
-                          rev::SparkMaxPIDController m_Shooter2PID);
+                          rev::SparkMaxPIDController m_Shooter2PID,
+                          rev::SparkMaxPIDController m_IAssistPID);
 
 void SPK_ControlInit();
 
