@@ -234,6 +234,7 @@ typedef enum T_DJ_Amp_States
   E_DJ_Amp_Init,
   E_DJ_Amp_Driving,
   E_DJ_Amp_Intake,
+  E_DJ_AMP_IAssist,
   E_DJ_Amp_PreScore,
   E_DJ_Amp_Score,
   E_DJ_Amp_Trade_Off,
@@ -256,6 +257,7 @@ struct TeAmp_MotorControl
 typedef enum TeSPK_Actuators
 {
   E_SPK_m_Intake,
+  E_SPK_m_IAssist,
   E_SPK_m_Shooter1,
   E_SPK_m_Shooter2,
   E_SPK_m_Sz,
@@ -267,6 +269,7 @@ typedef enum TeSPK_CtrlStates
   E_SPK_Ctrl_Init,
   E_SPK_Ctrl_Driving,
   E_SPK_Ctrl_Intake,
+  E_SPK_Ctrl_IAssist,
   E_SPK_Ctrl_PreScore,
   E_SPK_Ctrl_Score,
   E_SPK_Ctrl_StateSz
@@ -284,6 +287,7 @@ struct TeSKP_MotorControl
 struct TsSPK_Sensor 
 {
   double RPM_Intake; // Speed of the intake rollers
+  double RPM_IAssist; // Speed of the Intake assist
   double RPM_Shooter1; // Speed of the shooter 1 rollers
   double RPM_Shooter2; // Speed of the shooter 2 rollers
   bool   b_NoteDetected;
