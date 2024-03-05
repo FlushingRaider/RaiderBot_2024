@@ -193,6 +193,7 @@ void Robot::RobotInit()
                              m_encoderWrist,
                              m_encoderIntake,
                              m_encoderUnderbelly,
+                             m_encoderIAssist,
                              m_encoderShooter1,
                              m_encoderShooter2);
 #endif
@@ -333,6 +334,7 @@ void Robot::RobotPeriodic()
                             m_encoderWrist,
                             m_encoderIntake,
                             m_encoderUnderbelly,
+                            m_encoderIAssist,
                             m_encoderShooter1,
                             m_encoderShooter2);
 
@@ -502,6 +504,7 @@ void Robot::TestPeriodic()
                                m_encoderWrist,
                                m_encoderIntake,
                                m_encoderUnderbelly,
+                               m_encoderIAssist,
                                m_encoderShooter1,
                                m_encoderShooter2);
     #endif
