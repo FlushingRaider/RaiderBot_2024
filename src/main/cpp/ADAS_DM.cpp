@@ -199,7 +199,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                           double LeADAS_l_Y_FieldPos,
                           double LeADAS_Deg_GyroAngle,
                           T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
-                          std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor)
+                          std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor,
+                          bool LeADAS_b_State2Complete)
 {
     bool LeADAS_b_DM_StateComplete = false;
     double LeADAS_l_TargetPositionX = 0.0;
@@ -314,7 +315,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
     {
         /* Reset the time, proceed to next state. */
         LeADAS_b_DM_StateComplete = true;
-        VeADAS_t_DM_Debounce = 0;
+        // VeADAS_t_DM_Debounce = 0;
     }
     else if (LeADAS_Deg_RotateError > VeADAS_Deg_DM_RotateDeadbandAngle ||
              LeADAS_l_X_Error > VeADAS_Deg_DM_XY_Deadband ||
@@ -324,7 +325,7 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
         VeADAS_t_DM_Debounce = 0;
     }
 
-    if (LeADAS_b_DM_StateComplete == false)
+    if (LeADAS_b_DM_StateComplete == false || LeADAS_b_State2Complete == false)
     {
         *LeADAS_Pct_Strafe =  Control_PID(L_lookupOut.L_valX,
                                           LeADAS_l_RelativePosX,

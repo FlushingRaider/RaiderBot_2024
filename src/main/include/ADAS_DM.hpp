@@ -27,7 +27,8 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
                           double LeADAS_l_Y_FieldPos,
                           double LeADAS_Deg_GyroAngle,
                           T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
-                          std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor);
+                          std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor,
+                          bool LeADAS_b_State2Complete);
 
 bool ADAS_DM_Stop(double *LeADAS_Pct_FwdRev,
                   double *LeADAS_Pct_Strafe,

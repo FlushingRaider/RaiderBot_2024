@@ -369,13 +369,13 @@ const double KtLU_k_SD_DesiredAccel[20] = {-1.00, //-1
                                            1.00}; // 0.95
 
 /* ADAS DM cals*/
-const double KaADAS_k_AutonXY_PID_Gx[E_PID_CalSz] = {0.05,   // P Gx
-                                                     0.00003, // I Gx 0.000001
+const double KaADAS_k_AutonXY_PID_Gx[E_PID_CalSz] = {0.050,   // P Gx
+                                                     0.000000001, // I Gx 0.000001
                                                      0.00007, // D Gx
-                                                     0.75,    // P UL
-                                                     -0.75,   // P LL
-                                                     0.05,     // I UL
-                                                     -0.05,    // I LL
+                                                     0.7,    // P UL
+                                                     -0.7,   // P LL
+                                                     0.03,     // I UL
+                                                     -0.03,    // I LL
                                                      0.5,     // D UL
                                                      -0.5,    // D LL
                                                      1.0,     // Max upper
@@ -388,13 +388,13 @@ const double KaADAS_k_AutonRotatePID_Gx[E_PID_CalSz] = {0.0045, // P Gx
                                                         -0.25,   // P LL
                                                         0.04,   // I UL
                                                         -0.04,  // I LL
-                                                        0.00007,    // D UL
-                                                        -0.00007,   // D LL
+                                                        0.16,    // D UL
+                                                        -0.16,   // D LL
                                                         0.4,     // Max upper
                                                         -0.4};   // Max lower
 
 /* KeADAS_t_DM_PathFollowDebounceTime: This is the debounce time for the DM pathfollow state. [seconds] */
-const double KeADAS_t_DM_PathFollowDebounceTime = 0.065; // 0.045
+const double KeADAS_t_DM_PathFollowDebounceTime = 0.045; // 0.045
 /* K_ADAS_DM_RotateDeadbandAngle: This is the deband angle for the DM rotate state. [degrees] */
 const double K_ADAS_DM_RotateDeadbandAngle = 5.0;  // 3.0
 
@@ -642,6 +642,7 @@ const double KaSPK_k_IntakePID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.0,      // kMaxAcc
                                                            0.0};     // kAllErr
 
+/* KaSPK_k_IAssistPID_Gx: PID gains for the IAssist control. */
 const double KaSPK_k_IAssistPID_Gx[E_PID_SparkMaxCalSz] = { 0.1,      // kP
                                                            0.000001, // kI
                                                            0.002000, // kD

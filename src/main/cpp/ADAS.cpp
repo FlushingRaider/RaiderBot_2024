@@ -702,7 +702,8 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                                   L_L_Y_FieldPos,
                                                   L_Deg_GyroAngleDeg,
                                                   LeADAS_e_ActiveFeature,
-                                                  LeLC_e_AllianceColor);
+                                                  LeLC_e_AllianceColor,
+                                                  true);
     break;
 
   case E_ADAS_MoveGlobal:
@@ -773,6 +774,9 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt8Path1:
   case E_ADAS_DM_DJ_Test1:
   case E_ADAS_DM_DJ_Test2:
+    VeADAS_b_State2Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
+                                           LeADAS_e_ActiveFeature);
+
     VeADAS_b_State1Complete = ADAS_DM_PathFollower(L_Pct_FwdRev,
                                                    L_Pct_Strafe,
                                                    L_Pct_Rotate,
@@ -782,10 +786,8 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                                    L_L_Y_FieldPos,
                                                    L_Deg_GyroAngleDeg,
                                                    LeADAS_e_ActiveFeature,
-                                                   LeLC_e_AllianceColor);
-
-    VeADAS_b_State2Complete = ADAS_DJ_Main(LeADAS_e_RobotState,
-                                           LeADAS_e_ActiveFeature);
+                                                   LeLC_e_AllianceColor,
+                                                   VeADAS_b_State2Complete);
 
     VeADAS_b_StateComplete = (VeADAS_b_State1Complete == true && VeADAS_b_State2Complete == true);
     if (VeADAS_b_StateComplete == true)
