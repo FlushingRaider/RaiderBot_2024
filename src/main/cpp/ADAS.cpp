@@ -569,13 +569,13 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path2;
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt7Path2;
       }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path2) && (VeADAS_b_StateComplete == true))
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt7Path2) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path3;
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt7Path3;
       }
-      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path3) && (VeADAS_b_StateComplete == true))
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt7Path3) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote2;
       }
@@ -597,7 +597,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt7Path6) && (VeADAS_b_StateComplete == true))
       {
-        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt7Path7;   // This is return to start position, to try and speed up cal efforts.
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt7Path7;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt7Path7) && (VeADAS_b_StateComplete == true))
       {
@@ -675,37 +675,6 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   // our active feature table, ADAS sets which one they want
   switch (LeADAS_e_ActiveFeature)
   {
-  // all path follower features will just flow down to the function since theres no breaks
-  case E_ADAS_DM_PathFollower1:
-  case E_ADAS_DM_PathFollower2:
-  case E_ADAS_DM_PathFollower3:
-  case E_ADAS_DM_PathFollower4:
-  case E_ADAS_DM_PathFollower5:
-  case E_ADAS_DM_PathFollower6:
-  case E_ADAS_DM_PathFollower7:
-  case E_ADAS_DM_PathFollower8:
-  case E_ADAS_DM_PathFollower9:
-  case E_ADAS_DM_PathFollower10:
-  case E_ADAS_DM_PathFollower11:
-  case E_ADAS_DM_PathFollower12:
-  case E_ADAS_DM_PathFollower13:
-  case E_ADAS_DM_PathFollower14:
-  case E_ADAS_DM_PathFollower15:
-  case E_ADAS_DM_PathFollower16:
-  case E_ADAS_DM_PathFollower17:
-    VeADAS_b_StateComplete = ADAS_DM_PathFollower(L_Pct_FwdRev,
-                                                  L_Pct_Strafe,
-                                                  L_Pct_Rotate,
-                                                  LeADAS_Deg_DesiredPose,
-                                                  LeADAS_b_SD_RobotOriented,
-                                                  L_L_X_FieldPos,
-                                                  L_L_Y_FieldPos,
-                                                  L_Deg_GyroAngleDeg,
-                                                  LeADAS_e_ActiveFeature,
-                                                  LeLC_e_AllianceColor,
-                                                  true);
-    break;
-
   case E_ADAS_MoveGlobal:
     // VeADAS_b_StateComplete = ADAS_DM_MoveWithGlobalCoords(L_Pct_FwdRev,
     //                                                       L_Pct_Strafe,
@@ -728,7 +697,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DJ_ShootNote2:
   case E_ADAS_DJ_ShootNote3:
   case E_ADAS_DJ_ShootNote4:
-    /* We are just attempting to shoot the note. No need to path follower. */
+    /* We are just attempting to shoot the note. No need to call path follower. */
     VeADAS_b_State1Complete = ADAS_DM_Stop(L_Pct_FwdRev,
                                            L_Pct_Strafe,
                                            L_Pct_Rotate);
@@ -743,6 +712,23 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
       VeADAS_b_State2Complete = false;
     }
     break;
+  case E_ADAS_DM_PathFollower1:
+  case E_ADAS_DM_PathFollower2:
+  case E_ADAS_DM_PathFollower3:
+  case E_ADAS_DM_PathFollower4:
+  case E_ADAS_DM_PathFollower5:
+  case E_ADAS_DM_PathFollower6:
+  case E_ADAS_DM_PathFollower7:
+  case E_ADAS_DM_PathFollower8:
+  case E_ADAS_DM_PathFollower9:
+  case E_ADAS_DM_PathFollower10:
+  case E_ADAS_DM_PathFollower11:
+  case E_ADAS_DM_PathFollower12:
+  case E_ADAS_DM_PathFollower13:
+  case E_ADAS_DM_PathFollower14:
+  case E_ADAS_DM_PathFollower15:
+  case E_ADAS_DM_PathFollower16:
+  case E_ADAS_DM_PathFollower17:
   case E_ADAS_DM_DJ_Opt1Path1:
   case E_ADAS_DM_DJ_Opt1Path2:
   case E_ADAS_DM_DJ_Opt1Path3:

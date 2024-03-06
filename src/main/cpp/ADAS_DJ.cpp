@@ -318,25 +318,24 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   case E_ADAS_DM_DJ_Opt1Path6:
   case E_ADAS_DM_DJ_Opt2Path3:
   case E_ADAS_DM_DJ_Opt3Path6:
+  case E_ADAS_DM_DJ_Opt7Path8:
     LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Driving;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   break;
 
- case E_ADAS_DM_DJ_Opt1Path2:
- case E_ADAS_DM_DJ_Opt1Path4:
- case E_ADAS_DM_DJ_Opt2Path1:
- case E_ADAS_DM_DJ_Opt3Path2:
- case E_ADAS_DM_DJ_Opt3Path4:
-    LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_iAssist;
-    LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Intake;
-    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
-  break;
-
+case E_ADAS_DM_DJ_Opt1Path2:
+case E_ADAS_DM_DJ_Opt1Path4:
+case E_ADAS_DM_DJ_Opt2Path1:
+case E_ADAS_DM_DJ_Opt3Path2:
+case E_ADAS_DM_DJ_Opt3Path4:
 case E_ADAS_DM_DJ_Opt4Path1:
 case E_ADAS_DM_DJ_Opt4Path2:
 case E_ADAS_DM_DJ_Opt4Path3:
 case E_ADAS_DM_DJ_Opt4Path4:
+case E_ADAS_DM_DJ_Opt7Path2:
+case E_ADAS_DM_DJ_Opt7Path4:
+case E_ADAS_DM_DJ_Opt7Path6:
   LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
   LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Intake;
   LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
@@ -349,6 +348,10 @@ case E_ADAS_DM_DJ_Opt4Path4:
  case E_ADAS_DM_DJ_Opt3Path1:
  case E_ADAS_DM_DJ_Opt3Path3:
  case E_ADAS_DM_DJ_Opt3Path5:
+ case E_ADAS_DM_DJ_Opt7Path1:
+ case E_ADAS_DM_DJ_Opt7Path3:
+ case E_ADAS_DM_DJ_Opt7Path5:
+ case E_ADAS_DM_DJ_Opt7Path7:
     LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_PreScore;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
