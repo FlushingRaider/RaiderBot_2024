@@ -33,7 +33,7 @@ static const int KeEnc_i_WheelAngleRL = 20;
 static const int KeEnc_i_WheelAngleRR = 19;
 static const int KeCLMR_i_ClimberArm1 = 21;
 static const int KeCLMR_i_ClimberArm2 = 22;
-static const int KeDJ_Spk_i_IAssist = 23;
+static const int KeDJ_Spk_i_IAssist = 24;
 
 // DIO Device IDs:
 static const int KeSPK_i_BreakBeamIO  = 0;

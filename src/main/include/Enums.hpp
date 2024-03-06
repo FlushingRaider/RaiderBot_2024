@@ -89,6 +89,7 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DJ_ShootNote1,
   E_ADAS_DJ_ShootNote2,
   E_ADAS_DJ_ShootNote3,
+  E_ADAS_DJ_ShootNote4,
   E_ADAS_DM_DJ_Opt1Path1,
   E_ADAS_DM_DJ_Opt1Path2,
   E_ADAS_DM_DJ_Opt1Path3,
@@ -110,6 +111,15 @@ typedef enum T_ADAS_ActiveFeature
   E_ADAS_DM_DJ_Opt4Path2,
   E_ADAS_DM_DJ_Opt4Path3,
   E_ADAS_DM_DJ_Opt4Path4,
+  E_ADAS_DM_DJ_Opt7Path1,
+  E_ADAS_DM_DJ_Opt7Path2,
+  E_ADAS_DM_DJ_Opt7Path3,
+  E_ADAS_DM_DJ_Opt7Path4,
+  E_ADAS_DM_DJ_Opt7Path5,
+  E_ADAS_DM_DJ_Opt7Path6,
+  E_ADAS_DM_DJ_Opt7Path7,
+  E_ADAS_DM_DJ_Opt7Path8,
+  E_ADAS_DM_DJ_Opt8Path1,
   E_ADAS_DM_DJ_Test1,
   E_ADAS_DM_DJ_Test2
 } T_ADAS_ActiveFeature;
@@ -130,6 +140,7 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonOpt4, // Shoot, drive straight out and then come back
   E_ADAS_AutonOpt5, // Shoot, don't drive
   E_ADAS_AutonOpt6, // Shoot, Drive to note, drive back, shoot, drive to second note, drive, shoot
+  E_ADAS_AutonOpt7, // 4 piece auton
   E_ADAS_AutonOptTest1,
   E_ADAS_DemoChainMove
 } T_ADAS_ActiveAutonFeature;

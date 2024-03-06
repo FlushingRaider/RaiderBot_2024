@@ -309,6 +309,7 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   case E_ADAS_DJ_ShootNote1:
   case E_ADAS_DJ_ShootNote2:
   case E_ADAS_DJ_ShootNote3:
+  case E_ADAS_DJ_ShootNote4:
     LeADAS_e_AutonRequestStateAMP = E_DJ_Amp_Init;
     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Score;
     LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;

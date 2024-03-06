@@ -174,9 +174,9 @@ void Robot::RobotInit()
                        m_IntakePID);
 
   SPK_MotorConfigsInit(m_UnderbellyPID,
+                       m_IAssistPID,
                        m_Shooter1PID,
-                       m_Shooter2PID,
-                       m_IAssistPID);
+                       m_Shooter2PID);
 
   CLMR_MotorConfigsInit(m_ClimberLeftPID,
                         m_ClimberRightPID);
@@ -343,9 +343,9 @@ void Robot::RobotPeriodic()
                       m_IntakePID);
 
   SPK_MotorConfigsCal(m_UnderbellyPID,
+                      m_IAssistPID,
                       m_Shooter1PID,
-                      m_Shooter2PID,
-                      m_IAssistPID);
+                      m_Shooter2PID);
 
   CLMR_MotorConfigsCal(m_ClimberLeftPID,
                        m_ClimberRightPID);

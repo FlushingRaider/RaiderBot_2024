@@ -158,9 +158,9 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
  *               allows for rapid calibration, but must not be used for comp.
  ******************************************************************************/
 void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
+                         rev::SparkMaxPIDController m_IAssistPID,
                          rev::SparkMaxPIDController m_Shooter1PID,
-                         rev::SparkMaxPIDController m_Shooter2PID,
-                         rev::SparkMaxPIDController m_IAssistPID)
+                         rev::SparkMaxPIDController m_Shooter2PID)
   {
   // read PID coefficients from SmartDashboard
   #ifdef SPK_Test
