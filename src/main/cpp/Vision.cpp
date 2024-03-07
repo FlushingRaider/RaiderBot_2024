@@ -14,7 +14,6 @@
 #ifdef VisionOn
 frc::AprilTagFieldLayout L_Vis_Layout = frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
 
-// cameras are defined as shared pointers like so:
 photon::PhotonCamera L_FrontCam = photon::PhotonCamera("FrontCam");
 
 photon::PhotonCamera L_LeftCam = photon::PhotonCamera("LeftCam");
@@ -25,7 +24,7 @@ photon::PhotonCamera L_RightCam = photon::PhotonCamera("RightCam");
 frc::Transform3d L_robotToFrontCam =
     frc::Transform3d(frc::Translation3d(-0.5_in, 0.5_in, 22.24_in),
                      frc::Rotation3d(0_deg, 75_deg, 0_deg));
-// TODO - setup Right and Left cam locations, once mounts are better defined
+
 frc::Transform3d L_robotToLeftCam =
     frc::Transform3d(frc::Translation3d(4.55_in, 12.75_in, 9.84_in),
                      frc::Rotation3d(-55_deg, 0_deg, 0_deg));
@@ -157,9 +156,9 @@ void VisionRun()
     L_outputY = L_VisCamResults[L_bestCam].first.Translation().Y().value(); // this returns in meters
     L_outputY *= C_MeterToIn;
 
-    // frc::SmartDashboard::PutNumber("vision out x", L_outputX);
+    frc::SmartDashboard::PutNumber("vision out x", L_outputX);
 
-    // frc::SmartDashboard::PutNumber("vision out y", L_outputY);
+    frc::SmartDashboard::PutNumber("vision out y", L_outputY);
     // frc::SmartDashboard::PutNumber("vision out yaw", VeVis_deg_VisionYaw);
     // we need to wait at least 2 seconds before centering, we're probably fine in those 2 seconds
     // or maybe we haven't centered at all
@@ -185,7 +184,6 @@ void VisionRun()
                     if (VeVis_CenteringEnable)
                     {
                         Debug_tests_passed++;
-                        // even if everything passes we can manually say no
                         // OdometryInitToArgs(L_outputX, L_outputY);
                         Ve_Vis_VisionCenteredCounter = 0;
                         Le_Vis_VisionCentered = true;

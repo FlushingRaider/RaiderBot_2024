@@ -15,6 +15,8 @@
 #include "SpeakerCntrl.hpp"
 #include "Climber.hpp"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 T_DJ_Amp_States      VeADAS_e_Amp_SchedState = E_DJ_Amp_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeSPK_CtrlStates     VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
 TeCLMR_CtrlStates    VeADAS_e_CLMR_SchedState = E_CLMR_Ctrl_Init; // State Scheduled in relation to driver input. Used for non-linear state machines
@@ -376,6 +378,11 @@ case E_ADAS_DM_DJ_Opt7Path6:
   {
     LeADAS_b_DJ_Complete = true;
   }
+
+  frc::SmartDashboard::PutNumber("VeADAS_e_Amp_SchedState", (float)VeADAS_e_Amp_SchedState);
+  frc::SmartDashboard::PutNumber("VeAmp_e_CmndState", (float)VeAmp_e_CmndState);
+  frc::SmartDashboard::PutNumber("VeAmp_e_AttndState", (float)VeAmp_e_AttndState);
+
 
   return (LeADAS_b_DJ_Complete);
 }

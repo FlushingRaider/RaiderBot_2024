@@ -193,6 +193,8 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   /* First, let's determine what we are going to do: */
   if (LeADAS_e_RobotState == E_Teleop)
   {
+    VeVis_CenteringEnable = true;
+
     // if (VeADAS_b_SpeakerMoveActive)
     // {
     //   if (LeLC_e_AllianceColor == frc::DriverStation::Alliance::kRed)
@@ -794,6 +796,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
     *LeADAS_b_X_Mode = false;
     break;
   }
-
+  frc::SmartDashboard::PutBoolean("State 1 complete", VeADAS_b_State1Complete);
+  frc::SmartDashboard::PutBoolean("State 2 complete", VeADAS_b_State2Complete);
   return (LeADAS_e_ActiveFeature);
 }
