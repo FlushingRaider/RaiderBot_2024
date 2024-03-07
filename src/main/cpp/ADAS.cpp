@@ -86,7 +86,7 @@ void ADAS_Main_Init(void)
   VeADAS_e_AutonChooser.AddOption("Leave", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
   VeADAS_e_AutonChooser.AddOption("Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   VeADAS_e_AutonChooser.AddOption("2 Piece + Preload Short", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt6);
-  VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1); // Calibration test
+  // VeADAS_e_AutonChooser.AddOption("Option Test1", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOptTest1); // Calibration test
   // VeADAS_e_AutonChooser.AddOption("Demo chain move", T_ADAS_ActiveAutonFeature::E_ADAS_DemoChainMove);
   VeADAS_e_AutonChooser.AddOption("4 Note", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt7); // 4 piece auton
   VeADAS_e_AutonChooser.SetDefaultOption("Disabled", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDisabled);
