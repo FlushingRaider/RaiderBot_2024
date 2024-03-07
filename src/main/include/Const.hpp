@@ -697,7 +697,7 @@ const double KaSPK_k_Intake[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
 /* KaSPK_k_IAssist: Sets IAssist final power for each state */
 const double KaSPK_k_IAssist[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
                                                      0.0,  // Sched - Driving
-                                                    -0.38,  // Sched - Intake
+                                                    -0.55,  // Sched - Intake
                                                      0.0,  // Sched - PreScore
                                                      0.0}; // Sched - Score
 
