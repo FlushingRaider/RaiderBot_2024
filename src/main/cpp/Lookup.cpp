@@ -66,6 +66,10 @@
 #include "OptPaths/Opt8Path1.hpp"
 #include "OptPaths/TestPath1.hpp"
 #include "OptPaths/TestPath2.hpp"
+#include "OptPaths/Opt4Path1.hpp"
+#include "OptPaths/Opt4Path2.hpp"
+#include "OptPaths/Opt4Path3.hpp"
+#include "OptPaths/Opt4Path4.hpp"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /******************************************************************************
@@ -981,6 +985,61 @@ DtrmnSwerveBotLocationOut DesiredAutonLocation2(double LeLU_s_AutonTime,
     }
     break;
 
+   case E_ADAS_DM_DJ_Opt4Path1:
+   LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                      KnADAS_t_Opt4Path1,
+                                      KaADAS_t_Opt4Path1Remaining,
+                                      KaADAS_l_Opt4Path1_X,
+                                      KaADAS_l_Opt4Path1_Y,
+                                      KaADAS_Deg_Opt4Path1);
+
+if (LeLU_s_AutonTime >= KnADAS_t_Opt4Path1[KnADAS_t_Opt4Path1.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
+   case E_ADAS_DM_DJ_Opt4Path2:
+   LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                      KnADAS_t_Opt4Path2,
+                                      KaADAS_t_Opt4Path2Remaining,
+                                      KaADAS_l_Opt4Path2_X,
+                                      KaADAS_l_Opt4Path2_Y,
+                                      KaADAS_Deg_Opt4Path2);
+
+if (LeLU_s_AutonTime >= KnADAS_t_Opt4Path2[KnADAS_t_Opt4Path2.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+
+    break;
+       case E_ADAS_DM_DJ_Opt4Path3:
+   LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                      KnADAS_t_Opt4Path3,
+                                      KaADAS_t_Opt4Path3Remaining,
+                                      KaADAS_l_Opt4Path3_X,
+                                      KaADAS_l_Opt4Path3_Y,
+                                      KaADAS_Deg_Opt4Path3);
+
+if (LeLU_s_AutonTime >= KnADAS_t_Opt4Path3[KnADAS_t_Opt4Path3.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
+
+    case E_ADAS_DM_DJ_Opt4Path4:
+   LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
+                                      KnADAS_t_Opt4Path4,
+                                      KaADAS_t_Opt4Path4Remaining,
+                                      KaADAS_l_Opt4Path4_X,
+                                      KaADAS_l_Opt4Path4_Y,
+                                      KaADAS_Deg_Opt4Path4);
+
+if (LeLU_s_AutonTime >= KnADAS_t_Opt4Path4[KnADAS_t_Opt4Path4.size() - 1])
+    {
+      L_output.L_timeEndReached = true;
+    }
+    break;
 
   case E_ADAS_DM_DJ_Opt7Path1:
     LaLU_d_CalcedVals = LoadPathHeader(LeLU_s_AutonTime,
