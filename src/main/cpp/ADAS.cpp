@@ -193,7 +193,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   /* First, let's determine what we are going to do: */
   if (LeADAS_e_RobotState == E_Teleop)
   {
-    VeVis_CenteringEnable = true;
+    // VeVis_CenteringEnable = true;
 
     // if (VeADAS_b_SpeakerMoveActive)
     // {
@@ -216,7 +216,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   else if (LeADAS_e_RobotState == E_Auton)
   {
 
-    VeVis_CenteringEnable = true;
+    // VeVis_CenteringEnable = true;
 
     // auton selection
     switch (VeADAS_e_DriverRequestedAutonFeature)

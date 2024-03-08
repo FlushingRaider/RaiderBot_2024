@@ -399,19 +399,19 @@ bool ADAS_DM_PathFollower(double *LeADAS_Pct_FwdRev,
         VeADAS_Deg_DM_AngleIntegral = 0;
     }
 
-    frc::SmartDashboard::PutNumber("LeADAS_l_X_Error", LeADAS_l_X_Error);
-    frc::SmartDashboard::PutNumber("LeADAS_l_Y_Error", LeADAS_l_Y_Error);
-    frc::SmartDashboard::PutNumber("LeADAS_Deg_RotateError", LeADAS_Deg_RotateError);
+    // frc::SmartDashboard::PutNumber("LeADAS_l_X_Error", LeADAS_l_X_Error);
+    // frc::SmartDashboard::PutNumber("LeADAS_l_Y_Error", LeADAS_l_Y_Error);
+    // frc::SmartDashboard::PutNumber("LeADAS_Deg_RotateError", LeADAS_Deg_RotateError);
 
-    frc::SmartDashboard::PutNumber("L_lookupOut.L_valX", L_lookupOut.L_valX);
-    frc::SmartDashboard::PutNumber("L_lookupOut.L_valY", L_lookupOut.L_valY);
-    frc::SmartDashboard::PutNumber("L_lookupOut.L_valDeg", L_lookupOut.L_valDeg);
+    // frc::SmartDashboard::PutNumber("L_lookupOut.L_valX", L_lookupOut.L_valX);
+    // frc::SmartDashboard::PutNumber("L_lookupOut.L_valY", L_lookupOut.L_valY);
+    // frc::SmartDashboard::PutNumber("L_lookupOut.L_valDeg", L_lookupOut.L_valDeg);
 
-    frc::SmartDashboard::PutNumber("LeADAS_Pct_FwdRev", *LeADAS_Pct_FwdRev);
-    frc::SmartDashboard::PutNumber("LeADAS_Pct_Strafe", *LeADAS_Pct_Strafe);
-    frc::SmartDashboard::PutNumber("LeADAS_Pct_Rotate", *LeADAS_Pct_Rotate);
+    // frc::SmartDashboard::PutNumber("LeADAS_Pct_FwdRev", *LeADAS_Pct_FwdRev);
+    // frc::SmartDashboard::PutNumber("LeADAS_Pct_Strafe", *LeADAS_Pct_Strafe);
+    // frc::SmartDashboard::PutNumber("LeADAS_Pct_Rotate", *LeADAS_Pct_Rotate);
 
-    frc::SmartDashboard::PutNumber("VeADAS_t_DM_Debounce", VeADAS_t_DM_Debounce);
+    // frc::SmartDashboard::PutNumber("VeADAS_t_DM_Debounce", VeADAS_t_DM_Debounce);
 
     // frc::SmartDashboard::PutNumber("DM Timer", VeADAS_t_DM_StateTimer);
     // frc::SmartDashboard::PutNumber("X Cmnd",   L_lookupOut.L_valX);

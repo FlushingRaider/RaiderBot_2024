@@ -23,7 +23,7 @@
 #include "Climber.hpp"
 #include "ADAS_DJ.hpp"
 #include "DataLogger.hpp"
-#include "Vision.hpp"
+// #include "Vision.hpp"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -133,7 +133,7 @@ void Robot::RobotInit()
 
   GyroInit();
 
-  VisionInit();
+  // VisionInit();
 
   m_frontLeftSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
   m_frontRightSteerMotor.SetSmartCurrentLimit(K_SD_SteerMotorCurrentLimit);
@@ -276,7 +276,7 @@ void Robot::RobotPeriodic()
 
 
 
-  VisionRun();
+  // VisionRun();
 
   ADAS_DetermineMode();
 

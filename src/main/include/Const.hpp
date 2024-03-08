@@ -6,7 +6,7 @@
 // Define the desired rotob state here: Bot2024, Bot2023
 #define Bot2024
 // Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-#define ADAS_DM_Test
+// #define ADAS_DM_Test
 
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
@@ -486,7 +486,7 @@ const double KeSPK_t_WristResetTime2 = 2;
 const double KeSPK_k_WristResetPwr = -0.2;
 
 /* KeSPK_k_ElevatorResetPwr: Amount of power commanded to reset elevator. */
-const double KeSPK_k_ElevatorResetPwr = -0.1;
+const double KeSPK_k_ElevatorResetPwr = 0.1;
 
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP

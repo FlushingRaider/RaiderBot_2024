@@ -501,10 +501,10 @@ CalcedPathVals LoadPathHeader(double LeLU_s_AutonTime,
                                         L_TimeRemSize,
                                         LeLU_s_AutonTime);
 
-  frc::SmartDashboard::PutNumber("LeLU_l_X_Loc", LeLU_l_X_Loc);
-  frc::SmartDashboard::PutNumber("LeLU_l_Y_Loc", LeLU_l_Y_Loc);
-  frc::SmartDashboard::PutNumber("LeLU_Deg_Ang", LeLU_Deg_Ang);
-  frc::SmartDashboard::PutNumber("LeLU_t_TimeRemaining", LeLU_t_TimeRemaining);
+  // frc::SmartDashboard::PutNumber("LeLU_l_X_Loc", LeLU_l_X_Loc);
+  // frc::SmartDashboard::PutNumber("LeLU_l_Y_Loc", LeLU_l_Y_Loc);
+  // frc::SmartDashboard::PutNumber("LeLU_Deg_Ang", LeLU_Deg_Ang);
+  // frc::SmartDashboard::PutNumber("LeLU_t_TimeRemaining", LeLU_t_TimeRemaining);
 
   L_PathCalcedVals.L_valX = LeLU_l_X_Loc;
   L_PathCalcedVals.L_valY = LeLU_l_Y_Loc;

@@ -1,3 +1,6 @@
+#ifdef vision
+
+
 #include <frc/apriltag/AprilTagFieldLayout.h>
 #include <frc/apriltag/AprilTagFields.h>
 #include <photon/PhotonUtils.h>
@@ -196,4 +199,6 @@ void VisionRun()
     frc::SmartDashboard::PutNumber("Debug: Vision tests passed", Debug_tests_passed);
     frc::SmartDashboard::PutBoolean("vision centred", Le_Vis_VisionCentered);
 }
+#endif
+
 #endif
