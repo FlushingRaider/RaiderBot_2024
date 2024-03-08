@@ -70,7 +70,6 @@ void Robot::RobotMotorCommands()
   }
 
 #ifdef Bot2024
-  m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition);
   m_Intake.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Intake]);
   m_Underbelly.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Intake]);
   m_IAssist.Set(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_IAssist]);
@@ -78,6 +77,15 @@ void Robot::RobotMotorCommands()
   m_Shooter2PID.SetReference(VsSPK_s_Motors.k_MotorCmnd[E_SPK_m_Shooter2], rev::ControlType::kVelocity);
   m_ClimberLeftPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Left], rev::ControlType::kPosition);
   m_ClimberRightPID.SetReference(VsCLMR_s_Motors.k_MotorCmnd[E_CLMR_m_Right], rev::ControlType::kPosition);
+
+  if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Elevator] == E_MotorControlPctCmnd)
+  {
+    m_Elevator.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator]);
+  }
+  else
+  {
+    m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition); 
+  }
 
   if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
   {
@@ -360,7 +368,9 @@ void Robot::RobotPeriodic()
                           VeROBO_b_TestState);
 
   Encoders_AMP_ResetWrist(m_encoderWrist,
-                          VeAmp_b_WristEncoderReset);
+                          m_encoderElevator,
+                          VeAmp_b_WristEncoderReset,
+                          VeAmp_b_ElevatorEncoderReset);
 #endif
 }
 

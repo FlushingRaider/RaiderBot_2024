@@ -37,8 +37,7 @@ TeAMP_e_WristReset VeAmp_e_WristResetSt = E_AMP_WristReseted;
 double VeAmp_t_WristResetTimer = 0;
 double VeAmp_t_WristResetTimer2 = 0;
 bool VeAmp_b_WristEncoderReset = false;
-bool VeAmp_b_Hold = false; // Used for the holding power.
-double VeAmp_t_HoldTime = 0;
+bool VeAmp_b_ElevatorEncoderReset = false;
 
 #ifdef AMP_Test
 bool VeAmp_b_TestState = true; // temporary, we don't want to use the manual overrides
@@ -214,6 +213,7 @@ void Amp_ControlInit()
   VeAmp_t_WristResetTimer = 0.0;
   VeAmp_e_WristResetSt = E_AMP_WristReseted;
   VeAmp_b_WristEncoderReset = false;
+  VeAmp_b_ElevatorEncoderReset = false;
   VeAmp_t_WristResetTimer2 = 0.0;
 }
 
@@ -314,11 +314,29 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   double LeAmp_InS_ElevatorRate = 0.0;
   double LeAmp_DegS_WristRate = 0.0;
 
+  if ((VsCONT_s_DriverInput.b_Amp_DrivingPosition == true) && 
+      (LeDJ_Amp_e_CmndState == E_DJ_Amp_Init && LeDJ_Amp_e_AttndState == E_DJ_Amp_Init) &&
+      (VsAmp_s_Sensors.b_ElevatorSwitch == false))
+  {
+    /* Here we are attempting to allow the driver to manually reset the elevator back to the init position.  
+       This involves open loop pulling it down along with looking at the switch and also resetting the encoder */
+
+  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = KeSPK_k_ElevatorResetPwr;
+  VsAmp_s_Motors.e_MotorControlType[E_Amp_Elevator] = E_MotorControlPctCmnd;
+  VeAmp_b_ElevatorEncoderReset = true;
+  }
+  else
+  {
   LeAmp_InS_ElevatorRate = KaDJ_Amp_InS_ElevatorRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
 
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = RampTo(KaDJ_Amp_In_ElevatorPosition[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_ElevatorRatio,
                                                           VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator],
                                                           LeAmp_InS_ElevatorRate);
+  VsAmp_s_Motors.e_MotorControlType[E_Amp_Elevator] = E_MotorControlPosition;
+  VeAmp_b_ElevatorEncoderReset = false;
+  }
+
+
 
   /* Additional logic for wrist is to allow it to be reseted.  This is to account for cases where the belt has 
      slipped and the wrist is no longer in the expected location. */

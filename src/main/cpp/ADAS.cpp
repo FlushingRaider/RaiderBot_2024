@@ -171,8 +171,8 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
                                       T_ADAS_ActiveFeature LeADAS_e_ActiveFeature,
                                       std::optional<frc::DriverStation::Alliance> LeLC_e_AllianceColor)
 {
-  bool LeADAS_b_State1Complete = false;
-  bool LeADAS_b_State2Complete = false;
+  bool   LeADAS_b_State1Complete = false;
+  bool   LeADAS_b_State2Complete = false;
   double LeADAS_e_RequestedX = 0.0;
   double LeADAS_e_RequestedY = 0.0;
   double LeADAS_e_RequestedYaw = 0.0;

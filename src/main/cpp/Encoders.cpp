@@ -191,11 +191,17 @@ void Encoders_AMP_SPK_CLMR_Init( rev::SparkMaxRelativeEncoder m_encoderElevator,
  * Description:  Read the encoders/sensors from the amp, speaker and climber
  ******************************************************************************/
 void Encoders_AMP_ResetWrist(rev::SparkMaxRelativeEncoder m_encoderWrist,
-                             bool LeENC_b_ResetReq)
+                             rev::SparkMaxRelativeEncoder m_encoderElevator,
+                             bool LeENC_b_ResetReq,
+                             bool LeENC_b_ElevatorEncoderReset)
   {
   if (LeENC_b_ResetReq == true)
     {
     m_encoderWrist.SetPosition(0);
+    }
+  if (LeENC_b_ElevatorEncoderReset == true)
+    {
+    m_encoderElevator.SetPosition(0); 
     }
   }
 

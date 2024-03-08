@@ -485,6 +485,9 @@ const double KeSPK_t_WristResetTime2 = 2;
 /* KeSPK_k_WristResetPwr: Amount of power commanded to reset wrist. */
 const double KeSPK_k_WristResetPwr = -0.2;
 
+/* KeSPK_k_ElevatorResetPwr: Amount of power commanded to reset elevator. */
+const double KeSPK_k_ElevatorResetPwr = -0.1;
+
 /* KaDJ_Amp_k_ElevatorPID_Gx: PID gains for the Elevator control. */
 const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                                0.000001, // kI
