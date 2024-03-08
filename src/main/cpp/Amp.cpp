@@ -38,6 +38,7 @@ double VeAmp_t_WristResetTimer = 0;
 double VeAmp_t_WristResetTimer2 = 0;
 bool VeAmp_b_WristEncoderReset = false;
 bool VeAmp_b_ElevatorEncoderReset = false;
+bool VeAmp_b_ElevatorResetLatch = false;
 
 #ifdef AMP_Test
 bool VeAmp_b_TestState = true; // temporary, we don't want to use the manual overrides
@@ -213,8 +214,9 @@ void Amp_ControlInit()
   VeAmp_t_WristResetTimer = 0.0;
   VeAmp_e_WristResetSt = E_AMP_WristReseted;
   VeAmp_b_WristEncoderReset = false;
-  VeAmp_b_ElevatorEncoderReset = false;
   VeAmp_t_WristResetTimer2 = 0.0;
+  VeAmp_b_ElevatorEncoderReset = false;
+  VeAmp_b_ElevatorResetLatch = false;
 }
 
 /******************************************************************************
@@ -314,13 +316,24 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   double LeAmp_InS_ElevatorRate = 0.0;
   double LeAmp_DegS_WristRate = 0.0;
 
+  /* Here we are attempting to allow the driver to manually reset the elevator back to the init position.  
+     This involves open loop pulling it down along with looking at the switch and also resetting the encoder */
+  if (VsAmp_s_Sensors.b_ElevatorSwitch == true)
+  {
+    VeAmp_b_ElevatorResetLatch = true;
+  }
+  else
+  {
+    if (LeDJ_Amp_e_AttndState != E_DJ_Amp_Init)
+    {
+      VeAmp_b_ElevatorResetLatch = false;
+    }
+  }
+
   if ((VsCONT_s_DriverInput.b_Amp_DrivingPosition == true) && 
       (LeDJ_Amp_e_CmndState == E_DJ_Amp_Init && LeDJ_Amp_e_AttndState == E_DJ_Amp_Init) &&
-      (VsAmp_s_Sensors.b_ElevatorSwitch == false))
+      (VeAmp_b_ElevatorResetLatch == false))
   {
-    /* Here we are attempting to allow the driver to manually reset the elevator back to the init position.  
-       This involves open loop pulling it down along with looking at the switch and also resetting the encoder */
-
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = KeSPK_k_ElevatorResetPwr;
   VsAmp_s_Motors.e_MotorControlType[E_Amp_Elevator] = E_MotorControlPctCmnd;
   VeAmp_b_ElevatorEncoderReset = true;
@@ -335,6 +348,8 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   VsAmp_s_Motors.e_MotorControlType[E_Amp_Elevator] = E_MotorControlPosition;
   VeAmp_b_ElevatorEncoderReset = false;
   }
+
+
 
 
 
@@ -385,16 +400,6 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
   VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPosition;
   }
 
-  // LeAmp_DegS_WristRate = KaDJ_Amp_DegS_WristRate[LeDJ_Amp_e_CmndState][LeDJ_Amp_e_AttndState];
-
-  // VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = RampTo(KaDJ_Amp_Deg_WristAngle[LeDJ_Amp_e_CmndState] / KeENC_k_AMP_WristRatio,
-  //                                                      VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist],
-  //                                                      LeAmp_DegS_WristRate);
-  // VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPosition;
-
-// frc::SmartDashboard::PutNumber("VeAmp_e_CmndState", float(VeAmp_e_CmndState));
-// frc::SmartDashboard::PutNumber("VeAmp_e_AttndState", float(VeAmp_e_AttndState));
-// frc::SmartDashboard::PutNumber("WristAttndState", float(LeDJ_Amp_e_AttndState));
   VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Intake] = KaDJ_Amp_RPM_IntakePower[LeDJ_Amp_e_CmndState];
 }
 
