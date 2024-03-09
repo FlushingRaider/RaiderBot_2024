@@ -17,10 +17,6 @@ extern double VaENC_Deg_WheelAngleRev[E_RobotCornerSz];
 extern double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz];
 extern double VaENC_In_WheelDeltaDistance[E_RobotCornerSz];
 
-#ifdef PDPReading
-extern double VeENC_V_PDPVoltage;
-#endif
-
 void Encoders_Drive_CompBot(units::degree_t                 LeENC_Cnt_EncoderWheelAngleFrontLeftRaw,
                              units::degree_t                LeENC_Cnt_EncoderWheelAngleFrontRightRaw,
                              units::degree_t                LeENC_Cnt_EncoderWheelAngleRearLeftRaw,
@@ -66,4 +62,3 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
                                 rev::SparkMaxRelativeEncoder m_encoderIAssist,
                                 rev::SparkMaxRelativeEncoder m_encoderShooter1,
                                 rev::SparkMaxRelativeEncoder m_encoderShooter2);
-

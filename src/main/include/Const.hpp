@@ -8,8 +8,6 @@
 // Define the desired test mode, if none, leave commented out: SPK_Test, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
 // #define ADAS_DM_Test
 
-#define PDPReading
-
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
 const double C_Deg2Rad = 0.017453292519943295;
