@@ -88,7 +88,7 @@ const double KeENC_In_WheelCircumfrence = 12.566;
 const double K_SD_SteerMotorCurrentLimit = 25;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
-const double K_SD_DriveMotorCurrentLimit = 55;
+const double K_SD_DriveMotorCurrentLimit = 50;
 
 #ifdef Bot2023
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
@@ -104,7 +104,7 @@ const double K_ENC_WheelAngleGx = 1.0;
    reading from the absolute encoder that is indicated in order for the wheel to point straight. */
 const double KeENC_Deg_SD_WheelOffsetAngle[E_RobotCornerSz] = {157.466796, // E_FrontLeft 157.466796
                                                                357.1875,  // E_FrontRight 357.1875
-                                                               172.89453, // E_RearLeft 176.394531
+                                                               134.65, // E_RearLeft 176.394531  172.89453
                                                                258.4863};  // E_RearRight 258.4863
 
 const double K_ENC_WheelAngleGx = -1.0;
@@ -119,13 +119,13 @@ const double K_SD_WheelGx[E_RobotCornerSz] = {-1.0,  // E_FrontLeft
 const double KeDRC_k_SD_MinGain = 0.2;
 
 /* K_SD_MaxGain: Max gain allowed for swerve drive control. */
-const double K_SD_MaxGain = 0.9;
+const double K_SD_MaxGain = 0.62;
 
 /* KeDRC_k_SD_AutonGain: Gain applied to the auton commands coming in for swerve drive. */
 const double KeDRC_k_SD_AutonGain = 0.9;
 
 /* K_SD_TeleWheelMaxSpeed: Max RPM speed of the swerve drive wheel motor.*/
-const double K_SD_TeleWheelMaxSpeed = 6000;
+const double K_SD_TeleWheelMaxSpeed = 4500;
 
 const double K_SD_AutonWheelMaxSpeed = 4500;
 
@@ -719,21 +719,21 @@ const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           3000.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
-const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {20.0,  // Sched - Init
-                                                         20.0,  // Sched - Driving
-                                                         20.0,  // Sched - Intake
-                                                         20.0,  // Sched - PreScore
-                                                         20.0}; // Sched - Score
+const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {40.0,  // Sched - Init
+                                                         1200.0,  // Sched - Driving
+                                                         40.0,  // Sched - Intake
+                                                         40.0,  // Sched - PreScore
+                                                         30.0}; // Sched - Score
 
 /* KaSPK_RPM_Shooter2Db: Sets shooter 2 deadband */
-const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {20.0,  // Sched - Init
-                                                         20.0,  // Sched - Driving
-                                                         20.0,  // Sched - Intake
-                                                         20.0,  // Sched - PreScore
-                                                         20.0}; // Sched - Score
+const double KaSPK_RPM_Shooter2Db[E_SPK_Ctrl_StateSz] = {40.0,  // Sched - Init
+                                                         1200.0,  // Sched - Driving
+                                                         40.0,  // Sched - Intake
+                                                         40.0,  // Sched - PreScore
+                                                         30.0}; // Sched - Score
 
 /* KeSPK_t_StateTimeOut: Sets transition time out. */
-const double KeSPK_t_StateTimeOut = 1.5;
+const double KeSPK_t_StateTimeOut = 1.2;
 
 /* KaSPK_k_TestPower: Test power output for the manipulator controls. ONLY used in test mode!! */
 const double KaSPK_k_TestPower[E_SPK_m_Sz] = { 0.5, // E_SPK_m_Intake

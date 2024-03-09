@@ -738,6 +738,7 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
   case E_ADAS_DM_DJ_Opt2Path3:
   case E_ADAS_DM_DJ_Opt3Path1:
   case E_ADAS_DM_DJ_Opt3Path2:
+  case E_ADAS_DM_DJ_Opt3Path3:
   case E_ADAS_DM_DJ_Opt3Path4:
   case E_ADAS_DM_DJ_Opt3Path5:
   case E_ADAS_DM_DJ_Opt3Path6:

@@ -254,8 +254,8 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
   // frc::SmartDashboard::PutNumber("AMP Intake",            VsAmp_s_Sensors.RPM_AmpRollers);
   frc::SmartDashboard::PutBoolean("SPK Note Detected",    VsSPK_s_Sensors.b_NoteDetected);
   // frc::SmartDashboard::PutNumber("SPK Intake",            VsSPK_s_Sensors.RPM_Intake);
-  // frc::SmartDashboard::PutNumber("SPK Shooter1",          VsSPK_s_Sensors.RPM_Shooter1);
-  // frc::SmartDashboard::PutNumber("SPK Shooter2",          VsSPK_s_Sensors.RPM_Shooter2);
+  frc::SmartDashboard::PutNumber("SPK Shooter1",          VsSPK_s_Sensors.RPM_Shooter1);
+  frc::SmartDashboard::PutNumber("SPK Shooter2",          VsSPK_s_Sensors.RPM_Shooter2);
   // frc::SmartDashboard::PutNumber("CLRM Left",             VsCLMR_s_Sensors.in_Left);
   // frc::SmartDashboard::PutNumber("CLRM Right",            VsCLMR_s_Sensors.in_Right);
   }
