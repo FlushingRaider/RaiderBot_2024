@@ -257,6 +257,12 @@ void Robot::RobotPeriodic()
                           c_joyStick2.GetRawAxis(3));
 #endif
 
+
+  #ifdef PDPReading
+  VeENC_V_PDPVoltage = PDP.GetVoltage();
+  #endif
+
+
   Encoders_Drive_CompBot(m_encoderWheelAngleCAN_FL.GetAbsolutePosition().GetValue(),
                          m_encoderWheelAngleCAN_FR.GetAbsolutePosition().GetValue(),
                          m_encoderWheelAngleCAN_RL.GetAbsolutePosition().GetValue(),

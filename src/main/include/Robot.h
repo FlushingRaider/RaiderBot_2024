@@ -49,8 +49,14 @@ class Robot : public frc::TimedRobot {
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_RR     {KeEnc_i_WheelAngleRR, "rio"};
 
   // PDP - Power Distribution Panel - CAN
+  #ifndef PDPReading
   frc::PowerDistribution                     PDP                   {C_PDP_ID,               frc::PowerDistribution::ModuleType::kRev};
+  #endif
 
+  #ifdef PDPReading
+  frc::PowerDistribution PDP = frc::PowerDistribution(C_PDP_ID, frc::PowerDistribution::ModuleType::kRev);
+  #endif
+  
   // CAN Motor Controllers
   rev::CANSparkMax                           m_frontLeftSteerMotor {frontLeftSteerDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax                           m_frontLeftDriveMotor {frontLeftDriveDeviceID,  rev::CANSparkMax::MotorType::kBrushless};
