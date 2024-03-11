@@ -49,4 +49,5 @@ void DriveControlMain(double              L_JoyStick1Axis1Y,   // swerve control
                       double             *L_Deg_WheelAngleFwd,
                       double             *L_Deg_WheelAngleRev,
                       double             *Le_RPM_SD_WheelSpeedCmnd,
-                      double             *L_k_SD_WheelAngleCmnd);
+                      double             *L_k_SD_WheelAngleCmnd,
+                      double              L_V_PDPVoltage);

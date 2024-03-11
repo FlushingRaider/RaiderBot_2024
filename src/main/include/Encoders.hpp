@@ -17,6 +17,8 @@ extern double VaENC_Deg_WheelAngleRev[E_RobotCornerSz];
 extern double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz];
 extern double VaENC_In_WheelDeltaDistance[E_RobotCornerSz];
 
+extern double VeENC_V_PDPVoltage;
+
 void Encoders_Drive_CompBot(units::degree_t                 LeENC_Cnt_EncoderWheelAngleFrontLeftRaw,
                              units::degree_t                LeENC_Cnt_EncoderWheelAngleFrontRightRaw,
                              units::degree_t                LeENC_Cnt_EncoderWheelAngleRearLeftRaw,

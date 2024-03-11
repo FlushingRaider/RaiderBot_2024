@@ -22,6 +22,8 @@
 #include "Lookup.hpp"
 #include "shuffleboard.hpp"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 double VeDRC_Deg_AutoCorrectDesired;        // Saved robot orientation angle used for auto correct
 double VeDRC_Deg_AutoCorrectionError;       // Error value for auto correction PID control.
 double VeDRC_k_AutoCorrectionIntegral;      // Integral value for auto correction PID control.
@@ -39,6 +41,9 @@ double KV_SD_WheelAnglePID_Gx[E_PID_CalSz];
 double KV_SD_WheelSpeedPID_V2_Gx[E_PID_SparkMaxCalSz];
 double KV_SD_WheelSpeedRampRate = 0;
 double KV_SD_WheelGx[E_RobotCornerSz];
+
+double VeENC_k_ChosenGain = 0;
+bool VeENC_b_LowPowerMode = false;
 
 /******************************************************************************
  * Function:     SwerveDriveMotorConfigsInit
@@ -314,7 +319,8 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
                       double                  *L_Deg_WheelAngleFwd,
                       double                  *L_Deg_WheelAngleRev,
                       double                  *Le_RPM_SD_WheelSpeedCmnd,
-                      double                  *L_k_SD_WheelAngleCmnd)
+                      double                  *L_k_SD_WheelAngleCmnd,
+                      double                   L_V_PDPVoltage)
   {
   double        L_FWD = 0;
   double        L_STR = 0;
@@ -512,9 +518,22 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
     L_k_SD_Gain = LeDRC_k_SpeedGain;
     }
 
-  if (L_k_SD_Gain >= K_SD_MaxGain)
+
+  if(L_V_PDPVoltage < 9.0){
+    VeENC_k_ChosenGain = K_SD_LowPowerMaxGain;
+    VeENC_b_LowPowerMode = true;
+  }
+  else if(L_V_PDPVoltage >= 12.0){
+    VeENC_k_ChosenGain = K_SD_MaxGain;
+    VeENC_b_LowPowerMode = false;
+  }
+
+  frc::SmartDashboard::PutBoolean("Low Power Gain", VeENC_b_LowPowerMode);
+
+
+  if (L_k_SD_Gain >= VeENC_k_ChosenGain)
     {
-    L_k_SD_Gain = K_SD_MaxGain;  // ToDo: Bumped from 0.7 to 0.9 to try and speed up auton.  May need to modify for teleop.
+    L_k_SD_Gain = VeENC_k_ChosenGain;  // ToDo: Bumped from 0.7 to 0.9 to try and speed up auton.  May need to modify for teleop.
     }
 
   if (L_ROBO_e_RobotState == E_Teleop){
@@ -629,4 +648,8 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
       VaDRC_k_WheelAngleIntegral[L_Index] = 0.0;
       }
     }
+
+    frc::SmartDashboard::PutBoolean("low power mode", VeENC_b_LowPowerMode);
+
+
   }

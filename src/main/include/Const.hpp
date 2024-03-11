@@ -17,8 +17,8 @@ const double C_Tau = 6.28318530717958647;
 const double C_ExeTime = 0.02;              // Set to match the the default controller loop time of 20 ms
 const units::second_t C_ExeTime_t = 0.02_s; // Set to match the the default controller loop time of 20 ms
 // CAN Device IDs:
-static const int C_PDP_ID = 23; //NOTE - needs to be changed bc repeat below
-static const int frontLeftSteerDeviceID = 4, frontLeftDriveDeviceID = 3, frontRightSteerDeviceID = 1, frontRightDriveDeviceID = 2;
+static const int C_PDP_ID = 1; //NOTE - needs to be changed bc repeat below
+static const int frontLeftSteerDeviceID = 4, frontLeftDriveDeviceID = 3, frontRightSteerDeviceID = 23, frontRightDriveDeviceID = 2;
 static const int rearLeftSteerDeviceID = 7, rearLeftDriveDeviceID = 8, rearRightSteerDeviceID = 5, rearRightDriveDeviceID = 6;
 
 static const int KeDJ_Amp_i_Intake = 11;
@@ -119,7 +119,9 @@ const double K_SD_WheelGx[E_RobotCornerSz] = {-1.0,  // E_FrontLeft
 const double KeDRC_k_SD_MinGain = 0.2;
 
 /* K_SD_MaxGain: Max gain allowed for swerve drive control. */
-const double K_SD_MaxGain = 0.62;
+const double K_SD_MaxGain = 0.7;
+
+const double K_SD_LowPowerMaxGain = 0.62; //REVIEW - arbitrary gain, review for better tuning
 
 /* KeDRC_k_SD_AutonGain: Gain applied to the auton commands coming in for swerve drive. */
 const double KeDRC_k_SD_AutonGain = 0.9;

@@ -26,6 +26,9 @@ double VaENC_In_WheelDeltaDistance[E_RobotCornerSz]; // Distance wheel moved, lo
 double VaENC_Cnt_WheelDeltaDistanceCurr[E_RobotCornerSz]; // Current distance wheel moved, loop to loop, in Counts
 double VaENC_Cnt_WheelDeltaDistancePrev[E_RobotCornerSz]; // Prev distance wheel moved, loop to loop, in Counts
 
+double VeENC_V_PDPVoltage = 0;
+
+
 /******************************************************************************
  * Function:     EncodersInitSwerve
  * 

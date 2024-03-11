@@ -266,6 +266,9 @@ void Robot::RobotPeriodic()
                          m_encoderRearLeftDrive,
                          m_encoderRearRightDrive);
 
+
+  VeENC_V_PDPVoltage = PDP.GetVoltage();
+
   ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
 
   DtrmnSwerveBotLocation(VeGRY_Rad_GyroYawAngleRad,
@@ -320,7 +323,8 @@ void Robot::RobotPeriodic()
                    &VaENC_Deg_WheelAngleFwd[0],
                    &VaENC_Deg_WheelAngleRev[0],
                    &VaDRC_RPM_WheelSpeedCmnd[0],
-                   &VaDRC_Pct_WheelAngleCmnd[0]);
+                   &VaDRC_Pct_WheelAngleCmnd[0],
+                   VeENC_V_PDPVoltage);
 
   log_swerve_WheelAngleFwd.Append(VaENC_Deg_WheelAngleFwd);
   log_swerve_WheelAngleRev.Append(VaENC_Deg_WheelAngleRev);
