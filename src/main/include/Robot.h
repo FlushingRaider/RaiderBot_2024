@@ -38,10 +38,10 @@ class Robot : public frc::TimedRobot {
   void SimulationPeriodic() override;
   void RobotMotorCommands();
 
-  frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
-  frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
-  frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
-  frc::ShuffleboardTab& BackRight = frc::Shuffleboard::GetTab("Back Right");
+  // frc::ShuffleboardTab& FrontLeft = frc::Shuffleboard::GetTab("Front Left");
+  // frc::ShuffleboardTab& FrontRight = frc::Shuffleboard::GetTab("Front Right");
+  // frc::ShuffleboardTab& BackLeft = frc::Shuffleboard::GetTab("Back Left");
+  // frc::ShuffleboardTab& BackRight = frc::Shuffleboard::GetTab("Back Right");
   
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FL     {KeEnc_i_WheelAngleFL, "rio"};
   ctre::phoenix6::hardware::CANcoder          m_encoderWheelAngleCAN_FR     {KeEnc_i_WheelAngleFR, "rio"};

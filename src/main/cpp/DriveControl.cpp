@@ -89,15 +89,12 @@ void SwerveDriveMotorConfigsInit(rev::SparkMaxPIDController m_frontLeftDrivePID,
   #endif
   
   #ifdef PID_Calibrate
-
   m_frontLeftDrivePID.SetP(shuffleboard_FrontleftPID.P);
   m_frontLeftDrivePID.SetI(shuffleboard_FrontleftPID.I);
   m_frontLeftDrivePID.SetD(shuffleboard_FrontleftPID.D);
   m_frontLeftDrivePID.SetIZone(shuffleboard_FrontleftPID.Iz);
   m_frontLeftDrivePID.SetFF(shuffleboard_FrontleftPID.FF);
   m_frontLeftDrivePID.SetOutputRange(shuffleboard_FrontleftPID.LL, shuffleboard_FrontleftPID.UL);
-
-
   #endif
 
   KV_SD_WheelSpeedRampRate = K_SD_WheelSpeedPID_V2_Gx[E_kMaxAcc];

@@ -196,6 +196,33 @@ struct RobotUserInput
   bool b_SourcePickup = false;
 };
 
+struct TsENC_Power
+{
+  double I_SD_Steer_FR;
+  double I_SD_Drive_FR;
+  double I_SD_Steer_FL;
+  double I_SD_Drive_FL;
+  double I_SD_Steer_RR;
+  double I_SD_Drive_RR;
+  double I_SD_Steer_RL;
+  double I_SD_Drive_RL;
+  double I_CLMR_1;
+  double I_CLMR_2;
+  double I_SPK_Intake;
+  double I_SPK_IAssist;
+  double I_SPK_Shooter1;
+  double I_SPK_Shooter2;
+  double I_Amp_Elevator;
+  double I_Amp_Wrist;
+  double I_Amp_Intake;
+  double I_VIS_Pi;
+  double T_PDH_Temp;
+  double I_PDH_TotalCurrent;
+  double W_PDH_TotalPower;
+  double J_PDH_TotalEnergy;
+  double V_PDH_Voltage;
+};
+
 struct TsAmp_Sensor
 {
   double In_Elevator; //height of elevator in inches

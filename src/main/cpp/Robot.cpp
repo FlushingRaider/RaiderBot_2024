@@ -145,14 +145,14 @@ void Robot::RobotInit()
   m_rearLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
   m_rearRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
 
-  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
   m_Wrist.SetSmartCurrentLimit(KeSPK_I_WristCurrentLimit);
 
@@ -163,8 +163,8 @@ void Robot::RobotInit()
   m_Intake.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Underbelly.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_IAssist.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
   m_WristreverseLimit.EnableLimitSwitch(false);
 
@@ -267,6 +267,32 @@ void Robot::RobotPeriodic()
                          m_encoderRearRightDrive);
 
   ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
+
+  MeasureVoltageCurrentPower(PDP.GetCurrent(0),
+                             PDP.GetCurrent(1),
+                             PDP.GetCurrent(2),
+                             PDP.GetCurrent(3),
+                             PDP.GetCurrent(4),
+                             PDP.GetCurrent(5),
+                             PDP.GetCurrent(6),
+                             PDP.GetCurrent(7),
+                             PDP.GetCurrent(8),
+                             PDP.GetCurrent(9),
+                             PDP.GetCurrent(10),
+                             PDP.GetCurrent(11),
+                             PDP.GetCurrent(12),
+                             PDP.GetCurrent(13),
+                             PDP.GetCurrent(14),
+                             PDP.GetCurrent(15),
+                             PDP.GetCurrent(16),
+                             PDP.GetCurrent(17),
+                             PDP.GetCurrent(18),
+                             PDP.GetCurrent(19),
+                             PDP.GetTemperature(),
+                             PDP.GetTotalCurrent(),
+                             PDP.GetTotalPower(),
+                             PDP.GetTotalEnergy(),
+                             PDP.GetVoltage());
 
   DtrmnSwerveBotLocation(VeGRY_Rad_GyroYawAngleRad,
                          &VaENC_Rad_WheelAngleFwd[0],

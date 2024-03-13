@@ -7,14 +7,15 @@
   Converted to 2024 code: January 17, 2024
  */
 
-#include "Amp.hpp"
 #include "rev/CANSparkMax.h"
+#include <frc/PowerDistribution.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 #include "Const.hpp"
 #include "DataLogger.hpp"
-#include "Amp.hpp"
 #include "SpeakerCntrl.hpp"
+#include "Amp.hpp"
 #include "Climber.hpp"
-#include <frc/smartdashboard/SmartDashboard.h>
+
 
 double VaENC_Deg_WheelAngleConverted[E_RobotCornerSz]; // This is the wheel angle coming from the angle Encoder and processed to only be from 0 - 180
 double VaENC_Deg_WheelAngleFwd[E_RobotCornerSz]; // This is the wheel angle as if the wheel were going to be driven in a forward direction, in degrees
@@ -25,6 +26,8 @@ double VaENC_InS_WheelVelocity[E_RobotCornerSz]; // Velocity of drive wheels, in
 double VaENC_In_WheelDeltaDistance[E_RobotCornerSz]; // Distance wheel moved, loop to loop, in inches
 double VaENC_Cnt_WheelDeltaDistanceCurr[E_RobotCornerSz]; // Current distance wheel moved, loop to loop, in Counts
 double VaENC_Cnt_WheelDeltaDistancePrev[E_RobotCornerSz]; // Prev distance wheel moved, loop to loop, in Counts
+
+TsENC_Power VsENC_RobotCurrentVoltPwr;
 
 /******************************************************************************
  * Function:     EncodersInitSwerve
@@ -258,4 +261,87 @@ void Encoders_AMP_SPK_CLMR_Run( bool                         LeENC_b_AMP_IntakeL
   frc::SmartDashboard::PutNumber("SPK Shooter2",          VsSPK_s_Sensors.RPM_Shooter2);
   // frc::SmartDashboard::PutNumber("CLRM Left",             VsCLMR_s_Sensors.in_Left);
   // frc::SmartDashboard::PutNumber("CLRM Right",            VsCLMR_s_Sensors.in_Right);
+  }
+
+
+/******************************************************************************
+ * Function:     Encoders_AMP_SPK_CLMR_Run
+ *
+ * Description:  Read the encoders/sensors from the amp, speaker and climber
+ ******************************************************************************/
+// void MeasureVoltageCurrentPower(frc::PowerDistribution PDP)
+void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
+                                double LeENC_I_PDH_Ch1,
+                                double LeENC_I_PDH_Ch2,
+                                double LeENC_I_PDH_Ch3,
+                                double LeENC_I_PDH_Ch4,
+                                double LeENC_I_PDH_Ch5,
+                                double LeENC_I_PDH_Ch6,
+                                double LeENC_I_PDH_Ch7,
+                                double LeENC_I_PDH_Ch8,
+                                double LeENC_I_PDH_Ch9,
+                                double LeENC_I_PDH_Ch10,
+                                double LeENC_I_PDH_Ch11,
+                                double LeENC_I_PDH_Ch12,
+                                double LeENC_I_PDH_Ch13,
+                                double LeENC_I_PDH_Ch14,
+                                double LeENC_I_PDH_Ch15,
+                                double LeENC_I_PDH_Ch16,
+                                double LeENC_I_PDH_Ch17,
+                                double LeENC_I_PDH_Ch18,
+                                double LeENC_I_PDH_Ch19,
+                                double LeENC_T_PDH_Temp,
+                                double LeENC_I_PDH_TotalCurrent,
+                                double LeENC_W_PDH_TotalPower,
+                                double LeENC_J_PDH_TotalEnergy,
+                                double LeENC_V_PDH_Voltage)
+  {
+    VsENC_RobotCurrentVoltPwr.I_SD_Steer_FR      = LeENC_I_PDH_Ch1;
+    VsENC_RobotCurrentVoltPwr.I_SD_Drive_FR      = LeENC_I_PDH_Ch0;
+    VsENC_RobotCurrentVoltPwr.I_SD_Steer_FL      = LeENC_I_PDH_Ch18;
+    VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL      = LeENC_I_PDH_Ch8;
+    VsENC_RobotCurrentVoltPwr.I_SD_Steer_RR      = LeENC_I_PDH_Ch9;
+    VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR      = LeENC_I_PDH_Ch19;
+    VsENC_RobotCurrentVoltPwr.I_SD_Steer_RL      = LeENC_I_PDH_Ch10;
+    VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL      = LeENC_I_PDH_Ch11;
+    VsENC_RobotCurrentVoltPwr.I_CLMR_1           = LeENC_I_PDH_Ch7;
+    VsENC_RobotCurrentVoltPwr.I_CLMR_2           = LeENC_I_PDH_Ch6;
+    VsENC_RobotCurrentVoltPwr.I_SPK_Intake       = LeENC_I_PDH_Ch12;
+    VsENC_RobotCurrentVoltPwr.I_SPK_IAssist      = LeENC_I_PDH_Ch3;  // Note: This needs verification
+    VsENC_RobotCurrentVoltPwr.I_SPK_Shooter1     = LeENC_I_PDH_Ch13;
+    VsENC_RobotCurrentVoltPwr.I_SPK_Shooter2     = LeENC_I_PDH_Ch14;
+    VsENC_RobotCurrentVoltPwr.I_Amp_Elevator     = LeENC_I_PDH_Ch17;
+    VsENC_RobotCurrentVoltPwr.I_Amp_Wrist        = LeENC_I_PDH_Ch2;
+    VsENC_RobotCurrentVoltPwr.I_Amp_Intake       = LeENC_I_PDH_Ch16;
+    VsENC_RobotCurrentVoltPwr.I_VIS_Pi           = LeENC_I_PDH_Ch4;  // Note: This needs verification
+
+    VsENC_RobotCurrentVoltPwr.T_PDH_Temp         = LeENC_T_PDH_Temp;
+    VsENC_RobotCurrentVoltPwr.I_PDH_TotalCurrent = LeENC_I_PDH_TotalCurrent;
+    VsENC_RobotCurrentVoltPwr.W_PDH_TotalPower   = LeENC_W_PDH_TotalPower;
+    VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy  = LeENC_J_PDH_TotalEnergy;
+    VsENC_RobotCurrentVoltPwr.V_PDH_Voltage      = LeENC_V_PDH_Voltage;
+
+    frc::SmartDashboard::PutNumber("I_SD_Steer_FR",       VsENC_RobotCurrentVoltPwr.I_SD_Steer_FR);
+    frc::SmartDashboard::PutNumber("I_SD_Drive_FR",       VsENC_RobotCurrentVoltPwr.I_SD_Drive_FR);
+    frc::SmartDashboard::PutNumber("I_SD_Steer_FL",       VsENC_RobotCurrentVoltPwr.I_SD_Steer_FL);
+    frc::SmartDashboard::PutNumber("I_SD_Drive_FL",       VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL);
+    frc::SmartDashboard::PutNumber("I_SD_Steer_RR",       VsENC_RobotCurrentVoltPwr.I_SD_Steer_RR);
+    frc::SmartDashboard::PutNumber("I_SD_Drive_RR",       VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR);
+    frc::SmartDashboard::PutNumber("I_SD_Steer_RL",       VsENC_RobotCurrentVoltPwr.I_SD_Steer_RL);
+    frc::SmartDashboard::PutNumber("I_SD_Drive_RL",       VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL);
+    frc::SmartDashboard::PutNumber("I_CLMR_1",            VsENC_RobotCurrentVoltPwr.I_CLMR_1);
+    frc::SmartDashboard::PutNumber("I_CLMR_2",            VsENC_RobotCurrentVoltPwr.I_CLMR_2);
+    frc::SmartDashboard::PutNumber("I_SPK_Intake",        VsENC_RobotCurrentVoltPwr.I_SPK_Intake);
+    frc::SmartDashboard::PutNumber("I_SPK_IAssist",       VsENC_RobotCurrentVoltPwr.I_SPK_IAssist);
+    frc::SmartDashboard::PutNumber("I_SPK_Shooter1",      VsENC_RobotCurrentVoltPwr.I_SPK_Shooter1);
+    frc::SmartDashboard::PutNumber("I_SPK_Shooter2",      VsENC_RobotCurrentVoltPwr.I_SPK_Shooter2);
+    frc::SmartDashboard::PutNumber("I_Amp_Elevator",      VsENC_RobotCurrentVoltPwr.I_Amp_Elevator);
+    frc::SmartDashboard::PutNumber("I_Amp_Wrist",         VsENC_RobotCurrentVoltPwr.I_Amp_Wrist);
+    frc::SmartDashboard::PutNumber("I_Amp_Intake",        VsENC_RobotCurrentVoltPwr.I_Amp_Intake);
+    frc::SmartDashboard::PutNumber("I_VIS_Pi",            VsENC_RobotCurrentVoltPwr.I_VIS_Pi);
+    frc::SmartDashboard::PutNumber("T_PDH_Temp",          VsENC_RobotCurrentVoltPwr.T_PDH_Temp);
+    frc::SmartDashboard::PutNumber("I_PDH_TotalCurrent",  VsENC_RobotCurrentVoltPwr.I_PDH_TotalCurrent);
+    frc::SmartDashboard::PutNumber("W_PDH_TotalPower",    VsENC_RobotCurrentVoltPwr.W_PDH_TotalPower);
+    frc::SmartDashboard::PutNumber("J_PDH_TotalEnergy",   VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy);
+    frc::SmartDashboard::PutNumber("V_PDH_Voltage",       VsENC_RobotCurrentVoltPwr.V_PDH_Voltage);
   }
