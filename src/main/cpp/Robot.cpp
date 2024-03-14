@@ -145,14 +145,14 @@ void Robot::RobotInit()
   m_rearLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
   m_rearRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
 
-  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
   m_Wrist.SetSmartCurrentLimit(KeSPK_I_WristCurrentLimit);
 
@@ -162,9 +162,9 @@ void Robot::RobotInit()
   m_Wrist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Intake.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Underbelly.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_IAssist.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
-  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_IAssist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake); // kCoast
+  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 
   m_WristreverseLimit.EnableLimitSwitch(false);
 
@@ -288,6 +288,8 @@ void Robot::RobotPeriodic()
                              PDP.GetCurrent(17),
                              PDP.GetCurrent(18),
                              PDP.GetCurrent(19),
+                             PDP.GetCurrent(21),
+                             PDP.GetCurrent(22),
                              PDP.GetTemperature(),
                              PDP.GetTotalCurrent(),
                              PDP.GetTotalPower(),
@@ -438,6 +440,13 @@ void Robot::AutonomousInit()
   #endif
 
   VeROBO_b_TestState = false;
+
+
+  CurrentLatchReset();
+
+
+
+
 }
 
 
@@ -466,6 +475,8 @@ void Robot::TeleopInit()
   ADAS_Main_Reset();
   DriveControlInit();
   OdometryInit();
+  CurrentLatchReset();
+
 #ifdef Bot2024
   if (VeROBO_b_TestState == true)
   {

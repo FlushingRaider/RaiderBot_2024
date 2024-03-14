@@ -83,8 +83,12 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
                                 double LeENC_I_PDH_Ch17,
                                 double LeENC_I_PDH_Ch18,
                                 double LeENC_I_PDH_Ch19,
+                                double LeENC_I_PDH_Ch21,
+                                double LeENC_I_PDH_Ch22,
                                 double LeENC_T_PDH_Temp,
                                 double LeENC_I_PDH_TotalCurrent,
                                 double LeENC_W_PDH_TotalPower,
                                 double LeENC_J_PDH_TotalEnergy,
                                 double LeENC_V_PDH_Voltage);
+
+void CurrentLatchReset();

@@ -198,29 +198,58 @@ struct RobotUserInput
 
 struct TsENC_Power
 {
-  double I_SD_Steer_FR;
-  double I_SD_Drive_FR;
-  double I_SD_Steer_FL;
-  double I_SD_Drive_FL;
-  double I_SD_Steer_RR;
-  double I_SD_Drive_RR;
-  double I_SD_Steer_RL;
-  double I_SD_Drive_RL;
-  double I_CLMR_1;
-  double I_CLMR_2;
-  double I_SPK_Intake;
-  double I_SPK_IAssist;
-  double I_SPK_Shooter1;
-  double I_SPK_Shooter2;
-  double I_Amp_Elevator;
-  double I_Amp_Wrist;
-  double I_Amp_Intake;
-  double I_VIS_Pi;
-  double T_PDH_Temp;
-  double I_PDH_TotalCurrent;
-  double W_PDH_TotalPower;
-  double J_PDH_TotalEnergy;
-  double V_PDH_Voltage;
+  double I_SD_Steer_FR = 0.0;
+  double I_SD_Drive_FR = 0.0;
+  double I_SD_Steer_FL = 0.0;
+  double I_SD_Drive_FL = 0.0;
+  double I_SD_Steer_RR = 0.0;
+  double I_SD_Drive_RR = 0.0;
+  double I_SD_Steer_RL = 0.0;
+  double I_SD_Drive_RL = 0.0;
+  double I_CLMR_1 = 0.0;
+  double I_CLMR_2 = 0.0;
+  double I_SPK_Intake = 0.0;
+  double I_SPK_IAssist = 0.0;
+  double I_SPK_Shooter1 = 0.0;
+  double I_SPK_Shooter2 = 0.0;
+  double I_Amp_Elevator = 0.0;
+  double I_Amp_Wrist = 0.0;
+  double I_Amp_Intake = 0.0;
+  double I_VIS_Pi = 0.0;
+  double T_PDH_Temp = 0.0;
+  double I_PDH_TotalCurrent = 0.0;
+  double W_PDH_TotalPower = 0.0;
+  double J_PDH_TotalEnergy = 0.0;
+  double V_PDH_Voltage = 0.0;
+  double I_SD_CanCoders = 0.0;
+};
+
+struct TsENC_PowerAboveThresh
+{
+  bool b_SD_Steer_FR = false;
+  bool b_SD_Drive_FR = false;
+  bool b_SD_Steer_FL = false;
+  bool b_SD_Drive_FL = false;
+  bool b_SD_Steer_RR = false;
+  bool b_SD_Drive_RR = false;
+  bool b_SD_Steer_RL = false;
+  bool b_SD_Drive_RL = false;
+  bool b_CLMR_1 = false;
+  bool b_CLMR_2 = false;
+  bool b_SPK_Intake = false;
+  bool b_SPK_IAssist = false;
+  bool b_SPK_Shooter1 = false;
+  bool b_SPK_Shooter2 = false;
+  bool b_Amp_Elevator = false;
+  bool b_Amp_Wrist = false;
+  bool b_Amp_Intake = false;
+  bool b_VIS_Pi = false;
+  bool b_PDH_Temp = false;
+  bool b_PDH_TotalCurrent = false;
+  bool b_PDH_TotalPower = false;
+  bool b_PDH_TotalEnergy = false;
+  bool b_PDH_Voltage = false;
+  bool b_SD_CanCoders = false;
 };
 
 struct TsAmp_Sensor
