@@ -27,8 +27,10 @@ double VaENC_In_WheelDeltaDistance[E_RobotCornerSz]; // Distance wheel moved, lo
 double VaENC_Cnt_WheelDeltaDistanceCurr[E_RobotCornerSz]; // Current distance wheel moved, loop to loop, in Counts
 double VaENC_Cnt_WheelDeltaDistancePrev[E_RobotCornerSz]; // Prev distance wheel moved, loop to loop, in Counts
 TsENC_PowerAboveThresh   VaENC_b_PowerAboveThreshold;
+TsENC_MaxOutput          VaENC_MaxOutputValue;
 
 TsENC_Power VsENC_RobotCurrentVoltPwr;
+
 
 /******************************************************************************
  * Function:     EncodersInitSwerve
@@ -104,7 +106,7 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   // frc::SmartDashboard::PutNumber("WS RL", m_encoderRearLeftDrive.GetVelocity());
   // frc::SmartDashboard::PutNumber("WS RR", m_encoderRearRightDrive.GetVelocity());
 
-    log_encoders_wheelangleconverted.Append(VaENC_Deg_WheelAngleConverted);
+   // log_encoders_wheelangleconverted.Append(VaENC_Deg_WheelAngleConverted);
     // frc::SmartDashboard::PutNumberArray("encoders_wheelAngleConverted", VaENC_Deg_WheelAngleConverted);
 
   
@@ -158,7 +160,7 @@ void Encoders_Drive_CompBot(units::degree_t                       LeENC_Cnt_Enco
   double LTest_distance = ((((VaENC_Cnt_WheelDeltaDistanceCurr[E_FrontLeft])/  KeENC_k_ReductionRatio)) * KeENC_In_WheelCircumfrence );
     // frc::SmartDashboard::PutNumber("Wheeel_Distance_FL", LTest_distance);
 
-    log_encoders_wheelVelocity.Append(VaENC_InS_WheelVelocity);
+   // log_encoders_wheelVelocity.Append(VaENC_InS_WheelVelocity);
     // frc::SmartDashboard::PutNumberArray("encoders_wheelVelocity", VaENC_InS_WheelVelocity);
   }
 
@@ -349,28 +351,28 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
     frc::SmartDashboard::PutNumber("J_PDH_TotalEnergy",   VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy);
     frc::SmartDashboard::PutNumber("V_PDH_Voltage",       VsENC_RobotCurrentVoltPwr.V_PDH_Voltage);
 
-    frc::SmartDashboard::PutNumber("I_CH0", LeENC_I_PDH_Ch0);
-    frc::SmartDashboard::PutNumber("I_CH1", LeENC_I_PDH_Ch1);
-    frc::SmartDashboard::PutNumber("I_CH2", LeENC_I_PDH_Ch2);
-    frc::SmartDashboard::PutNumber("I_CH3", LeENC_I_PDH_Ch3);
-    frc::SmartDashboard::PutNumber("I_CH4", LeENC_I_PDH_Ch4);
-    frc::SmartDashboard::PutNumber("I_CH5", LeENC_I_PDH_Ch5);
-    frc::SmartDashboard::PutNumber("I_CH6", LeENC_I_PDH_Ch6);
-    frc::SmartDashboard::PutNumber("I_CH7", LeENC_I_PDH_Ch7);
-    frc::SmartDashboard::PutNumber("I_CH8", LeENC_I_PDH_Ch8);
-    frc::SmartDashboard::PutNumber("I_CH9", LeENC_I_PDH_Ch9);
-    frc::SmartDashboard::PutNumber("I_CH10", LeENC_I_PDH_Ch10);
-    frc::SmartDashboard::PutNumber("I_CH11", LeENC_I_PDH_Ch11);
-    frc::SmartDashboard::PutNumber("I_CH12", LeENC_I_PDH_Ch12);
-    frc::SmartDashboard::PutNumber("I_CH13", LeENC_I_PDH_Ch13);
-    frc::SmartDashboard::PutNumber("I_CH14", LeENC_I_PDH_Ch14);
-    frc::SmartDashboard::PutNumber("I_CH15", LeENC_I_PDH_Ch15);
-    frc::SmartDashboard::PutNumber("I_CH16", LeENC_I_PDH_Ch16);
-    frc::SmartDashboard::PutNumber("I_CH17", LeENC_I_PDH_Ch17);
-    frc::SmartDashboard::PutNumber("I_CH18", LeENC_I_PDH_Ch18);
-    frc::SmartDashboard::PutNumber("I_CH19", LeENC_I_PDH_Ch19);
-    frc::SmartDashboard::PutNumber("I_CH21", LeENC_I_PDH_Ch21);
-    frc::SmartDashboard::PutNumber("I_CH22", LeENC_I_PDH_Ch22);
+    // frc::SmartDashboard::PutNumber("I_CH0", LeENC_I_PDH_Ch0);
+    // frc::SmartDashboard::PutNumber("I_CH1", LeENC_I_PDH_Ch1);
+    // frc::SmartDashboard::PutNumber("I_CH2", LeENC_I_PDH_Ch2);
+    // frc::SmartDashboard::PutNumber("I_CH3", LeENC_I_PDH_Ch3);
+    // frc::SmartDashboard::PutNumber("I_CH4", LeENC_I_PDH_Ch4);
+    // frc::SmartDashboard::PutNumber("I_CH5", LeENC_I_PDH_Ch5);
+    // frc::SmartDashboard::PutNumber("I_CH6", LeENC_I_PDH_Ch6);
+    // frc::SmartDashboard::PutNumber("I_CH7", LeENC_I_PDH_Ch7);
+    // frc::SmartDashboard::PutNumber("I_CH8", LeENC_I_PDH_Ch8);
+    // frc::SmartDashboard::PutNumber("I_CH9", LeENC_I_PDH_Ch9);
+    // frc::SmartDashboard::PutNumber("I_CH10", LeENC_I_PDH_Ch10);
+    // frc::SmartDashboard::PutNumber("I_CH11", LeENC_I_PDH_Ch11);
+    // frc::SmartDashboard::PutNumber("I_CH12", LeENC_I_PDH_Ch12);
+    // frc::SmartDashboard::PutNumber("I_CH13", LeENC_I_PDH_Ch13);
+    // frc::SmartDashboard::PutNumber("I_CH14", LeENC_I_PDH_Ch14);
+    // frc::SmartDashboard::PutNumber("I_CH15", LeENC_I_PDH_Ch15);
+    // frc::SmartDashboard::PutNumber("I_CH16", LeENC_I_PDH_Ch16);
+    // frc::SmartDashboard::PutNumber("I_CH17", LeENC_I_PDH_Ch17);
+    // frc::SmartDashboard::PutNumber("I_CH18", LeENC_I_PDH_Ch18);
+    // frc::SmartDashboard::PutNumber("I_CH19", LeENC_I_PDH_Ch19);
+    // frc::SmartDashboard::PutNumber("I_CH21", LeENC_I_PDH_Ch21);
+    // frc::SmartDashboard::PutNumber("I_CH22", LeENC_I_PDH_Ch22);
 
     if (VsENC_RobotCurrentVoltPwr.I_SD_Steer_FR >= K_SD_SteerMotorCurrentLimit) {VaENC_b_PowerAboveThreshold.b_SD_Steer_FR = true;}
     if (VsENC_RobotCurrentVoltPwr.I_SD_Steer_FL >= K_SD_SteerMotorCurrentLimit) {VaENC_b_PowerAboveThreshold.b_SD_Steer_FL = true;}
@@ -382,6 +384,31 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
     if (VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR >= K_SD_DriveMotorCurrentLimit) {VaENC_b_PowerAboveThreshold.b_SD_Drive_RR = true;}
     if (VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL >= K_SD_DriveMotorCurrentLimit) {VaENC_b_PowerAboveThreshold.b_SD_Drive_RL = true;}
 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Steer_FR > VaENC_MaxOutputValue.I_SD_Steer_FR) {VaENC_MaxOutputValue.I_SD_Steer_FR = VsENC_RobotCurrentVoltPwr.I_SD_Steer_FR;}
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Drive_FR > VaENC_MaxOutputValue.I_SD_Drive_FR) {VaENC_MaxOutputValue.I_SD_Drive_FR = VsENC_RobotCurrentVoltPwr.I_SD_Drive_FR;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Steer_FL > VaENC_MaxOutputValue.I_SD_Steer_FL) {VaENC_MaxOutputValue.I_SD_Steer_FL = VsENC_RobotCurrentVoltPwr.I_SD_Steer_FL;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL > VaENC_MaxOutputValue.I_SD_Drive_FL) {VaENC_MaxOutputValue.I_SD_Drive_FL = VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Steer_RR > VaENC_MaxOutputValue.I_SD_Steer_RR) {VaENC_MaxOutputValue.I_SD_Steer_RR = VsENC_RobotCurrentVoltPwr.I_SD_Steer_RR;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR > VaENC_MaxOutputValue.I_SD_Drive_RR) {VaENC_MaxOutputValue.I_SD_Drive_RR = VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Steer_RL > VaENC_MaxOutputValue.I_SD_Steer_RL) {VaENC_MaxOutputValue.I_SD_Steer_RL = VsENC_RobotCurrentVoltPwr.I_SD_Steer_RL;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL > VaENC_MaxOutputValue.I_SD_Drive_RL) {VaENC_MaxOutputValue.I_SD_Drive_RL = VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL;} 
+    if (VsENC_RobotCurrentVoltPwr.I_CLMR_1 > VaENC_MaxOutputValue.I_CLMR_1) {VaENC_MaxOutputValue.I_CLMR_1 = VsENC_RobotCurrentVoltPwr.I_CLMR_1;} 
+    if (VsENC_RobotCurrentVoltPwr.I_CLMR_2 > VaENC_MaxOutputValue.I_CLMR_2) {VaENC_MaxOutputValue.I_CLMR_2 = VsENC_RobotCurrentVoltPwr.I_CLMR_2;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SPK_Intake > VaENC_MaxOutputValue.I_SPK_Intake) {VaENC_MaxOutputValue.I_SPK_Intake = VsENC_RobotCurrentVoltPwr.I_SPK_Intake;}
+    if (VsENC_RobotCurrentVoltPwr.I_SPK_IAssist > VaENC_MaxOutputValue.I_SPK_IAssist) {VaENC_MaxOutputValue.I_SPK_IAssist = VsENC_RobotCurrentVoltPwr.I_SPK_IAssist;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SPK_Shooter1 > VaENC_MaxOutputValue.I_SPK_Shooter1) {VaENC_MaxOutputValue.I_SPK_Shooter1 = VsENC_RobotCurrentVoltPwr.I_SPK_Shooter1;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SPK_Shooter2 > VaENC_MaxOutputValue.I_SPK_Shooter2) {VaENC_MaxOutputValue.I_SPK_Shooter2 = VsENC_RobotCurrentVoltPwr.I_SPK_Shooter2;} 
+    if (VsENC_RobotCurrentVoltPwr.I_Amp_Elevator > VaENC_MaxOutputValue.I_Amp_Elevator) {VaENC_MaxOutputValue.I_Amp_Elevator = VsENC_RobotCurrentVoltPwr.I_Amp_Elevator;} 
+    if (VsENC_RobotCurrentVoltPwr.I_Amp_Wrist > VaENC_MaxOutputValue.I_Amp_Wrist) {VaENC_MaxOutputValue.I_Amp_Wrist = VsENC_RobotCurrentVoltPwr.I_Amp_Wrist;} 
+    if (VsENC_RobotCurrentVoltPwr.I_Amp_Intake > VaENC_MaxOutputValue.I_Amp_Intake) {VaENC_MaxOutputValue.I_Amp_Intake = VsENC_RobotCurrentVoltPwr.I_Amp_Intake;} 
+    if (VsENC_RobotCurrentVoltPwr.I_VIS_Pi > VaENC_MaxOutputValue.I_VIS_Pi) {VaENC_MaxOutputValue.I_VIS_Pi = VsENC_RobotCurrentVoltPwr.I_VIS_Pi;} 
+    if (VsENC_RobotCurrentVoltPwr.T_PDH_Temp > VaENC_MaxOutputValue.T_PDH_Temp) {VaENC_MaxOutputValue.T_PDH_Temp = VsENC_RobotCurrentVoltPwr.T_PDH_Temp;} 
+    if (VsENC_RobotCurrentVoltPwr.I_PDH_TotalCurrent > VaENC_MaxOutputValue.I_PDH_TotalCurrent) {VaENC_MaxOutputValue.I_PDH_TotalCurrent = VsENC_RobotCurrentVoltPwr.I_PDH_TotalCurrent;} 
+    if (VsENC_RobotCurrentVoltPwr.W_PDH_TotalPower > VaENC_MaxOutputValue.W_PDH_TotalPower) {VaENC_MaxOutputValue.W_PDH_TotalPower = VsENC_RobotCurrentVoltPwr.W_PDH_TotalPower;} 
+    if (VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy > VaENC_MaxOutputValue.J_PDH_TotalEnergy) {VaENC_MaxOutputValue.J_PDH_TotalEnergy = VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy;} 
+    if (VsENC_RobotCurrentVoltPwr.V_PDH_Voltage < VaENC_MaxOutputValue.V_PDH_Voltage) {VaENC_MaxOutputValue.V_PDH_Voltage = VsENC_RobotCurrentVoltPwr.V_PDH_Voltage;} 
+    if (VsENC_RobotCurrentVoltPwr.I_SD_CanCoders > VaENC_MaxOutputValue.I_SD_CanCoders) {VaENC_MaxOutputValue.I_SD_CanCoders = VsENC_RobotCurrentVoltPwr.I_SD_CanCoders;} 
+  
 
     frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_FR", VaENC_b_PowerAboveThreshold.b_SD_Drive_FR);
     frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_FL", VaENC_b_PowerAboveThreshold.b_SD_Drive_FL);
@@ -392,6 +419,32 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
     frc::SmartDashboard::PutNumber("VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL", VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL);
     frc::SmartDashboard::PutNumber("VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR", VsENC_RobotCurrentVoltPwr.I_SD_Drive_RR);
     frc::SmartDashboard::PutNumber("VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL", VsENC_RobotCurrentVoltPwr.I_SD_Drive_RL);
+
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Steer_FR" ,VaENC_MaxOutputValue.I_SD_Steer_FR);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Drive_FR" ,VaENC_MaxOutputValue.I_SD_Drive_FR);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Steer_FL" ,VaENC_MaxOutputValue.I_SD_Steer_FL);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Drive_FL" ,VaENC_MaxOutputValue.I_SD_Drive_FL);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Steer_RR" ,VaENC_MaxOutputValue.I_SD_Steer_RR);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Drive_RR" ,VaENC_MaxOutputValue.I_SD_Drive_RR);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Steer_RL" ,VaENC_MaxOutputValue.I_SD_Steer_RL);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_Drive_RL" ,VaENC_MaxOutputValue.I_SD_Drive_RL);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_CLMR_1"      ,VaENC_MaxOutputValue.I_CLMR_1);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_CLMR_2"      ,VaENC_MaxOutputValue.I_CLMR_2);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SPK_Intake"  ,VaENC_MaxOutputValue.I_SPK_Intake );
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SPK_IAssist" ,VaENC_MaxOutputValue.I_SPK_IAssist);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SPK_Shooter1",VaENC_MaxOutputValue.I_SPK_Shooter1);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SPK_Shooter2",VaENC_MaxOutputValue.I_SPK_Shooter2);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_Amp_Elevator",VaENC_MaxOutputValue.I_Amp_Elevator);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_Amp_Wrist"   ,VaENC_MaxOutputValue.I_Amp_Wrist );
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_Amp_Intake"  ,VaENC_MaxOutputValue.I_Amp_Intake);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_VIS_Pi"      ,VaENC_MaxOutputValue.I_VIS_Pi);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.T_PDH_Temp"    ,VaENC_MaxOutputValue.T_PDH_Temp );
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_PDH_TotalCurrent",VaENC_MaxOutputValue.I_PDH_TotalCurrent);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.W_PDH_TotalPower"  ,VaENC_MaxOutputValue.W_PDH_TotalPower );
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.J_PDH_TotalEnergy" ,VaENC_MaxOutputValue.J_PDH_TotalEnergy);
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.V_PDH_Voltage"     ,VaENC_MaxOutputValue.V_PDH_Voltage );
+    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_CanCoders"    ,VaENC_MaxOutputValue.I_SD_CanCoders);
+
 
 
 
@@ -422,4 +475,30 @@ void CurrentLatchReset(){
   VaENC_b_PowerAboveThreshold.b_PDH_TotalEnergy = false;
   VaENC_b_PowerAboveThreshold.b_PDH_Voltage = false;
   VaENC_b_PowerAboveThreshold.b_SD_CanCoders = false;
+
+
+  VaENC_MaxOutputValue.I_SD_Steer_FR = 0.0;
+  VaENC_MaxOutputValue.I_SD_Drive_FR = 0.0;
+  VaENC_MaxOutputValue.I_SD_Steer_FL = 0.0;
+  VaENC_MaxOutputValue.I_SD_Drive_FL = 0.0;
+  VaENC_MaxOutputValue.I_SD_Steer_RR = 0.0;
+  VaENC_MaxOutputValue.I_SD_Drive_RR = 0.0;
+  VaENC_MaxOutputValue.I_SD_Steer_RL = 0.0;
+  VaENC_MaxOutputValue.I_SD_Drive_RL = 0.0;
+  VaENC_MaxOutputValue.I_CLMR_1 = 0.0;
+  VaENC_MaxOutputValue.I_CLMR_2 = 0.0;
+  VaENC_MaxOutputValue.I_SPK_Intake = 0.0;
+  VaENC_MaxOutputValue.I_SPK_IAssist = 0.0;
+  VaENC_MaxOutputValue.I_SPK_Shooter1 = 0.0;
+  VaENC_MaxOutputValue.I_SPK_Shooter2 = 0.0;
+  VaENC_MaxOutputValue.I_Amp_Elevator = 0.0;
+  VaENC_MaxOutputValue.I_Amp_Wrist = 0.0;
+  VaENC_MaxOutputValue.I_Amp_Intake = 0.0;
+  VaENC_MaxOutputValue.I_VIS_Pi = 0.0;
+  VaENC_MaxOutputValue.T_PDH_Temp = 0.0;
+  VaENC_MaxOutputValue.I_PDH_TotalCurrent = 0.0;
+  VaENC_MaxOutputValue.W_PDH_TotalPower = 0.0;
+  VaENC_MaxOutputValue.J_PDH_TotalEnergy = 0.0;
+  VaENC_MaxOutputValue.V_PDH_Voltage = 0.0;
+  VaENC_MaxOutputValue.I_SD_CanCoders = 0.0;
   }

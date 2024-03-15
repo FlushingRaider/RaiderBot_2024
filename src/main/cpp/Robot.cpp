@@ -111,7 +111,7 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
-  DataLogRobotInit();
+  //DataLogRobotInit();
 
   // Default to a length of 60, start empty output
   // Length is expensive to set, so only set it once, then just update data
@@ -350,10 +350,10 @@ void Robot::RobotPeriodic()
                    &VaDRC_RPM_WheelSpeedCmnd[0],
                    &VaDRC_Pct_WheelAngleCmnd[0]);
 
-  log_swerve_WheelAngleFwd.Append(VaENC_Deg_WheelAngleFwd);
-  log_swerve_WheelAngleRev.Append(VaENC_Deg_WheelAngleRev);
-  log_swerve_WheelSpeedCmnd.Append(VaDRC_RPM_WheelSpeedCmnd);
-  log_swerve_WheelAngleCmnd.Append(VaDRC_Pct_WheelAngleCmnd);
+  // log_swerve_WheelAngleFwd.Append(VaENC_Deg_WheelAngleFwd);
+  // log_swerve_WheelAngleRev.Append(VaENC_Deg_WheelAngleRev);
+  // log_swerve_WheelSpeedCmnd.Append(VaDRC_RPM_WheelSpeedCmnd);
+  // log_swerve_WheelAngleCmnd.Append(VaDRC_Pct_WheelAngleCmnd);
 
   // frc::SmartDashboard::PutNumberArray("swerve_WheelAngleFwd", VaENC_Deg_WheelAngleFwd);
   // frc::SmartDashboard::PutNumberArray("swerve_WheelAngleRev", VaENC_Deg_WheelAngleRev);

@@ -252,6 +252,34 @@ struct TsENC_PowerAboveThresh
   bool b_SD_CanCoders = false;
 };
 
+struct TsENC_MaxOutput
+{
+  double I_SD_Steer_FR = 0.0;
+  double I_SD_Drive_FR = 0.0;
+  double I_SD_Steer_FL = 0.0;
+  double I_SD_Drive_FL = 0.0;
+  double I_SD_Steer_RR = 0.0;
+  double I_SD_Drive_RR = 0.0;
+  double I_SD_Steer_RL = 0.0;
+  double I_SD_Drive_RL = 0.0;
+  double I_CLMR_1 = 0.0;
+  double I_CLMR_2 = 0.0;
+  double I_SPK_Intake = 0.0;
+  double I_SPK_IAssist = 0.0;
+  double I_SPK_Shooter1 = 0.0;
+  double I_SPK_Shooter2 = 0.0;
+  double I_Amp_Elevator = 0.0;
+  double I_Amp_Wrist = 0.0;
+  double I_Amp_Intake = 0.0;
+  double I_VIS_Pi = 0.0;
+  double T_PDH_Temp = 0.0;
+  double I_PDH_TotalCurrent = 0.0;
+  double W_PDH_TotalPower = 0.0;
+  double J_PDH_TotalEnergy = 0.0;
+  double V_PDH_Voltage = 0.0;
+  double I_SD_CanCoders = 0.0;
+};
+
 struct TsAmp_Sensor
 {
   double In_Elevator; //height of elevator in inches
