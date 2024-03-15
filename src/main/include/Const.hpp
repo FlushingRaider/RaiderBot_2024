@@ -612,7 +612,6 @@ const double KaDJ_Amp_DegS_WristRate[E_DJ_Amp_State_Sz][E_DJ_Amp_State_Sz] = // 
      {0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08},
      {0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08, 0.08}};
 
-
 // Encoder / speed calculation related cals
 /* KeENC_k_AMP_IntakeRatio: Reduction ratio for AMP intake. */
 const double KeENC_k_AMP_IntakeRatio = 1.0;
@@ -621,7 +620,7 @@ const double KeENC_k_AMP_IntakeRatio = 1.0;
 const double KeENC_k_AMP_ElevatorRatio = - 0.1484992;
 
 /* KeENC_k_AMP_ElevatorRatio: Ratio to convert encoder counts to angle. */
-const double KeENC_k_AMP_WristRatio = 33.2103321;
+const double KeENC_k_AMP_WristRatio = 1; // 33.2103321
 
 
 /* KaSPK_e_ControllingTable: Table that contains the commanded state of the speaker based on the current attained state and schedueld state. */

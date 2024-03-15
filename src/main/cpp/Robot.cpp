@@ -86,15 +86,15 @@ void Robot::RobotMotorCommands()
   {
     m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition); 
   }
-
-  if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
-  {
-    m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
-  }
-  else
-  {
-    m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
-  }
+  m_Wrist.Set(0.0);
+  // if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
+  // {
+  //   m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
+  // }
+  // else
+  // {
+  //   m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
+  // }
 #else
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
