@@ -88,7 +88,7 @@ const double KeENC_In_WheelCircumfrence = 12.566;
 const double K_SD_SteerMotorCurrentLimit = 25;
 
 /* K_SD_SteerMotorCurrentLimit: Max allowed current going to each swerve drive steer motor. */
-const double K_SD_DriveMotorCurrentLimit = 50;
+const double K_SD_DriveMotorCurrentLimit = 40;
 
 #ifdef Bot2023
 /* KeENC_Deg_SD_WheelOffsetAngle: Offset angle for each respective corder of the swerve drive wheel.  This is the angle
@@ -125,7 +125,7 @@ const double K_SD_MaxGain = 0.62;
 const double KeDRC_k_SD_AutonGain = 0.9;
 
 /* K_SD_TeleWheelMaxSpeed: Max RPM speed of the swerve drive wheel motor.*/
-const double K_SD_TeleWheelMaxSpeed = 4500;
+const double K_SD_TeleWheelMaxSpeed = 6000;
 
 const double K_SD_AutonWheelMaxSpeed = 4500;
 
