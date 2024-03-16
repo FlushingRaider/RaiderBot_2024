@@ -172,9 +172,9 @@ void Amp_MotorConfigsCal(rev::SparkMaxPIDController m_ElevatorPID,
   double L_max_Intake = frc::SmartDashboard::GetNumber("Max Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMaxOutput]);
   double L_min_Intake = frc::SmartDashboard::GetNumber("Min Output - Intake", KaDJ_Amp_k_IntakePID_Gx[E_kMinOutput]);
  
-  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Elevator]   = frc::SmartDashboard::GetNumber("Set Elevator", 0);
-  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist] = frc::SmartDashboard::GetNumber("Set Position Wrist", 0);
-  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Intake] = frc::SmartDashboard::GetNumber("Set Intake Power", 0);
+  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Elevator] = frc::SmartDashboard::GetNumber("Set Elevator", 0);
+  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Wrist]    = frc::SmartDashboard::GetNumber("Set Position Wrist", 0);
+  VsAmp_s_MotorsTest.k_MotorCmnd[E_Amp_Intake]   = frc::SmartDashboard::GetNumber("Set Intake Power", 0);
 
   if(L_p_Elevator != VaAmp_k_ElevatorPID_Gx[E_kP])   { m_ElevatorPID.SetP(L_p_Elevator); VaAmp_k_ElevatorPID_Gx[E_kP] = L_p_Elevator; }
   if(L_i_Elevator != VaAmp_k_ElevatorPID_Gx[E_kI])   { m_ElevatorPID.SetI(L_i_Elevator); VaAmp_k_ElevatorPID_Gx[E_kI] = L_i_Elevator; }
@@ -334,7 +334,7 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
       (LeDJ_Amp_e_CmndState == E_DJ_Amp_Init && LeDJ_Amp_e_AttndState == E_DJ_Amp_Init) &&
       (VeAmp_b_ElevatorResetLatch == false))
   {
-  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = KeSPK_k_ElevatorResetPwr;
+  VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Elevator] = KeAmp_k_ElevatorResetPwr;
   VsAmp_s_Motors.e_MotorControlType[E_Amp_Elevator] = E_MotorControlPctCmnd;
   VeAmp_b_ElevatorEncoderReset = true;
   }
@@ -355,7 +355,7 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
 
   /* Additional logic for wrist is to allow it to be reseted.  This is to account for cases where the belt has 
      slipped and the wrist is no longer in the expected location. */
-  if ((VeAmp_b_WristEncoderReset == true && VeAmp_t_WristResetTimer2 >= KeSPK_t_WristResetTime2) || 
+  if ((VeAmp_b_WristEncoderReset == true && VeAmp_t_WristResetTimer2 >= KeAmp_t_WristResetTime2) || 
       LeDJ_Amp_e_CmndState != E_DJ_Amp_Init)
   {
     /* We only want to allow the reset to be true for one loop.  Don't want to continously reset the encoder */
@@ -367,7 +367,7 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
     VeAmp_t_WristResetTimer2 += C_ExeTime;
   }
 
-  if (VeAmp_t_WristResetTimer >= KeSPK_t_WristResetTime)
+  if (VeAmp_t_WristResetTimer >= KeAmp_t_WristResetTime)
   {
     VeAmp_e_WristResetSt = E_AMP_WristReseted;
     VeAmp_t_WristResetTimer = 0;
@@ -386,7 +386,7 @@ void Update_Amp_Actuators(T_DJ_Amp_States LeDJ_Amp_e_CmndState,
       (LeDJ_Amp_e_AttndState == E_DJ_Amp_Init) &&
       ((VeAmp_e_WristResetSt == E_AMP_WristNeedsReset) || (VeAmp_e_WristResetSt == E_AMP_WristResetInProc)))
   {
-    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = KeSPK_k_WristResetPwr;
+    VsAmp_s_MotorsTemp.k_MotorCmnd[E_Amp_Wrist] = KeAmp_k_WristResetPwr;
     VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] = E_MotorControlPctCmnd;
     VeAmp_t_WristResetTimer += C_ExeTime;
   }

@@ -87,14 +87,14 @@ void Robot::RobotMotorCommands()
     m_ElevatorPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Elevator], rev::ControlType::kPosition); 
   }
   m_Wrist.Set(0.0);
-  // if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
-  // {
-  //   m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
-  // }
-  // else
-  // {
-  //   m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
-  // }
+  if (VsAmp_s_Motors.e_MotorControlType[E_Amp_Wrist] == E_MotorControlPctCmnd)
+  {
+    m_Wrist.Set(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist]);
+  }
+  else
+  {
+    m_WristPID.SetReference(VsAmp_s_Motors.k_MotorCmnd[E_Amp_Wrist], rev::ControlType::kPosition); 
+  }
 #else
   m_Intake.Set(0.0);
   m_Wrist.Set(0.0);
@@ -145,16 +145,24 @@ void Robot::RobotInit()
   m_rearLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
   m_rearRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
 
-  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_frontRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearLeftDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearRightSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_rearRightDriveMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
-  m_Wrist.SetSmartCurrentLimit(KeSPK_I_WristCurrentLimit);
+  m_Elevator.SetSmartCurrentLimit(KeAmp_I_ElevatorCurrentLimit);
+  m_ClimberLeft.SetSmartCurrentLimit(KeCLMR_I_ClimberCurrentLimit);
+  m_ClimberRight.SetSmartCurrentLimit(KeCLMR_I_ClimberCurrentLimit);
+  m_Wrist.SetSmartCurrentLimit(KeAmp_I_WristCurrentLimit);
+  m_Intake.SetSmartCurrentLimit(KeAmp_I_IntakeCurrentLimit);
+  m_Underbelly.SetSmartCurrentLimit(KeSPK_I_IntakeCurrentLimit);
+  m_IAssist.SetSmartCurrentLimit(KeSPK_I_IAssistCurrentLimit);
+  m_Shooter1.SetSmartCurrentLimit(KeSPK_I_ShooterCurrentLimit);
+  m_Shooter2.SetSmartCurrentLimit(KeSPK_I_ShooterCurrentLimit);
 
   m_Elevator.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_ClimberLeft.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
@@ -162,11 +170,11 @@ void Robot::RobotInit()
   m_Wrist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Intake.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   m_Underbelly.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_IAssist.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake); // kCoast
-  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+  m_IAssist.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+  m_Shooter1.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast); // kCoast
+  m_Shooter2.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
-  m_WristreverseLimit.EnableLimitSwitch(false);
+  m_WristreverseLimit.EnableLimitSwitch(false);  // We have the break beam attached and just want to read it, not stop the motor directly
 
   SwerveDriveMotorConfigsInit(m_frontLeftDrivePID,
                               m_frontRightDrivePID,
@@ -441,12 +449,7 @@ void Robot::AutonomousInit()
 
   VeROBO_b_TestState = false;
 
-
   CurrentLatchReset();
-
-
-
-
 }
 
 
@@ -487,7 +490,7 @@ void Robot::TeleopInit()
     SPK_ControlInit();
     CLMR_ControlInit();
   }
-  #endif
+#endif
   VeROBO_b_TestState = false;
 }
 

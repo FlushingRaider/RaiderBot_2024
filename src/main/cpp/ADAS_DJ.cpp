@@ -188,7 +188,7 @@ bool ScheduelerSPK(T_RobotState     LeADAS_e_RobotState,
     {
       VeADAS_t_SPK_ReleaseTm += C_ExeTime;
     }
-    else if ((VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm))
+    else if (VeADAS_t_SPK_ReleaseTm >= KeSPK_t_ShooterOnTm)
     {
       VeADAS_t_SPK_ReleaseTm = 0.0;
       VeADAS_e_SPK_SchedState = E_SPK_Ctrl_Driving;

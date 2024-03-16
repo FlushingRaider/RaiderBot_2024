@@ -148,6 +148,11 @@ void SPK_MotorConfigsInit(rev::SparkMaxPIDController m_UnderbellyPID,
   frc::SmartDashboard::PutNumber("Set Shooter1 Speed", 0);
   frc::SmartDashboard::PutNumber("Set Shooter2 Speed", 0);
   #endif
+
+  #ifdef SPK_ShooterOverride
+  frc::SmartDashboard::PutNumber("Set Shooter1 Speed", 0);
+  frc::SmartDashboard::PutNumber("Set Shooter2 Speed", 0);
+  #endif
   }
 
 
@@ -223,6 +228,10 @@ void SPK_MotorConfigsCal(rev::SparkMaxPIDController m_UnderbellyPID,
 
   VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter1] = frc::SmartDashboard::GetNumber("KeSPK_RPMs_Shooter1Rate", VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter1]);
   VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2] = frc::SmartDashboard::GetNumber("KeSPK_RPMs_Shooter2Rate", VsSPK_s_MotorsTest.k_MotorRampRate[E_SPK_m_Shooter2]);
+   #endif
+   #ifdef SPK_ShooterOverride
+  VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1] = frc::SmartDashboard::GetNumber("Set Shooter1 Speed", 0);
+  VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2] = frc::SmartDashboard::GetNumber("Set Shooter2 Speed", 0);
    #endif
   }
 
@@ -310,16 +319,26 @@ bool UpdateSpeakerCommandAttainedState(bool             LeSPK_b_CriteriaMet,
 bool CmndStateReachedSpeaker(TeSPK_CtrlStates LeSPK_e_CmndState)
   {
   bool LeSPK_b_CriteriaMet = false;
+  double LeSPK_RPM_Shooter1 = 0;
+  double LeSPK_RPM_Shooter2 = 0;
+
+  #ifdef SPK_ShooterOverride
+  LeSPK_RPM_Shooter1 = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1];
+  LeSPK_RPM_Shooter2 = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2];
+  #else
+  LeSPK_RPM_Shooter1 = KaSPK_RPM_Shooter1[LeSPK_e_CmndState];
+  LeSPK_RPM_Shooter2 = KaSPK_RPM_Shooter2[LeSPK_e_CmndState];
+  #endif
 
   VeSPK_t_TransitionTime += C_ExeTime;
 
   if((VeSPK_t_TransitionTime >= KeSPK_t_StateTimeOut) ||
 
-     ((VsSPK_s_Sensors.RPM_Shooter1 <= (KaSPK_RPM_Shooter1[LeSPK_e_CmndState] + KaSPK_RPM_Shooter1Db[LeSPK_e_CmndState])) &&
-      (VsSPK_s_Sensors.RPM_Shooter1 >= (KaSPK_RPM_Shooter1[LeSPK_e_CmndState] - KaSPK_RPM_Shooter1Db[LeSPK_e_CmndState])) &&
+     ((VsSPK_s_Sensors.RPM_Shooter1 <= (LeSPK_RPM_Shooter1 + KaSPK_RPM_Shooter1Db[LeSPK_e_CmndState])) &&
+      (VsSPK_s_Sensors.RPM_Shooter1 >= (LeSPK_RPM_Shooter1 - KaSPK_RPM_Shooter1Db[LeSPK_e_CmndState])) &&
 
-      (VsSPK_s_Sensors.RPM_Shooter2 <= (KaSPK_RPM_Shooter2[LeSPK_e_CmndState] + KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState])) &&
-      (VsSPK_s_Sensors.RPM_Shooter2 >= (KaSPK_RPM_Shooter2[LeSPK_e_CmndState] - KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState]))))
+      (VsSPK_s_Sensors.RPM_Shooter2 <= (LeSPK_RPM_Shooter2 + KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState])) &&
+      (VsSPK_s_Sensors.RPM_Shooter2 >= (LeSPK_RPM_Shooter2 - KaSPK_RPM_Shooter2Db[LeSPK_e_CmndState]))))
       {
       LeSPK_b_CriteriaMet = true;
       VeSPK_t_TransitionTime = 0.0;
@@ -338,15 +357,26 @@ bool CmndStateReachedSpeaker(TeSPK_CtrlStates LeSPK_e_CmndState)
 void UpdateSPK_Actuators(TeSPK_CtrlStates LeSPK_e_CmndState,
                          TeSPK_CtrlStates LeSPK_e_AttndState)
   {
+  double LeSPK_RPM_Shooter1 = 0;
+  double LeSPK_RPM_Shooter2 = 0;
+
   VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Intake] = KaSPK_k_Intake[LeSPK_e_CmndState];
 
   VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_IAssist] = KaSPK_k_IAssist[LeSPK_e_CmndState];
 
-  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(KaSPK_RPM_Shooter1[LeSPK_e_CmndState] / KeENC_k_SPK_Shooter1Ratio, 
+  #ifdef SPK_ShooterOverride
+  LeSPK_RPM_Shooter1 = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter1];
+  LeSPK_RPM_Shooter2 = VsSPK_s_MotorsTest.k_MotorCmnd[E_SPK_m_Shooter2];
+  #else
+  LeSPK_RPM_Shooter1 = KaSPK_RPM_Shooter1[LeSPK_e_CmndState];
+  LeSPK_RPM_Shooter2 = KaSPK_RPM_Shooter2[LeSPK_e_CmndState];
+  #endif
+
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1] = RampTo(LeSPK_RPM_Shooter1 / KeENC_k_SPK_Shooter1Ratio, 
                                                             VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter1],
                                                             KeSPK_RPMs_Shooter1Rate);
 
-  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(KaSPK_RPM_Shooter2[LeSPK_e_CmndState] / KeENC_k_SPK_Shooter2Ratio, 
+  VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2] = RampTo(LeSPK_RPM_Shooter2 / KeENC_k_SPK_Shooter2Ratio, 
                                                             VsSPK_s_MotorsTemp.k_MotorCmnd[E_SPK_m_Shooter2],
                                                             KeSPK_RPMs_Shooter2Rate);
   }
