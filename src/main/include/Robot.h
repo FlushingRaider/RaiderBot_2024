@@ -8,7 +8,7 @@
 
 #include <frc/TimedRobot.h>
 
-// #include <frc/AddressableLED.h>
+#include <frc/AddressableLED.h>
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/DigitalInput.h>
 #include <frc/DigitalOutput.h>
@@ -132,16 +132,14 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
 
-// // Light Controls
-//     static constexpr int kLength = 60;
+// Light Controls
 
-//   // PWM port 9
-//   // Must be a PWM header!
-//   frc::AddressableLED m_led{9};
-//   std::array<frc::AddressableLED::LEDData, kLength>
-//   m_ledBuffer;  // Reuse the buffer
-//   // Store what the last hue of the first pixel is
-//   int firstPixelHue = 0;
+  // PWM port 9
+  // Must be a PWM header!
+  frc::AddressableLED m_led{9};
+  std::array<frc::AddressableLED::LEDData, C_LedLength> m_ledBuffer;  // Reuse the buffer
+  // Store what the last hue of the first pixel is
+
 
 // void Robot::Rainbow() {
 //   // For every pixel

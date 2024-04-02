@@ -22,6 +22,9 @@ T_ADAS_ActiveFeature VeADAS_e_AutonFeatureDJ_Prev = E_ADAS_Disabled;  // Previou
 double               VeADAS_t_SPK_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 double               VeADAS_t_AMP_ReleaseTm = 0.0; // Timer that will keep rollers on for a specific amount of time
 
+TsENC_LightPatterns VeADAS_e_LEDState = E_LED_SOLIDWHITE;
+
+
 /******************************************************************************
  * Function:     ADAS_DJ_Reset
  *
@@ -67,10 +70,12 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;  //E_DJ_Amp_Driving
+      VeADAS_e_LEDState = E_LED_RAINBOW;
     }
     else if (VsCONT_s_DriverInput.b_Amp_Intake == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Intake;
+      VeADAS_e_LEDState = E_LED_SOLIDWHITE;
     }
     else if (VsCONT_s_DriverInput.b_Amp_PreScore == true)
     {

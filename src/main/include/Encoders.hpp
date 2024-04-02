@@ -11,6 +11,8 @@
   Coverted to 2024 code: January 17,2024
 */
 
+#include <frc/AddressableLED.h>
+
 extern double VaENC_Deg_WheelAngleFwd[E_RobotCornerSz];
 extern double VaENC_Rad_WheelAngleFwd[E_RobotCornerSz]; 
 extern double VaENC_Deg_WheelAngleRev[E_RobotCornerSz];
@@ -92,3 +94,6 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
                                 double LeENC_V_PDH_Voltage);
 
 void CurrentLatchReset();
+
+std::array<frc::AddressableLED::LEDData, C_LedLength> LightControl(
+    TsENC_LightPatterns L_pattern);

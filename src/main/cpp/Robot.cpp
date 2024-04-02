@@ -111,13 +111,13 @@ void Robot::RobotMotorCommands()
  ******************************************************************************/
 void Robot::RobotInit()
 {
-  //DataLogRobotInit();
+  // DataLogRobotInit();
 
   // Default to a length of 60, start empty output
   // Length is expensive to set, so only set it once, then just update data
-  // m_led.SetLength(kLength);
-  // m_led.SetData(m_ledBuffer);
-  // m_led.Start();
+  m_led.SetLength(C_LedLength);
+  m_led.SetData(m_ledBuffer);
+  m_led.Start();
 
   EncodersInitSwerve(m_encoderFrontRightSteer,
                      m_encoderFrontLeftSteer,
@@ -230,8 +230,11 @@ void Robot::RobotPeriodic()
 {
   // Fill the buffer with a rainbow
   // Rainbow();
-  // // Set the LED
-  // m_led.SetData(m_ledBuffer);
+  // Set the LED
+  m_led.SetData(LightControl(VeADAS_e_LEDState));
+
+
+
 
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
 

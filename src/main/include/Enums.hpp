@@ -143,6 +143,13 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_DemoChainMove
 } T_ADAS_ActiveAutonFeature;
 
+
+typedef enum TsENC_LightPatterns{
+  E_LED_RAINBOW,
+  E_LED_SOLIDWHITE
+} TsENC_LightPatterns;
+
+
 // a big ol' object ti carry the various inputs from the driver in one place
 struct RobotUserInput
 {
