@@ -141,7 +141,7 @@ void Robot::RobotInit()
 
   m_frontLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
   m_frontRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
-  m_rearLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
+  m_rearLeftDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit); // :)
   m_rearRightDriveMotor.SetSmartCurrentLimit(K_SD_DriveMotorCurrentLimit);
 
   m_frontLeftSteerMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
