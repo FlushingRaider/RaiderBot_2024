@@ -523,14 +523,15 @@ std::array<frc::AddressableLED::LEDData, C_LedLength> LightControl(
         m_ledBuffer[i].SetHSV(pixelHue, 255, 128);
       }
       // Increase by to make the rainbow "move"
-      firstPixelHue += 3;
+      firstPixelHue += 15;
       // Check bounds
       firstPixelHue %= 180;
-    
+    break;
     case E_LED_SOLIDWHITE:
       for (int i = 0; i < C_LedLength; i++){
-        m_ledBuffer[i].SetHSV(180, 255, 128);
+        m_ledBuffer[i].SetRGB(128,128,128);
       }
+      break;
 
   }
   return (m_ledBuffer);

@@ -137,8 +137,7 @@ class Robot : public frc::TimedRobot {
   // PWM port 9
   // Must be a PWM header!
   frc::AddressableLED m_led{9};
-  std::array<frc::AddressableLED::LEDData, C_LedLength> m_ledBuffer;  // Reuse the buffer
-  // Store what the last hue of the first pixel is
+  std::array<frc::AddressableLED::LEDData, C_LedLength> m_ledBuffer;
 
 
 // void Robot::Rainbow() {
