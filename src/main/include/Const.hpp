@@ -8,6 +8,9 @@
 // Define the desired test mode, if none, leave commented out: SPK_Test, SPK_ShooterOverride, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
 // #define SPK_ShooterOverride
 
+const int C_LedLength = 60;
+
+
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
 const double C_Deg2Rad = 0.017453292519943295;
@@ -690,10 +693,10 @@ const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
                                                              0.0};     // kAllErr
 
 /* KeSPK_RPMs_Shooter1Rate: Table that contains the shooter 1 ramp rate. */
-const double KeSPK_RPMs_Shooter1Rate = 75.0;
+const double KeSPK_RPMs_Shooter1Rate = 80.0;
 
 /* KeSPK_RPMs_Shooter2Rate: Table that contains the shooter 2 ramp rate. */
-const double KeSPK_RPMs_Shooter2Rate = 75.0;
+const double KeSPK_RPMs_Shooter2Rate = 80.0;
 
 /* KeSPK_I_ShooterCurrentLimit: Max allowed current going to shooter motor. This is shared between 1 & 2 */
 const double KeSPK_I_ShooterCurrentLimit = 30;
@@ -722,15 +725,23 @@ const double KaSPK_k_IAssist[E_SPK_Ctrl_StateSz] = { 0.0,  // Sched - Init
 const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
                                                          -100.0,  // Sched - Intake
-                                                          1500.0,  // Sched - PreScore 3000 1450
-                                                          1500.0}; // Sched - Score 3000  1450
+                                                          3000.0,  // Sched - PreScore 3000 1450
+                                                          3000.0}; // Sched - Score 3000  1450
+
+                                                          
+// /* KaSPK_RPM_Shooter1: Sets shooter 1 final speed for each state */
+// const double KaSPK_RPM_Shooter1[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
+//                                                           0.0,  // Sched - Driving
+//                                                          -100.0,  // Sched - Intake
+//                                                           1500.0,  // Sched - PreScore 3000 1450
+//                                                           1500.0}; // Sched - Score 3000  1450
 
 /* KaSPK_RPM_Shooter2: Sets shooter 2 final speed for each state */
 const double KaSPK_RPM_Shooter2[E_SPK_Ctrl_StateSz] = {   0.0,  // Sched - Init
                                                           0.0,  // Sched - Driving
                                                          -100.0,  // Sched - Intake
-                                                          650.0,  // Sched - PreScore 3000 800
-                                                          650.0}; // Sched - Score 3000  800
+                                                          3000.0,  // Sched - PreScore 3000 800
+                                                          3000.0}; // Sched - Score 3000  800
 
 /* KaSPK_RPM_Shooter1Db: Sets shooter 1 deadband */
 const double KaSPK_RPM_Shooter1Db[E_SPK_Ctrl_StateSz] = {30.0,  // Sched - Init
