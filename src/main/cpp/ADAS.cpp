@@ -82,7 +82,8 @@ void ADAS_Main_Init(void)
   // VeADAS_e_AutonChooser.AddOption("L_RTB", T_ADAS_ActiveAutonFeature::E_ADAS_AutonDrivePath7);
   VeADAS_e_AutonChooser.AddOption("3 Note Short", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt1); // upper 3 piece auton
   VeADAS_e_AutonChooser.AddOption("Double", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt2);
-  VeADAS_e_AutonChooser.AddOption("3 Note Long", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);  // lower 3 piece auton
+  VeADAS_e_AutonChooser.AddOption("3 - Outer Note Long", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3);  // lower 3 piece auton
+  VeADAS_e_AutonChooser.AddOption("3 - Inner Note Long", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt3_1);  // lower 3 piece auton
   VeADAS_e_AutonChooser.AddOption("Leave", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt4);
   VeADAS_e_AutonChooser.AddOption("Preload", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt5);
   VeADAS_e_AutonChooser.AddOption("2 Piece + Preload Short", T_ADAS_ActiveAutonFeature::E_ADAS_AutonOpt6);
@@ -472,6 +473,51 @@ T_ADAS_ActiveFeature ADAS_ControlMain(double *L_Pct_FwdRev,
         LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path5;
       }
       else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path5) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote3;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote3) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path6;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path6) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_Disabled;
+        VeADAS_b_StateComplete = true;
+        VeADAS_b_AutonOncePerTrigger = true;
+      }
+      break;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    case E_ADAS_AutonOpt3_1:
+      if ((LeADAS_e_ActiveFeature == E_ADAS_Disabled) && (VeADAS_b_StateComplete == false) && (VeADAS_b_AutonOncePerTrigger == false))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path1) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote1;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote1) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path4;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path4) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path5;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path5) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote2;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DJ_ShootNote2) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path2;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path2) && (VeADAS_b_StateComplete == true))
+      {
+        LeADAS_e_ActiveFeature = E_ADAS_DM_DJ_Opt3Path3;
+      }
+      else if ((LeADAS_e_ActiveFeature == E_ADAS_DM_DJ_Opt3Path3) && (VeADAS_b_StateComplete == true))
       {
         LeADAS_e_ActiveFeature = E_ADAS_DJ_ShootNote3;
       }

@@ -135,6 +135,7 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
   E_ADAS_AutonOpt1,
   E_ADAS_AutonOpt2,
   E_ADAS_AutonOpt3,
+  E_ADAS_AutonOpt3_1,
   E_ADAS_AutonOpt4, // Shoot, drive straight out and then come back
   E_ADAS_AutonOpt5, // Shoot, don't drive
   E_ADAS_AutonOpt6, // Shoot, Drive to note, drive back, shoot, drive to second note, drive, shoot
