@@ -32,7 +32,6 @@ TsENC_MaxOutput          VaENC_MaxOutputValue;
 
 TsENC_Power VsENC_RobotCurrentVoltPwr;
 
-int firstPixelHue = 0;
 
 /******************************************************************************
  * Function:     EncodersInitSwerve
@@ -505,34 +504,3 @@ void CurrentLatchReset(){
   VaENC_MaxOutputValue.I_SD_CanCoders = 0.0;
   }
 
-std::array<frc::AddressableLED::LEDData, C_LedLength> LightControl(
-    TsENC_LightPatterns L_pattern)
-{
-
-  std::array<frc::AddressableLED::LEDData, C_LedLength> m_ledBuffer;
-  switch (L_pattern)
-  {
-    case E_LED_RAINBOW:
-      // For every pixel
-      for (int i = 0; i < C_LedLength; i++)
-      {
-        // Calculate the hue - hue is easier for rainbows because the color
-        // shape is a circle so only one value needs to precess
-        int pixelHue = (firstPixelHue + (i * 180 / C_LedLength)) % 180;
-        // Set the value
-        m_ledBuffer[i].SetHSV(pixelHue, 255, 128);
-      }
-      // Increase by to make the rainbow "move"
-      firstPixelHue += 15;
-      // Check bounds
-      firstPixelHue %= 180;
-    break;
-    case E_LED_SOLIDWHITE:
-      for (int i = 0; i < C_LedLength; i++){
-        m_ledBuffer[i].SetRGB(128,128,128);
-      }
-      break;
-
-  }
-  return (m_ledBuffer);
-}

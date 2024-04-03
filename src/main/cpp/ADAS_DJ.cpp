@@ -70,7 +70,7 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;  //E_DJ_Amp_Driving
-      VeADAS_e_LEDState = E_LED_RAINBOW;
+      VeADAS_e_LEDState = E_LED_RAINBOW;  
     }
     else if (VsCONT_s_DriverInput.b_Amp_Intake == true)
     {

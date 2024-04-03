@@ -23,7 +23,8 @@
 #include "Climber.hpp"
 #include "ADAS_DJ.hpp"
 #include "DataLogger.hpp"
-// #include "Vision.hpp"
+#include "LightControl.hpp"
+
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -33,7 +34,6 @@ T_RobotState VeROBO_e_RobotState = E_Init;
 std::optional<frc::DriverStation::Alliance> VeROBO_e_AllianceColor;
 double VeROBO_t_MatchTimeRemaining = 0;
 bool VeROBO_b_TestState = false;
-
 
 /******************************************************************************
  * Function:     RobotMotorCommands
@@ -227,11 +227,13 @@ void Robot::RobotInit()
  ******************************************************************************/
 void Robot::RobotPeriodic()
 {
-  // Fill the buffer with a rainbow
-  // Rainbow();
-  // Set the LED
-  m_led.SetData(LightControl(E_LED_RAINBOW));
 
+  LightControl(E_LED_FADEBLUE);
+
+  m_led.SetData(Va_LED_outputBuffer);
+
+  // frc::SmartDashboard::PutNumber("blu0", Va_LED_outputBuffer[0].b);
+  
 
   VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
 
@@ -317,6 +319,7 @@ void Robot::RobotPeriodic()
   ADAS_DetermineMode();
 
   frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
+
 
   ADAS_DM_ConfigsCal();
 
