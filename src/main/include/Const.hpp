@@ -6,7 +6,7 @@
 // Define the desired rotob state here: Bot2024, Bot2023
 #define Bot2024
 // Define the desired test mode, if none, leave commented out: SPK_Test, SPK_ShooterOverride, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
-// #define SPK_ShooterOverride
+// #define AMP_Test
 
 const int C_LedLength = 60;
 
@@ -693,10 +693,10 @@ const double KaSPK_k_Shooter2PID_Gx[E_PID_SparkMaxCalSz] = { 0.0002,      // kP
                                                              0.0};     // kAllErr
 
 /* KeSPK_RPMs_Shooter1Rate: Table that contains the shooter 1 ramp rate. */
-const double KeSPK_RPMs_Shooter1Rate = 80.0;
+const double KeSPK_RPMs_Shooter1Rate = 75.0;
 
 /* KeSPK_RPMs_Shooter2Rate: Table that contains the shooter 2 ramp rate. */
-const double KeSPK_RPMs_Shooter2Rate = 80.0;
+const double KeSPK_RPMs_Shooter2Rate = 75.0;
 
 /* KeSPK_I_ShooterCurrentLimit: Max allowed current going to shooter motor. This is shared between 1 & 2 */
 const double KeSPK_I_ShooterCurrentLimit = 30;

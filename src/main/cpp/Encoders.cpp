@@ -412,10 +412,10 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
     if (VsENC_RobotCurrentVoltPwr.I_SD_CanCoders > VaENC_MaxOutputValue.I_SD_CanCoders) {VaENC_MaxOutputValue.I_SD_CanCoders = VsENC_RobotCurrentVoltPwr.I_SD_CanCoders;} 
   
 
-    frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_FR", VaENC_b_PowerAboveThreshold.b_SD_Drive_FR);
-    frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_FL", VaENC_b_PowerAboveThreshold.b_SD_Drive_FL);
-    frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_RR", VaENC_b_PowerAboveThreshold.b_SD_Drive_RR);
-    frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_RL", VaENC_b_PowerAboveThreshold.b_SD_Drive_RL);
+    // frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_FR", VaENC_b_PowerAboveThreshold.b_SD_Drive_FR);
+    // frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_FL", VaENC_b_PowerAboveThreshold.b_SD_Drive_FL);
+    // frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_RR", VaENC_b_PowerAboveThreshold.b_SD_Drive_RR);
+    // frc::SmartDashboard::PutBoolean("VaENC_b_PowerAboveThreshold.b_SD_Drive_RL", VaENC_b_PowerAboveThreshold.b_SD_Drive_RL);
 
     frc::SmartDashboard::PutNumber("VsENC_RobotCurrentVoltPwr.I_SD_Drive_FR", VsENC_RobotCurrentVoltPwr.I_SD_Drive_FR);
     frc::SmartDashboard::PutNumber("VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL", VsENC_RobotCurrentVoltPwr.I_SD_Drive_FL);
