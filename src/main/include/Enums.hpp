@@ -147,7 +147,9 @@ typedef enum T_ADAS_ActiveAutonFeature // The various autons we may want to call
 
 typedef enum TsENC_LightPatterns{
   E_LED_RAINBOW,
-  E_LED_SOLIDWHITE
+  E_LED_SOLIDWHITE,
+  E_LED_FADEBLUE,
+  E_LED_FADERED
 } TsENC_LightPatterns;
 
 
