@@ -133,10 +133,7 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
 
 // Light Controls
-
-  // PWM port 9
-  // Must be a PWM header!
-  frc::AddressableLED m_led{9};
+  frc::AddressableLED m_led{C_LEDPort};
 
 
 // void Robot::Rainbow() {

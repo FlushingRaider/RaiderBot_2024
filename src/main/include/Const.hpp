@@ -8,9 +8,6 @@
 // Define the desired test mode, if none, leave commented out: SPK_Test, SPK_ShooterOverride, AMP_Test, CLMR_Test, DriveMotorTest, WheelAngleTest, ADAS_DM_Test
 // #define AMP_Test
 
-const int C_LedLength = 60;
-
-
 // Numerical constants
 const double C_RadtoDeg = 57.2957795;
 const double C_Deg2Rad = 0.017453292519943295;
@@ -37,6 +34,11 @@ static const int KeEnc_i_WheelAngleRR = 19;
 static const int KeCLMR_i_ClimberArm1 = 21;
 static const int KeCLMR_i_ClimberArm2 = 22;
 static const int KeDJ_Spk_i_IAssist = 24;
+
+// LED Constansts;
+const int C_LedLength = 900;
+const int C_LEDPort = 9;
+
 
 // DIO Device IDs:
 static const int KeSPK_i_BreakBeamIO  = 0;
@@ -477,7 +479,7 @@ const T_DJ_Amp_States KaDJ_Amp_e_ControllingTable[E_DJ_Amp_State_Sz][E_DJ_Amp_St
      {E_DJ_Amp_Source,  E_DJ_Amp_Source,    E_DJ_Amp_Driving,   E_DJ_Amp_PreScore, E_DJ_Amp_Source,   E_DJ_Amp_Driving,   E_DJ_Amp_Driving,   E_DJ_Amp_Source}};
 
 /* KeAmp_I_WristCurrentLimit: Max allowed current going to wrist motor. */
-const double KeAmp_I_WristCurrentLimit = 25;
+const double KeAmp_I_WristCurrentLimit = 30;
 
 /* KeAmp_t_WristResetTime: Amount of time allowed to reset wrist when commanded to init. */
 const double KeAmp_t_WristResetTime = 0.5;
@@ -508,7 +510,7 @@ const double KaDJ_Amp_k_ElevatorPID_Gx[E_PID_SparkMaxCalSz] = {0.1,      // kP
                                                                0.0};     // kAllErr
 
 /* KaDJ_Amp_k_WristPID_Gx: PID gains for the Wrist control. */
-const double KaDJ_Amp_k_WristPID_Gx[E_PID_SparkMaxCalSz] = {0.7,      // kP 0.1
+const double KaDJ_Amp_k_WristPID_Gx[E_PID_SparkMaxCalSz] = {0.73,      // kP 0.1
                                                             0.000006, // kI 0.000001
                                                             0.002000, // kD
                                                             0.0,      // kIz

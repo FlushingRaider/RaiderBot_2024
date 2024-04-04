@@ -70,12 +70,10 @@ bool ScheduelerAMP(T_RobotState    LeADAS_e_RobotState,
     if (VsCONT_s_DriverInput.b_Amp_DrivingPosition == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Init;  //E_DJ_Amp_Driving
-      VeADAS_e_LEDState = E_LED_RAINBOW;  
     }
     else if (VsCONT_s_DriverInput.b_Amp_Intake == true)
     {
       VeADAS_e_Amp_SchedState = E_DJ_Amp_Intake;
-      VeADAS_e_LEDState = E_LED_SOLIDWHITE;
     }
     else if (VsCONT_s_DriverInput.b_Amp_PreScore == true)
     {
@@ -287,6 +285,7 @@ bool ADAS_DJ_Main(T_RobotState                  L_RobotState,
   TeSPK_CtrlStates     LeADAS_e_AutonRequestStateSPK = E_SPK_Ctrl_Init;
   TeCLMR_CtrlStates    LeADAS_e_AutonRequestStateCLMR = E_CLMR_Ctrl_Init;
   T_ADAS_ActiveFeature LeADAS_e_ActiveFeatureDJ = E_ADAS_Disabled;
+
 
   if (L_RobotState == E_Auton)
     {

@@ -228,7 +228,7 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic()
 {
 
-  LightControl(E_LED_FADEBLUE);
+  LightControl(VeROBO_e_AllianceColor);
 
   m_led.SetData(Va_LED_outputBuffer);
 
