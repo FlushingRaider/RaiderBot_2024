@@ -5,7 +5,7 @@ import pdb
 
 #pdb.set_trace()
 working_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
-working_name = "Opt7Path8"
+working_name = "Opt3Path6"
 
 output_path = "C:/Users/scott/Documents/Source/C_Source/RaiderBot_2024/RaiderBot_2024/src/main/include/OptPaths/"
 output_name = working_name + ".hpp"
