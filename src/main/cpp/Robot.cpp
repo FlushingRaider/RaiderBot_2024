@@ -228,14 +228,16 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic()
 {
 
-  LightControl(VeROBO_e_AllianceColor);
+  VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
+
+  LightControl(VeROBO_e_AllianceColor, VeROBO_t_MatchTimeRemaining);
 
   m_led.SetData(Va_LED_outputBuffer);
 
   // frc::SmartDashboard::PutNumber("blu0", Va_LED_outputBuffer[0].b);
   
 
-  VeROBO_t_MatchTimeRemaining = frc::Timer::GetMatchTime().value();
+  
 
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
                           c_joyStick.GetRawButton(8),

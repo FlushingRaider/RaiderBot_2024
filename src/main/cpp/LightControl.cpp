@@ -23,7 +23,8 @@ bool timerToggle = false;
 std::array<frc::AddressableLED::LEDData, C_LedLength> Va_LED_outputBuffer;
 
 void LightControl(
-    std::optional<frc::DriverStation::Alliance> L_Alliance)
+    std::optional<frc::DriverStation::Alliance> L_Alliance,
+    double L_MatchTimeRemaining)
 {
 
     TsENC_LightPatterns L_pattern = E_LED_FADEALLIANCE;
@@ -59,6 +60,9 @@ void LightControl(
         {
             L_pattern = E_LED_ORANGESTROBE;
         }
+    }
+    else if(L_MatchTimeRemaining <= 30.0 && L_MatchTimeRemaining > 0){
+        L_pattern = E_LED_RAINBOW;
     }
     else{
         L_pattern = E_LED_FADEALLIANCE;
