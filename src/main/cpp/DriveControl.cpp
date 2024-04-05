@@ -366,7 +366,7 @@ void DriveControlMain(double                   L_JoyStick1Axis1Y,  // swerve con
 
     L_FWD = -L_JoyStick1Axis1Y;
     L_STR = L_JoyStick1Axis1X;
-    L_RCW = L_JoyStick1Axis2X;
+    L_RCW = L_JoyStick1Axis2X * 0.7;
     LeDRC_b_X_ModeReqActive = LeDRC_b_X_ModeReqTeleop;
     LeDRC_k_SpeedGain = L_JoyStick1Axis3;
     if (fabs(L_STR) >= KeDRC_Pct_SD_StrafeDB)  // Temporary workaround till we can figure out why auto correct doesn't work in strafe

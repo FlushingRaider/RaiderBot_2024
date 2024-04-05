@@ -346,11 +346,11 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
     // frc::SmartDashboard::PutNumber("I_Amp_Wrist",         VsENC_RobotCurrentVoltPwr.I_Amp_Wrist);
     // frc::SmartDashboard::PutNumber("I_Amp_Intake",        VsENC_RobotCurrentVoltPwr.I_Amp_Intake);
     // frc::SmartDashboard::PutNumber("I_VIS_Pi",            VsENC_RobotCurrentVoltPwr.I_VIS_Pi);
-    frc::SmartDashboard::PutNumber("T_PDH_Temp",          VsENC_RobotCurrentVoltPwr.T_PDH_Temp);
-    frc::SmartDashboard::PutNumber("I_PDH_TotalCurrent",  VsENC_RobotCurrentVoltPwr.I_PDH_TotalCurrent);
-    frc::SmartDashboard::PutNumber("W_PDH_TotalPower",    VsENC_RobotCurrentVoltPwr.W_PDH_TotalPower);
-    frc::SmartDashboard::PutNumber("J_PDH_TotalEnergy",   VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy);
-    frc::SmartDashboard::PutNumber("V_PDH_Voltage",       VsENC_RobotCurrentVoltPwr.V_PDH_Voltage);
+    // frc::SmartDashboard::PutNumber("T_PDH_Temp",          VsENC_RobotCurrentVoltPwr.T_PDH_Temp);
+    // frc::SmartDashboard::PutNumber("I_PDH_TotalCurrent",  VsENC_RobotCurrentVoltPwr.I_PDH_TotalCurrent);
+    // frc::SmartDashboard::PutNumber("W_PDH_TotalPower",    VsENC_RobotCurrentVoltPwr.W_PDH_TotalPower);
+    // frc::SmartDashboard::PutNumber("J_PDH_TotalEnergy",   VsENC_RobotCurrentVoltPwr.J_PDH_TotalEnergy);
+    // frc::SmartDashboard::PutNumber("V_PDH_Voltage",       VsENC_RobotCurrentVoltPwr.V_PDH_Voltage);
 
     // frc::SmartDashboard::PutNumber("I_CH0", LeENC_I_PDH_Ch0);
     // frc::SmartDashboard::PutNumber("I_CH1", LeENC_I_PDH_Ch1);
@@ -439,11 +439,11 @@ void MeasureVoltageCurrentPower(double LeENC_I_PDH_Ch0,
     // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_Amp_Wrist"   ,VaENC_MaxOutputValue.I_Amp_Wrist );
     // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_Amp_Intake"  ,VaENC_MaxOutputValue.I_Amp_Intake);
     // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_VIS_Pi"      ,VaENC_MaxOutputValue.I_VIS_Pi);
-    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.T_PDH_Temp"    ,VaENC_MaxOutputValue.T_PDH_Temp );
-    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_PDH_TotalCurrent",VaENC_MaxOutputValue.I_PDH_TotalCurrent);
-    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.W_PDH_TotalPower"  ,VaENC_MaxOutputValue.W_PDH_TotalPower );
-    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.J_PDH_TotalEnergy" ,VaENC_MaxOutputValue.J_PDH_TotalEnergy);
-    frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.V_PDH_Voltage"     ,VaENC_MaxOutputValue.V_PDH_Voltage );
+    // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.T_PDH_Temp"    ,VaENC_MaxOutputValue.T_PDH_Temp );
+    // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_PDH_TotalCurrent",VaENC_MaxOutputValue.I_PDH_TotalCurrent);
+    // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.W_PDH_TotalPower"  ,VaENC_MaxOutputValue.W_PDH_TotalPower );
+    // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.J_PDH_TotalEnergy" ,VaENC_MaxOutputValue.J_PDH_TotalEnergy);
+    // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.V_PDH_Voltage"     ,VaENC_MaxOutputValue.V_PDH_Voltage );
     // frc::SmartDashboard::PutNumber("VaENC_MaxOutputValue.I_SD_CanCoders"    ,VaENC_MaxOutputValue.I_SD_CanCoders);
 
 

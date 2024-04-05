@@ -236,9 +236,6 @@ void Robot::RobotPeriodic()
 
   // frc::SmartDashboard::PutNumber("blu0", Va_LED_outputBuffer[0].b);
   
-
-  
-
   Joystick1_robot_mapping(c_joyStick.GetRawButton(7),
                           c_joyStick.GetRawButton(8),
                           c_joyStick.GetRawAxis(1),
@@ -280,48 +277,44 @@ void Robot::RobotPeriodic()
 
   ReadGyro2(VsCONT_s_DriverInput.b_ZeroGyro);
 
-  MeasureVoltageCurrentPower(PDP.GetCurrent(0),
-                             PDP.GetCurrent(1),
-                             PDP.GetCurrent(2),
-                             PDP.GetCurrent(3),
-                             PDP.GetCurrent(4),
-                             PDP.GetCurrent(5),
-                             PDP.GetCurrent(6),
-                             PDP.GetCurrent(7),
-                             PDP.GetCurrent(8),
-                             PDP.GetCurrent(9),
-                             PDP.GetCurrent(10),
-                             PDP.GetCurrent(11),
-                             PDP.GetCurrent(12),
-                             PDP.GetCurrent(13),
-                             PDP.GetCurrent(14),
-                             PDP.GetCurrent(15),
-                             PDP.GetCurrent(16),
-                             PDP.GetCurrent(17),
-                             PDP.GetCurrent(18),
-                             PDP.GetCurrent(19),
-                             PDP.GetCurrent(21),
-                             PDP.GetCurrent(22),
-                             PDP.GetTemperature(),
-                             PDP.GetTotalCurrent(),
-                             PDP.GetTotalPower(),
-                             PDP.GetTotalEnergy(),
-                             PDP.GetVoltage());
+  // MeasureVoltageCurrentPower(PDP.GetCurrent(0),
+  //                            PDP.GetCurrent(1),
+  //                            PDP.GetCurrent(2),
+  //                            PDP.GetCurrent(3),
+  //                            PDP.GetCurrent(4),
+  //                            PDP.GetCurrent(5),
+  //                            PDP.GetCurrent(6),
+  //                            PDP.GetCurrent(7),
+  //                            PDP.GetCurrent(8),
+  //                            PDP.GetCurrent(9),
+  //                            PDP.GetCurrent(10),
+  //                            PDP.GetCurrent(11),
+  //                            PDP.GetCurrent(12),
+  //                            PDP.GetCurrent(13),
+  //                            PDP.GetCurrent(14),
+  //                            PDP.GetCurrent(15),
+  //                            PDP.GetCurrent(16),
+  //                            PDP.GetCurrent(17),
+  //                            PDP.GetCurrent(18),
+  //                            PDP.GetCurrent(19),
+  //                            PDP.GetCurrent(21),
+  //                            PDP.GetCurrent(22),
+  //                            PDP.GetTemperature(),
+  //                            PDP.GetTotalCurrent(),
+  //                            PDP.GetTotalPower(),
+  //                            PDP.GetTotalEnergy(),
+  //                            PDP.GetVoltage());
 
   DtrmnSwerveBotLocation(VeGRY_Rad_GyroYawAngleRad,
                          &VaENC_Rad_WheelAngleFwd[0],
                          &VaENC_In_WheelDeltaDistance[0],
                          VsCONT_s_DriverInput.b_ZeroGyro);
 
-
-
-
   // VisionRun();
 
   ADAS_DetermineMode();
 
   frc::SmartDashboard::PutNumber("adas state", float(VeADAS_e_ActiveFeature));
-
 
   ADAS_DM_ConfigsCal();
 
